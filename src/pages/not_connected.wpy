@@ -1,0 +1,166 @@
+<template>
+    <view class="no-connected">
+        <view class="no-connected-text1">设备未连接</view>
+        <view class="centent">
+            <image class="content-img-left" src="/static/images/to_left.png" />
+            <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrlData" @tap.stop="parentTap"></circle>
+            <image class="content-img-right" src="/static/images/to_right.png" />
+        </view>
+        <view class="icon-font icon1">
+            <text class="iconfont icon-fold"></text>
+        </view>
+        <view class="icon-font icon2">
+            <text class="iconfont icon-fold"></text>
+        </view>
+        <view class="icon-font icon3">
+            <text class="iconfont icon-fold"></text>
+        </view>
+        <view class="no-connected-text2">点击按钮连接设备</view>
+    </view>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import Circle from  '@/components/circle';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '抖腿大乐斗'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            circle:Circle
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            imgSrcData: '/static/images/bluetooth_inactive.png',
+            locationUrlData:'/pages/connect_bluetooth',
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {
+
+        };
+
+        // 声明组件之间的事件处理函数
+        events = {
+
+        };
+    }
+</script>
+
+<style lang="less">
+    .no-connected{
+        display: flex;
+        flex-direction: column;
+        /*justify-content: center;*/
+        align-items: center;
+        width: 100%;
+        height: 1205rpx;
+        background: linear-gradient(to top right,#ec2c98, #f68668);
+
+        .no-connected-text1{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            padding-top: 37rpx;
+            padding-bottom: 70rpx;
+            box-sizing: border-box;
+            font-size: 30rpx;
+            color: #fff;
+        }
+
+        .centent{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 500rpx;
+            padding-left: 30rpx;
+            box-sizing: border-box;
+
+            .content-img-left,.content-img-right{
+                width: 58rpx;
+                height: 101rpx;
+                /*border: 1rpx solid blue;*/
+            }
+
+            .content-img-left{
+                margin-right: 37rpx;
+            }
+            .content-img-right{
+                margin-left: 37rpx;
+            }
+        }
+        .icon-font{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            color: #fff;
+            /*border: 1rpx solid blue;*/
+        }
+        .icon1{
+            height: 60rpx;
+            margin-top: 55rpx;
+            .icon-fold{
+                font-size: 100rpx;
+                opacity: 0.3;
+            }
+        }
+
+        .icon2{
+            height: 80rpx;
+            /*border: 1rpx solid blue;*/
+            .icon-fold{
+                font-size: 140rpx;
+                opacity: 0.6;
+            }
+
+        }
+
+        .icon3{
+            height: 100rpx;
+            /*border: 1rpx solid blue;*/
+            .icon-fold{
+                font-size: 180rpx;
+                opacity: 1;
+            }
+        }
+
+        .no-connected-text2{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 24rpx;
+            font-size: 48rpx;
+            font-family: NotoSansHans Regular;
+            color: #fff;
+        }
+
+
+
+
+
+
+
+
+    }
+</style>

@@ -1,0 +1,66 @@
+// 排名模块
+<template>
+    <view class="record">
+        <view class="record-head">
+            <view>次数</view>
+            <view>时长</view>
+            <view>音乐</view>
+            <view>总排名</view>
+        </view>
+        <repeat for="{{ranking}}" key="index" index="index" item="item">
+            <view class="record-content">
+
+            </view>
+        </repeat>
+    </view>
+
+</template>
+
+<script >
+    import wepy from 'wepy';
+
+    export default class Ranking extends wepy.component {
+
+        props  = {
+            ranking:{
+                type:Object,
+                default:'null'
+            },
+        };
+
+        methods = {};
+
+
+    }
+
+</script>
+
+<style lang="less">
+    .record{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        /*border: 1rpx solid red;*/
+
+        .record-head{
+
+        }
+
+        .ranking-content{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 720rpx;
+            height: 120rpx;
+            margin-top: 20rpx;
+            box-shadow: 0 0 10rpx #ccc;
+            /*border: 1rpx solid red;*/
+
+        }
+
+    }
+
+</style>

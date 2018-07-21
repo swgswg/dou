@@ -1,0 +1,208 @@
+// 登录模块
+<template>
+    <view class="sign">
+        <view class="sign-content">
+            <view class="sign-box">
+                <view class="sign-dot sign-dot-blue"></view>
+                <view class="sign-item">
+                    <view class="sign-title">
+                        <image src="/static/images/signIn_user.png"></image>
+                        <text class="username">Username</text>
+                    </view>
+                    <input bindinput="getUsername" type="text" placeholder="您可以输入邮箱或者手机号" focus="true" placeholder-style="color:#ccc"/>
+                </view>
+            </view>
+            <view class="sign-box">
+                <view class="sign-dot sign-dot-green"></view>
+                <view class="sign-item">
+                    <view class="sign-title">
+                        <image src="/static/images/signIn_user.png"></image>
+                        <text class="pass">Password</text>
+                    </view>
+                    <input bindinput="getPassword" password="true" placeholder="您可以输入密码" focus="true" placeholder-style="color:#ccc"/>
+                    <image class="question" src="/static/images/siginin_wenhao.png"></image>
+                </view>
+            </view>
+            <view class="sign-btn">
+                <view class="forget"><text @tap="forgetPass">忘记密码</text></view>
+                <view class="btn">
+                    <text class="flex-center gradients button button-highlight button-pill button-small">
+                        <text class="button button-1f93ce button-circle button-tiny"><text class="iconfont icon-check"></text></text>
+                    </text>
+                </view>
+            </view>
+        </view>
+    </view>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+    export default class SignIn extends wepy.component {
+
+        data = {
+            uname:'',
+            passwd:'',
+        };
+
+        methods = {
+            // 获取用户名
+            getUsername (e) {
+                console.log(e);
+                this.uname = e.detail.value;
+                this.$apply();
+                // console.log(this.uname);
+            },
+            // 获取密码
+            getPassword (e) {
+                this.passwd = e.detail.value;
+                this.$apply();
+                // console.log(this.passwd);
+            },
+            // 忘记密码
+            forgetPass () {
+                wepy.$navigate('./pages/forget_pass', {username:this.data.uname});
+            },
+        };
+    };
+</script>
+
+<style lang="less">
+
+    .sign {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 554rpx;
+
+        .sign-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 655rpx;
+            height: 100%;
+            /*padding-top: 30rpx;*/
+            box-sizing: border-box;
+            border-radius: 10rpx;
+            box-shadow: 0px 0px 10px #586C94;
+            background-color: #fff;
+            /*border: 1rpx solid red;*/
+
+            .sign-box {
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 585rpx;
+                height: 150rpx;
+                /*padding-top: 50rpx;*/
+                box-sizing: border-box;
+                /*border-bottom: 2rpx solid #ccc;*/
+                /*border: 1rpx solid red;*/
+
+                .sign-dot {
+                    position: absolute;
+                    top: 10rpx;
+                    left: 0;
+                    width: 12rpx;
+                    height: 12rpx;
+                    border-radius: 50%;
+                }
+                .sign-dot-blue{
+                    box-shadow: 0 0 20rpx #d2e8fd;
+                    background-color: #2089f8;
+                }
+                .sign-dot-green{
+                    box-shadow: 0 0 20rpx #d1f4ef;
+                    background-color: #1bc8ae;
+                }
+                .sign-item{
+                    position: relative;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    /*border: 1rpx solid blue;*/
+
+                    .sign-title{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        image {
+                            width: 70rpx;
+                            height: 70rpx;
+                        }
+                        text{
+                            font-size: 30rpx;
+                            font-weight: bold;
+                        }
+                        .username{
+                            color: #2089f8;
+                        }
+                        .pass{
+                            color: #1bc8ae;
+                        }
+                    }
+                    input {
+                        width: 585rpx;
+                        font-size: 30rpx;
+                        text-align: center;
+                        border-bottom: 2rpx solid #ccc;
+                        /*border: 1rpx solid green;*/
+                    }
+                    .question{
+                        position: absolute;
+                        bottom: 10rpx;
+                        right: 0;
+                        width: 35rpx;
+                        height: 35rpx;
+                    }
+                }
+
+            }
+
+            .sign-btn{
+                display: flex;
+                flex-direction: column;
+                /*justify-content: center;*/
+                align-items: center;
+                width: 100%;
+                height: 200rpx;
+                /*border: 1rpx solid red;*/
+
+                .forget{
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    width: 585rpx;
+                    height: 60rpx;
+                    font-size: 30rpx;
+                    color: #ccc;
+                    /*border: 1rpx solid red;*/
+                }
+                .btn{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 585rpx;
+                    height: 150rpx;
+
+                    .gradients{
+                        background: linear-gradient(to right, #206dfa , #22e0bb);
+                    }
+                    .button-1f93ce{
+                        background-color: #1f93ce;
+                    }
+                    .icon-check{
+                        font-size: 38rpx;
+                        font-weight: bold;
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+</style>

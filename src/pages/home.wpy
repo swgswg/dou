@@ -1,0 +1,103 @@
+<template>
+    <!--<view>-->
+        <!--<image style="width:{{winWidth}}px;height:{{winHeight}}px;" src="{{ imgSrc }}" />-->
+    <!--</view>-->
+    <swiper autoplay="{{swiper_autoplay}}" interval="2000" circular="true" bindanimationfinish="animationFinish" style="width:{{winWidth}}px;height:{{winHeight}}px;">
+        <repeat for="{{imgSrc}}" key="index" item="img">
+            <swiper-item>
+                <image src="{{img}}" style="width:{{winWidth}}px;height:{{winHeight}}px;"/>
+            </swiper-item>
+        </repeat>
+    </swiper>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import { SYSTEM_INFO } from '@/utils/constant';
+
+    export default class Home extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '首页'
+        };
+
+        // 自定义数据
+        customData = {};
+
+        //自定义方法
+        customFunction() {};
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            winWidth:0,
+            winHeight:0,
+            swiper_autoplay:true,
+            imgSrc: [
+                '/static/images/doutui_jinru1.png',
+                '/static/images/doutui_jinru2.png',
+                '/static/images/doutui_jinru3.png',
+                '/static/images/doutui_jinru4.png',
+            ]
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+            let that = this;
+            // 获取系统信息
+            let systemInfo = wepy.getStorageSync(SYSTEM_INFO);
+            // console.log(systemInfo);
+            that.winWidth = systemInfo.windowWidth;
+            that.winHeight = systemInfo.windowHeight;
+            that.$apply();
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {};
+
+        // 声明页面所引用的Mixin实例
+        mixins = [];
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {
+            // 滑块动画结束
+            animationFinish(e){
+                let that = this;
+                // console.log(e);
+                // 获取结束时的滑块索引
+                let current = e.detail.current;
+                // 最后一个滑块结束时同时结束动画,跳转到首页
+                if(current >= 3){
+                    that.swiper_autoplay = false;
+                    setTimeout(function() {
+                        // **根据是否连接蓝牙进入不同界面
+                        wepy.switchTab({
+                            url:'/pages/index'
+                        });
+                    },1000);
+                }
+            },
+        };
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+
+</style>

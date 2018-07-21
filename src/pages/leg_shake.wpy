@@ -1,0 +1,117 @@
+<template>
+    <view class="leg-shake">
+        <view class="leg-hand">
+            <shakestyle :shake.sync="shakeData"></shakestyle>
+        </view>
+        <view class="centent">
+            <image class="content-img-left" src="/static/images/to_left.png" />
+            <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrlData" @tap.stop="parentTap"></circle>
+            <image class="content-img-right" src="/static/images/to_right.png" />
+        </view>
+    </view>
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import ShakeStyle from '@/components/shake_style';
+    import Circle from '@/components/circle';
+
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '抖腿大乐斗'
+        };
+
+        // 自定义数据
+        customData = {};
+
+        //自定义方法
+        customFunction() {
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            shakestyle:ShakeStyle,
+            circle:Circle,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            shakeData:'',
+            imgSrcData:'/static/images/'
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        // 声明页面所引用的Mixin实例
+        mixins = [];
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    page{
+        background: linear-gradient(to top right,#ec2c98, #f68668);
+    }
+
+    .leg-shake{
+        display: flex;
+        flex-direction: column;
+        /*align-items: center;*/
+        width: 100%;
+        height: 100%;
+
+        .leg-hand{
+            margin-top: 32rpx;
+        }
+
+        .centent{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            height: 500rpx;
+            margin-top: 73rpx;
+            padding-left: 30rpx;
+            box-sizing: border-box;
+            /*border: 1rpx solid blue;*/
+
+            .content-img-left,.content-img-right{
+                width: 58rpx;
+                height: 101rpx;
+                /*border: 1rpx solid blue;*/
+            }
+
+            .content-img-left{
+                margin-right: 37rpx;
+            }
+            .content-img-right{
+                margin-left: 37rpx;
+            }
+        }
+    }
+
+</style>

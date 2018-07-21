@@ -1,0 +1,66 @@
+<template>
+    <view class="my-switch">
+        <view class="kuang"></view>
+        <view class="yuan {{activeDot ? 'active':'inactive'}}" @tap.stop="dot"></view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class MySwitch extends wepy.component {
+
+        props = {
+            // 父向子传值
+            activeDot: {
+                type: String,
+                default: '',
+                twoWay: true,
+            },
+        };
+
+        methods = {
+            dot(){
+                console.log(this.activeDot);
+                this.activeDot = !this.activeDot;
+                this.$apply();
+            }
+        }
+    }
+</script>
+
+<style lang="less">
+    .my-switch{
+        position: relative;
+        width: 90rpx;
+        height: 42rpx;
+
+        .kuang{
+            position: absolute;
+            top:0;
+            left: 0;
+            width: 90rpx;
+            height: 42rpx;
+            border: 4rpx solid #abdfff;
+            border-radius: 10rpx;
+        }
+
+        .yuan{
+            position: absolute;
+            top: 0rpx;
+            right: -5rpx;
+            width: 53rpx;
+            height: 53rpx;
+            border-radius: 50%;
+        }
+        .inactive{
+            background-color: #f68668;
+        }
+        .active{
+            background-color: #abdfff;
+        }
+
+
+    }
+
+</style>

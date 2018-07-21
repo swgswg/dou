@@ -1,0 +1,66 @@
+<template>
+    <view class="shake-style">
+        <view class="leg {{shake == 'leg' ? 'active' : ''}}" data-shake="leg" @tap.stop="shakeStyle">抖腿</view>
+        <view class="hand {{shake == 'hand'? 'active' : ''}}" data-shake="hand" @tap.stop="shakeStyle">手动</view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class ShakeStyle extends wepy.component {
+
+        props = {
+            shake: {
+                // 点击效果
+                type: String,
+                default: null,
+                twoWay: true,
+            },
+        };
+
+        methods = {
+            // 选择抖动方式
+            shakeStyle(e){
+                // console.log(e.currentTarget.dataset.shake);
+                let shake = e.currentTarget.dataset.shake;
+                this.shake = shake;
+                this.$apply();
+            }
+        };
+    }
+</script>
+
+<style lang="less">
+    .shake-style{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: 60rpx;
+        font-size: 36rpx;
+        font-family: NotoSansHans Regular;
+        color: #fff;
+        /*border: 1rpx solid red;*/
+
+        .leg,.hand{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /*border: 1rpx solid red;*/
+        }
+
+        .leg{
+            margin-left: 271rpx;
+        }
+        .hand{
+            margin-left: 77rpx;
+        }
+
+        .active{
+            font-size: 40rpx;
+            font-weight: bold;
+        }
+
+    }
+</style>

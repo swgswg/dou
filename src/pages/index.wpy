@@ -1,0 +1,111 @@
+<style lang="less">
+    page{
+        background: linear-gradient(#ec2c98, #f68668);
+    }
+    .userinfo {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .userinfo-avatar {
+        width: 80rpx;
+        height: 80rpx;
+        border-radius: 50%;
+    }
+
+    .userinfo-nickname {
+        color: #aaa;
+    }
+</style>
+<template>
+    <!--<view class="container">-->
+    <!--<view class="userinfo" @tap="handleViewTap">-->
+    <!--<image class="userinfo-avatar" src="{{ userInfo.avatarUrl }}" background-size="cover"/>-->
+    <!--<view class="userinfo-nickname">{{ userInfo.nickName }}</view>-->
+    <!--</view>-->
+    <!--</view>-->
+
+    <!--<swiper>-->
+        <!--<repeat for="{{list}}" key="index" index="index" item="item">-->
+            <!--<swiper-item>-->
+                <!--<image src="{{item}}" class="slide-image" width="355" height="150"/>-->
+            <!--</swiper-item>-->
+        <!--</repeat>-->
+    <!--</swiper>-->
+
+    <search></search>
+    <circle :imgSrc.sync = "imgSrcData"></circle>
+    <signin></signin>
+    <ranking :ranking.sync="rankingData"></ranking>
+
+
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import moduleA from 'module-a'; // aliasFields ignore module example
+    // import Toast from 'wepy-com-toast';
+    import Search from '@/components/search';
+    import SignIn from  '@/components/sign_in';
+    import Ranking from  '@/components/ranking';
+    import Circle from  '@/components/circle';
+
+    export default class Index extends wepy.page {
+        config = {
+            navigationBarTitleText: 'test'
+        };
+        components = {
+            search: Search,
+            signin:SignIn,
+            ranking:Ranking,
+            circle:Circle
+        };
+
+        data = {
+            rankingData:[],
+            imgSrcData:'',
+        };
+
+        // computed = {
+        //     now() {
+        //         return +new Date();
+        //     }
+        // };
+
+        methods = {
+
+            // toast() {
+            //     let promise = this.$invoke('toast', 'show', {
+            //         title: '自定义标题',
+            //         img: 'https://raw.githubusercontent.com/kiinlam/wetoast/master/images/star.png'
+            //     });
+            //
+            //     promise.then((d) => {
+            //         console.log('toast done');
+            //     });
+            // },
+
+        };
+
+        events = {};
+
+        onLoad() {
+            let self = this;
+            this.$parent.getUserInfo(function(userInfo) {
+                if (userInfo) {
+                    self.userInfo = userInfo;
+                }
+                self.$apply();
+            });
+
+
+        };
+
+        onReady(){
+            this.rankingData = [1,2];
+            // this.imgSrcData = '/static/images/bluetooth_inactive.png';
+            this.$apply();
+        };
+    }
+</script>

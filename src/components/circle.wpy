@@ -1,0 +1,101 @@
+<template>
+    <view class="circle">
+        <view class="circle-each circle1">
+            <view class="circle-each circle2">
+                <view class="circle-each circle3">
+                    <view class="circle-each circle4">
+                        <image class="circle-each circle-img" @tap.stop="mylocation" src="{{imgSrc}}" />
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class Circle extends wepy.component {
+
+        props = {
+            // 父向子单向动态传值  图片连接地址
+            imgSrc: {
+                type: String,
+                // default: '/static/images/bluetooth_inactive.png'
+                default:null,
+            },
+            // 父向子单向动态传值  图片连接地址
+            locationUrl: {
+                type: String,
+                default:null,
+            }
+        };
+
+        methods = {
+            mylocation(){
+                console.log(this.locationUrl);
+                wepy.navigateTo({
+                    url:this.locationUrl
+                });
+            }
+        };
+
+
+        events = {
+
+        };
+    }
+</script>
+
+<style lang="less">
+
+    .circle{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 500rpx;
+        height: 500rpx;
+        /*border: 1rpx solid blue;*/
+
+        .circle-each{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+        }
+
+        .circle1{
+            width: 500rpx;
+            height: 500rpx;
+            background: rgba(255,255,255,0.2);
+            /*background: linear-gradient(#ec2c98, #f68668);*/
+
+            .circle2{
+                width: 420rpx;
+                height: 420rpx;
+                background: rgba(255,255,255,0.4);
+
+                .circle3{
+                    width: 340rpx;
+                    height: 340rpx;
+                    opacity: 0.6;
+                    background: rgba(255,255,255,0.6);
+
+                    .circle4{
+                        width: 260rpx;
+                        height: 260rpx;
+                        background: rgba(255,255,255,1);
+
+                        .circle-img{
+                            width: 260rpx;
+                            height: 260rpx;
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+
+</style>
