@@ -1,0 +1,116 @@
+<template>
+    <view class="best-record">
+        <view class="text1">历史最佳战绩:</view>
+        <view class="text2">TAKE ME HAND</view>
+        <view class="record">
+            <view>时长：4:12</view>
+            <view class="ml10">次数：952</view>
+            <view class="ml10">总排名：1</view>
+        </view>
+        <view class="img">
+            <view class="flower">
+                <image src="/static/images/flower.png"></image>
+                <view>520</view>
+            </view>
+            <view class="bomb">
+                <image src="/static/images/bomb.png"></image>
+                <view>5520</view>
+            </view>
+        </view>
+        <image class="code" wx:if="{{isShow}}" src="/static/images/my_code.png"></image>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class BestRecord extends wepy.component {
+
+        props  = {
+            isShow:{
+                type:Boolean,
+                default:false,
+            }
+        };
+
+    }
+</script>
+
+<style lang="less">
+    .best-record{
+        position: relative;
+        width: 100%;
+        padding: 20rpx;
+        box-sizing: border-box;
+        border-radius: 10rpx;
+        background-color: #fff;
+        
+        .text1{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            font-size: 30rpx;
+            font-family: NotoSansHans Regular;
+            color: #333;
+        }
+        .text2{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            margin-top: 20rpx;
+            font-size: 48rpx;
+            font-family: Edo;
+        }
+
+        .record{
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            margin-top: 20rpx;
+            font-size: 30rpx;
+            font-family: NotoSansHans Regular;
+            color: #737373;
+        }
+
+        .img{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            margin-top: 35rpx;
+            padding: 0 80rpx;
+            box-sizing: border-box;
+            font-size: 40rpx;
+            color: #aaa;
+
+            .flower{
+
+                image{
+                    width: 80rpx;
+                    height: 80rpx;
+                }
+            }
+
+            .bomb{
+
+                image{
+                    width: 80rpx;
+                    height: 80rpx;
+                }
+            }
+        }
+
+        .code{
+            position: absolute;
+            top: 50rpx;
+            right: 0;
+            width: 155rpx;
+            height: 155rpx;
+        }
+        
+    }
+</style>

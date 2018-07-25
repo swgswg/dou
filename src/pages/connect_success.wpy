@@ -7,7 +7,7 @@
         </view>
         <view class="success-btn">
             <image class="success-btn-img" src="/static/images/bottom.png"></image>
-            <view class="btn">去抖腿</view>
+            <view class="btn" @tap.stop="goShake">去抖腿</view>
         </view>
     </view>
 </template>
@@ -39,17 +39,14 @@
         onReady() {
         };
 
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
-
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            goShake(){
+                wepy.switchTab({
+                    url: '/pages/go_shake'
+                });
+            },
+        };
 
         // 声明组件之间的事件处理函数
         events = {};

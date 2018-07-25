@@ -84,12 +84,22 @@
                     .circle4{
                         width: 260rpx;
                         height: 260rpx;
-                        background: rgba(255,255,255,1);
+                        /*background: rgba(255,255,255,1);*/
+                        background-color: #fff;
 
                         .circle-img{
                             width: 260rpx;
                             height: 260rpx;
                         }
+
+                        /*.circle-img-in{*/
+                            /*!*动画持续时间*!*/
+                            /*!*animation-duration: 1s;*!*/
+                            /*!*动画延迟时间*!*/
+                            /*!*animation-delay: 0.6s;*!*/
+                            /*!*动画执行次数*!*/
+                            /*!*animation-iteration-count: 2;*!*/
+                        /*}*/
 
                     }
                 }

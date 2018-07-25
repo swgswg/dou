@@ -4,31 +4,24 @@
             <shakestyle :shake.sync="shakeData"></shakestyle>
         </view>
         <view class="centent">
-            <image class="content-img-left" src="/static/images/to_left.png" />
+            <image class="content-img-left"  src="/static/images/to_left.png" data-shake="leg" @tap.stop="shakeTransform"/>
             <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrlData" @tap.stop="parentTap"></circle>
-            <image class="content-img-right" src="/static/images/to_right.png" />
+            <image class="content-img-right" src="/static/images/to_right.png" data-shake="hand" @tap.stop="shakeTransform"/>
         </view>
+        <view class="shake-number">2353</view>
+        <view class="shake-time">持续时长：26分钟</view>
     </view>
 
 </template>
-
 <script>
     import wepy from 'wepy';
     import ShakeStyle from '@/components/shake_style';
     import Circle from '@/components/circle';
 
-
-    export default class MyPage extends wepy.page {
+    export default class GoShake extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '抖腿大乐斗'
-        };
-
-        // 自定义数据
-        customData = {};
-
-        //自定义方法
-        customFunction() {
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -39,8 +32,10 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
-            shakeData:'',
-            imgSrcData:'/static/images/'
+            // 抖动方式,默认抖腿
+            shakeData:'leg',
+            // 抖动方式对应的图片
+            imgSrcData:'/static/images/leg_shake.png',
         };
 
         // 在Page和Component共用的生命周期函数
@@ -55,17 +50,26 @@
         onReady() {
         };
 
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
-
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            // 点击左右图片按钮进行转换
+            shakeTransform(e){
+                // console.log(e);
+                // 获取想要抖动样式 左腿右手
+                let shake = e.currentTarget.dataset.shake;
+                if(shake == 'leg'){
+                    // 腿抖
+                    this.imgSrcData = '/static/images/leg_shake.png';
+                    this.shakeData = 'leg';
+                    this.$apply();
+                } else if (shake == 'hand'){
+                    // 手抖
+                    this.imgSrcData = '/static/images/hand_shake.png';
+                    this.shakeData = 'hand';
+                    this.$apply();
+                }
+            },
+        };
 
         // 声明组件之间的事件处理函数
         events = {};
@@ -112,6 +116,29 @@
                 margin-left: 37rpx;
             }
         }
+
+        .shake-number{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 120rpx;
+            font-size: 149rpx;
+            font-family: Edo;
+            color: #fff;
+        }
+
+        .shake-time{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 60rpx;
+            font-size: 36rpx;
+            font-family: AdobeHeitiStd Regular;
+            color: #fff;
+        }
+
     }
 
 </style>

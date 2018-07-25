@@ -1,7 +1,14 @@
 import { wxRequest } from '@/utils/wxRequest';
 
 // let env = "-test" //-dev 或者 -test
-const apiMall = 'https://sujiefs.com/';
+// const apiMall = 'https://sujiefs.com/';
+
+// 域名
+host: 'http://192.168.3.52:8080/';
+// webScocket
+wshost:'ws://192.168.3.52:8080/MicroPlatform/websocket/';
+// 上传文件/解析图片 地址
+uploadFileUrl: 'http://jiaoyuvideo.oss-cn-beijing.aliyuncs.com/';
 
 /**
  * 接口

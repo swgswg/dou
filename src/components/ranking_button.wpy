@@ -1,0 +1,91 @@
+<template>
+    <view class="ranking-button">
+        <view class="content">
+            <block wx:for="{{tab}}" wx:key="{{index}}"  wx:for-item="tab">
+                <view class="btn {{currentTab == index ? 'active' : ''}}" data-current="{{index}}" @tap.stop="getRanking">{{tab}}</view>
+            </block>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class RankingButton extends wepy.component {
+
+        props = {
+            tab: {
+                type: Array,
+                default:null,
+                twoWay: true,
+            },
+            currentTab: {
+                type:Number,
+                default: 0,
+                twoWay: true,
+            },
+
+        };
+
+        methods = {
+            getRanking(e){
+                let that = this;
+                let current = e.currentTarget.dataset.current;
+                if (this.data.currentTab == current) {
+                    return false;
+                } else {
+                    that.currentTab = current;
+                    that.$apply();
+                }
+                this.$emit("currentTab", that.currentTab)
+            }
+        }
+
+
+
+    }
+
+</script>
+
+<style lang="less">
+    .ranking-button{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 60rpx;
+        /*border: 1rpx solid blue;*/
+
+        .content{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 60%;
+            height: 60rpx;
+            border-radius: 30rpx;
+            border: 5rpx solid #fff;
+            
+            .btn{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 45%;
+                height: 44rpx;
+                font-size: 30rpx;
+                color: #fff;
+                /*border: 1rpx solid blue;*/
+            }
+
+            .active{
+                color: #ec2c98;
+                border-radius: 22rpx;
+                background-color: #fff;
+
+            }
+        }
+        
+        
+    }
+
+
+</style>

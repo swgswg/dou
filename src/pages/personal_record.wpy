@@ -1,0 +1,126 @@
+<template>
+    <view class="personal-record">
+        <view class="head">
+            <view class="head-left">
+                <image class="img" src=""></image>
+                <view class="name">抖抖抖</view>
+            </view>
+            <view class="head-right">
+                <image src="/static/images/right.png"></image>
+            </view>
+        </view>
+        <view class="mt15">
+            <bestrecord></bestrecord>
+        </view>
+
+        <view class="mt15">
+            <record></record>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import Record from '@/components/record';
+    import BestRecord from '@/components/best_record';
+
+    export default class PersonalRecord extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '我爱抖腿'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            record:Record,
+            bestrecord:BestRecord,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            isShow:false,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        // 声明页面所引用的Mixin实例
+        mixins = [];
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+    .personal-record{
+        padding: 30rpx;
+        box-sizing: border-box;
+
+        .head{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 90rpx;
+            padding: 0 20rpx;
+            box-sizing: border-box;
+            border-radius: 10rpx;
+            background-color: #fff;
+
+            .head-left{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+
+                .img{
+                    width: 50rpx;
+                    height: 50rpx;
+                    border: 1rpx solid red;
+                }
+
+                .name{
+                    width: 100%;
+                    margin-left: 22rpx;
+                    font-size: 30rpx;
+                    font-family: HappyZcool 2016;
+                }
+            }
+
+            .head-right{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                image{
+                    width: 21rpx;
+                    height: 27rpx;
+                }
+            }
+
+        }
+
+    }
+</style>

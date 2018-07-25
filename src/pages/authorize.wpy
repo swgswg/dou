@@ -20,7 +20,7 @@
     export default class Authorize extends wepy.page {
         config = {
             navigationBarTitleText: '授权登录',
-        }
+        };
 
         async onLoad() {
             let res = await wepy.getSetting()
@@ -30,7 +30,7 @@
                     url: '/pages/home'
                 })
             }
-        }
+        };
 
         async onGotUserInfo(e) {
             if (e.detail.errMsg == 'getUserInfo:ok') {
@@ -45,24 +45,25 @@
                             jsCode: res.code,
                             nickName: e.detail.userInfo.nickName
                         }
-                    })
+                    });
+                    console.log(rlt);
                     if (rlt.data.result) {
                         let data = rlt.data;
                         if (data.data.openid) {
                             wepy.setStorageSync(USER_SPECICAL_INFO, data.data);
                             wepy.switchTab({
                                 url: '/pages/home'
-                            })
+                            });
                         }
                     } else {
                         let res = await wepy.showModal({
                             title: 'appid有误',
                             content: '授权失败'
-                        })
+                        });
                         if (res.confirm) {
                             wepy.switchTab({
                                 url: '/pages/home'
-                            })
+                            });
                         }
                     }
 

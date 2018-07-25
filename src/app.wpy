@@ -2,6 +2,7 @@
     @import "static/css/weui.less";
     @import "static/css/font.less";
     @import "static/css/button.less";
+    @import "static/css/animate.less";
 
     page{
         letter-spacing:2rpx;
@@ -152,6 +153,18 @@
         padding-top: 15rpx;
         box-sizing: border-box;
     }
+
+    /* 渐变线 */
+    .line{
+        width: 100%;
+        height: 2rpx;
+        background:linear-gradient(to right,#977ce4,#78b1ee,#71ddc4);
+    }
+
+    scroll-view{
+        width: 100%;
+        height: 100%;
+    }
 </style>
 
 <script>
@@ -167,15 +180,18 @@
     export default class extends wepy.app {
         config = {
             pages: [
-                'pages/leg_shake',
+                'pages/personal_record',
+                'pages/my_record',
+                'pages/my_info',
+                'pages/history_rank',
+                'pages/go_shake',
                 'pages/connect_success',
                 'pages/select_bluetooth',
                 'pages/connect_bluetooth',
                 'pages/not_connected',
                 'pages/home',
+
                 'pages/index',
-
-
                 'pages/authorize',
             ],
             window: {
@@ -185,6 +201,32 @@
                 navigationBarTextStyle: 'write',
                 enablePullDownRefresh: false,
                 backgroundColor: '#EFEFEF'
+            },
+            "tabBar": {
+                "color": "#ec2c98",
+                "selectedColor": "#ec2c98",
+                "backgroundColor": "#ffffff",
+                "borderStyle": "white",
+                "list": [
+                    {
+                        "pagePath": "pages/history_rank",
+                        "text": "排名",
+                        "iconPath": "static/images/tabbar/rank.png",
+                        "selectedIconPath": "static/images/tabbar/rank_active.png"
+                    },
+                    {
+                        "pagePath": "pages/go_shake",
+                        "text": "抖腿大乐斗",
+                        "iconPath": "static/images/tabbar/shake.png",
+                        "selectedIconPath": "static/images/tabbar/shake_active.png"
+                    },
+                    {
+                        "pagePath": "pages/my_info",
+                        "text": "我的抖动",
+                        "iconPath": "static/images/tabbar/myinfo.png",
+                        "selectedIconPath": "static/images/tabbar/myinfo_active.png"
+                    }
+                ]
             }
         };
 
