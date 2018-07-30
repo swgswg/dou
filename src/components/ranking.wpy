@@ -6,20 +6,23 @@
                 <view class="sort">
                     <block wx:if="{{index == 0}}">
                         <image src="/static/images/ranking_no1.png" />
+                        <!--<image src="{{uploadFileUrl + 'ranking_no1.png'}}" />-->
                     </block>
                     <block wx:elif="{{index == 1}}">
                         <image src="/static/images/ranking_no2.png" />
+                        <!--<image src="{{uploadFileUrl + 'ranking_no2.png'}}" />-->
                     </block>
                     <block wx:elif="{{index == 2}}">
                         <image src="/static/images/ranking_no3.png" />
+                        <!--<image src="{{uploadFileUrl + 'ranking_no3.png'}}" />-->
                     </block>
                     <block wx:else>
-                        {{index}}
+                        {{index + 1}}
                     </block>
                 </view>
                 <view class="profile">
                     <image src="/static/images/selected.png" />
-                    <!--<view class="weui-badge" style="position: absolute;top: -.4em;right: -.4em;">8</view>-->
+                    <!--<image src="{{uploadFileUrl + 'selected.png'}}" />-->
                 </view>
                 <view class="info">
                     <view class="f14">
@@ -40,7 +43,13 @@
 
 <script >
     import wepy from 'wepy';
+    import api from '@/utils/api';
+
     export default class Ranking extends wepy.component {
+
+        data = {
+            uploadFileUrl:api.uploadFileUrl,
+        };
 
         props  = {
             ranking:{

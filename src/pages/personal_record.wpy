@@ -9,12 +9,19 @@
                 <image src="/static/images/right.png"></image>
             </view>
         </view>
-        <view class="mt15">
-            <bestrecord></bestrecord>
-        </view>
 
         <view class="mt15">
-            <record></record>
+            <bestrecord :isShow.sync="isShow"></bestrecord>
+        </view>
+
+        <view class="myrecord">
+            <scroll-view scroll-y bindscrolltolower="scrollToLower">
+                <record :ranking.sync="ranking" :isShow.sync="isShow"></record>
+                <!--加载更多时动画-->
+                <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+                <!--暂无数据显示-->
+                <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
+            </scroll-view>
         </view>
     </view>
 </template>
@@ -23,6 +30,8 @@
     import wepy from 'wepy';
     import Record from '@/components/record';
     import BestRecord from '@/components/best_record';
+    import BottomLoadMore from "@/components/common/bottomLoadMore";
+    import Placeholder from "@/components/common/placeholder";
 
     export default class PersonalRecord extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -34,11 +43,20 @@
         components = {
             record:Record,
             bestrecord:BestRecord,
+            bottomLoadMore: BottomLoadMore,
+            placeholder: Placeholder
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            // 是否显示record模块里的音乐和best_record模块里的显示我的抖腿币图片
             isShow:false,
+            // 排名数据
+            ranking:[1,2,3,4,5,6,7,8,9,9],
+            //是否有数据
+            is_empty: false,
+            //是否显示 底部loading
+            showLoading: false,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -53,9 +71,6 @@
         onReady() {
         };
 
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
         // 声明计算属性（详见后文介绍）
         computed = {};
 
@@ -65,6 +80,13 @@
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {};
 
+        // 加载更多
+        scrollToLower(){
+            console.log("加载更多");
+            let that = this;
+            that.showLoading = true;
+        };
+
         // 声明组件之间的事件处理函数
         events = {};
     }
@@ -72,10 +94,11 @@
 
 <style lang="less">
     page{
-        background-color: #f0f0f0;
+        background-color: #f7f8ff;
     }
     .personal-record{
         padding: 30rpx;
+        padding-bottom: 0;
         box-sizing: border-box;
 
         .head{
@@ -96,9 +119,9 @@
                 width: 100%;
 
                 .img{
-                    width: 50rpx;
-                    height: 50rpx;
-                    border: 1rpx solid red;
+                    width: 60rpx;
+                    height: 60rpx;
+                    /*border: 1rpx solid red;*/
                 }
 
                 .name{
@@ -119,8 +142,13 @@
                     height: 27rpx;
                 }
             }
-
         }
 
+        .myrecord{
+            width: 100%;
+            height: 620rpx;
+            margin-top: 30rpx;
+            /*border: 1rpx solid red;*/
+        }
     }
 </style>

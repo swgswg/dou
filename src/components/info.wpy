@@ -4,10 +4,12 @@
             <view class="info-content">
                 <view class="content" @tap.stop="goToMyShakeInfo">
                     <image class="profile" src=""></image>
+                    <!--<image class="profile" src="{{uploadFileUrl + ''}}"></image>-->
                     <view>抖抖抖</view>
                 </view>
                 <view class="to-right">
                     <image src="/static/images/right.png"></image>
+                    <!--<image src=" {{uploadFileUrl + 'right.png'}}"></image>-->
                 </view>
             </view>
             <view class="info-btn">
@@ -22,8 +24,13 @@
 
 <script>
     import wepy from 'wepy';
+    import api from '@/utils/api';
 
     export default class Info extends wepy.component {
+
+        data = {
+            uploadFileUrl:api.uploadFileUrl
+        }
 
         methods = {
             // 微信号

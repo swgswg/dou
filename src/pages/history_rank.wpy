@@ -19,8 +19,8 @@
     import wepy from 'wepy';
     import RankingButton from '@/components/ranking_button';
     import Ranking from '@/components/ranking';
-    import BottomLoadMore from "@/components/common/bottomLoadMore"
-    import Placeholder from "@/components/common/placeholder"
+    import BottomLoadMore from "@/components/common/bottomLoadMore";
+    import Placeholder from "@/components/common/placeholder";
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件

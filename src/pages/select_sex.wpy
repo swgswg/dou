@@ -1,0 +1,171 @@
+<template>
+    <view class="select-sex">
+        <view class="sex">请选择您的性别</view>
+
+        <view class="sex-img">
+            <image src="{{'/static/images/' + (currentSex == 'woman' ? 'woman_active.png' : 'woman_inactive.png')}}" data-type="woman" @tap.stop="selectSex"></image>
+            <!--<image src="{{uploadFileUrl + '/static/images/' + (currentSex == 'woman' ? 'woman_active.png' : 'woman_inactive.png')}}" data-type="woman" @tap.stop="selectSex"></image>-->
+            <image src="{{'/static/images/' + (currentSex == 'man' ? 'man_active.png' : 'man_inactive.png')}}" data-type="man" @tap.stop="selectSex"></image>
+            <!--<image src="{{uploadFileUrl + '/static/images/' + (currentSex == 'man' ? 'man_active.png' : 'man_inactive.png')}}" data-type="man" @tap.stop="selectSex"></image>-->
+        </view>
+
+        <view class="sex-profile">
+            <block wx:for="{{profile}}" wx:for-item="profile" wx:key="{{index}}">
+                <view class="profile-each {{currentProfile == index ? 'active':''}}">
+                    <image src="{{'/static/images/' + profile}}" data-index="{{index}}" @tap.stop="selectProfile"></image>
+                    <!--<image src="{{uploadFileUrl + '/static/images/' + profile}}" data-index="{{index}}" @tap.stop="selectProfile"></image>-->
+                </view>
+            </block>
+        </view>
+
+        <view class="sex-btn" wx:if="{{currentSex == 'woman' || currentSex == 'man'}}">
+            <button class="button button-highlight button-pill button-large" open-type="getUserInfo" bindgetuserinfo="getUserInfo">确认</button>
+        </view>
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import api from '@/utils/api';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '选择性别'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {};
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            uploadFileUrl:api.uploadFileUrl,
+            // 选择的性别
+            currentSex:0,
+            // 性别对应的人物
+            profile:[],
+            // 选择的人物
+            currentProfile:0,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {
+            // 选择性别
+            selectSex(e){
+                let sex = e.currentTarget.dataset.type;
+                this.currentSex = sex;
+                this.profile = [sex+'1.png', sex+'2.png'];
+                this.$apply();
+            },
+
+            // 选择人物
+            selectProfile(e){
+                let index = e.currentTarget.dataset.index;
+                this.currentProfile = index;
+                this.$apply();
+            },
+
+            // 获取用户授权信息
+            getUserInfo(e){
+                console.log(e);
+
+            },
+        };
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    .select-sex{
+
+        .sex{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 100rpx;
+        }
+
+        .sex-img{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-top: 147rpx;
+            padding: 0 30rpx;
+            box-sizing: border-box;
+
+            image{
+                width: 150rpx;
+                height: 150rpx;
+            }
+
+        }
+
+        .sex-profile{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            height: 455rpx;
+            margin-top: 100rpx;
+
+            .profile-each{
+                display: flex;
+                justify-content:center;
+                align-items: center;
+                width: 286rpx;
+                height: 455rpx;
+                padding: 36rpx auto;
+                box-sizing: border-box;
+
+                image{
+                    width: 177rpx;
+                    height: 386rpx;
+                }
+
+            }
+
+            .active{
+                /*padding: 0;*/
+                /*box-sizing: border-box;*/
+                /*box-shadow: 0 0 13rpx #80a1ee;*/
+
+                image{
+                    width: 286rpx;
+                    height: 455rpx;
+                }
+            }
+
+
+        }
+
+        .sex-btn{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 80rpx;
+        }
+    }
+
+
+</style>

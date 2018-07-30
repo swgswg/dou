@@ -7,6 +7,7 @@
                 <view class="sign-item">
                     <view class="sign-title">
                         <image src="/static/images/signIn_user.png"></image>
+                        <!--<image src="{{uploadFileUrl + 'signIn_user.png'}}"></image>-->
                         <text class="username">Username</text>
                     </view>
                     <input bindinput="getUsername" type="text" placeholder="您可以输入邮箱或者手机号" focus="true" placeholder-style="color:#ccc"/>
@@ -17,10 +18,12 @@
                 <view class="sign-item">
                     <view class="sign-title">
                         <image src="/static/images/signIn_user.png"></image>
+                        <!--<image src="{{uploadFileUrl + 'signIn_user.png'}}"></image>-->
                         <text class="pass">Password</text>
                     </view>
                     <input bindinput="getPassword" password="true" placeholder="您可以输入密码" focus="true" placeholder-style="color:#ccc"/>
                     <image class="question" src="/static/images/siginin_wenhao.png"></image>
+                    <!--<image class="question" src="{{uploadFileUrl + 'siginin_wenhao.png'}}"></image>-->
                 </view>
             </view>
             <view class="sign-btn">
@@ -38,9 +41,12 @@
 
 <script>
     import wepy from 'wepy';
+    import api from '@/utils/api';
+
     export default class SignIn extends wepy.component {
 
         data = {
+            uploadFileUrl:api.uploadFileUrl,
             uname:'',
             passwd:'',
         };

@@ -1,8 +1,9 @@
 <style lang="less">
-    @import "static/css/weui.less";
-    @import "static/css/font.less";
+    /*@import "static/css/weui.less";*/
+    /*@import "static/css/font.less";*/
     @import "static/css/button.less";
     @import "static/css/animate.less";
+    @import "static/css/font_Edo/stylesheet";
 
     page{
         letter-spacing:2rpx;
@@ -180,19 +181,22 @@
     export default class extends wepy.app {
         config = {
             pages: [
+                'pages/select_sex',
+                'pages/go_shake',
                 'pages/personal_record',
                 'pages/my_record',
                 'pages/my_info',
                 'pages/history_rank',
-                'pages/go_shake',
+
                 'pages/connect_success',
                 'pages/select_bluetooth',
                 'pages/connect_bluetooth',
                 'pages/not_connected',
                 'pages/home',
+                'pages/authorize',
 
                 'pages/index',
-                'pages/authorize',
+
             ],
             window: {
                 backgroundTextStyle: 'light',

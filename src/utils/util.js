@@ -4,10 +4,10 @@
 function timeStamp(flag, mytimer){
     // mytimer = '2015/06/23 08:00:20'
     if(flag == 1){
-        // 秒数
+        // 当前时间 秒数
        mytime = String(Date.parse(new Date())).slice(0, -3);
     } else if(flag == 2){
-        // 毫秒数
+        // 当前时间 毫秒数
         mytime = (new Date()).getTime();
     } else if(flag == 3){
         // 任意时间时间戳 毫秒数

@@ -10,21 +10,28 @@
         <view class="img">
             <view class="flower">
                 <image src="/static/images/flower.png"></image>
+                <!--<image src="{{uploadFileUrl + ''}}"></image>-->
                 <view>520</view>
             </view>
             <view class="bomb">
                 <image src="/static/images/bomb.png"></image>
+                <!--<image src="{{uploadFileUrl + ''}}"></image>-->
                 <view>5520</view>
             </view>
         </view>
         <image class="code" wx:if="{{isShow}}" src="/static/images/my_code.png"></image>
+        <!--<image class="code" wx:if="{{isShow}}" src="{{uploadFileUrl + ''}}"></image>-->
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import api from '@/utils/api'
 
     export default class BestRecord extends wepy.component {
+        data = {
+            uploadFileUrl:api.uploadFileUrl,
+        };
 
         props  = {
             isShow:{
@@ -32,6 +39,8 @@
                 default:false,
             }
         };
+
+
 
     }
 </script>

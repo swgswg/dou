@@ -6,11 +6,13 @@
                     <view class="info-left">
                         <view class="info-img">
                             <image src="{{ '/static/images/'+item.img}}"></image>
+                            <!--<image src="{{ uploadFileUrl + item.img}}"></image>-->
                         </view>
                         <view class="info-title">{{item.title}}</view>
                     </view>
                     <view class="info-right">
                         <image src="/static/images/right.png" data-skip="{{item.skip}}" @tap.stop="goTo"></image>
+                        <!--<image src="{{uploadFileUrl + 'right.png'}}" data-skip="{{item.skip}}" @tap.stop="goTo"></image>-->
                     </view>
                 </view>
                 <view class="line"></view>
@@ -21,10 +23,12 @@
 
 <script>
     import wepy from 'wepy';
+    import api from '@/utils/api';
 
     export default class InfoItem extends wepy.component {
 
         data = {
+            uploadFileUrl:api.uploadFileUrl,
             list:[
                 {img:'shop.png', title:'商城', skip:''},
                 {img:'happy.png', title:'娱乐模式',skip:''},
@@ -32,7 +36,8 @@
                 {img:'black_fans.png', title:'黑粉大排名',skip:''},
                 {img:'gift.png', title:'我的历史奖品',skip:''},
                 {img:'set.png', title:'设置',skip:''},
-            ]
+            ],
+
         };
 
         methods = {
