@@ -21,6 +21,8 @@ const wxJsCode2Session = (params) => wxRequest(params, apiMall + '/api/wechat/js
 const user2session = (params) => wxRequest(params, apiMall + '/api/wechat/user2session?jsoncallback=?');
 
 export default {
+    host,
+    wshost,
     uploadFileUrl,
     wxJsCode2Session,
     user2session,

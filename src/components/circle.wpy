@@ -27,8 +27,8 @@
             // 父向子单向动态传值  图片连接地址
             imgSrc: {
                 type: String,
-                // default: '/static/images/bluetooth_inactive.png'
-                default:null,
+                default: '/static/images/leg_shake.png'
+                // default:null,
             },
             // 父向子单向动态传值  图片连接地址
             locationUrl: {
@@ -84,7 +84,7 @@
                 .circle3{
                     width: 340rpx;
                     height: 340rpx;
-                    opacity: 0.6;
+                    /*opacity: 0.6;*/
                     background: rgba(255,255,255,0.6);
 
                     .circle4{

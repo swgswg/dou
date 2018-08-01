@@ -1,0 +1,185 @@
+<template>
+    <view class="stage">
+        <block wx:if="{{stageSize == 'big'}}">
+            <view class="big-stage-img">
+                <!--<image class="big-profile-img" src="{{'/static/images/'+ profile 'woman1.png'}}"></image>-->
+                <image class="big-profile-img" src="{{'/static/images/' + profile + '.png'}}"></image>
+                <image class="big-stage-img" src="/static/images/stage1.png"></image>
+                <block wx:if="{{isReady}}">
+                    <image class="big-ready-img" src="/static/images/ready.png"></image>
+                </block>
+            </view>
+        </block>
+        <block wx:elif="{{stageSize == 'small'}}">
+            <view class="small-stage-img">
+                <image class="small-profile-img" src="{{'/static/images/' + profile + '.png'}}"></image>
+                <image class="small-stage-img" src="/static/images/stage2.png"></image>
+                <block wx:if="{{isReady}}">
+                    <image class="small-ready-img" src="/static/images/ready.png"></image>
+                </block>
+            </view>
+        </block>
+
+        <view class="info">
+            <image class="info-img" src="/static/images/score_bg.png"></image>
+            <view class="info-name">{{shakeNumber}}</view>
+            <image class="info-profile" src="{{headPortrait}}"></image>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import api from '@/utils/api';
+
+    export default class Stage extends wepy.component {
+
+        data = {
+            uploadFileUrl:api.uploadFileUrl,
+        };
+
+        props = {
+            // 当前选择的舞台(big/small)
+            stageSize:{
+                type:String,
+                default:'small',
+            },
+            // 当前选择的人物
+            profile:{
+                type:String,
+                default:'man1'
+            },
+            // 是否准备
+            isReady:{
+                type:Boolean,
+                default:false
+            },
+            // 抖动次数
+            shakeNumber:{
+                type:Number,
+                default:0
+            },
+            // 头像
+            headPortrait:{
+                type:String,
+                default:null
+            }
+        }
+    }
+</script>
+
+<style lang="less">
+    .stage{
+        z-index: 5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .big-stage-img{
+            position: relative;
+            width: 240rpx;
+            height: 271rpx;
+            /*border: 1rpx solid red;*/
+
+            .big-profile-img{
+                position: absolute;
+                bottom: 34rpx;
+                left: 55rpx;
+                z-index: 10;
+                width: 131rpx;
+                height: 234rpx;
+                /*background: rgba(255,255,255,0.5);*/
+            }
+
+            .big-stage-img{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                z-index: 5;
+                width: 240rpx;
+                height: 78rpx;
+
+            }
+
+            .big-ready-img{
+                position: absolute;
+                bottom: 40rpx;
+                left: 150rpx;
+                z-index: 10;
+                width: 40rpx;
+                height: 40rpx;
+            }
+        }
+
+        .small-stage-img{
+            position: relative;
+            width: 200rpx;
+            height: 271rpx;
+            /*border: 1rpx solid red;*/
+
+            .small-profile-img{
+                position: absolute;
+                bottom: 34rpx;
+                left: 36rpx;
+                z-index: 10;
+                width: 131rpx;
+                height: 234rpx;
+            }
+
+            .small-stage-img{
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                z-index: 5;
+                width: 200rpx;
+                height: 65rpx;
+            }
+
+            .small-ready-img{
+                position: absolute;
+                bottom: 40rpx;
+                left: 125rpx;
+                z-index: 10;
+                width: 40rpx;
+                height: 40rpx;
+            }
+
+        }
+
+        .info{
+            position: relative;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 176rpx;
+            height: 69rpx;
+            margin-top: 20rpx;
+
+            .info-img{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 176rpx;
+                height: 69rpx;
+            }
+
+            .info-name{
+                font-size: 24rpx;
+                color: #000;
+                opacity: 0.7;
+            }
+
+            .info-profile{
+                position: absolute;
+                top: -23rpx;
+                left: -23rpx;
+                width: 46rpx;
+                height: 46rpx;
+                border-radius: 50%;
+                border: 1rpx solid red;
+            }
+        }
+    }
+</style>

@@ -1,0 +1,149 @@
+// 历史排名--好友
+<template>
+    <view class="ranking-firend">
+        <view class="rank-data">
+            <scroll-view scroll-y bindscrolltolower="scrollToLower">
+                <ranking :ranking.sync="friendRanking"></ranking>
+                <!--加载更多时动画-->
+                <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+                <!--暂无数据显示-->
+                <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
+            </scroll-view>
+        </view>
+
+        <view class="change-page">
+            <view class="prev-page" data-change="prev" @tap.stop="changePage">
+                <image src="/static/images/prev_page.png"></image>
+                <view>上一页</view>
+            </view>
+            <view class="next-page" data-change="next" @tap.stop="changePage">
+                <view>下一页</view>
+                <image src="/static/images/next_page.png"></image>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import api from '@/utils/api';
+    import Ranking from '@/components/ranking';
+    import BottomLoadMore from "@/components/common/bottomLoadMore";
+    import Placeholder from "@/components/common/placeholder";
+
+    export default class RankingFriend extends wepy.component {
+
+        components = {
+            ranking:Ranking,
+            bottomLoadMore: BottomLoadMore,
+            placeholder: Placeholder
+        };
+
+        data = {
+            uploadFileUrl:api.uploadFileUrl,
+            //是否有数据
+            is_empty: false,
+            //是否显示 底部loading
+            showLoading: false,
+
+            // 当前页数
+            // friendRankingPage:1,
+            // 每页数量
+            friendRanking:20,
+
+        };
+
+        props = {
+            friendRanking:{
+                type:Object,
+                default:'null'
+            },
+
+            friendRankingPage:{
+                type:Number,
+                default:1
+            }
+        };
+
+        methods = {
+            // 上一页/下一页
+            changePage(e){
+                let change = e.currentTarget.dataset.change;
+                if(change == 'prev'){
+                    // 上一页
+                    let page = this.friendRankingPage;
+                    console.log(page);
+                    if(page <= 1){
+                        this.friendRankingPage == 1;
+                    } else {
+                        this.friendRankingPage = page - 1;
+                    }
+
+                } else if(change == 'next'){
+                    // 下一页
+                    let page = this.friendRankingPage;
+                    console.log(page);
+                    this.friendRankingPage = page + 1;
+
+                }
+            },
+
+        };
+
+    }
+</script>
+
+<style lang="less">
+    .ranking-firend{
+        width: 100%;
+        /*height: 910rpx;*/
+        padding-top: 10rpx;
+        padding-left: 10rpx;
+        padding-right: 10rpx;
+        box-sizing: border-box;
+        border-radius: 10rpx;
+        /*border: 1rpx solid red;*/
+        background-color: #fbbd46;
+
+        .rank-data{
+            width: 100%;
+            height: 800rpx;
+            padding-top: 60rpx;
+            padding-left: 10rpx;
+            padding-right: 10rpx;
+            box-sizing: border-box;
+            /*height: 990rpx;*/
+            /*border: 1rpx solid red;*/
+            background-color: #fff;
+        }
+
+        .change-page{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 70rpx;
+            padding: 0 20rpx;
+            box-sizing: border-box;
+            background-color: #fff;
+
+            .prev-page,.next-page{
+                display:flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 160rpx;
+                font-size: 30rpx;
+                color: #fbbd46;
+                /*height: 100%;*/
+                /*border: 1rpx solid red;*/
+
+                image{
+                    width: 55rpx;
+                    height: 37rpx;
+                    /*border: 1rpx solid red;*/
+                }
+            }
+
+        }
+    }
+</style>

@@ -181,12 +181,14 @@
     export default class extends wepy.app {
         config = {
             pages: [
+                'pages/my_info',
+                'pages/gaming',
                 'pages/select_sex',
+                'pages/history_rank',
                 'pages/go_shake',
+
                 'pages/personal_record',
                 'pages/my_record',
-                'pages/my_info',
-                'pages/history_rank',
 
                 'pages/connect_success',
                 'pages/select_bluetooth',
@@ -194,9 +196,7 @@
                 'pages/not_connected',
                 'pages/home',
                 'pages/authorize',
-
                 'pages/index',
-
             ],
             window: {
                 backgroundTextStyle: 'light',

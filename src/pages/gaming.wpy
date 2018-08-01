@@ -1,0 +1,286 @@
+<template>
+    <view class="gaming">
+        <!--游戏中背景 start-->
+        <image wx:if="{{isGaming}}" class="bgimg" style="width:{{windowWidth}}px;heigght:{{windowHeight}}px" src="/static/images/gaming_background.png"></image>
+        <!--游戏中背景 end-->
+
+        <!--退出按钮 start-->
+        <image class="logout" src="/static/images/logout.png"></image>
+        <!--退出按钮 end-->
+
+        <!--当前账号 start-->
+        <view class="shang">
+            <stage
+                :stageSize.sync="gameMaster.stageSize"
+                :profile.sync="gameMaster.profile"
+                :isReady.sync="gameMaster.isReady"
+                :headPortrait.sync="gameMaster.headPortrait"
+                :shakeNumber.sync="gameMasterShakeNumber"
+            ></stage>
+        </view>
+        <!--当前账号 end-->
+
+        <view class="xia">
+            <!--左边玩家 start-->
+            <view class="xia-left">
+                <stage
+                    :stageSize.sync="gameLeft.stageSize"
+                    :profile.sync="gameLeft.profile"
+                    :isReady.sync="gameLeft.isReady"
+                    :headPortrait.sync="gameLeft.headPortrait"
+                    :shakeNumber.sync="gameLeftShakeNumber"
+                ></stage>
+            </view>
+            <!--左边玩家 end-->
+
+            <!--中间圆环 start-->
+            <view class="xia-circle">
+                <view class="circle-each xia-circle1">
+                    <view class="circle-each xia-circle2">
+                        <view class="circle-each xia-circle3">
+                            <image class="circle-each" src="{{'/static/images/'+imgSrc}}"></image>
+                        </view>
+                    </view>
+                </view>
+            </view>
+            <!--中间圆环 end-->
+
+            <!--右边玩家 start-->
+            <view class="xia-right">
+                <stage
+                    :stageSize.sync="gameRight.stageSize"
+                    :profile.sync="gameRight.profile"
+                    :isReady.sync="gameRight.isReady"
+                    :headPortrait.sync="gameRight.headPortrait"
+                    :shakeNumber.sync="gameRightShakeNumber"
+                ></stage>
+            </view>
+            <!--右边玩家 end-->
+        </view>
+
+        <!--开始按钮 start-->
+        <view class="btn-img">
+            <image src="{{'/static/images/'+ btnImg}}" wx:if="{{isDot}}" @tap.stop="start"></image>
+        </view>
+        <!--开始按钮 end-->
+
+        <!--倒计时 start-->
+        <view class="timer">
+            <selecttime :selectTime.sync="selectTime" :timeConfirm.sync="timeConfirm"></selecttime>
+        </view>
+        <!--倒计时 end-->
+
+        <!--倒计时3-2-1 start-->
+        <view wx:if="{{!isGaming}}" class="mymodel" style="width:{{windowWidth}}px;heigght:{{windowHeight}}px">
+            <image src="/static/images/countdown1.png"></image>
+        </view>
+        <!--倒计时3-2-1 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import api from '@/utils/api';
+    import { SYSTEM_INFO } from '@/utils/constant';
+    import Stage from '@/components/stage';
+    import Circle from '@/components/circle';
+    import SelectTime from '@/components/select_time';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '对拼中'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            stage:Stage,
+            circle:Circle,
+            selecttime:SelectTime,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            uploadFileUrl:api.uploadFileUrl,
+            windowWidth:0,
+            windowHeight:0,
+            // 是否在游戏中
+            isGaming:false,
+            // 当前账号 stage舞台大小 profile人物形象 isReady是否准备好 headPortrait头像
+            gameMaster:{stageSize:'big',profile:'man1',isReady:true,headPortrait:''},
+            // 当前账号 抖动次数
+            gameMasterShakeNumber:0,
+            // 左边玩家
+            gameLeft:{stageSize:'small',profile:'woman1',isReady:true,headPortrait:''},
+            gameLeftShakeNumber:0,
+            // 右边玩家
+            gameRight:{stageSize:'small',profile:'man2',isReady:true,headPortrait:''},
+            gameRightShakeNumber:0,
+            // 抖动方式对应的图片
+            imgSrc:'leg_shake.png',
+            // 按钮图片
+            btnImg:'no_start_btn.png',
+            // 按钮是否可点击
+            isDot:true,
+            // 选择的倒计时时间
+            selectTime:[],
+            // 倒计时是否确定(true不确定/false确定)
+            timeConfirm:true
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+            // 获取设备的窗口宽高(适应背景)
+            let systemInfo = wepy.getSystemInfoSync();
+            console.log(systemInfo);
+            this.windowWidth = systemInfo.windowWidth;
+            this.windowHeight = systemInfo.windowHeight;
+            this.$apply();
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+
+        };
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #facd89;
+
+        .gaming{
+            position: relative;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+
+            .bgimg{
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: -10;
+                width: 750rpx;
+                height: 1334rpx;
+            }
+
+            .logout{
+                position: fixed;
+                top: 20rpx;
+                right: 24rpx;
+                z-index: 5;
+                width: 84rpx;
+                height: 84rpx;
+            }
+
+            .shang{
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                margin-top: 116rpx;
+            }
+
+            .xia{
+                position: relative;
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                margin-top: 50rpx;
+                padding: 0 100rpx;
+                box-sizing: border-box;
+
+                .xia-circle{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 293rpx;
+                    height: 293rpx;
+
+                    .circle-each{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border: 1rpx solid #fff;
+                        border-radius: 50%;
+                    }
+
+                    .xia-circle1{
+                        width: 293rpx;
+                        height: 293rpx;
+
+                        .xia-circle2{
+                            width: 247rpx;
+                            height: 247rpx;
+
+                            .xia-circle3{
+                                width: 200rpx;
+                                height: 200rpx;
+
+                                image{
+                                    width: 153rpx;
+                                    height: 153rpx;
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+
+            .btn-img{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                margin-top: 40rpx;
+
+                image{
+                    width: 313rpx;
+                    height: 132rpx;
+                }
+            }
+
+            .timer{
+                margin-top: 10rpx;
+                padding-left: 50rpx;
+                box-sizing: border-box;
+            }
+
+            .mymodel{
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: 99;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 750rpx;
+                height: 1334rpx;
+                background: rgba(0,0,0,0.7);
+
+                image{
+                    width: 464rpx;
+                    height: 480rpx;
+                }
+            }
+        }
+    }
+</style>

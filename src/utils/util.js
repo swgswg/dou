@@ -169,13 +169,19 @@ function checkReg(flag, data) {
  * 根据范围创建数组，包含指定的元素
  * @param start {Number}
  * @param end {Number}
+ * @param zeroFill 是否需要签到零 {Boolean}
  * @returns {Array}
  */
-function arrRange(start, end) {
+function arrRange(start, end, zeroFill) {
     let arr = [];
-    let len = end - start + 1;
-    for (let i = 1; i <= len; i++) {
-        arr.push(i);
+    let len = end - start;
+    for (let i = start; i <= len; i++) {
+        if(zeroFill){
+            if(i < 10){
+                i = '0'+i;
+            }
+        }
+        arr.push(String(i));
     }
     return arr;
 }
