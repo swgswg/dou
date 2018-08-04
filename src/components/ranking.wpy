@@ -4,21 +4,6 @@
         <block wx:for="{{ranking}}" wx:key="{{index}}" wx:for-item="rank">
             <view class="ranking-content">
                 <view class="sort">
-                    <!--<block wx:if="{{index == 0}}">-->
-                        <!--<image src="/static/images/ranking_no1.png" />-->
-                        <!--&lt;!&ndash;<image src="{{uploadFileUrl + 'ranking_no1.png'}}" />&ndash;&gt;-->
-                    <!--</block>-->
-                    <!--<block wx:elif="{{index == 1}}">-->
-                        <!--<image src="/static/images/ranking_no2.png" />-->
-                        <!--&lt;!&ndash;<image src="{{uploadFileUrl + 'ranking_no2.png'}}" />&ndash;&gt;-->
-                    <!--</block>-->
-                    <!--<block wx:elif="{{index == 2}}">-->
-                        <!--<image src="/static/images/ranking_no3.png" />-->
-                        <!--&lt;!&ndash;<image src="{{uploadFileUrl + 'ranking_no3.png'}}" />&ndash;&gt;-->
-                    <!--</block>-->
-                    <!--<block wx:else>-->
-                        <!--{{index + 1}}-->
-                    <!--</block>-->
                     1
                 </view>
                 <view class="profile">

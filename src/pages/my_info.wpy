@@ -1,10 +1,31 @@
 <template>
     <view class="my-info">
+        <image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="/static/images/myinfo_bg.png"></image>
+
         <info></info>
-        <view class="show-gift">
-            <image src="/static/images/show_gift.png"></image>
+        <block wx:if="{{isShowGift}}">
+            <view class="mt10 flex-between;position:relative;">
+                <view>
+                    <giftcanvas
+                        :canvasWidth.sync="canvasWidth"
+                        :canvasHeight.sync="canvasHeight"
+                        :giftList.sync="giftList"
+                    ></giftcanvas>
+                </view>
+                <veiw>
+                    <energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :energyHeight="energyHeight"></energytank>
+                </veiw>
+                <image style="position:absolute;bottom:60rpx;right:80rpx;width: 131rpx;height:234rpx;" src="/static/images/man1.png"></image>
+            </view>
+        </block>
+        <view class="show-gift" style="margin-top:{{isShowGift ? 15:27}}rpx">
+            <image src="/static/images/show_gift.png" @tap.stop="showCurrentGift"></image>
         </view>
-        <infoitem></infoitem>
+
+        <block wx:if="{{!isShowGift}}">
+            <infoitem :list.sync="showInfoList"></infoitem>
+        </block>
+
     </view>
 </template>
 
@@ -12,24 +33,65 @@
     import wepy from 'wepy';
     import Info from '@/components/info';
     import InfoItem from '@/components/info_item';
+    import GiftCanvas from '@/components/gift_canvas';
+    import EnergyTank from '@/components/energy_tank';
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '首页'
+            navigationBarTitleText: '我的抖腿'
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             info:Info,
             infoitem:InfoItem,
+            giftcanvas:GiftCanvas,
+            energytank:EnergyTank,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
-        data = {};
+        data = {
+            windowWidth:0,
+            windowHeight:0,
+            showInfoList:[
+                {img:'shop.png', title:'商城', skip:''},
+                {img:'happy.png', title:'娱乐模式',skip:''},
+                {img:'fans.png', title:'粉丝大排名',skip:''},
+                {img:'black_fans.png', title:'我的好友',skip:''},
+                {img:'gift.png', title:'我的历史奖品',skip:''},
+                {img:'set.png', title:'设置',skip:''},
+            ],
+            // 是否显示当前礼物墙
+            isShowGift:false,
+            // 礼物墙的宽
+            canvasWidth:650,
+            // 礼物墙的高
+            canvasHeight:860,
+            // 礼物
+            giftList:[
+                {id:1,giftId:1,width:50,height:50,xaxle:0,yaxle:0,presentsWallId:1,status:1},
+                {id:1,giftId:1,width:50,height:50,xaxle:50,yaxle:50,presentsWallId:1,status:0},
+                {id:1,giftId:1,width:50,height:50,xaxle:10,yaxle:10,presentsWallId:1,status:0},
+                {id:1,giftId:1,width:50,height:50,xaxle:100,yaxle:100,presentsWallId:1,status:1},
+            ],
+            // 能量槽宽
+            energyTankWidth:30,
+            // 能量槽高
+            energyTankHeight:860,
+            // 能量值
+            energyHeight:0
+
+        };
 
         // 在Page和Component共用的生命周期函数
         onLoad() {
+            // 获取设备的窗口宽高(适应背景)
+            let systemInfo = wepy.getSystemInfoSync();
+            console.log(systemInfo);
+            this.windowWidth = systemInfo.windowWidth;
+            this.windowHeight = systemInfo.windowHeight;
+            this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -40,9 +102,6 @@
         onReady() {
         };
 
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
         // 声明计算属性（详见后文介绍）
         computed = {};
 
@@ -50,7 +109,13 @@
         watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            // 显示当前的礼物墙
+            showCurrentGift(){
+                this.isShowGift = !this.isShowGift;
+                this.$apply();
+            },
+        };
 
         // 声明组件之间的事件处理函数
         events = {};
@@ -59,13 +124,21 @@
 
 <style lang="less">
     page{
-        background: rgba(0,0,0,0.2);
+        /*background: rgba(0,0,0,0.2);*/
         /*opacity: 0.1;*/
+
+        .info-bg{
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -5;
+        }
     }
 
     .my-info{
         width: 100%;
         padding: 30rpx;
+        padding-bottom: 0;
         box-sizing: border-box;
 
         .show-gift{
@@ -75,6 +148,7 @@
             justify-content: center;
             align-items: center;
             margin-top: 27rpx;
+            /*border: 1rpx solid red;*/
 
             image{
                 width: 90rpx;

@@ -29,15 +29,22 @@
 
         data = {
             uploadFileUrl:api.uploadFileUrl,
-            list:[
-                {img:'shop.png', title:'商城', skip:''},
-                {img:'happy.png', title:'娱乐模式',skip:''},
-                {img:'fans.png', title:'粉丝大排名',skip:''},
-                {img:'black_fans.png', title:'黑粉大排名',skip:''},
-                {img:'gift.png', title:'我的历史奖品',skip:''},
-                {img:'set.png', title:'设置',skip:''},
-            ],
+            // list:[
+            //     {img:'shop.png', title:'商城', skip:''},
+            //     {img:'happy.png', title:'娱乐模式',skip:''},
+            //     {img:'fans.png', title:'粉丝大排名',skip:''},
+            //     {img:'black_fans.png', title:'黑粉大排名',skip:''},
+            //     {img:'gift.png', title:'我的历史奖品',skip:''},
+            //     {img:'set.png', title:'设置',skip:''},
+            // ],
 
+        };
+
+        props = {
+            list:{
+                type:Object,
+                default:null
+            }
         };
 
         methods = {
@@ -93,7 +100,7 @@
 
                 .info-title{
                     width: 100%;
-                    margin-left: 7rpx;
+                    margin-left: 10rpx;
                 }
             }
 

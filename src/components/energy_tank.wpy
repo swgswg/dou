@@ -1,0 +1,60 @@
+// 能量槽
+<template>
+    <view class="energy-tank">
+        <veiw class="tank-out" style="width:{{tankWidth}}rpx;height:{{tankHeight}}rpx;">
+            <view class="energy-number" style="top:{{tankHeight - energyHeight - 5}}rpx;">100</view>
+            <view class="tank-in" style="width:{{tankWidth}}rpx;height:{{energyHeight}}rpx;"></view>
+        </veiw>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class EnergyTank extends wepy.component {
+
+        props = {
+            tankWidth:{
+                type:Number,
+                default:30
+            },
+            tankHeight:{
+                type:Number,
+                default:860
+            },
+            // 当前能量高度
+            energyHeight:{
+                type:Number,
+                default:500
+            }
+        };
+    }
+</script>
+
+<style lang="less">
+    .energy-tank{
+        /*border: 1rpx solid red;*/
+
+        .tank-out{
+            position: relative;
+            display: flex;
+            justify-content:center;
+            align-items: flex-end;
+            border-radius: 22rpx;
+            background-color: #fff;
+
+            .energy-number{
+                position: absolute;
+                left: 0;
+                font-size: 24rpx;
+                /*border: 1rpx solid red;*/
+            }
+
+            .tank-in{
+                border-radius: 22rpx;
+                background: linear-gradient(to top right,#ec2c98, #f68668);
+                /*border: 1rpx solid blue;*/
+            }
+        }
+    }
+</style>

@@ -1,0 +1,105 @@
+<template>
+    <view class="loading">
+        <view class="shang">
+            <image src="/static/images/loading_loading.png"></image>
+            <view>加载中...</view>
+        </view>
+        <view class="xia">
+            <progress :outWidth.sync="outWidth" :progressWidth.sync="progressWidth" :progressHeight.sync="progressHeight"></progress>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import Progress from '@/components/common/progress'
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '首页'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            progress:Progress
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            outWidth:700,
+            progressHeight:27,
+            progressWidth:0,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+            let that = this;
+            let clear_set = null;
+            setTimeout(function() {
+                clear_set = setInterval(function() {
+                    let outWidth = that.outWidth;
+                    console.log(outWidth)
+                    let progressWidth = that.progressWidth;
+                    progressWidth += 50;
+                    that.progressWidth = progressWidth;
+                    that.$apply();
+                    if(progressWidth >= outWidth){
+                        clearInterval(clear_set);
+                    }
+                },500);
+            },1000)
+
+        };
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+    }
+</script>
+
+<style lang="less">
+    .loading{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        .shang{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 371rpx;
+
+            image{
+                width: 112rpx;
+                height: 140rpx;
+            }
+
+            view{
+                margin-top: 25rpx;
+                font-size: 28rpx;
+                color: #ec2c98;
+            }
+        }
+
+        .xia{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 500rpx;
+        }
+    }
+</style>

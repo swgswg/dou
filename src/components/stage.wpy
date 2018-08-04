@@ -1,5 +1,6 @@
 <template>
     <view class="stage">
+        <!--当前账号 start-->
         <block wx:if="{{stageSize == 'big'}}">
             <view class="big-stage-img">
                 <!--<image class="big-profile-img" src="{{'/static/images/'+ profile 'woman1.png'}}"></image>-->
@@ -10,6 +11,9 @@
                 </block>
             </view>
         </block>
+        <!--当前账号 end-->
+
+        <!--其他玩家 start-->
         <block wx:elif="{{stageSize == 'small'}}">
             <view class="small-stage-img">
                 <image class="small-profile-img" src="{{'/static/images/' + profile + '.png'}}"></image>
@@ -19,6 +23,7 @@
                 </block>
             </view>
         </block>
+        <!--其他玩家 end-->
 
         <view class="info">
             <image class="info-img" src="/static/images/score_bg.png"></image>

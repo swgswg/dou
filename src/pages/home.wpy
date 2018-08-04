@@ -13,19 +13,14 @@
 
 <script>
     import wepy from 'wepy';
-    import { SYSTEM_INFO } from '@/utils/constant';
+    // import { SYSTEM_INFO } from '@/utils/constant';
+    // import api from '@/utils/api';
 
     export default class Home extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '首页'
+            navigationBarTitleText: '抖腿'
         };
-
-        // 自定义数据
-        customData = {};
-
-        //自定义方法
-        customFunction() {};
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
@@ -42,7 +37,12 @@
 
         // 在Page和Component共用的生命周期函数
         onLoad() {
-
+            // 获取系统信息
+            // let systemInfo = wepy.getSystemInfoSync();
+            // console.log(systemInfo);
+            // this.winWidth = systemInfo.windowWidth;
+            // this.winHeight = systemInfo.windowHeight;
+            // this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -53,11 +53,11 @@
         onReady() {
             let that = this;
             // 获取系统信息
-            let systemInfo = wepy.getStorageSync(SYSTEM_INFO);
+            let systemInfo = wepy.getSystemInfoSync();
             // console.log(systemInfo);
-            that.winWidth = systemInfo.windowWidth;
-            that.winHeight = systemInfo.windowHeight;
-            that.$apply();
+            this.winWidth = systemInfo.windowWidth;
+            this.winHeight = systemInfo.windowHeight;
+            this.$apply();
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件

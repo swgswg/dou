@@ -1,0 +1,84 @@
+<template>
+    <view>
+        <view class="set">
+            <view class="set-left">
+                <image src="{{'/static/images/' +setImg}}"></image>
+                <view class="">{{setName}}</view>
+            </view>
+            <view class="set-right">
+                <myswitch :activeDot.sync="activeDot"></myswitch>
+            </view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import MySwitch from '@/components/common/my_switch';
+
+    export default class Set extends wepy.component {
+
+        components = {
+            myswitch:MySwitch,
+        };
+
+        props = {
+
+            // 设置项的图片
+            setImg:{
+                type:String,
+                // default:'set_sound.png'
+                default:null
+            },
+            // 设置项的名称
+            setName:{
+                type:String,
+                // default:'声音'
+                default:null
+            },
+            // 设置项开/关
+            activeDot:{
+                type:Boolean,
+                default:false,
+                twoWay:true
+            }
+        }
+    }
+</script>
+
+<style lang="less">
+    .set{
+        display: flex;
+        justify-content:space-between;
+        align-items: center;
+        width: 100%;
+        height: 90rpx;
+        padding: 0 30rpx;
+        box-sizing: border-box;
+        background-color: #fff;
+
+        .set-left{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 25%;
+            height: 90rpx;
+            /*border: 1rpx solid red;*/
+
+            image{
+                width: 69rpx;
+                height: 68rpx;
+            }
+        }
+
+        .set-right{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 20%;
+            height: 90rpx;
+            /*border: 1rpx solid red;*/
+        }
+
+    }
+</style>

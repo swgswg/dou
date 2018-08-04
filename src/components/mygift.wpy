@@ -1,0 +1,200 @@
+<template>
+    <view class="mygift">
+        <view class="text1">
+            <view class="sub-text">我的礼物</view>
+        </view>
+        <view class="gift-img">
+            <scroll-view scroll-x="true" style="white-space: nowrap;">
+                <block wx:for="{{10}}" wx:for-item="gift" wx:key="{{index}}">
+                    <view class="gift-img-each" data-index="{{index}}" @tap.stop="takeGift">
+                        <view class="gift-num">12</view>
+                        <image src="/static/images/gift.png"></image>
+                        <!--<view class="gift-name">赞</view>-->
+                        <view class="gift-energy">666能量</view>
+                    </view>
+                </block>
+            </scroll-view>
+        </view>
+        <view class="btn">
+            <view class="btn-each btn-confirm" @tap.stop="confirmGiftSeat">确定</view>
+            <view class="btn-each btn-mall">商城</view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
+
+    export default class Mygift extends wepy.component {
+
+        props = {
+            // giftList:[
+            //     {id:1,giftId:1,width:50,height:50,xaxle:0,yaxle:0,presentsWallId:1,status:1},
+            //     {id:1,giftId:1,width:50,height:50,xaxle:50,yaxle:50,presentsWallId:1,status:0},
+            //     {id:1,giftId:1,width:50,height:50,xaxle:10,yaxle:10,presentsWallId:1,status:0},
+            //     {id:1,giftId:1,width:50,height:50,xaxle:100,yaxle:100,presentsWallId:1,status:1},
+            // ],
+            // 礼物墙已经拥有的礼物
+            giftList:{
+                type:Array,
+                default:null,
+                twoWay:true
+            },
+            // 礼物墙的宽
+            canvasWidth:{
+                type:Number,
+                default:0,
+            },
+            // 礼物墙的高
+            canvasHeight:{
+                type:Number,
+                default:0,
+            }
+        };
+
+        methods = {
+            // 送礼物
+            takeGift(e){
+                // 获取点击的礼物的index
+                let index = e.currentTarget.dataset.index;
+                // 获取礼物墙已经拥有的礼物
+                let giftList = this.giftList;
+                // 随机坐标
+                let x = util.rand(0,this.canvasWidth);
+                let y = util.rand(0,this.canvasHeight);
+                console.log(giftList);
+                if(true){
+                    // 能量值满不能添加
+                    tip.confirm('此墙能量已满,请点击确定开始下一面墙粘贴礼物',{},'提示');
+
+                } else {
+                    giftList.push({id:0,giftId:1,width:50,height:50,xaxle:x,yaxle:y,presentsWallId:'',status:0})
+
+                }
+            },
+
+            // 确定礼物位置
+            confirmGiftSeat(){
+
+            },
+        }
+    }
+</script>
+
+<style lang="less">
+    .mygift{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 100%;
+        height: 140rpx;
+        /*padding: 0 20rpx;*/
+        padding-left: 10rpx;
+        padding-right: 20rpx;
+        box-sizing: border-box;
+        /*border: 1rpx solid red;*/
+
+        .text1{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /*text-align: center;*/
+            width: 100rpx;
+            /*height: 127rpx;*/
+            /*border: 1rpx solid red;*/
+
+            .sub-text{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                width: 80rpx;
+                height: 100rpx;
+                font-size: 30rpx;
+                font-weight: bold;
+                color: #ec2c98;
+                text-shadow: 0 0 10rpx #fff;
+            }
+        }
+
+        .gift-img{
+            display: flex;
+            justify-content:center;
+            align-items: center;
+            width: 70%;
+            /*height: 127rpx;*/
+            /*border: 1rpx solid red;*/
+
+            .gift-img-each{
+                position: relative;
+                display: inline-block;
+                text-align: center;
+                width: 100rpx;
+                /*height: 127rpx;*/
+                font-size: 18rpx;
+                /*border-left: 1rpx solid #f68668;*/
+
+                .gift-num{
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    width: 35rpx;
+                    height: 35rpx;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    color: #fff;
+                    border-radius: 50%;
+                    background: linear-gradient(to top right,#ec2c98, #f68668);
+                }
+                image{
+                    width: 60rpx;
+                    height: 56rpx;
+                    margin-top: 30rpx;
+                }
+
+                .gift-name{
+                    color: #ffc53b;
+                    opacity: 0.7;
+                }
+
+                .gift-energy{
+                    color: #fff;
+                }
+            }
+        }
+
+        .btn{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 127rpx;
+            height: 127rpx;
+
+
+            .btn-each{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100rpx;
+                height: 40rpx;
+                font-size: 20rpx;
+                border-radius: 20rpx;
+
+            }
+
+            .btn-confirm{
+                margin-bottom: 20rpx;
+                color: #fff;
+                background: linear-gradient(to top right,#ec2c98, #f68668);
+            }
+            .btn-mall{
+                color: #ec2c98;
+                background-color:#fff;
+            }
+        }
+    }
+</style>

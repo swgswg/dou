@@ -1,0 +1,75 @@
+// 礼物墙
+<template>
+    <view class="flex-center">
+        <!--<canvas canvas-id="myCanvas" style="border: 1px solid;width:{{canvasWidth}}rpx;height:{{canvasHeight}}rpx;"/>-->
+        <movable-area style="width:{{canvasWidth}}rpx;height:{{canvasHeight}}rpx;background-color: #fff">
+            <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.id}}">
+                <block wx:if="{{gift.status == 1}}">
+                    <movable-view
+                            style="width:{{gift.width}}px; height:{{gift.height}}px;"
+                            x="{{gift.xaxle}}" y="{{gift.yaxle}}"
+                            direction="all"
+                            disabled
+                            bindchange="moveGift"
+                            data-index="{{index}}"
+                    >
+                        <image src="/static/images/flower.png" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
+                    </movable-view>
+                </block>
+                <block wx:else>
+                    <movable-view
+                            style="width:{{gift.width}}px; height:{{gift.height}}px;"
+                            x="{{gift.xaxle}}" y="{{gift.yaxle}}"
+                            direction="all"
+                            bindchange="moveGift"
+                            data-index="{{index}}"
+                    >
+                        <image src="/static/images/flower.png" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
+                    </movable-view>
+                </block>
+            </block>
+        </movable-area>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class GiftCanvas extends wepy.component {
+
+        props = {
+            canvasWidth:{
+                type:Number,
+                default:650
+            },
+            canvasHeight:{
+                type:Number,
+                default:860
+            },
+
+            giftList:{
+                type:Array,
+                default:null,
+                twoWay:true
+            }
+        };
+
+        methods = {
+            moveGift(e){
+                console.log(e.detail);
+                let index = e.currentTarget.dataset.index;
+                let giftList = this.giftList;
+                giftList[index].xaxle = e.detail.x;
+                giftList[index].yaxle = e.detail.y;
+                this.giftList = giftList;
+                this.$apply();
+                // console.log(this.giftList);
+            },
+        }
+
+    }
+</script>
+
+<style lang="less">
+
+</style>

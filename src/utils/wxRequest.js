@@ -13,7 +13,8 @@ const wxRequest = async(params = {}, url) => {
         url: url,
         method: params.method || 'POST',
         data: data,
-        header: { 'Content-Type': 'application/json' },
+        // header: { 'Content-Type': 'application/json' },
+        'content-type': 'application/x-www-form-urlencoded'
     });
     tip.loaded();
     return res;

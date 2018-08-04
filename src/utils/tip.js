@@ -133,6 +133,17 @@ export default class Tips {
             }
         };
     }
+
+    /**
+     * 长语句提示框
+     */
+    static longtoast(content){
+        return wx.showModal({
+            title: '温馨提示',
+            content: content,
+            showCancel:true,
+        });
+    }
 }
 
 /**

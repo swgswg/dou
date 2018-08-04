@@ -1,7 +1,7 @@
 <template>
     <view class="gaming">
         <!--游戏中背景 start-->
-        <image wx:if="{{isGaming}}" class="bgimg" style="width:{{windowWidth}}px;heigght:{{windowHeight}}px" src="/static/images/gaming_background.png"></image>
+        <image wx:if="{{isGaming}}" class="bgimg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="/static/images/gaming_background.png"></image>
         <!--游戏中背景 end-->
 
         <!--退出按钮 start-->

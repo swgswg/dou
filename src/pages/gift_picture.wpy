@@ -1,0 +1,251 @@
+// page--礼物墙照片
+<template>
+    <view class="gift-picture">
+        <!--<block wx:for="{{pictureList}}" wx:for-item="{{picture}}" wx:key="{{index}}">-->
+        <view class="picture">
+            <scroll-view class="scroll" scroll-y bindscrolltolower="scrollToLower">
+                <block wx:for="{{50}}" wx:for-item="picture" wx:key="{{index}}">
+                    <view class="picture-each">
+                        <view class="picture-each-content">
+                            <view class="check" data-index="{{index}}" @tap.stop="selectPicture"><text wx:if="{{checked}}" class="iconfont icon-check"></text></view>
+                            <image class="img" src="" data-url="{{}}" data-index="{{index}}" @tap.stop="preview"></image>
+                        </view>
+                    </view>
+                </block>
+                <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+                <!--暂无数据显示-->
+                <placeholder :show.sync="is_empty" message="您还没有图片哦"></placeholder>
+            </scroll-view>
+        </view>
+        <view class="btn">
+            <view class="btn-each button button-primary button-rounded" @tap.stop="save">保存</view>
+            <view class="btn-each button button-highlight button-rounded" @tap.stop="cancel">取消</view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import api from '@/utils/api';
+    import { USER_INFO } from '@/utils/constant';
+    import BottomLoadMore from "@/components/common/bottomLoadMore";
+    import Placeholder from "@/components/common/placeholder";
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '首页'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            bottomLoadMore: BottomLoadMore,
+            placeholder: Placeholder,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            //是否有数据
+            is_empty: false,
+            //是否显示 底部loading
+            showLoading: true,
+            //当前页面
+            page: 1,
+            // 每页数据数
+            pageSize:20,
+            // 图片数据
+            pictureList:[
+                // {id:1,url:'',status:1,checked:false}
+            ],
+            // 图片所有地址
+            urlAllList:[],
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+            this.getPicture();
+        };
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {
+            // 选中图片
+            selectPicture(e){
+                let index = e.currentTarget.dataset.index;
+                console.log(e);
+                let pictureList = this.pictureList;
+                let checked = pictureList[index].checked;
+                pictureList[index].checked = !checked;
+                this.pictureList = pictureList;
+                this.$apply();
+            },
+
+            // 预览图片
+            preview(e){
+                let index = e.currentTarget.dataset.index;
+                let urlList = this.urlList;
+                wx.previewImage({
+                    current: urlLIst[index], // 当前显示图片的http链接
+                    urls: urlList            // 需要预览的图片http链接列表
+                })
+            },
+
+            // 保存图片
+            save(){
+                let pictureList = this.pictureList;
+                let len = pictureList.length;
+                let urlSelectList = [];
+                for(let i = 0; i < len; i++){
+                    if(pictureList[i].checked){
+                        urlSelectList.push(pictureList[i].url);
+                    }
+                }
+                api.downloadSaveFiles(urlSelectList);
+            },
+
+            // 取消图片
+            cancel(){
+                let pictureList = this.pictureList;
+                let len = pictureList.length;
+                for(let i = 0; i < len; i++){
+                    pictureList[i].checked = false;
+                }
+                this.pictureList = pictureList;
+                this.$apply();
+            },
+
+            // 滚动到底部/右边，会触发 scrolltolower 事件
+            async scrollToLower(){
+                let page = this.page+1;
+                let pageSize = this.page;
+                await this.getPicture(page,pageSize);
+                this.page = page;
+                this.$apply();
+            },
+        };
+
+        // 获取图片数据
+        async getPicture(mypage,mypageSize){
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            console.log(userInfo);
+            let pictureList = this.pictureList;
+            const res = await api.getPresentsWalls({
+                query: {
+                    page: mypage || 1,
+                    pageSize: mypageSize || 20,
+                    userId: userInfo.userId,
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data;
+                let len = data.length;
+                if(len < 1){
+                    //暂无数据
+                    this.is_empty = true;
+                } else {
+                    for(let i = 0; i < len; i++){
+                        data[i].checked = false;
+                        data[i].url = api.uploadFileUrl + url;
+                        pictureList.push(data[i]);
+                    }
+                    this.pictureList = pictureList;
+                    this.$apply();
+                }
+            }
+        };
+    }
+</script>
+
+<style lang="less">
+    page{
+        /*background: linear-gradient(to top right,#ec2c98, #f68668);*/
+    }
+
+    .icon-check{
+        color: red;
+    }
+
+    .gift-picture{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding: 20rpx 20rpx;
+        box-sizing: border-box;
+
+        .picture{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 1000rpx;
+            /*border: 1rpx solid blue;*/
+            .picture-each{
+                display:inline-block;
+                width: 220rpx;
+                height: 265rpx;
+                margin-bottom: 10rpx;
+                padding-left: 10rpx;
+                /*border: 1rpx solid blue;*/
+
+                .picture-each-content{
+                    position: relative;
+                    z-index: 0;
+                    width: 200rpx;
+                    height: 265rpx;
+                    border: 1rpx solid red;
+
+                    .check{
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 10;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 30rpx;
+                        height: 30rpx;
+                        border: 2rpx solid #666;
+                    }
+
+                    .img{
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 5;
+                        width: 200rpx;
+                        height: 265rpx;
+                    }
+                }
+            }
+
+
+        }
+
+        .btn{
+            margin-top: 20rpx;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+
+            .btn-each{
+                width: 48%;
+            }
+        }
+    }
+</style>

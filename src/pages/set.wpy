@@ -1,0 +1,85 @@
+<template>
+    <view class="page-set">
+        <!--声音-->
+        <view class="mb10">
+            <soundset :setImg.sync="setSoundImg" :setName.sync="setSoundName" :activeDot="soundActiveDot"></soundset>
+        </view>
+
+        <!--振动-->
+        <view class="mb10">
+            <vibranceset :setImg.sync="setVibranceImg" :setName.sync="setVibranceName" :activeDot="vibranceActiveDot"></vibranceset>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import Set from '@/components/set';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '设置'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            // 声音
+            soundset:Set,
+            // 振动
+            vibranceset:Set,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            // 声音
+            setSoundImg:'set_sound.png',
+            setSoundName:'声音',
+            soundActiveDot:true,
+
+            // 振动
+            setVibranceImg:'set_vibrance.png',
+            setVibranceName:'振动',
+            vibranceActiveDot:false,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+
+        };
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #f7f8ff;
+    }
+
+    .page-set{
+        padding-top: 30rpx;
+        box-sizing: border-box;
+    }
+
+</style>
