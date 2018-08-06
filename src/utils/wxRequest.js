@@ -1,5 +1,4 @@
 import wepy from 'wepy';
-// import util from './util';
 import tip from './tip'
 
 // const API_SECRET_KEY = 'www.mall.cycle.com';
@@ -14,7 +13,7 @@ const wxRequest = async(params = {}, url) => {
         method: params.method || 'POST',
         data: data,
         // header: { 'Content-Type': 'application/json' },
-        'content-type': 'application/x-www-form-urlencoded'
+        header: {'content-type': 'application/x-www-form-urlencoded'},
     });
     tip.loaded();
     return res;

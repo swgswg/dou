@@ -1,55 +1,56 @@
 // 历史排名--世界
 <template>
     <view class="ranking-world">
-
-        <!--前三名 start-->
-        <view class="first-three">
-            <block wx:for="{{first_three}}" wx:for-item="first_three" wx:key="{{index}}">
-                <view class="first-three-each">
-                    <view class="first-three-img">
-                        <block wx:if="{{index == 1}}">
-                            <image class="first-three-img2" src="/static/images/history_no2.png"></image>
-                            <image class="first-three-profile no2-profile" src=""></image>
-                        </block>
-                        <block wx:elif="{{index == 0}}">
-                            <image class="first-three-img1" src="/static/images/history_no1.png"></image>
-                            <image class="first-three-profile no1-profile" src=""></image>
-                        </block>
-                        <block wx:elif="{{index == 2}}">
-                            <image class="first-three-img3" src="/static/images/history_no3.png"></image>
-                            <image class="first-three-profile no3-profile" src=""></image>
-                        </block>
-
-
-                        <!--<image class="" src="{{ uploadFileUrl +  }}"></image>-->
-                    </view>
-                    <view class="first-three-name">名字</view>
-                    <view class="first-three-time">25:55</view>
-                    <view class="first-three-number">45216</view>
+        <view class="ranking-empty">
+            <block wx:if="{{!is_empty}}">
+                <!--前三名 start-->
+                <view class="first-three">
+                    <block wx:for="{{first_three}}" wx:for-item="first_three" wx:key="{{index}}">
+                        <view class="first-three-each">
+                            <view class="first-three-img">
+                                <block wx:if="{{index == 0}}">
+                                    <image class="first-three-img2" src="{{history_no2}}"></image>
+                                    <image class="first-three-profile no2-profile" src=""></image>
+                                </block>
+                                <block wx:elif="{{index == 1}}">
+                                    <image class="first-three-img1" src="{{history_no1}}"></image>
+                                    <image class="first-three-profile no1-profile" src=""></image>
+                                </block>
+                                <block wx:elif="{{index == 2}}">
+                                    <image class="first-three-img3" src="{{history_no3}}"></image>
+                                    <image class="first-three-profile no3-profile" src=""></image>
+                                </block>
+                            </view>
+                            <view class="first-three-name">名字</view>
+                            <view class="first-three-time">25:55</view>
+                            <view class="first-three-number">45216</view>
+                        </view>
+                    </block>
                 </view>
-            </block>
-        </view>
-        <!--前三名 end-->
+                <!--前三名 end-->
 
-        <!--其余排名 start-->
-        <view class="remain">
-            <scroll-view scroll-y bindscrolltolower="scrollToLower" >
-                <ranking :ranking.sync="worldRanking"></ranking>
-                <!--加载更多时动画-->
-                <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+                <!--其余排名 start-->
+                <view class="remain">
+                    <scroll-view scroll-y bindscrolltolower="scrollToLower" >
+                        <ranking :ranking.sync="worldRanking"></ranking>
+                        <!--加载更多时动画-->
+                        <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+                    </scroll-view>
+                </view>
+                <!--其余排名 end-->
+            </block>
+            <block wx:else>
                 <!--暂无数据显示-->
                 <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
-            </scroll-view>
+            </block>
         </view>
-        <!--其余排名 end-->
-
         <!--自己排名-->
         <view class="self-ranking">
-            <view class="sort">1</view>
-            <image class="img"></image>
-            <view style="margin-left: 45rpx">名字</view>
-            <view style="margin-left: 120rpx">5:65</view>
-            <view style="margin-left: 120rpx">216</view>
+            <view class="sort">{{myWorldRanking.rownum}}</view>
+            <image class="img">{{myWorldRanking.photo}}</image>
+            <view style="margin-left: 45rpx">{{myWorldRanking.NAME}}</view>
+            <view style="margin-left: 120rpx">{{myWorldRanking.time}}</view>
+            <view style="margin-left: 120rpx">{{myWorldRanking.shakeNum}}</view>
         </view>
 
     </view>
@@ -58,6 +59,8 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
+    import {USER_INFO} from '../utils/constant';
     import Ranking from '@/components/ranking';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
@@ -72,32 +75,113 @@
         };
 
         data = {
-            uploadFileUrl:api.uploadFileUrl,
-            //是否有数据
+            history_no1:imgApi.history_no1,
+            history_no2:imgApi.history_no2,
+            history_no3:imgApi.history_no3,
+
+            //是否没有数据
             is_empty: false,
             //是否显示 底部loading
-            showLoading: false,
+            showLoading: true,
+            page:1,
+            pageSize:8
         };
 
         props = {
+            // 前三名数据
             first_three:{
                 type:Object,
-                default:'null'
+                default:null,
+                twoWay:true
             },
-
+            // 剩下数据
             worldRanking:{
                 type:Object,
-                default:'null'
-            }
+                default:null,
+                twoWay:true
+            },
+            // 个人世界排行数据
+            myWorldRanking:{
+                type:Object,
+                default:null,
+                twoWay:true
+            },
+            // 周/总排行
+            weekOrAll:{
+                type:String,
+                // 1周,0总
+                default:1,
+                twoWay:true
+            },
         };
 
         methods = {
             // 滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
-                console.log(111)
-            }
+                // console.log(weekOrAll);
+                let page = this.page;
+                let pageSize = this.pageSize;
+                let weekOrAll = this.weekOrAll;
+                this.getWorldRanking(page,pageSize,weekOrAll);
+                this.pageSize = pageSize + 1;
+                this.$apply();
+            },
+
+
         };
 
+        // 世界排行榜
+        async getWorldRanking(mypage,mypageSize,mytype){
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            let user_id = userInfo.id;
+            // 个人数据
+            let myres= await api.myWorldRankings({
+                query:{
+                    userId:user_id,
+                    type:mytype
+                }
+            });
+            // let myWorldRanking = myres.data.data;
+            this.myWorldRanking = myres.data.data;
+            this.$apply();
+            // 排行数据
+            let res = await api.worldRankings({
+                query:{
+                    userId:user_id,
+                    page:mypage,
+                    pageSize:mypageSize,
+                    type:mytype, //周排行榜为1,总排行榜为空
+                }
+            });
+            if(res.data.state == 1){
+                let worldRankingData = res.data.data.PageInfo.list;
+                // console.log(worldRankingData);
+                if(worldRankingData.length < 1){
+                    // 没有数据
+                    this.is_empty = true;
+                    this.showLoading = false;
+                    this.$apply();
+                    return;
+                }
+                this.is_empty = false;
+                // 拿出前三名
+                let first_three = [];
+                for(let i = 0; i < 3; i++){
+                    first_three.push(worldRankingData[0]);
+                    // 删除原数据的前三名
+                    worldRankingData.splice(0,1);
+                }
+                this.first_three = first_three;
+                this.worldRanking = worldRankingData;
+                this.$apply();
+            } else {
+                this.is_empty = true;
+                this.showLoading = false;
+                this.$apply();
+            }
+
+
+        }
 
 
 
@@ -115,6 +199,18 @@
         border-radius: 10rpx;
         /*border: 1rpx solid red;*/
         background-color: #fbbd46;
+
+        .ranking-empty{
+            width:100%;
+            height:790rpx;
+            padding-top:60rpx;
+            padding-left:10rpx;
+            padding-right:10rpx;
+            box-sizing:border-box;
+            background-color:#fff;
+
+        }
+
 
         /*前三名*/
         .first-three{

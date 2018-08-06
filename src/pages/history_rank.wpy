@@ -1,42 +1,41 @@
 <template>
     <view class="history-rank">
         <view class="tab">
-            <rankingbutton :tab.sync="tabData"></rankingbutton>
+            <rankingbutton :tab.sync="tabData" :currentRanking.sync="currentRanking"></rankingbutton>
         </view>
 
         <view class="rank">
 
             <view class="world-firend">
                 <view>
-                    <image class="world-img" src="{{currentWorldOrFriend == 'world' ? '/static/images/world_active.png': '/static/images/world_inactive.png'}}" data-type="world" @tap.stop="worldOrFried"></image>
+                    <image class="world-img" src="{{currentWorldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFried"></image>
                 </view>
                 <view>
-                    <image class="friend-img" src="{{currentWorldOrFriend == 'friend' ? '/static/images/friend_active.png':'/static/images/friend_inactive.png' }}" data-type="friend" @tap.stop="worldOrFried"></image>
+                    <image class="friend-img" src="{{currentWorldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFried"></image>
                 </view>
             </view>
 
             <block wx:if="{{currentWorldOrFriend == 'world'}}">
                 <!--世界 start-->
                 <view style="margin-top: -35rpx">
-                    <rankingworld :first_three.sync="firstThreeData" :worldRanking.sync="worldRankingData"></rankingworld>
+                    <rankingworld :first_three.sync="firstThreeData" :worldRanking.sync="worldRankingData" :weekOrAll.sync="weekOrAll"></rankingworld>
                 </view>
                 <!--世界 end-->
             </block>
             <block wx:elif="{{currentWorldOrFriend == 'friend'}}">
                 <!--好友 start-->
                 <view style="margin-top: -35rpx">
-                    <rankingfriend :friendRanking.sync="friendRankingData" :friendRankingPage.sync="friendRankingPage"></rankingfriend>
+                    <rankingfriend :friendRanking.sync="friendRankingData" :friendRankingPage.sync="friendRankingPage" :weekOrAll.sync="weekOrAll"></rankingfriend>
                 </view>
                 <!--好友 end-->
             </block>
         </view>
-
-
-    </view>
+   </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
     import RankingButton from '@/components/ranking_button';
     import RankingWorld from '@/components/ranking_world';
     import RankingFriend from '@/components/ranking_friend';
@@ -56,21 +55,27 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            world_active:imgApi.world_active,
+            world_inactive:imgApi.world_inactive,
+            friend_active:imgApi.friend_active,
+            friend_inactive:imgApi.friend_inactive,
+
             // 排行类型
             tabData:['本周排行','总排行'],
-            // 当前排行类型
-            currentTab: 0,
+            // 当前排行类型week/all
+            currentRanking: 'week',
             // 当前是世界还是好友(默认世界)
             currentWorldOrFriend: 'friend',
+            // 当前排行类型1(week)/0(all)
+            weekOrAll:'',
             // 前3名
-            firstThreeData:[1,2,3],
+            firstThreeData:[],
             // 世界排名数据
-            worldRankingData:[1,2,3,4,5,6,7,8,9,10,12,13,14,15],
+            worldRankingData:[],
             // 好友排名数据
-            friendRankingData:[1,2,3,4,5,6],
+            friendRankingData:[],
             // 好友排名数据当前页数(默认1)
-            friendRankingPage:1,
-
+            // friendRankingPage:1,
             //是否有数据
             is_empty: false,
             //是否显示 底部loading
@@ -79,6 +84,7 @@
 
         // 在Page和Component共用的生命周期函数
         onLoad() {
+
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -87,7 +93,8 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-            console.log(111)
+            // 获取数据 周+好友
+            this.getData('friend',1);
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
@@ -95,18 +102,75 @@
             // 选择世界还是好友排名
             worldOrFried(e){
                 let currentWorldOrFriend = e.currentTarget.dataset.type;
+                // console.log(currentWorldOrFriend);
                 if(this.currentWorldOrFriend == currentWorldOrFriend){
                     // 如果点击的是当前已经选择的,就不执行任何操作
                     return;
                 } else {
+                    let mytype = '';
+                    // console.log(this.currentRanking);
+                    if(this.currentRanking == 'week'){
+                        // 周排行
+                        mytype = 1;
+                    } else if(this.currentRanking == 'all'){
+                        // 总排行
+                        mytype = 0;
+                    }
+                    //改变当前数据
+                    this.getData(currentWorldOrFriend,mytype);
+                    // if(currentWorldOrFriend == 'world'){
+                    //     // 世界排行
+                    //     this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype);
+                    //     this.$apply();
+                    // } else if(currentWorldOrFriend == 'friend'){
+                    //     // 好友排行
+                    //     this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype);
+                    //     this.$apply();
+                    // }
                     this.currentWorldOrFriend = currentWorldOrFriend;
                     this.$apply();
-                    console.log(this.currentWorldOrFriend)
                 }
-
-
             },
         };
+
+        watch = {
+            currentRanking(newValue,oldValue){
+                // console.log(newValue,oldValue);
+                let currentWorldOrFriend = this.currentWorldOrFriend;
+                let mytype = '';
+                // console.log(currentWorldOrFriend);
+                if(newValue == 'week'){
+                    mytype = 1;
+                } else if(newValue == 'all'){
+                    mytype = 0;
+                }
+                //改变当前数据
+                this.getData(currentWorldOrFriend,mytype);
+                // if(currentWorldOrFriend == 'world'){
+                //     // 世界排行
+                //     this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype);
+                // } else if(currentWorldOrFriend == 'friend'){
+                //     // 好友排行
+                //     this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype);
+                // }
+                // 改变子组件值
+                this.weekOrAll = mytype;
+                this.$apply();
+            }
+        };
+
+        getData(currentWorldOrFriend,mytype){
+            if(currentWorldOrFriend == 'world'){
+                // 世界排行
+                this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype);
+                this.$apply();
+            } else if(currentWorldOrFriend == 'friend'){
+                // 好友排行
+                this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype);
+                this.$apply();
+            }
+        };
+
 
         // 声明组件之间的事件处理函数
         events = {};

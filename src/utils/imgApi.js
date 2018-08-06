@@ -1,6 +1,6 @@
 import api from '@/utils/api';
 
-const uploadFileUrl = api.uploadFileUrl;
+const uploadFileUrl = api.uploadFileUrl+'doutui/';
 /**
  * 图片api
  * @type {{}}
@@ -21,8 +21,8 @@ module.exports = {
     // 卡通人物形象
     man1:uploadFileUrl + 'man1.png',
     man2:uploadFileUrl + 'man2.png',
-    woman1:uploadFileUrl + 'man1.png',
-    woman2:uploadFileUrl + 'man2.png',
+    woman1:uploadFileUrl + 'woman1.png',
+    woman2:uploadFileUrl + 'woman2.png',
 
     // 蓝牙
     bluetooth_inactive: uploadFileUrl + 'bluetooth_inactive.png',
@@ -53,6 +53,11 @@ module.exports = {
     world_inactive: uploadFileUrl + 'world_inactive.png',
     friend_active: uploadFileUrl + 'friend_active.png',
     friend_inactive: uploadFileUrl + 'friend_inactive.png',
+    // 世界排名1/2/3
+    history_no1:uploadFileUrl + 'history_no1.png',
+    history_no2:uploadFileUrl + 'history_no2.png',
+    history_no3:uploadFileUrl + 'history_no3.png',
+
     // 好友排名1/2/3
     ranking_no1: uploadFileUrl + 'ranking_no1.png',
     ranking_no2: uploadFileUrl + 'ranking_no2.png',

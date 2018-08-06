@@ -1,21 +1,23 @@
 <template>
     <view class="leg-shake">
-        <image class="open-room" src="/static/images/open_room.png" @tap.stop="openRoom"></image>
+        <image class="open-room" src="{{open_room}}" @tap.stop="openRoom"></image>
         <view class="leg-hand">
             <shakestyle :shake.sync="shakeData"></shakestyle>
         </view>
         <view class="centent">
-            <image class="content-img-left"  src="/static/images/to_left.png" data-shake="leg" @tap.stop="shakeTransform"/>
+            <image class="content-img-left"  src="{{leftImg}}" data-shake="leg" @tap.stop="shakeTransform"/>
             <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrlData" @tap.stop="parentTap"></circle>
-            <image class="content-img-right" src="/static/images/to_right.png" data-shake="hand" @tap.stop="shakeTransform"/>
+            <image class="content-img-right" src="{{rightImg}}" data-shake="hand" @tap.stop="shakeTransform"/>
         </view>
-        <view class="shake-number">2353</view>
-        <view class="shake-time">持续时长：26分钟</view>
+        <view class="shake-number">{{shakeNumber}}</view>
+        <view class="shake-time">持续时长：{{shakeTime}}</view>
     </view>
 
 </template>
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
     import ShakeStyle from '@/components/shake_style';
     import Circle from '@/components/circle';
 
@@ -33,14 +35,23 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            open_room:imgApi.open_room,
+            leftImg:imgApi.to_left,
+            rightImg:imgApi.to_right,
             // 抖动方式,默认抖腿
             shakeData:'leg',
-            // 抖动方式对应的图片
-            imgSrcData:'/static/images/leg_shake.png',
+            // 默认抖动方式对应的图片
+            imgSrcData:imgApi.leg_shake,
+            // 抖动次数
+            shakeNumber:0,
+            // 抖动时间
+            shakeTime:0,
         };
 
         // 在Page和Component共用的生命周期函数
         onLoad() {
+            // 进入页面开始计时
+
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -58,29 +69,44 @@
                 // console.log(e);
                 // 获取想要抖动样式 左腿右手
                 let shake = e.currentTarget.dataset.shake;
-                if(shake == 'leg'){
-                    // 腿抖
-                    this.imgSrcData = '/static/images/leg_shake.png';
-                    this.shakeData = 'leg';
-                    this.$apply();
-                } else if (shake == 'hand'){
-                    // 手抖
-                    this.imgSrcData = '/static/images/hand_shake.png';
-                    this.shakeData = 'hand';
-                    this.$apply();
-                }
+                this.shakeData = shake;
+                this.$apply();
             },
 
             // 开设房间
             openRoom(){
                 wepy.navigateTo({
                     url: ''
-                })
+                });
+            }
+        };
+
+        watch = {
+            shakeData(newValue,oldValue){
+                console.log(newValue)
+                this.shakeChange(newValue);
+
             }
         };
 
         // 声明组件之间的事件处理函数
         events = {};
+
+        shakeChange(shake){
+            if(shake == 'leg'){
+                // 腿抖
+                this.imgSrcData = imgApi.leg_shake;
+                this.shakeData = 'leg';
+                this.$apply();
+
+            } else if (shake == 'hand'){
+                // 手抖
+                this.imgSrcData = imgApi.hand_shake;
+                this.shakeData = 'hand';
+                this.$apply();
+            }
+        }
+
     }
 </script>
 

@@ -1,8 +1,6 @@
 <style lang="less">
-    /*@import "static/css/weui.less";*/
     @import "static/css/font.less";
     @import "static/css/button.less";
-    @import "static/css/animate.less";
     @import "static/css/font_Edo/stylesheet";
 
     page{
@@ -180,20 +178,20 @@
 <script>
     import wepy from 'wepy';
     import 'wepy-async-function';
-    // import { setStore } from 'wepy-redux';
-    // import configStore from './store';
-    // const store = configStore();
-    // setStore(store);
     import {USER_INFO} from '@/utils/constant';
     import api from '@/utils/api';
 
     export default class extends wepy.app {
         config = {
             pages: [
+
+                'pages/history_rank',
+                'pages/home',
+                'pages/select_sex',
                 'pages/not_connected',
                 'pages/connect_bluetooth',
+
                 'pages/select_bluetooth',
-                'pages/home',
                 'pages/loading',
                 'pages/mall',
                 'pages/gift_picture',
@@ -202,13 +200,12 @@
                 'pages/gift_wall',
                 'pages/fans_rank',
                 'pages/gaming',
-                'pages/select_sex',
-                'pages/history_rank',
+
+
                 'pages/go_shake',
                 'pages/personal_record',
                 'pages/my_record',
                 'pages/connect_success',
-
                 'pages/authorize',
                 'pages/index',
             ],
@@ -259,32 +256,18 @@
         }
 
         async onLaunch() {
-            // await wx.login({
-            //     success: function(res) {
-            //         if (res.code) {
-            //             //发起网络请求
-            //              let resData = api.myLogin({
-            //                 code:res.code,
-            //             });
-            //              console.log(resData.data.data);
-            //             wepy.setStorageSync(USER_INFO, resData.data.data);
-            //         } else {
-            //             console.log('登录失败！' + res.errMsg)
-            //         }
-            //     }
-            // });
+            let res = await wepy.login();
+            if(res.code){
+                let rlt = await api.myLogin({
+                    query: {
+                        code: res.code,
+                    }
+                });
+                // console.log(rlt);
+                wepy.setStorageSync(USER_INFO, rlt.data.data);
+            }
         }
-        // async onLoad() {
-        //     await wepy.login();
-        //     this.userInfo = await wepy.getUserInfo();
-        //     console.log(this.globalData.userInfo);
-        // }
 
-        // async testAsync() {
-        //     const data = await this.sleep(3);
-        //     console.log(data);
-        // }
-        //
         // getUserInfo(cb) {
         //     const that = this;
         //     if (this.globalData.userInfo) {

@@ -2,7 +2,7 @@
     <!--<view>-->
         <!--<image style="width:{{winWidth}}px;height:{{winHeight}}px;" src="{{ imgSrc }}" />-->
     <!--</view>-->
-    <swiper autoplay="{{swiper_autoplay}}" interval="2000" circular="true" bindanimationfinish="animationFinish" style="width:{{winWidth}}px;height:{{winHeight}}px;">
+    <swiper autoplay="{{swiper_autoplay}}" interval="2000"  bindanimationfinish="animationFinish" style="width:{{winWidth}}px;height:{{winHeight}}px;">
         <repeat for="{{imgSrc}}" key="index" item="img">
             <swiper-item>
                 <image src="{{img}}" style="width:{{winWidth}}px;height:{{winHeight}}px;"/>
@@ -15,6 +15,9 @@
     import wepy from 'wepy';
     // import { SYSTEM_INFO } from '@/utils/constant';
     // import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
+    import { USER_INFO } from '@/utils/constant';
 
     export default class Home extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -28,21 +31,21 @@
             winHeight:0,
             swiper_autoplay:true,
             imgSrc: [
-                '/static/images/doutui_jinru1.png',
-                '/static/images/doutui_jinru2.png',
-                '/static/images/doutui_jinru3.png',
-                '/static/images/doutui_jinru4.png',
+                imgApi.doutui_jinru1,
+                imgApi.doutui_jinru2,
+                imgApi.doutui_jinru3,
+                imgApi.doutui_jinru4,
             ]
         };
 
         // 在Page和Component共用的生命周期函数
         onLoad() {
             // 获取系统信息
-            // let systemInfo = wepy.getSystemInfoSync();
+            let systemInfo = wepy.getSystemInfoSync();
             // console.log(systemInfo);
-            // this.winWidth = systemInfo.windowWidth;
-            // this.winHeight = systemInfo.windowHeight;
-            // this.$apply();
+            this.winWidth = systemInfo.windowWidth;
+            this.winHeight = systemInfo.windowHeight;
+            this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -51,13 +54,8 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-            let that = this;
-            // 获取系统信息
-            let systemInfo = wepy.getSystemInfoSync();
-            // console.log(systemInfo);
-            this.winWidth = systemInfo.windowWidth;
-            this.winHeight = systemInfo.windowHeight;
-            this.$apply();
+            // let userInfo = wepy.getStorageSync(USER_INFO);
+            // console.log(userInfo);
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -84,10 +82,18 @@
                 if(current >= 3){
                     that.swiper_autoplay = false;
                     setTimeout(function() {
-                        // **根据是否连接蓝牙进入不同界面
-                        wepy.switchTab({
-                            url:'/pages/index'
-                        });
+                        // 从数据库获取这个用户信息
+                        let userInfo = wepy.getStorageSync(USER_INFO);
+                        // console.log(userInfo);
+                        if(util.isEmpty(userInfo.logo)){
+                            wepy.redirectTo({
+                                url: '/pages/select_sex'
+                            });
+                        } else {
+                            wepy.redirectTo({
+                                url: '/pages/not_connected'
+                            });
+                        }
                     },1000);
                 }
             },

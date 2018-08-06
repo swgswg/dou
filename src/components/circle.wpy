@@ -39,7 +39,7 @@
 
         methods = {
             mylocation(){
-                console.log(this.locationUrl);
+                // console.log(this.locationUrl);
                 wepy.navigateTo({
                     url:this.locationUrl
                 });

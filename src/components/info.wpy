@@ -25,12 +25,22 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import {USER_INFO} from '../utils/constant';
 
     export default class Info extends wepy.component {
 
         data = {
             uploadFileUrl:api.uploadFileUrl
-        }
+        };
+
+        async onLoad(){
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            let user_id = userInfo.id;
+            // 获取个人信息
+            // let rlt = await api.
+            // 重新存入缓存
+            // wepy.setStorageSync(USER_INFO, rlt.data.data);
+        };
 
         methods = {
             // 微信号
@@ -41,7 +51,7 @@
             myRecord(){},
             // 跳转去我的记录
             goToMyShakeInfo(){}
-        }
+        };
     }
 </script>
 

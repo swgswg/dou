@@ -16,7 +16,6 @@ export const USER_INFO = "userInfo";
  */
 export const SYSTEM_INFO = "systemInfo";
 
-
 export const ADDRESS_ID = "addressId";
 
 export const SEL_CLASS_CODE = "selClassCode";

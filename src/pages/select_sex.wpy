@@ -3,22 +3,20 @@
         <view class="sex">请选择您的性别</view>
 
         <view class="sex-img">
-            <image src="{{'/static/images/' + (currentSex == 'woman' ? 'woman_active.png' : 'woman_inactive.png')}}" data-type="woman" @tap.stop="selectSex"></image>
-            <!--<image src="{{uploadFileUrl + '/static/images/' + (currentSex == 'woman' ? 'woman_active.png' : 'woman_inactive.png')}}" data-type="woman" @tap.stop="selectSex"></image>-->
-            <image src="{{'/static/images/' + (currentSex == 'man' ? 'man_active.png' : 'man_inactive.png')}}" data-type="man" @tap.stop="selectSex"></image>
-            <!--<image src="{{uploadFileUrl + '/static/images/' + (currentSex == 'man' ? 'man_active.png' : 'man_inactive.png')}}" data-type="man" @tap.stop="selectSex"></image>-->
+            <image src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>
+            <image src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>
         </view>
 
         <view class="sex-profile">
-            <block wx:for="{{profile}}" wx:for-item="profile" wx:key="{{index}}">
+            <block wx:for="{{profile}}" wx:for-item="profileImg" wx:key="{{index}}">
                 <view class="profile-each {{currentProfile == index ? 'active':''}}">
-                <image src="{{'/static/images/' + profile}}" data-index="{{index}}" @tap.stop="selectProfile"></image>
+                <image src="{{profileImg}}" data-index="{{index}}" @tap.stop="selectProfile"></image>
                 <!--<image src="{{uploadFileUrl + '/static/images/' + profile}}" data-index="{{index}}" @tap.stop="selectProfile"></image>-->
             </view>
             </block>
         </view>
 
-        <view class="sex-btn" wx:if="{{currentSex == 'woman' || currentSex == 'man'}}">
+        <view class="sex-btn" wx:if="{{currentSex == '0' || currentSex == '1'}}">
             <button class="button button-highlight button-pill button-large" open-type="getUserInfo" bindgetuserinfo="getUserInfo">确认</button>
         </view>
 
@@ -28,6 +26,9 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
+    import tip from '@/utils/tip';
+    import {USER_INFO} from '@/utils/constant';
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -40,13 +41,20 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
-            uploadFileUrl:api.uploadFileUrl,
-            // 选择的性别
-            currentSex:0,
+            // 男女性别图标
+            man_active: imgApi.man_active,
+            man_inactive: imgApi.man_inactive,
+            woman_active: imgApi.woman_active,
+            woman_inactive: imgApi.woman_inactive,
+
+            // 选择的性别 男0女1/-1没有选择
+            currentSex:-1,
             // 性别对应的人物
             profile:[],
-            // 选择的人物
-            currentProfile:2,
+            // 选择的人物 -1没有选择
+            currentProfile:-1,
+            // 小人物logo
+            logo:'',
         };
 
         // 在Page和Component共用的生命周期函数
@@ -71,10 +79,15 @@
         methods = {
             // 选择性别
             selectSex(e){
-                let sex = e.currentTarget.dataset.type;
+                let sex = e.currentTarget.dataset.sex;
                 this.currentSex = sex;
-                this.profile = [sex+'1.png', sex+'2.png'];
-                this.currentProfile = 2;
+                // console.log(typeof (this.currentSex)+'==='+this.currentSex);
+                if(sex == 0){
+                    this.profile = [ imgApi.man1, imgApi.man2 ];
+                } else if(sex == 1){
+                    this.profile = [ imgApi.woman1, imgApi.woman2 ];
+                }
+                this.currentProfile = -1;
                 this.$apply();
             },
 
@@ -82,13 +95,51 @@
             selectProfile(e){
                 let index = e.currentTarget.dataset.index;
                 this.currentProfile = index;
+                if(this.currentSex == 0){
+                    this.logo = 'man'+(index+1);
+                } else if(this.currentSex == 1){
+                    this.logo = 'woman'+(index+1);
+                }
                 this.$apply();
+                console.log(this.logo);
             },
 
             // 获取用户授权信息
-            getUserInfo(e){
+            async getUserInfo(e){
+                let that = this;
                 console.log(e);
+                // 性别选择
+                if(this.currentSex == -1){
+                    let res = await tip.longtoast('请选择性别');
+                    return;
+                }
+                // 人物选择
+                if(this.currentProfile == -1){
+                    let res = await tip.longtoast('请选择动漫小人物');
+                    return;
+                }
 
+                if (e.detail.errMsg == 'getUserInfo:ok'){
+                    let userInfo = wepy.getStorageSync(USER_INFO);
+                    console.log(userInfo);
+                    let rlt = await api.updateSex({
+                        query:{
+                            userId: userInfo.id,
+                            sex: that.currentSex,
+                            logo: that.logo,
+                            name: e.detail.userInfo.nickName,
+                            photo:e.detail.userInfo.avatarUrl,
+                        }
+                    });
+                    if(rlt.data.state == 1){
+                        wepy.redirectTo({
+                            url: '/pages/not_connected'
+                        });
+                    }
+                } else {
+                    let res = await tip.longtoast('请重新确认授权');
+                    return;
+                }
             },
         };
 

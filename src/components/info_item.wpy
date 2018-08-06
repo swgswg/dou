@@ -5,7 +5,7 @@
                 <view class="itme">
                     <view class="info-left">
                         <view class="info-img">
-                            <image src="{{ '/static/images/'+item.img}}"></image>
+                            <image src="{{item.img}}"></image>
                             <!--<image src="{{ uploadFileUrl + item.img}}"></image>-->
                         </view>
                         <view class="info-title">{{item.title}}</view>

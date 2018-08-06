@@ -5,16 +5,17 @@
             <circle :imgSrc.sync = "imgSrcData" ></circle>
         </view>
         <view class="text2">
-            <navigator class="text2-btn" open-type="navigate" url="/pages/hand_shake">手动抖动</navigator>
+            <navigator class="text2-btn" open-type="switchTab" url="/pages/go_shake">手动抖动</navigator>
         </view>
         <view class="text3">
-            <navigator class="text3-btn" open-type="navigate" url="/pages/select_bluetooth">进入蓝牙设置</navigator>
+            <navigator class="text3-btn" open-type="redirect" url="/pages/select_bluetooth">进入蓝牙设置</navigator>
         </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
     import Circle from  '@/components/circle';
 
     export default class MyPage extends wepy.page {
@@ -30,7 +31,7 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
-            imgSrcData: '/static/images/bluetooth_active.png',
+            imgSrcData: imgApi.bluetooth_active,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -71,9 +72,8 @@
             width: 100%;
             margin-top: 50rpx;
             font-size: 36rpx;
-            font-family: NotoSansHans Regular;
             color: #fff;
-            border: 1rpx solid red;
+            /*border: 1rpx solid red;*/
         }
 
         .connect-bluetooth-circle{
@@ -82,7 +82,7 @@
             align-items: center;
             width: 100%;
             margin-top: 100rpx;
-            border: 1rpx solid blue;
+            /*border: 1rpx solid blue;*/
         }
 
         .text2,.text3{
@@ -103,7 +103,6 @@
                 width: 560rpx;
                 height: 90rpx;
                 font-size: 36rpx;
-                font-family: NotoSansHans Regular;
                 color: #fff;
                 border-radius: 45rpx;
                 border: 4rpx solid #fff;
@@ -120,7 +119,6 @@
                 width: 560rpx;
                 height: 90rpx;
                 font-size: 36rpx;
-                font-family: NotoSansHans Regular;
                 color: #fff;
                 border-radius: 45rpx;
                 border: 4rpx solid #fff;

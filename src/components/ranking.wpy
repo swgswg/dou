@@ -4,21 +4,21 @@
         <block wx:for="{{ranking}}" wx:key="{{index}}" wx:for-item="rank">
             <view class="ranking-content">
                 <view class="sort">
-                    1
+                    {{ranking.rownum}}
                 </view>
                 <view class="profile">
-                    <image src="/static/images/selected.png" />
+                    <image src="{{ranking.photo}}" />
                     <!--<image src="{{uploadFileUrl + 'selected.png'}}" />-->
                 </view>
                 <view class="info">
                     <view class="f14">
-                        <view>名称</view>
+                        <view>{{ranking.name}}</view>
                     </view>
                     <view class="ml10 f14">
-                        <view>25:65</view>
+                        <view>{{ranking.time}}</view>
                     </view>
                     <view class="ml10 f14">
-                        <view>25165</view>
+                        <view>{{ranking.shakeNum}}</view>
                     </view>
                 </view>
             </view>
@@ -40,7 +40,7 @@
         props  = {
             ranking:{
                 type:Object,
-                default:'null'
+                default:null,
             },
         };
 

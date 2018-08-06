@@ -141,7 +141,7 @@ export default class Tips {
         return wx.showModal({
             title: '温馨提示',
             content: content,
-            showCancel:true,
+            showCancel:false,
         });
     }
 }

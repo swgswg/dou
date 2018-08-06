@@ -13,15 +13,19 @@
 
     export default class RankingButton extends wepy.component {
 
+        data = {
+            currentTab:0,
+        };
+
         props = {
             tab: {
                 type: Array,
                 default:null,
                 twoWay: true,
             },
-            currentTab: {
-                type:Number,
-                default: 0,
+            currentRanking: {
+                type:String,
+                default: 'week',
                 twoWay: true,
             },
 
@@ -35,6 +39,13 @@
                     return false;
                 } else {
                     that.currentTab = current;
+                    if(current == 0){
+                        that.currentRanking = 'week';
+                    } else if(current == 1){
+                        that.currentRanking = 'all';
+                    }
+                    // console.log(current);
+                    // console.log(that.currentRanking);
                     that.$apply();
                 }
                 this.$emit("currentTab", that.currentTab)

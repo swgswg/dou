@@ -2,9 +2,9 @@
     <view class="no-connected">
         <view class="no-connected-text1">设备未连接</view>
         <view class="centent">
-            <image class="content-img-left" src="/static/images/to_left.png" />
+            <image class="content-img-left" src="{{leftImg}}" />
             <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrlData" @tap.stop="parentTap"></circle>
-            <image class="content-img-right" src="/static/images/to_right.png" />
+            <image class="content-img-right" src="{{rightImg}}" />
         </view>
         <view class="icon-font icon1">
             <text class="iconfont icon-fold"></text>
@@ -22,6 +22,7 @@
 
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
     import Circle from  '@/components/circle';
 
     export default class MyPage extends wepy.page {
@@ -37,7 +38,9 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
-            imgSrcData: '/static/images/bluetooth_inactive.png',
+            imgSrcData: imgApi.bluetooth_inactive,
+            leftImg:imgApi.to_left,
+            rightImg:imgApi.to_right,
             locationUrlData:'/pages/connect_bluetooth',
         };
 

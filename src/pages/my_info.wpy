@@ -1,6 +1,6 @@
 <template>
     <view class="my-info">
-        <image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="/static/images/myinfo_bg.png"></image>
+        <image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="{{myinfo_bg}}"></image>
 
         <info></info>
         <block wx:if="{{isShowGift}}">
@@ -15,11 +15,11 @@
                 <veiw>
                     <energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :energyHeight="energyHeight"></energytank>
                 </veiw>
-                <image style="position:absolute;bottom:60rpx;right:80rpx;width: 131rpx;height:234rpx;" src="/static/images/man1.png"></image>
+                <image style="position:absolute;bottom:60rpx;right:80rpx;width: 131rpx;height:234rpx;" src="{{logo}}"></image>
             </view>
         </block>
         <view class="show-gift" style="margin-top:{{isShowGift ? 15:27}}rpx">
-            <image src="/static/images/show_gift.png" @tap.stop="showCurrentGift"></image>
+            <image src="{{show_gift}}" @tap.stop="showCurrentGift"></image>
         </view>
 
         <block wx:if="{{!isShowGift}}">
@@ -31,6 +31,8 @@
 
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
+    import {USER_INFO} from '../utils/constant';
     import Info from '@/components/info';
     import InfoItem from '@/components/info_item';
     import GiftCanvas from '@/components/gift_canvas';
@@ -54,13 +56,16 @@
         data = {
             windowWidth:0,
             windowHeight:0,
+            myinfo_bg:imgApi.myinfo_bg,
+            show_gift:imgApi.show_gift,
+            logo:'',
             showInfoList:[
-                {img:'shop.png', title:'商城', skip:''},
-                {img:'happy.png', title:'娱乐模式',skip:''},
-                {img:'fans.png', title:'粉丝大排名',skip:''},
-                {img:'black_fans.png', title:'我的好友',skip:''},
-                {img:'gift.png', title:'我的历史奖品',skip:''},
-                {img:'set.png', title:'设置',skip:''},
+                {img:imgApi.shop, title:'商城', skip:''},
+                {img:imgApi.happy, title:'娱乐模式',skip:''},
+                {img:imgApi.fans, title:'粉丝大排名',skip:''},
+                {img:imgApi.record, title:'我的好友',skip:''},
+                {img:imgApi.gift, title:'我的历史奖品',skip:''},
+                {img:imgApi.set, title:'设置',skip:''},
             ],
             // 是否显示当前礼物墙
             isShowGift:false,
@@ -88,7 +93,7 @@
         onLoad() {
             // 获取设备的窗口宽高(适应背景)
             let systemInfo = wepy.getSystemInfoSync();
-            console.log(systemInfo);
+            // console.log(systemInfo);
             this.windowWidth = systemInfo.windowWidth;
             this.windowHeight = systemInfo.windowHeight;
             this.$apply();
@@ -111,8 +116,15 @@
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 显示当前的礼物墙
-            showCurrentGift(){
+            async showCurrentGift(){
                 this.isShowGift = !this.isShowGift;
+                let userInfo = wepy.getStorageSync(USER_INFO);
+                let user_id = userInfo.id;
+                let getPresentsWall = await api.getPresentsWalls({
+                    query:{
+                        userId:user_id,
+                    }
+                });
                 this.$apply();
             },
         };
