@@ -13,7 +13,7 @@
                             bindchange="moveGift"
                             data-index="{{index}}"
                     >
-                        <image src="/static/images/flower.png" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
+                        <image src="{{flower}}" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
                     </movable-view>
                 </block>
                 <block wx:else>
@@ -24,7 +24,7 @@
                             bindchange="moveGift"
                             data-index="{{index}}"
                     >
-                        <image src="/static/images/flower.png" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
+                        <image src="{{flower}}" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
                     </movable-view>
                 </block>
             </block>
@@ -34,8 +34,13 @@
 
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
 
     export default class GiftCanvas extends wepy.component {
+
+        data = {
+            flower:imgApi.flower
+        };
 
         props = {
             canvasWidth:{

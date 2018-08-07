@@ -4,8 +4,12 @@
             <view class="circle-each circle2">
                 <view class="circle-each circle3">
                     <view class="circle-each circle4">
-                        <image class="circle-each circle-img" @tap.stop="mylocation" src="{{imgSrc}}" />
-                        <!--<image class="circle-each circle-img" @tap.stop="mylocation" src="{{uploadFileUrl + imgSrc}}" />-->
+                        <block wx:if="{{locationUrl}}">
+                            <image class="circle-each circle-img" @tap.stop="mylocation" src="{{imgSrc}}" />
+                        </block>
+                        <block wx:else>
+                            <image class="circle-each circle-img" src="{{imgSrc}}" />
+                        </block>
                     </view>
                 </view>
             </view>
@@ -15,13 +19,8 @@
 
 <script>
     import wepy from 'wepy';
-    import api from '@/utils/api';
 
     export default class Circle extends wepy.component {
-
-        data = {
-            uploadFileUrl:api.uploadFileUrl,
-        };
 
         props = {
             // 父向子单向动态传值  图片连接地址

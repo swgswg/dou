@@ -110,18 +110,19 @@
                 console.log(e);
                 // 性别选择
                 if(this.currentSex == -1){
-                    let res = await tip.longtoast('请选择性别');
+                    await tip.longtoast('请选择性别');
                     return;
                 }
                 // 人物选择
                 if(this.currentProfile == -1){
-                    let res = await tip.longtoast('请选择动漫小人物');
+                    await tip.longtoast('请选择动漫小人物');
                     return;
                 }
 
                 if (e.detail.errMsg == 'getUserInfo:ok'){
-                    let userInfo = wepy.getStorageSync(USER_INFO);
-                    console.log(userInfo);
+                    // 授权成功
+                    var userInfo = wepy.getStorageSync(USER_INFO);
+                    // console.log(userInfo);
                     let rlt = await api.updateSex({
                         query:{
                             userId: userInfo.id,
@@ -132,11 +133,13 @@
                         }
                     });
                     if(rlt.data.state == 1){
+                        // 获取信息成功
                         wepy.redirectTo({
                             url: '/pages/not_connected'
                         });
                     }
                 } else {
+                    // 授权失败
                     let res = await tip.longtoast('请重新确认授权');
                     return;
                 }

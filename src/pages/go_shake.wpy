@@ -4,10 +4,10 @@
         <view class="leg-hand">
             <shakestyle :shake.sync="shakeData"></shakestyle>
         </view>
-        <view class="centent">
-            <image class="content-img-left"  src="{{leftImg}}" data-shake="leg" @tap.stop="shakeTransform"/>
-            <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrlData" @tap.stop="parentTap"></circle>
-            <image class="content-img-right" src="{{rightImg}}" data-shake="hand" @tap.stop="shakeTransform"/>
+        <view class="centent" @tap.stop="getClickNumber">
+            <image class="content-img-left"  src="{{leftImg}}" data-shake="1" @tap.stop="shakeTransform"/>
+            <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrl"></circle>
+            <image class="content-img-right" src="{{rightImg}}" data-shake="0" @tap.stop="shakeTransform"/>
         </view>
         <view class="shake-number">{{shakeNumber}}</view>
         <view class="shake-time">持续时长：{{shakeTime}}</view>
@@ -16,6 +16,7 @@
 </template>
 <script>
     import wepy from 'wepy';
+    import {SHAKE_TIME,SHAKE_NUMBER} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
     import ShakeStyle from '@/components/shake_style';
@@ -38,8 +39,10 @@
             open_room:imgApi.open_room,
             leftImg:imgApi.to_left,
             rightImg:imgApi.to_right,
-            // 抖动方式,默认抖腿
-            shakeData:'leg',
+            // 点击图片跳转(此处不需要跳转)
+            locationUrl:null,
+            // 抖动方式,默认抖腿(0手动,1脚动)
+            shakeData:1,
             // 默认抖动方式对应的图片
             imgSrcData:imgApi.leg_shake,
             // 抖动次数
@@ -50,16 +53,33 @@
 
         // 在Page和Component共用的生命周期函数
         onLoad() {
-            // 进入页面开始计时
+
 
         };
 
         // 只在Page中存在的页面生命周期函数
         onShow() {
+
         };
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
+            let that = this;
+            setInterval(function() {
+                let shakeTime = wepy.getStorageSync(SHAKE_TIME);
+                // console.log(shakeTime);
+                shakeTime = util.secondToHMS(shakeTime);
+                that.shakeTime = shakeTime;
+                that.$apply();
+            },1000)
+        };
+
+        // 转发
+        onShareAppMessage(){
+            return {
+                title: '赶快来挑战吧',
+                path: '/page/go_shake'
+            }
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
@@ -71,6 +91,17 @@
                 let shake = e.currentTarget.dataset.shake;
                 this.shakeData = shake;
                 this.$apply();
+            },
+
+            // 手动点击,获取点击次数
+            getClickNumber(e){
+                let shakeNumber = this.shakeNumber;
+                if(this.shakeData == 0){
+                    shakeNumber++;
+                    this.shakeNumber = shakeNumber;
+                    this.$apply();
+                    wepy.setStorageSync(SHAKE_NUMBER,shakeNumber);
+                }
             },
 
             // 开设房间
@@ -85,27 +116,29 @@
             shakeData(newValue,oldValue){
                 console.log(newValue)
                 this.shakeChange(newValue);
-
-            }
+            },
         };
 
         // 声明组件之间的事件处理函数
         events = {};
 
+        // 抖动方式改变
         shakeChange(shake){
-            if(shake == 'leg'){
+            if(shake == 1){
                 // 腿抖
                 this.imgSrcData = imgApi.leg_shake;
-                this.shakeData = 'leg';
+                this.shakeData = 1;
                 this.$apply();
 
-            } else if (shake == 'hand'){
+            } else if (shake == 0){
                 // 手抖
                 this.imgSrcData = imgApi.hand_shake;
-                this.shakeData = 'hand';
+                this.shakeData = 0;
                 this.$apply();
             }
         }
+
+
 
     }
 </script>

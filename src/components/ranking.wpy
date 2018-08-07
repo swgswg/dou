@@ -2,23 +2,22 @@
 <template>
     <view class="ranking">
         <block wx:for="{{ranking}}" wx:key="{{index}}" wx:for-item="rank">
-            <view class="ranking-content">
+            <view class="ranking-content" data-userid="{{rank.userId}}" @tap.stop="showOtherGiftWall">
                 <view class="sort">
-                    {{ranking.rownum}}
+                    {{rank.rownum}}
                 </view>
                 <view class="profile">
-                    <image src="{{ranking.photo}}" />
-                    <!--<image src="{{uploadFileUrl + 'selected.png'}}" />-->
+                    <image src="{{rank.photo}}" />
                 </view>
                 <view class="info">
-                    <view class="f14">
-                        <view>{{ranking.name}}</view>
+                    <view class="f14 w100">
+                        <view>{{rank.name}}</view>
                     </view>
-                    <view class="ml10 f14">
-                        <view>{{ranking.time}}</view>
+                    <view class="ml10 f14 w150">
+                        <view>{{rank.time}}</view>
                     </view>
-                    <view class="ml10 f14">
-                        <view>{{ranking.shakeNum}}</view>
+                    <view class="ml10 f14 w150">
+                        <view>{{rank.shakeNum}}</view>
                     </view>
                 </view>
             </view>
@@ -38,13 +37,25 @@
         };
 
         props  = {
+            // ranking:[
+            //     { name:'',photo:'',rownum:0,shakeNum:0,time:'',userId:0,},
+            // ]
             ranking:{
-                type:Object,
-                default:null,
-            },
+                type:Array,
+                default:null
+            }
         };
 
-        methods = {};
+        methods = {
+
+            // 查看用户的礼物墙
+            showOtherGiftWall(e){
+                let userId = e.currentTarget.dataset.userid;
+                wepy.navigateTo({
+                   url: '/pages/gift_wall?userId='+userId
+                })
+            },
+        };
 
 
     }
@@ -108,6 +119,18 @@
                 width: 100%;
                 height: 80rpx;
                 /*border: 1rpx solid red;*/
+
+                .w100,.w150{
+                    width: 100rpx;
+                    /*border: 1rpx solid red;*/
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .w150{
+                    width: 150rpx;
+                }
             }
         }
 

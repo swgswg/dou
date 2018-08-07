@@ -178,8 +178,9 @@
 <script>
     import wepy from 'wepy';
     import 'wepy-async-function';
-    import {USER_INFO} from '@/utils/constant';
+    import { USER_INFO, SHAKE_TIME,SHAKE_NUMBER } from '@/utils/constant';
     import api from '@/utils/api';
+    import util from '@/utils/util';
 
     export default class extends wepy.app {
         config = {
@@ -190,7 +191,6 @@
                 'pages/select_sex',
                 'pages/not_connected',
                 'pages/connect_bluetooth',
-
                 'pages/select_bluetooth',
                 'pages/loading',
                 'pages/mall',
@@ -200,8 +200,6 @@
                 'pages/gift_wall',
                 'pages/fans_rank',
                 'pages/gaming',
-
-
                 'pages/go_shake',
                 'pages/personal_record',
                 'pages/my_record',
@@ -266,19 +264,45 @@
                 // console.log(rlt);
                 wepy.setStorageSync(USER_INFO, rlt.data.data);
             }
+            // 把上次的记录存入数据库
+            this.addRecord();
+
+            // 重新记录时间
+            var shakeTime = 0;
+            setInterval(function() {
+                shakeTime++;
+                wepy.setStorageSync(SHAKE_TIME, shakeTime);
+                // console.log(shakeTime);
+            },1000);
         }
 
-        // getUserInfo(cb) {
-        //     const that = this;
-        //     if (this.globalData.userInfo) {
-        //         return this.globalData.userInfo;
-        //     }
-        //     wepy.getUserInfo({
-        //         success(res) {
-        //             that.globalData.userInfo = res.userInfo;
-        //             cb && cb(res.userInfo);
-        //         }
-        //     });
-        // }
+        // 把上次的记录存入数据库(个人记录不需要房间号)
+        async addRecord(){
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            let prevShakeTime = wepy.getStorageSync(SHAKE_TIME);
+            console.log('prevShakeTime' + '===' +prevShakeTime);
+            let prevShakeNumber = wepy.getStorageSync(SHAKE_NUMBER);
+            console.log('prevShakeNumber' + '===' +prevShakeNumber);
+            if(!util.isEmpty(prevShakeTime)){
+                prevShakeTime = util.secondToDHMS(prevShakeTime);
+                if(util.isEmpty(prevShakeNumber)){
+                    prevShakeNumber = 0;
+                }
+                let res = await api.addRecord({
+                    query:{
+                        userId:userInfo.id,
+                        time:prevShakeTime,
+                        shakeNum:prevShakeNumber,
+                        type:0,
+                        status: 0,// 0手动,1脚动
+                    }
+                });
+                if(res.data.state){
+                    wepy.setStorageSync(SHAKE_TIME, 0);
+                    wepy.setStorageSync(SHAKE_NUMBER, 0);
+                }
+            }
+        }
+
     }
 </script>

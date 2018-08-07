@@ -3,12 +3,12 @@
         <view class="info-each">
             <view class="info-content">
                 <view class="content" @tap.stop="goToMyShakeInfo">
-                    <image class="profile" src=""></image>
+                    <image class="profile" src="{{photo}}"></image>
                     <!--<image class="profile" src="{{uploadFileUrl + ''}}"></image>-->
-                    <view>抖抖抖</view>
+                    <view>{{userName}}</view>
                 </view>
                 <view class="to-right">
-                    <image src="/static/images/right.png"></image>
+                    <image src="{{right}}"></image>
                     <!--<image src=" {{uploadFileUrl + 'right.png'}}"></image>-->
                 </view>
             </view>
@@ -24,22 +24,27 @@
 
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
-    import {USER_INFO} from '../utils/constant';
+    import {USER_INFO} from '@/utils/constant';
 
     export default class Info extends wepy.component {
 
-        data = {
-            uploadFileUrl:api.uploadFileUrl
+        data ={
+            right:imgApi.right,
+
+
         };
 
-        async onLoad(){
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            let user_id = userInfo.id;
-            // 获取个人信息
-            // let rlt = await api.
-            // 重新存入缓存
-            // wepy.setStorageSync(USER_INFO, rlt.data.data);
+        props = {
+            userName:{
+                type:String,
+                default:'',
+            },
+            photo:{
+                type:String,
+                default:'',
+            },
         };
 
         methods = {

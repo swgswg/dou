@@ -16,6 +16,15 @@ export const USER_INFO = "userInfo";
  */
 export const SYSTEM_INFO = "systemInfo";
 
-export const ADDRESS_ID = "addressId";
+/**
+ * 抖动时间(即进入小程序时间)
+ * @type {String}
+ */
+export const SHAKE_TIME = "shakeTime";
 
-export const SEL_CLASS_CODE = "selClassCode";
+/**
+ * 抖动次数
+ * @type {String}
+ */
+export const SHAKE_NUMBER = "shakeNumber";
+

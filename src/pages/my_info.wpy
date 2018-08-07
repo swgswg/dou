@@ -1,8 +1,7 @@
 <template>
     <view class="my-info">
         <image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="{{myinfo_bg}}"></image>
-
-        <info></info>
+        <info :userName.sync="userName" :photo.sync="photo"></info>
         <block wx:if="{{isShowGift}}">
             <view class="mt10 flex-between;position:relative;">
                 <view>
@@ -19,7 +18,7 @@
             </view>
         </block>
         <view class="show-gift" style="margin-top:{{isShowGift ? 15:27}}rpx">
-            <image src="{{show_gift}}" @tap.stop="showCurrentGift"></image>
+            <image src="{{show_gift}}" @tap.stop="showCurrentGiftWall"></image>
         </view>
 
         <block wx:if="{{!isShowGift}}">
@@ -31,8 +30,9 @@
 
 <script>
     import wepy from 'wepy';
+    import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
-    import {USER_INFO} from '../utils/constant';
+    import {USER_INFO} from '@/utils/constant';
     import Info from '@/components/info';
     import InfoItem from '@/components/info_item';
     import GiftCanvas from '@/components/gift_canvas';
@@ -58,6 +58,8 @@
             windowHeight:0,
             myinfo_bg:imgApi.myinfo_bg,
             show_gift:imgApi.show_gift,
+            userName:'',
+            photo:'',
             logo:'',
             showInfoList:[
                 {img:imgApi.shop, title:'商城', skip:''},
@@ -104,7 +106,23 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
+        async onReady() {
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            let user_id = userInfo.id;
+            // 获取个人信息
+            let OneUserInfo = await api.getOneUserInfo({
+                query:{
+                    userId:user_id
+                }
+            });
+            if(OneUserInfo.data.state == 1){
+                this.userName = OneUserInfo.data.data.name;
+                this.photo = OneUserInfo.data.data.photo;
+                this.logo = imgApi[OneUserInfo.data.data.logo];
+                this.$apply();
+                // 更新缓存
+                wepy.setStorageSync(USER_INFO, OneUserInfo.data.data);
+            }
         };
 
         // 声明计算属性（详见后文介绍）
@@ -115,8 +133,8 @@
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
-            // 显示当前的礼物墙
-            async showCurrentGift(){
+            // 显示当前用户的礼物墙
+            async showCurrentGiftWall(){
                 this.isShowGift = !this.isShowGift;
                 let userInfo = wepy.getStorageSync(USER_INFO);
                 let user_id = userInfo.id;
@@ -125,6 +143,7 @@
                         userId:user_id,
                     }
                 });
+                this.giftList = getPresentsWall.data.data;
                 this.$apply();
             },
         };

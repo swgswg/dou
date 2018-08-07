@@ -49,7 +49,7 @@
             //是否没有数据
             is_empty: true,
             //是否显示 底部loading
-            showLoading: true,
+            showLoading: false,
             // 当前页数
             friendRankingPage:1,
             // 每页数量
@@ -119,7 +119,6 @@
             let user_id = userInfo.id;
             let res = await api.getFriend({
                 query:{
-                    userId:user_id,
                     page:mypage,
                     pageSize:mypageSize,
                     type:mytype

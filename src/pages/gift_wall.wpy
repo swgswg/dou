@@ -2,7 +2,7 @@
 <template>
     <view class="gift-wall">
         <view class="gift-info">
-            <info></info>
+            <info :userName.sync="userName" :photo.sync="photo"></info>
         </view>
         <view class="wall">
             <view>
@@ -17,13 +17,16 @@
             </view>
         </view>
         <view style="width: 100%;background-color: #333;margin-top: 20rpx">
-            <mygift :giftList.sync="giftList" :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight"></mygift>
+            <mygift :giftList.sync="userGift" :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight"></mygift>
         </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import api from '@/utils/api';
+    import {USER_INFO} from '../utils/constant';
+
     import Info from '@/components/info';
     import GiftCanvas from '@/components/gift_canvas';
     import EnergyTank from '@/components/energy_tank';
@@ -49,6 +52,10 @@
             canvasWidth:650,
             // 礼物墙的高
             canvasHeight:860,
+            userInfo:null,
+            userName:'',
+            photo:'',
+            userGift:'',
             // 礼物
             giftList:[
                 {id:1,giftId:1,width:50,height:50,xaxle:0,yaxle:0,presentsWallId:1,status:1},
@@ -65,15 +72,47 @@
         };
 
         // 在Page和Component共用的生命周期函数
-        onLoad() {
+        async onLoad(options) {
+            let userId = options.userId;
+            // 获取这个用户信息
+            let res = await api.getOneUserInfo({
+                query:{
+                    userId:userId
+                }
+            });
+            console.log(res.data.data);
+            this.userInfo = res.data.data;
+            this.userName = res.data.data.name;
+            this.photo = res.data.data.photo;
+            this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
         onShow() {
+
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
+        async onReady() {
+            let activeUserInfo = wepy.getStorageSync(USER_INFO);
+            // 获取送礼物用户拥有的礼物
+            let activeUserGift = await api.getUserGift({
+                query:{
+                    userId:activeUserInfo.id
+                }
+            });
+            this.userGift = activeUserGift;
+            this.$apply();
+
+            // 获取被送礼物用户的礼物墙
+            let unactiveUserInfo = this.userInfo;
+            let unactiveUserGift = await api.getPresentsWall({
+                query:{
+                    userId:unactiveUserInfo.id
+                }
+            });
+            this.giftList = unactiveUserGift;
+            this.$apply();
         };
 
         // 声明计算属性（详见后文介绍）

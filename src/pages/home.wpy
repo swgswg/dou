@@ -82,14 +82,15 @@
                 if(current >= 3){
                     that.swiper_autoplay = false;
                     setTimeout(function() {
-                        // 从数据库获取这个用户信息
+                        // 获取这个用户信息
                         let userInfo = wepy.getStorageSync(USER_INFO);
-                        // console.log(userInfo);
+                        // console.log(userInfo);用户信息不全
                         if(util.isEmpty(userInfo.logo)){
                             wepy.redirectTo({
                                 url: '/pages/select_sex'
                             });
                         } else {
+                            // 用户信息完整
                             wepy.redirectTo({
                                 url: '/pages/not_connected'
                             });

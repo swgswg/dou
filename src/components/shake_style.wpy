@@ -1,7 +1,7 @@
 <template>
     <view class="shake-style">
-        <view class="leg {{shake == 'leg' ? 'active' : ''}}" data-shake="leg" @tap.stop="shakeStyle">抖腿</view>
-        <view class="hand {{shake == 'hand'? 'active' : ''}}" data-shake="hand" @tap.stop="shakeStyle">手动</view>
+        <view class="leg {{shake == 1 ? 'active' : ''}}" data-shake="1" @tap.stop="shakeStyle">抖腿</view>
+        <view class="hand {{shake == 0 ? 'active' : ''}}" data-shake="0" @tap.stop="shakeStyle">手动</view>
     </view>
 </template>
 
@@ -12,8 +12,8 @@
 
         props = {
             shake: {
-                // 点击效果
-                type: String,
+                // 点击效果(1脚动,0手动)
+                type: Number,
                 default: null,
                 twoWay: true,
             },

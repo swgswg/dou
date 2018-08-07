@@ -300,6 +300,54 @@ function mytimer(endTime, that) {
 }
 
 /**
+ *  将秒数转化为时分秒
+ * @param sec
+ * @returns {string}
+ */
+function secondToHMS(sec) {
+    let second = sec;
+    let hour = Math.floor(second / 3600);
+    second = second % 3600;
+    let minute = Math.floor(second / 60);
+    second = second % 60;
+    if(hour > 0){
+        return hour + '时' + minute + '分' + second + '秒';
+    }
+    if(minute > 0){
+        return minute + '分' + second + '秒';
+    }
+    if(second > 0){
+        return second + '秒';
+    }
+}
+
+/**
+ *  将秒数转化为天时分秒
+ * @param sec
+ * @returns {string}
+ */
+function secondToDHMS(sec) {
+    let second = sec;
+    let day = Math.floor(second / 86400);
+    let hour = Math.floor(second / 3600);
+    second = second % 3600;
+    let minute = Math.floor(second / 60);
+    second = second % 60;
+    if(day > 0){
+        return day + ' ' + hour + ':' + minute +':' +second;
+    }
+    if(hour > 0){
+        return hour + ':' + minute + ':' + second;
+    }
+    if(minute > 0){
+        return minute + ':' + second;
+    }
+    if(second > 0){
+        return second;
+    }
+}
+
+/**
  * 判断值是否为空
  * @param data
  * @returns {boolean}
@@ -372,6 +420,8 @@ module.exports = {
     getPrevPageUrl: getPrevPageUrl,
     getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs,
     mytimer: mytimer,
+    secondToHMS:secondToHMS,
+    secondToDHMS:secondToDHMS,
     isEmpty: isEmpty,
     arrDelete: arrDelete,
     randomWord: randomWord,
