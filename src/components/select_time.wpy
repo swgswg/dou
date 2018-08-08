@@ -5,10 +5,10 @@
             <view class="mypicker">
                 <view class="picker-each hour">
                     <!--当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}-->
-                    {{selectTimeArray[0][selectTimeIndex[0]]}}
+                    {{selectTimeArray[0][selectTimeIndex[0]]}}:
                 </view>
                 <view class="picker-each minute">
-                    {{selectTimeArray[1][selectTimeIndex[1]]}}
+                    {{selectTimeArray[1][selectTimeIndex[1]]}}:
                 </view>
                 <view class="picker-each second">
                     {{selectTimeArray[2][selectTimeIndex[2]]}}
@@ -16,7 +16,7 @@
             </view>
         </picker>
         <view class="confirm-btn">
-            <image wx:if="{{timeConfirm}}" @tap.stop="confirmSelectTime" src="/static/images/confirm_btn.png"></image>
+            <image wx:if="{{timeConfirm}}" @tap.stop="confirmSelectTime" src="{{confirm_btn}}"></image>
         </view>
     </view>
 </template>
@@ -24,16 +24,17 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
 
     export default class SelectTime extends wepy.component {
 
         data = {
-            uploadFileUrl:api.uploadFileUrl,
+            confirm_btn:imgApi.confirm_btn,
             // 选择时间的数据
             selectTimeArray:[],
             // 选择时间的下标
-            selectTimeIndex:[0,0,0],
+            // selectTimeIndex:[0,0,0],
 
         };
 
@@ -45,9 +46,20 @@
                 twoWay:true,
             },
             selectTime:{
-                type:Boolean,
+                type:Array,
                 default:true,
                 twoWay:true
+            },
+            selectTimeIndex:{
+                type:Array,
+                default:[0,0,0],
+                twoWay:true
+            },
+            // 倒计时结束(true结束)
+            countdownOver:{
+                type:Boolean,
+                default:false,
+                twoWay:true,
             }
         };
 
@@ -63,13 +75,21 @@
         methods = {
             // 选择倒计时时间
             changeTime(e){
-                console.log(e);
+                // console.log(e);
                 this.selectTimeIndex = e.detail.value;
                 this.$apply();
             },
 
             // 确定倒计时时间
             confirmSelectTime(){
+                if(this.selectTimeIndex[0] == 0 && this.selectTimeIndex[1] == 0 && this.selectTimeIndex[2] == 0){
+                    wx.showToast({
+                        title: '请选择时间',
+                        icon: 'none',
+                        duration: 1000
+                    });
+                    return;
+                }
                 this.selectTime = [
                     this.selectTimeArray[0][this.selectTimeIndex[0]],
                     this.selectTimeArray[1][this.selectTimeIndex[1]],
@@ -79,6 +99,37 @@
                 this.$apply();
             },
         };
+
+        // 倒计时
+        countDown(){
+            let that = this;
+            let clear_set = null;
+            clear_set = setInterval(function() {
+                let selectTimeIndex = that.selectTimeIndex;
+                selectTimeIndex[2]--;
+                if(selectTimeIndex[2] <= 0){
+                    if(selectTimeIndex[1] <= 0){
+                        if(selectTimeIndex[0] <= 0){
+                            selectTimeIndex[1] = 0
+                        } else {
+                            selectTimeIndex[0]--;
+                            selectTimeIndex[1] = 59;
+                        }
+                    } else {
+                        selectTimeIndex[1]--;
+                        selectTimeIndex[2] = 59;
+                    }
+                }
+                that.selectTimeIndex = selectTimeIndex;
+                if(selectTimeIndex[0] == 0 && selectTimeIndex[1] == 0 && selectTimeIndex[2] == 0){
+                    clearInterval(clear_set);
+                    that.countdownOver = true;
+                }
+                that.$apply();
+            },1000)
+
+        };
+
     }
 </script>
 

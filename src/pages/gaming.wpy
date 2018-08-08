@@ -1,35 +1,27 @@
 <template>
     <view class="gaming">
         <!--游戏中背景 start-->
-        <image wx:if="{{isGaming}}" class="bgimg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="/static/images/gaming_background.png"></image>
+        <image wx:if="{{isGaming}}" class="bgimg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="{{gaming_background}}"></image>
         <!--游戏中背景 end-->
 
         <!--退出按钮 start-->
-        <image class="logout" src="/static/images/logout.png"></image>
+        <image class="logout" src="{{logout}}" @tap.stop="logout"></image>
         <!--退出按钮 end-->
 
         <!--当前账号 start-->
         <view class="shang">
-            <stage
-                :stageSize.sync="gameMaster.stageSize"
-                :profile.sync="gameMaster.profile"
-                :isReady.sync="gameMaster.isReady"
-                :headPortrait.sync="gameMaster.headPortrait"
-                :shakeNumber.sync="gameMasterShakeNumber"
-            ></stage>
+            <stageshang
+                :gameUserInfo.sync="gameUserInfo_shang"
+            ></stageshang>
         </view>
         <!--当前账号 end-->
 
         <view class="xia">
             <!--左边玩家 start-->
             <view class="xia-left">
-                <stage
-                    :stageSize.sync="gameLeft.stageSize"
-                    :profile.sync="gameLeft.profile"
-                    :isReady.sync="gameLeft.isReady"
-                    :headPortrait.sync="gameLeft.headPortrait"
-                    :shakeNumber.sync="gameLeftShakeNumber"
-                ></stage>
+                <stageleft
+                        :gameUserInfo.sync="gameUserInfo_left"
+                ></stageleft>
             </view>
             <!--左边玩家 end-->
 
@@ -38,7 +30,7 @@
                 <view class="circle-each xia-circle1">
                     <view class="circle-each xia-circle2">
                         <view class="circle-each xia-circle3">
-                            <image class="circle-each" src="{{'/static/images/'+imgSrc}}"></image>
+                            <image class="circle-each" src="{{shakeStyle}}"></image>
                         </view>
                     </view>
                 </view>
@@ -47,32 +39,28 @@
 
             <!--右边玩家 start-->
             <view class="xia-right">
-                <stage
-                    :stageSize.sync="gameRight.stageSize"
-                    :profile.sync="gameRight.profile"
-                    :isReady.sync="gameRight.isReady"
-                    :headPortrait.sync="gameRight.headPortrait"
-                    :shakeNumber.sync="gameRightShakeNumber"
-                ></stage>
+                <stageright
+                        :gameUserInfo.sync="gameUserInfo_right"
+                ></stageright>
             </view>
             <!--右边玩家 end-->
         </view>
 
         <!--开始按钮 start-->
         <view class="btn-img">
-            <image src="{{'/static/images/'+ btnImg}}" wx:if="{{isDot}}" @tap.stop="start"></image>
+            <image src="{{changeBtn}}" wx:if="{{isDot}}" @tap.stop="clickBtn"></image>
         </view>
         <!--开始按钮 end-->
 
         <!--倒计时 start-->
         <view class="timer">
-            <selecttime :selectTime.sync="selectTime" :timeConfirm.sync="timeConfirm"></selecttime>
+            <selecttime :selectTimeIndex="selectTimeIndex" :selectTime.sync="selectTime" :timeConfirm.sync="timeConfirm" :countdownOver.sync="countdownOver"></selecttime>
         </view>
         <!--倒计时 end-->
 
         <!--倒计时3-2-1 start-->
-        <view wx:if="{{!isGaming}}" class="mymodel" style="width:{{windowWidth}}px;heigght:{{windowHeight}}px">
-            <image src="/static/images/countdown1.png"></image>
+        <view wx:if="{{isCountdown}}" class="mymodel" style="width:{{windowWidth}}px;heigght:{{windowHeight}}px">
+            <image src="{{countdown3}}"></image>
         </view>
         <!--倒计时3-2-1 end-->
 
@@ -81,8 +69,10 @@
 
 <script>
     import wepy from 'wepy';
+    import util from '@/utils/util';
     import api from '@/utils/api';
-    import { SYSTEM_INFO } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import { SYSTEM_INFO, USER_INFO } from '@/utils/constant';
     import Stage from '@/components/stage';
     import Circle from '@/components/circle';
     import SelectTime from '@/components/select_time';
@@ -95,47 +85,96 @@
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
-            stage:Stage,
+            stageshang:Stage,
+            stageleft:Stage,
+            stageright:Stage,
             circle:Circle,
             selecttime:SelectTime,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
-            uploadFileUrl:api.uploadFileUrl,
+            gaming_background:imgApi.gaming_background,
+            logout:imgApi.logout,
             windowWidth:0,
             windowHeight:0,
+            // 抖动方式
+            shakeStyle:null,
+            // 是不是房主
+            isMaster:false,
             // 是否在游戏中
             isGaming:false,
+            // 3-2-1倒计时
+            isCountdown:false,
+
             // 当前账号 stage舞台大小 profile人物形象 isReady是否准备好 headPortrait头像
-            gameMaster:{stageSize:'big',profile:'man1',isReady:true,headPortrait:''},
-            // 当前账号 抖动次数
-            gameMasterShakeNumber:0,
+            gameUserInfo_shang:{stageSize:'big',logo:imgApi.no_people,stage:imgApi.stage_red,isReady:false,score_bg:imgApi.score_bg_red,shakeNumber:0,headPortrait:''},
+
             // 左边玩家
-            gameLeft:{stageSize:'small',profile:'woman1',isReady:true,headPortrait:''},
-            gameLeftShakeNumber:0,
+            gameUserInfo_left:{stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:true,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
+
             // 右边玩家
-            gameRight:{stageSize:'small',profile:'man2',isReady:true,headPortrait:''},
-            gameRightShakeNumber:0,
+            gameUserInfo_right:{stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_blue,isReady:true,score_bg:imgApi.score_bg_blue,shakeNumber:0,headPortrait:''},
+
             // 抖动方式对应的图片
-            imgSrc:'leg_shake.png',
-            // 按钮图片
-            btnImg:'no_start_btn.png',
+            leg_shake:imgApi.leg_shake,
+            // 按钮图片(默认ready)
+            changeBtn:imgApi.ready_btn,
             // 按钮是否可点击
             isDot:true,
             // 选择的倒计时时间
             selectTime:[],
+            selectTimeIndex:[0,0,0],
+            // 倒计时结束(true为结束)
+            countdownOver:false,
+            countdown1:imgApi.countdown1,
+            countdown2:imgApi.countdown2,
+            countdown3:imgApi.countdown3,
+
             // 倒计时是否确定(true不确定/false确定)
             timeConfirm:true
         };
 
         // 在Page和Component共用的生命周期函数
-        onLoad() {
+        async onLoad(options) {
             // 获取设备的窗口宽高(适应背景)
-            let systemInfo = wepy.getSystemInfoSync();
-            console.log(systemInfo);
+            let systemInfo = await wepy.getSystemInfoSync();
             this.windowWidth = systemInfo.windowWidth;
             this.windowHeight = systemInfo.windowHeight;
+
+            // 获取抖动方式 创建房间才有
+            if(options.game == 1 ||options.game == 0 ){
+                console.log(options.game);
+                if(options.game == 1){
+                    this.shakeStyle = imgApi.leg_shake;
+                } else if(options.game == 0){
+                    this.shakeStyle = imgApi.hand_shake;
+                }
+                this.isMaster = true;
+                this.$apply();
+            }
+
+            // 获取用户信息
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            console.log(userInfo);
+            this.userInfo = userInfo;
+            // 通过转发进来的建立好友关系
+            if(!util.isEmpty(options.share)){
+                let shareId = options.share;
+                console.log(shareId);
+                await api.inviteFriend({
+                    query:{
+                        userId:userInfo.id,
+                        weChat:shareId,
+                    }
+                });
+            }
+
+            // 修改当前玩家信息
+            let gameUserInfo_shang =  this.gameUserInfo_shang;
+            gameUserInfo_shang.logo = imgApi[userInfo.logo];
+            gameUserInfo_shang.headPortrait = userInfo.photo;
+            this.gameUserInfo_shang = gameUserInfo_shang;
             this.$apply();
         };
 
@@ -153,10 +192,122 @@
         computed = {};
 
         // 声明数据watcher（详见后文介绍）
-        watch = {};
+        watch = {
+            gameUserInfo_shang(newValue){
+                if(newValue.isReady){
+                    if(this.gameUserInfo_left.isReady && this.gameUserInfo_right.isReady && this.isMaster){
+                        this.changeBtn = imgApi.start_btn;
+                    }
+                }
+            },
+
+            gameUserInfo_left(newValue){
+                if(newValue.isReady){
+                    if(this.gameUserInfo_shang.isReady && this.gameUserInfo_right.isReady && this.isMaster){
+                        this.changeBtn = imgApi.start_btn;
+                    }
+                }
+            },
+
+            gameUserInfo_right(newValue){
+                if(newValue.isReady){
+                    if(this.gameUserInfo_left.isReady && this.gameUserInfo_right.isReady && this.isMaster){
+                        this.changeBtn = imgApi.start_btn;
+                    }
+                }
+            },
+
+            countdownOver(newValue){
+                let that = this;
+                console.log(newValue);
+                if(newValue){
+                    that.isCountdown = true;
+                    let clear_set = null;
+                    let i = 3;
+                    clear_set = setInterval(function() {
+                        i--;
+                        if(i == 2 ){
+                            that.countdown3 = that.countdown2;
+                        } else if( i == 1){
+                            that.countdown3 = that.countdown1;
+                        }
+                        if(i<=0){
+                            that.isGaming = true;
+                            that.isCountdown = false;
+                            clearInterval(clear_set);
+                        }
+                        that.$apply();
+                    },1000);
+                }
+                that.$apply();
+            }
+
+        };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+
+            // 点击按钮
+            clickBtn(e){
+                let that = this;
+                // 获取当前玩家信息
+                let gameUserInfo_shang =  this.gameUserInfo_shang;
+                let gameUserInfo_left =  this.gameUserInfo_left;
+                let gameUserInfo_right =  this.gameUserInfo_right;
+                // 都准备好,并且是房主,拥有开始游戏权利
+                if(gameUserInfo_shang.isReady && gameUserInfo_left.isReady && gameUserInfo_right.isReady && this.isMaster){
+                    // 开始游戏
+                    // 判断有没有选时间
+                    let selectTimeIndex = this.selectTimeIndex;
+                    if((selectTimeIndex[0] == 0 && selectTimeIndex[1] == 0 && selectTimeIndex[2] == 0) || this.timeConfirm){
+                        wx.showToast({
+                            title: '请选择时间',
+                            icon: 'none',
+                            duration: 1000
+                        });
+                        return;
+                    }
+
+                    // 倒计时
+                    that.isCountdown = true;
+                    let clear_set = null;
+                    let i = 3;
+                    clear_set = setInterval(function() {
+                        i--;
+                        if(i == 2 ){
+                            that.countdown3 = that.countdown2;
+                        } else if( i == 1){
+                            that.countdown3 = that.countdown1;
+                        }
+                        if(i<=0){
+                            that.isGaming = true;
+                            that.isCountdown = false;
+                            clearInterval(clear_set);
+                            that.$invoke('selecttime', 'countDown');
+                        }
+                        that.$apply();
+                    },1000);
+                    return;
+                }
+
+                if(gameUserInfo_shang.isReady){
+                    gameUserInfo_shang.isReady = false;
+                    this.changeBtn = imgApi.ready_btn;
+                } else {
+                    gameUserInfo_shang.isReady = true;
+                    this.changeBtn = imgApi.no_cancel_btn;
+                }
+                this.gameUserInfo_shang = gameUserInfo_shang;
+
+            },
+
+            // 退出
+            logout(){
+                wepy.switchTab({
+                    url: '/pages/go_shake'
+                })
+            }
+        };
 
         // 声明组件之间的事件处理函数
         events = {};
@@ -203,7 +354,7 @@
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
-                margin-top: 50rpx;
+                margin-top: 10rpx;
                 padding: 0 100rpx;
                 box-sizing: border-box;
 

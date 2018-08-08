@@ -96,7 +96,7 @@
             //     that.shakeHandTime = shakeHandTime;
             //     that.$apply();
             // },1000)
-            console.log(this.userInfo);
+            // console.log(this.userInfo);
         };
 
         // 转发
@@ -132,8 +132,9 @@
 
             // 开设房间
             openRoom(){
+                let that = this;
                 wepy.navigateTo({
-                    url: '/pages/loading'
+                    url: '/pages/loading?game='+that.shakeData,
                 });
             }
         };

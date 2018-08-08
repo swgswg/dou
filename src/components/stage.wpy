@@ -1,34 +1,45 @@
 <template>
     <view class="stage">
         <!--当前账号 start-->
-        <block wx:if="{{stageSize == 'big'}}">
+        <block wx:if="{{gameUserInfo.stageSize == 'big'}}">
             <view class="big-stage-img">
-                <!--<image class="big-profile-img" src="{{'/static/images/'+ profile 'woman1.png'}}"></image>-->
-                <image class="big-profile-img" src="{{'/static/images/' + profile + '.png'}}"></image>
-                <image class="big-stage-img" src="/static/images/stage1.png"></image>
-                <block wx:if="{{isReady}}">
-                    <image class="big-ready-img" src="/static/images/ready.png"></image>
+                <image class="big-profile-img" src="{{gameUserInfo.logo}}"></image>
+                <image class="big-stage-img" src="{{gameUserInfo.stage}}"></image>
+                <block wx:if="{{gameUserInfo.isReady}}">
+                    <image class="big-ready-img" src="{{ready}}"></image>
+                </block>
+                <block wx:else>
+                    <image class="big-ready-img" src="{{no_ready}}"></image>
                 </block>
             </view>
         </block>
         <!--当前账号 end-->
 
         <!--其他玩家 start-->
-        <block wx:elif="{{stageSize == 'small'}}">
+        <block wx:elif="{{gameUserInfo.stageSize == 'small'}}">
             <view class="small-stage-img">
-                <image class="small-profile-img" src="{{'/static/images/' + profile + '.png'}}"></image>
-                <image class="small-stage-img" src="/static/images/stage2.png"></image>
-                <block wx:if="{{isReady}}">
-                    <image class="small-ready-img" src="/static/images/ready.png"></image>
+                <image class="small-profile-img" src="{{gameUserInfo.logo}}"></image>
+                <image class="small-stage-img" src="{{gameUserInfo.stage}}"></image>
+                <block wx:if="{{gameUserInfo.isReady}}">
+                    <image class="small-ready-img" src="{{ready}}"></image>
+                </block>
+                <block wx:else>
+                    <image class="small-ready-img" src="{{no_ready}}"></image>
                 </block>
             </view>
         </block>
         <!--其他玩家 end-->
 
         <view class="info">
-            <image class="info-img" src="/static/images/score_bg.png"></image>
-            <view class="info-name">{{shakeNumber}}</view>
-            <image class="info-profile" src="{{headPortrait}}"></image>
+            <block wx:if="{{gameUserInfo.headPortrait}}">
+                <image class="info-img" src="{{gameUserInfo.score_bg}}"></image>
+                <view class="info-name">{{gameUserInfo.shakeNumber}}</view>
+            </block>
+            <block wx:else>
+                <image class="info-img" src="{{gameUserInfo.score_bg}}"></image>
+                <button class="info-name" plain="true" open-type="share">邀请好友</button>
+            </block>
+            <image class="info-profile" src="{{gameUserInfo.headPortrait}}"></image>
         </view>
     </view>
 </template>
@@ -36,11 +47,27 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
+    import {USER_INFO} from '@/utils/constant';
 
     export default class Stage extends wepy.component {
 
         data = {
-            uploadFileUrl:api.uploadFileUrl,
+            imgApi:imgApi,
+            // 灰人
+            no_people:imgApi.no_people,
+            stage_red:imgApi.stage_red,
+            stage_blue:imgApi.stage_blue,
+            stage_brown:imgApi.stage_brown,
+
+            ready:imgApi.ready,
+            no_ready:imgApi.no_ready,
+
+            score_bg_red: imgApi.score_bg_red,
+            score_bg_brown: imgApi.score_bg_brown,
+            score_bg_blue: imgApi.score_bg_blue,
+
+            userInfo:null,
         };
 
         props = {
@@ -49,27 +76,58 @@
                 type:String,
                 default:'small',
             },
-            // 当前选择的人物
-            profile:{
-                type:String,
-                default:'man1'
-            },
-            // 是否准备
-            isReady:{
-                type:Boolean,
-                default:false
-            },
-            // 抖动次数
-            shakeNumber:{
-                type:Number,
-                default:0
-            },
-            // 头像
-            headPortrait:{
-                type:String,
+            // // 当前选择的人物
+            // profile:{
+            //     type:String,
+            //     default:'man1'
+            // },
+            // // 是否准备
+            // isReady:{
+            //     type:Boolean,
+            //     default:false
+            // },
+            // // 抖动次数
+            // shakeNumber:{
+            //     type:Number,
+            //     default:0
+            // },
+            // // 头像
+            // headPortrait:{
+            //     type:String,
+            //     default:null
+            // }
+
+            // gameUserInfo:{
+            //     stageSize:'',logo:'',stage:'',isReady:false,score_bg:'',shakeNumber:0,headPortrait:''
+            // }
+            gameUserInfo:{
+                type:Object,
                 default:null
             }
+        };
+
+        async onLoad(){
+             // 获取用户信息
+             let userInfo = await wepy.getStorageSync(USER_INFO);
+             this.userInfo = userInfo;
+             this.$apply();
         }
+
+        onShareAppMessage(res) {
+            let that = this;
+            if (res.from === 'button' || res.from === 'menu') {
+                // 来自页面内转发按钮
+                return {
+                    title: '自定义转发标题',
+                    path: '/page/gaming?share='+that.userInfo.id
+                }
+            }
+
+        }
+
+        methods = {
+
+        };
     }
 </script>
 
@@ -174,6 +232,7 @@
                 font-size: 24rpx;
                 color: #000;
                 opacity: 0.7;
+                border: 0rpx solid #fff;
             }
 
             .info-profile{

@@ -1,7 +1,7 @@
 <template>
     <view class="loading">
         <view class="shang">
-            <image src="{{loading}}"></image>
+            <image src="{{loading_loading}}"></image>
             <view>加载中...</view>
         </view>
         <view class="xia">
@@ -31,11 +31,15 @@
             outWidth:700,
             progressHeight:27,
             progressWidth:0,
-            loading:imgApi.loading,
+            loading_loading:imgApi.loading_loading,
+            game:null,
         };
 
         // 在Page和Component共用的生命周期函数
-        onLoad() {
+        async onLoad(options) {
+            this.game = await options.game;
+            // console.log(this.game );
+            this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -49,13 +53,16 @@
             setTimeout(function() {
                 clear_set = setInterval(function() {
                     let outWidth = that.outWidth;
-                    console.log(outWidth)
+                    // console.log(outWidth)
                     let progressWidth = that.progressWidth;
                     progressWidth += 50;
                     that.progressWidth = progressWidth;
                     that.$apply();
                     if(progressWidth >= outWidth){
                         clearInterval(clear_set);
+                        wepy.reLaunch({
+                            url: '/pages/gaming?game='+that.game,
+                        });
                     }
                 },500);
             },1000)
