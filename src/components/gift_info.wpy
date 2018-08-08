@@ -1,0 +1,189 @@
+<template>
+    <view class="gift-info" style="width: 100%;height:100%">
+        <scroll-view scroll-y>
+            <block wx:for="{{giftInfo}}" wx:for-item="giftInfo" wx:key="{{index}}">
+
+                <view class="gift-info-each">
+                    <view class="left">
+                        <view class="left-img">
+                            <image src="{{giftInfo.img}}"></image>
+                        </view>
+                        <view class="left-info">
+                            <view class="gift-name">{{giftInfo.name}}</view>
+                            <view class="energy">
+                                <image src="{{energy}}"></image>
+                                <view>{{giftInfo.energy}}</view>
+                            </view>
+                        </view>
+                    </view>
+                    <view class="right">
+                        <view class="gift-code">
+                            <image src="{{shake_code}}"></image>
+                            <view>{{giftInfo.code}}</view>
+                        </view>
+                        <view class="btn">
+                            <view class="btn1">5</view>
+                            <view class="btn2">购买</view>
+                        </view>
+                    </view>
+                </view>
+
+            </block>
+        </scroll-view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
+
+    export default class GiftInfo extends wepy.component {
+
+        data = {
+            energy: imgApi.energy,
+            shake_code: imgApi.shake_code,
+        };
+
+        props = {
+            // giftInfo:[
+            //     {img:'',name:'',code:''}
+            // ],
+            giftInfo:{
+                type:Array,
+                default:null,
+            }
+        }
+
+    }
+</script>
+
+<style lang="less">
+    .gift-info{
+        display: flex;
+        padding: 20rpx 20rpx;
+        box-sizing: border-box;
+
+        .gift-info-each{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20rpx;
+            background-color: #fff;
+
+            .left{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                width: 50%;
+
+                .left-img{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 150rpx;
+                    height: 150rpx;
+
+                    image{
+                        width: 120rpx;
+                        height: 120rpx;
+                    }
+                }
+
+                .left-info{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content:flex-start;
+                    align-items: center;
+                    width: 150rpx;
+                    height: 150rpx;
+                    margin-left: 20rpx;
+
+                    .gift-name{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        width: 100%;
+                        height: 50%;
+                        font-size: 35rpx;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                    .energy{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        width: 100%;
+                        height: 40%;
+                        font-size: 25rpx;
+
+                        image{
+                            width: 21rpx;
+                            height: 26rpx;
+                            margin-right: 10rpx;
+                        }
+                    }
+                }
+
+            }
+            .right{
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                width: 50%;
+                height: 150rpx;
+
+                .gift-code{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    width: 60%;
+                    height: 100%;
+                    margin-top: 29rpx;
+
+                    image{
+                        width: 30rpx;
+                        height: 29rpx;
+                        margin-right: 8rpx;
+                    }
+
+                    view{
+                        font-size: 30rpx;
+                        color: #ffc849;
+                    }
+                }
+
+                .btn{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 40%;
+
+                    .btn1,.btn2{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100rpx;
+                        height: 50rpx;
+                        font-size: 25rpx;
+                        border: 1rpx solid #ec2c98;
+                        border-radius: 10rpx;
+                    }
+
+                    .btn1{
+                        margin-bottom: 20rpx;
+                        color: #333;
+                        background-color: #fff;
+                    }
+                    .btn2{
+                        color: #fff;
+                        background: linear-gradient(to top right,#ec2c98, #f68668);
+                    }
+                }
+            }
+        }
+    }
+</style>

@@ -1,7 +1,7 @@
 <template>
     <view class="my-switch">
-        <view class="kuang {{activeDot ? 'ac':'inac'}}"></view>
-        <view class="yuan {{activeDot ? 'active':'inactive'}}" @tap.stop="dot"></view>
+        <view class="kuang {{activeDot == 1 ? 'ac':'inac'}}"></view>
+        <view class="yuan {{activeDot == 1 ? 'active':'inactive'}}" @tap.stop="dot"></view>
     </view>
 </template>
 
@@ -12,16 +12,19 @@
 
         props = {
             activeDot: {
-                type: Boolean,
-                default: false,
+                type: Number,
+                default: 0,
                 twoWay: true,
             },
         };
 
         methods = {
-            async dot(){
-                // console.log(this.activeDot);
-                this.activeDot = await !this.activeDot;
+            dot(){
+                if(this.activeDot == 1){
+                    this.activeDot = 0;
+                } else if(this.activeDot == 0){
+                    this.activeDot = 1;
+                }
                 this.$apply();
             }
         }

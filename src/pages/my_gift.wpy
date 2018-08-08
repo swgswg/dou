@@ -1,0 +1,150 @@
+<template>
+    <view class="my-gift" style="width:{{windowWidth}}px;">
+        <block wx:for="{{mygift}}" wx:for-item="gift" wx:key="{{index}}">
+            <view class="mygift-each">
+                <view class="flex-center">
+                    <image class="gift-img" src="{{gift.img}}"></image>
+                </view>
+                <view class="gift-name">
+                    {{gift.name}}
+                </view>
+                <view class="gift-energy">
+                    <image src="{{energy}}"></image>
+                    <text class="en">{{gift.energy}}</text>
+                    <text class="no">{{gift.number}}</text>
+                </view>
+            </view>
+        </block>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '我的礼物'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {};
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            windowWidth:0,
+            windowHeight:0,
+            energy:imgApi.energy,
+            mygift:[
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+                {img:imgApi.gift1,name:'aaaaa',energy:10000,number:100},
+            ]
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+            let systemInfo = wepy.getSystemInfoSync();
+            this.windowWidth =systemInfo.windowWidth;
+            this.windowHeight=systemInfo.windowHeight;
+            this.$apply();
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        // 声明页面所引用的Mixin实例
+        mixins = [];
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+
+        .my-gift{
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            /*padding: 30rpx 20rpx 0 20rpx;*/
+            /*box-sizing: border-box;*/
+
+            .mygift-each{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 29.5%;
+                height: 250rpx;
+                margin-top: 20rpx;
+                margin-left: 20rpx;
+                padding: 10rpx;
+                box-sizing: border-box;
+                background-color: #fff;
+
+                .gift-img{
+                    width: 150rpx;
+                    height: 150rpx;
+                }
+
+                .gift-name{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 30rpx;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .gift-energy{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 100%;
+
+                    image{
+                        width: 26rpx;
+                        height: 21rpx;
+                    }
+
+                    .en{
+                        font-size: 20rpx;
+                    }
+                    .no{
+                        margin-left: 20rpx;
+                        font-size: 25rpx;
+                        color: #ffc849;
+                    }
+                }
+
+            }
+
+
+        }
+    }
+</style>

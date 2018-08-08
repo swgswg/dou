@@ -9,14 +9,19 @@
             <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrl"></circle>
             <image class="content-img-right" src="{{rightImg}}" data-shake="0" @tap.stop="shakeTransform"/>
         </view>
-        <view class="shake-number">{{shakeNumber}}</view>
-        <view class="shake-time">持续时长：{{shakeTime}}</view>
+        <block wx:if="{{shakeData == 1}}">
+            <view class="shake-number">{{shakeLegNumber}}</view>
+        </block>
+        <block wx:if="{{shakeData == 0}}">
+            <view class="shake-number">{{shakeHandNumber}}</view>
+        </block>
+        <!--<view class="shake-time">持续时长：{{shakeTime}}</view>-->
     </view>
 
 </template>
 <script>
     import wepy from 'wepy';
-    import {SHAKE_TIME,SHAKE_NUMBER} from '@/utils/constant';
+    import {SHAKE_HAND_TIME,SHAKE_HAND_NUMBER,USER_INFO} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
     import ShakeStyle from '@/components/shake_style';
@@ -39,6 +44,8 @@
             open_room:imgApi.open_room,
             leftImg:imgApi.to_left,
             rightImg:imgApi.to_right,
+            userInfo:null,
+            shareId:null,
             // 点击图片跳转(此处不需要跳转)
             locationUrl:null,
             // 抖动方式,默认抖腿(0手动,1脚动)
@@ -46,15 +53,31 @@
             // 默认抖动方式对应的图片
             imgSrcData:imgApi.leg_shake,
             // 抖动次数
-            shakeNumber:0,
+            // shakeNumber:0,
+            shakeLegNumber:0,
+            shakeHandNumber:0,
             // 抖动时间
-            shakeTime:0,
+            shakeHandTime:0,
         };
 
         // 在Page和Component共用的生命周期函数
-        onLoad() {
+        async onLoad(options) {
+            // 获取用户信息
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userInfo = userInfo;
+            this.$apply();
 
-
+            // 通过转发进来的建立好友关系
+            if(!util.isEmpty(options.share)){
+                let shareId = options.share;
+                console.log(shareId);
+                await api.inviteFriend({
+                    query:{
+                        userId:userInfo.id,
+                        weChat:shareId,
+                    }
+                });
+            }
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -64,21 +87,24 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-            let that = this;
-            setInterval(function() {
-                let shakeTime = wepy.getStorageSync(SHAKE_TIME);
-                // console.log(shakeTime);
-                shakeTime = util.secondToHMS(shakeTime);
-                that.shakeTime = shakeTime;
-                that.$apply();
-            },1000)
+            // 手动抖动
+            // let that = this;
+            // setInterval(function() {
+            //     let shakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
+            //     // console.log(shakeHandTime);
+            //     shakeHandTime = util.secondToHMS(shakeHandTime);
+            //     that.shakeHandTime = shakeHandTime;
+            //     that.$apply();
+            // },1000)
+            console.log(this.userInfo);
         };
 
         // 转发
         onShareAppMessage(){
+            let that = this;
             return {
                 title: '赶快来挑战吧',
-                path: '/page/go_shake'
+                path: '/page/go_shake?share='+that.userInfo.id
             }
         };
 
@@ -95,26 +121,26 @@
 
             // 手动点击,获取点击次数
             getClickNumber(e){
-                let shakeNumber = this.shakeNumber;
+                let shakeHandNumber = this.shakeHandNumber;
                 if(this.shakeData == 0){
-                    shakeNumber++;
-                    this.shakeNumber = shakeNumber;
+                    shakeHandNumber++;
+                    this.shakeHandNumber = shakeHandNumber;
                     this.$apply();
-                    wepy.setStorageSync(SHAKE_NUMBER,shakeNumber);
+                    wepy.setStorageSync(SHAKE_HAND_NUMBER,shakeHandNumber);
                 }
             },
 
             // 开设房间
             openRoom(){
                 wepy.navigateTo({
-                    url: ''
+                    url: '/pages/loading'
                 });
             }
         };
 
         watch = {
             shakeData(newValue,oldValue){
-                console.log(newValue)
+                // console.log(newValue)
                 this.shakeChange(newValue);
             },
         };

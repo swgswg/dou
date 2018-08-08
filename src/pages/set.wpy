@@ -2,18 +2,21 @@
     <view class="page-set">
         <!--声音-->
         <view class="mb10">
-            <soundset :setImg.sync="setSoundImg" :setName.sync="setSoundName" :activeDot="soundActiveDot"></soundset>
+            <soundset :setImg.sync="setSoundImg" :setName.sync="setSoundName" :activeDot.sync="soundActiveDot"></soundset>
         </view>
 
         <!--振动-->
         <view class="mb10">
-            <vibranceset :setImg.sync="setVibranceImg" :setName.sync="setVibranceName" :activeDot="vibranceActiveDot"></vibranceset>
+            <vibranceset :setImg.sync="setVibranceImg" :setName.sync="setVibranceName" :activeDot.sync="vibranceActiveDot"></vibranceset>
         </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import {USER_INFO} from '@/utils/constant';
     import Set from '@/components/set';
 
     export default class MyPage extends wepy.page {
@@ -32,15 +35,16 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            userInfo:null,
             // 声音
-            setSoundImg:'set_sound.png',
+            setSoundImg:imgApi.set_sound,
             setSoundName:'声音',
-            soundActiveDot:true,
+            soundActiveDot:0,
 
             // 振动
-            setVibranceImg:'set_vibrance.png',
+            setVibranceImg:imgApi.set_vibrance,
             setVibranceName:'振动',
-            vibranceActiveDot:false,
+            vibranceActiveDot:0,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -55,20 +59,61 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-
+            // 获取设置信息
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            // console.log(userInfo);
+            this.userInfo = userInfo;
+            this.soundActiveDot = parseInt(userInfo.voice);
+            this.vibranceActiveDot = parseInt(userInfo.shake);
+            this.$apply();
         };
 
         // 声明计算属性（详见后文介绍）
         computed = {};
 
         // 声明数据watcher（详见后文介绍）
-        watch = {};
+        watch = {
+            // 声音设置
+            async soundActiveDot(newValue){
+                let that = this;
+                console.log(newValue);
+                await api.updateSet({
+                    query:{
+                        userId:that.userInfo.id,
+                        voice:newValue
+                    }
+                });
+            },
+            // 振动设置
+            async vibranceActiveDot(newValue){
+                let that = this;
+                console.log(newValue);
+                await api.updateSet({
+                    query:{
+                        userId:that.userInfo.id,
+                        shake:newValue
+                    }
+                });
+            }
+        };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {};
 
         // 声明组件之间的事件处理函数
         events = {};
+
+        // 修改设置
+        // async updateSet(myshake,myvoice){
+        //     let user_id = this.userInfo.id;
+        //     let res = await api.updateSet({
+        //         query:{
+        //             userId:user_id,
+        //             shake:myshake,
+        //             voice:myvoice
+        //         }
+        //     });
+        // }
     }
 </script>
 

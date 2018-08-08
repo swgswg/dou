@@ -85,6 +85,10 @@ const getUserGift = (params) => wxRequest(params, host + 'shakeLeg/user/getUserG
 const getPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/getPresentsWall');
 // 查询完成的礼物墙
 const getPresentsWalls = (params) => wxRequest(params, host + 'shakeLeg/user/getPresentsWalls');
+// 修改声音/振动设置
+const updateSet = (params) => wxRequest(params, host + 'shakeLeg/user/updateSet');
+// 邀请好友
+const inviteFriend = (params) => wxRequest(params, host + 'shakeLeg/user/inviteFriend');
 
 export default {
     host,
@@ -101,5 +105,6 @@ export default {
     getUserGift,
     getPresentsWall,
     getPresentsWalls,
-
+    updateSet,
+    inviteFriend,
 };

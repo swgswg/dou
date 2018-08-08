@@ -83,7 +83,6 @@ export default class Tips {
     /**
      * 错误框
      */
-
     static error(title, onHide) {
         wx.showToast({
             title: title,

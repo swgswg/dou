@@ -178,7 +178,7 @@
 <script>
     import wepy from 'wepy';
     import 'wepy-async-function';
-    import { USER_INFO, SHAKE_TIME,SHAKE_NUMBER } from '@/utils/constant';
+    import { USER_INFO, SHAKE_HAND_TIME,SHAKE_HAND_NUMBER } from '@/utils/constant';
     import api from '@/utils/api';
     import util from '@/utils/util';
 
@@ -188,6 +188,7 @@
 
                 'pages/history_rank',
                 'pages/home',
+                'pages/my_gift',
                 'pages/select_sex',
                 'pages/not_connected',
                 'pages/connect_bluetooth',
@@ -271,7 +272,7 @@
             var shakeTime = 0;
             setInterval(function() {
                 shakeTime++;
-                wepy.setStorageSync(SHAKE_TIME, shakeTime);
+                wepy.setStorageSync(SHAKE_HAND_TIME, shakeTime);
                 // console.log(shakeTime);
             },1000);
         }
@@ -279,9 +280,9 @@
         // 把上次的记录存入数据库(个人记录不需要房间号)
         async addRecord(){
             let userInfo = wepy.getStorageSync(USER_INFO);
-            let prevShakeTime = wepy.getStorageSync(SHAKE_TIME);
+            let prevShakeTime = wepy.getStorageSync(SHAKE_HAND_TIME);
             console.log('prevShakeTime' + '===' +prevShakeTime);
-            let prevShakeNumber = wepy.getStorageSync(SHAKE_NUMBER);
+            let prevShakeNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
             console.log('prevShakeNumber' + '===' +prevShakeNumber);
             if(!util.isEmpty(prevShakeTime)){
                 prevShakeTime = util.secondToDHMS(prevShakeTime);
@@ -298,8 +299,8 @@
                     }
                 });
                 if(res.data.state){
-                    wepy.setStorageSync(SHAKE_TIME, 0);
-                    wepy.setStorageSync(SHAKE_NUMBER, 0);
+                    wepy.setStorageSync(SHAKE_HAND_TIME, 0);
+                    wepy.setStorageSync(SHAKE_HAND_NUMBER, 0);
                 }
             }
         }

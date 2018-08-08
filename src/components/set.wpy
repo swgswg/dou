@@ -2,7 +2,7 @@
     <view>
         <view class="set">
             <view class="set-left">
-                <image src="{{'/static/images/' +setImg}}"></image>
+                <image src="{{setImg}}"></image>
                 <view class="">{{setName}}</view>
             </view>
             <view class="set-right">
@@ -38,8 +38,8 @@
             },
             // 设置项开/关
             activeDot:{
-                type:Boolean,
-                default:false,
+                type:Number,
+                default:0,
                 twoWay:true
             }
         }

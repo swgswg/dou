@@ -11,8 +11,7 @@
                             direction="all"
                             disabled
                             bindchange="moveGift"
-                            data-index="{{index}}"
-                    >
+                            data-index="{{index}}">
                         <image src="{{flower}}" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
                     </movable-view>
                 </block>
@@ -22,8 +21,7 @@
                             x="{{gift.xaxle}}" y="{{gift.yaxle}}"
                             direction="all"
                             bindchange="moveGift"
-                            data-index="{{index}}"
-                    >
+                            data-index="{{index}}">
                         <image src="{{flower}}" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
                     </movable-view>
                 </block>

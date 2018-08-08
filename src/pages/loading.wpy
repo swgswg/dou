@@ -1,7 +1,7 @@
 <template>
     <view class="loading">
         <view class="shang">
-            <image src="/static/images/loading_loading.png"></image>
+            <image src="{{loading}}"></image>
             <view>加载中...</view>
         </view>
         <view class="xia">
@@ -12,6 +12,7 @@
 
 <script>
     import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
     import Progress from '@/components/common/progress'
 
     export default class MyPage extends wepy.page {
@@ -30,6 +31,7 @@
             outWidth:700,
             progressHeight:27,
             progressWidth:0,
+            loading:imgApi.loading,
         };
 
         // 在Page和Component共用的生命周期函数

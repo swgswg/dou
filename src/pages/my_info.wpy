@@ -62,12 +62,12 @@
             photo:'',
             logo:'',
             showInfoList:[
-                {img:imgApi.shop, title:'商城', skip:''},
-                {img:imgApi.happy, title:'娱乐模式',skip:''},
-                {img:imgApi.fans, title:'粉丝大排名',skip:''},
-                {img:imgApi.record, title:'我的好友',skip:''},
-                {img:imgApi.gift, title:'我的历史奖品',skip:''},
-                {img:imgApi.set, title:'设置',skip:''},
+                {img:imgApi.shop, title:'商城', skip:'/pages/mall'},
+                {img:imgApi.fans, title:'粉丝大排名',skip:'/pages/fans_rank'},
+                {img:imgApi.friend, title:'我的好友',skip:''},
+                {img:imgApi.gift, title:'我的礼物',skip:'/pages/my_gift'},
+                {img:imgApi.gift_wall, title:'我的礼物墙',skip:'/pages/gift_picture'},
+                {img:imgApi.set, title:'设置',skip:'/pages/set'},
             ],
             // 是否显示当前礼物墙
             isShowGift:false,

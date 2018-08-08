@@ -55,7 +55,7 @@
             // 每页数量
             friendRankingPageSize:8,
             // 是不是第一页
-            isFirstPage:false,
+            // isFirstPage:false,
             // 是不是最后一页
             isLastPage:false,
 
@@ -89,9 +89,14 @@
                 if(change == 'prev'){
                     // 上一页
                     page = this.friendRankingPage;
-                    // console.log(page);
                     if(page <= 1){
                          page == 1;
+                        wx.showToast({
+                            title: '这是第一页了',
+                            icon: 'none',
+                            duration: 1000
+                        });
+                         return;
                     } else {
                         page = page - 1;
                     }
@@ -101,10 +106,15 @@
                     // 判断是不是最后一页
                     if(this.isLastPage){
                         page = page;
+                        wx.showToast({
+                            title: '这是最后一页了',
+                            icon: 'none',
+                            duration: 1000
+                        });
+                        return;
                     } else {
                         page = page + 1;
                     }
-                    console.log(page);
                 }
                 this.getFriendRanking(page,this.friendRankingPageSize,this.weekOrAll);
                 this.friendRankingPage = page;
@@ -119,6 +129,7 @@
             let user_id = userInfo.id;
             let res = await api.getFriend({
                 query:{
+                    userId:user_id,
                     page:mypage,
                     pageSize:mypageSize,
                     type:mytype
@@ -135,8 +146,11 @@
                     return;
                 }
                 this.friendRanking = friendRankngData;
+                // 是不是第一页
+                // this.isFirstPage = res.data.data.PageInfo.isFirstPage;
                 // 是不是最后一页
                 this.isLastPage = res.data.data.PageInfo.isLastPage;
+                this.is_empty = false;
                 this.$apply();
 
             } else {
