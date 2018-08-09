@@ -31,7 +31,7 @@
         <!--其他玩家 end-->
 
         <view class="info">
-            <block wx:if="{{gameUserInfo.headPortrait}}">
+            <block wx:if="{{gameUserInfo.isExiet}}">
                 <image class="info-img" src="{{gameUserInfo.score_bg}}"></image>
                 <view class="info-name">{{gameUserInfo.shakeNumber}}</view>
             </block>
@@ -72,10 +72,10 @@
 
         props = {
             // 当前选择的舞台(big/small)
-            stageSize:{
-                type:String,
-                default:'small',
-            },
+            // stageSize:{
+            //     type:String,
+            //     default:'small',
+            // },
             // // 当前选择的人物
             // profile:{
             //     type:String,
@@ -103,6 +103,11 @@
             gameUserInfo:{
                 type:Object,
                 default:null
+            },
+            roomId:{
+                type:Number,
+                default:null,
+                twoWay:true
             }
         };
 
@@ -115,11 +120,12 @@
 
         onShareAppMessage(res) {
             let that = this;
+            console.log(that.roomId);
             if (res.from === 'button' || res.from === 'menu') {
                 // 来自页面内转发按钮
                 return {
                     title: '自定义转发标题',
-                    path: '/page/gaming?share='+that.userInfo.id
+                    path: '/page/gaming?share='+that.userInfo.id+'roomId='+that.roomId
                 }
             }
 

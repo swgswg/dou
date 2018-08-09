@@ -23,7 +23,6 @@
 
 <script>
     import wepy from 'wepy';
-    import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
 
@@ -136,10 +135,10 @@
 <style lang="less">
     .select-time{
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
         width: 99%;
-        /*height: 100rpx;*/
+        height: 120rpx;
         /*border: 1rpx solid red;*/
 
         .mypicker{
@@ -155,15 +154,15 @@
 
             .picker-each{
                 display: flex;
-                justify-content: center;
+                justify-content: flex-start;
                 align-items: center;
-                width: 100%;
+                width: 170rpx;
                 height: 110rpx;
                 /*border: 1rpx solid red;*/
             }
 
             .minute,.second{
-                margin-left: 22rpx;
+                /*margin-left: 22rpx;*/
             }
         }
 
@@ -171,6 +170,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+
             image{
                 width: 98rpx;
                 height: 98rpx;

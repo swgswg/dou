@@ -89,6 +89,8 @@ const getPresentsWalls = (params) => wxRequest(params, host + 'shakeLeg/user/get
 const updateSet = (params) => wxRequest(params, host + 'shakeLeg/user/updateSet');
 // 邀请好友
 const inviteFriend = (params) => wxRequest(params, host + 'shakeLeg/user/inviteFriend');
+// 创建房间
+const addRoom = (params) => wxRequest(params, host + 'shakeLeg/user/addRoom');
 
 export default {
     host,
@@ -107,4 +109,5 @@ export default {
     getPresentsWalls,
     updateSet,
     inviteFriend,
+    addRoom,
 };

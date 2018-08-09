@@ -13,7 +13,9 @@
 <script>
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
-    import Progress from '@/components/common/progress'
+    import api from '@/utils/api';
+    import {USER_INFO} from '@/utils/constant';
+    import Progress from '@/components/common/progress';
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -33,13 +35,18 @@
             progressWidth:0,
             loading_loading:imgApi.loading_loading,
             game:null,
+            userId:null,
+            roomId:null,
         };
 
         // 在Page和Component共用的生命周期函数
         async onLoad(options) {
             this.game = await options.game;
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
             // console.log(this.game );
             this.$apply();
+
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -47,10 +54,39 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
+        async onReady() {
+            // 创建房间
+            this.addRoom();
+
+            // 进度条加载
+            this.progress();
+
+        };
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 创建房间
+        async addRoom(){
+            // 创建房间
+            let res = await api.addRoom({
+                query:{
+                    userId:this.userId,
+                    status: this.game,
+                }
+            });
+            console.log(res.data.data);
+            this.roomId = res.data.data.roomId;
+            this.$apply();
+        }
+
+        // 进度条
+         progress(){
+            // console.log(this.roomId);
             let that = this;
             let clear_set = null;
-            setTimeout(function() {
+             setTimeout(function() {
+
                 clear_set = setInterval(function() {
                     let outWidth = that.outWidth;
                     // console.log(outWidth)
@@ -59,19 +95,15 @@
                     that.progressWidth = progressWidth;
                     that.$apply();
                     if(progressWidth >= outWidth){
+                        // console.log(that.roomId);
                         clearInterval(clear_set);
                         wepy.reLaunch({
-                            url: '/pages/gaming?game='+that.game,
+                            url: '/pages/gaming?game='+that.game+'&roomId='+that.roomId,
                         });
                     }
                 },500);
             },1000)
-
-        };
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
-
+        }
     }
 </script>
 

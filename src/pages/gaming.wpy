@@ -11,7 +11,7 @@
         <!--当前账号 start-->
         <view class="shang">
             <stageshang
-                :gameUserInfo.sync="gameUserInfo_shang"
+                :gameUserInfo.sync="gameUserInfo_shang" :roomId.sync="roomId"
             ></stageshang>
         </view>
         <!--当前账号 end-->
@@ -26,7 +26,7 @@
             <!--左边玩家 end-->
 
             <!--中间圆环 start-->
-            <view class="xia-circle">
+            <view class="xia-circle" @tap.stop="handShake">
                 <view class="circle-each xia-circle1">
                     <view class="circle-each xia-circle2">
                         <view class="circle-each xia-circle3">
@@ -48,7 +48,7 @@
 
         <!--开始按钮 start-->
         <view class="btn-img">
-            <image src="{{changeBtn}}" wx:if="{{isDot}}" @tap.stop="clickBtn"></image>
+            <image src="{{changeBtn}}" wx:if="{{haveChangeBtn}}" @tap.stop="clickBtn"></image>
         </view>
         <!--开始按钮 end-->
 
@@ -98,8 +98,10 @@
             logout:imgApi.logout,
             windowWidth:0,
             windowHeight:0,
-            // 抖动方式
+            // 抖动方式(1抖腿,0手抖)
             shakeStyle:null,
+            // 房间号
+            roomId:null,
             // 是不是房主
             isMaster:false,
             // 是否在游戏中
@@ -108,25 +110,26 @@
             isCountdown:false,
 
             // 当前账号 stage舞台大小 profile人物形象 isReady是否准备好 headPortrait头像
-            gameUserInfo_shang:{stageSize:'big',logo:imgApi.no_people,stage:imgApi.stage_red,isReady:false,score_bg:imgApi.score_bg_red,shakeNumber:0,headPortrait:''},
+            gameUserInfo_shang:{isExiet:true,stageSize:'big',logo:imgApi.no_people,stage:imgApi.stage_red,isReady:false,score_bg:imgApi.score_bg_red,shakeNumber:0,headPortrait:''},
 
             // 左边玩家
-            gameUserInfo_left:{stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:true,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
+            gameUserInfo_left:{isExiet:false,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:false,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
 
             // 右边玩家
-            gameUserInfo_right:{stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_blue,isReady:true,score_bg:imgApi.score_bg_blue,shakeNumber:0,headPortrait:''},
+            gameUserInfo_right:{isExiet:true,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_blue,isReady:true,score_bg:imgApi.score_bg_blue,shakeNumber:0,headPortrait:'a'},
 
             // 抖动方式对应的图片
             leg_shake:imgApi.leg_shake,
             // 按钮图片(默认ready)
             changeBtn:imgApi.ready_btn,
-            // 按钮是否可点击
-            isDot:true,
+            // 按钮是否存在
+            haveChangeBtn:true,
             // 选择的倒计时时间
             selectTime:[],
             selectTimeIndex:[0,0,0],
             // 倒计时结束(true为结束)
             countdownOver:false,
+            // 3-2-1倒计时
             countdown1:imgApi.countdown1,
             countdown2:imgApi.countdown2,
             countdown3:imgApi.countdown3,
@@ -142,36 +145,27 @@
             this.windowWidth = systemInfo.windowWidth;
             this.windowHeight = systemInfo.windowHeight;
 
-            // 获取抖动方式 创建房间才有
+            console.log(options);
+
+            // 获取抖动方式和房间号并判断是不是房主(抖动方式由房主确定) 创建房间才有
             if(options.game == 1 ||options.game == 0 ){
-                console.log(options.game);
-                if(options.game == 1){
-                    this.shakeStyle = imgApi.leg_shake;
-                } else if(options.game == 0){
-                    this.shakeStyle = imgApi.hand_shake;
-                }
-                this.isMaster = true;
-                this.$apply();
+                // console.log(options.game);
+                this.getShakeStyle(options.game)
             }
 
             // 获取用户信息
             let userInfo = await wepy.getStorageSync(USER_INFO);
-            console.log(userInfo);
+            // console.log(userInfo);
             this.userInfo = userInfo;
-            // 通过转发进来的建立好友关系
+
+            // 建立好友
             if(!util.isEmpty(options.share)){
-                let shareId = options.share;
-                console.log(shareId);
-                await api.inviteFriend({
-                    query:{
-                        userId:userInfo.id,
-                        weChat:shareId,
-                    }
-                });
+                this.buildFriend(userInfo.id,options.share);
             }
 
             // 修改当前玩家信息
             let gameUserInfo_shang =  this.gameUserInfo_shang;
+            gameUserInfo_shang.isExiet = true;
             gameUserInfo_shang.logo = imgApi[userInfo.logo];
             gameUserInfo_shang.headPortrait = userInfo.photo;
             this.gameUserInfo_shang = gameUserInfo_shang;
@@ -193,53 +187,53 @@
 
         // 声明数据watcher（详见后文介绍）
         watch = {
+            // 监听三个账号都准备好 房主按钮又ready->start
             gameUserInfo_shang(newValue){
                 if(newValue.isReady){
-                    if(this.gameUserInfo_left.isReady && this.gameUserInfo_right.isReady && this.isMaster){
-                        this.changeBtn = imgApi.start_btn;
+                    if(this.gameUserInfo_left.isExiet || this.gameUserInfo_right.isExiet){
+                        if( (this.gameUserInfo_left.isReady && this.isMaster) || (this.gameUserInfo_right.isReady && this.isMaster) ){
+                            this.changeBtn = imgApi.start_btn;
+                        }
                     }
+
                 }
             },
 
             gameUserInfo_left(newValue){
                 if(newValue.isReady){
-                    if(this.gameUserInfo_shang.isReady && this.gameUserInfo_right.isReady && this.isMaster){
+                    // if(this.gameUserInfo_shang.isReady && this.gameUserInfo_right.isReady && this.isMaster){
+                    if(this.gameUserInfo_shang.isReady && this.isMaster){
                         this.changeBtn = imgApi.start_btn;
                     }
                 }
             },
+
+
 
             gameUserInfo_right(newValue){
                 if(newValue.isReady){
-                    if(this.gameUserInfo_left.isReady && this.gameUserInfo_right.isReady && this.isMaster){
+                    // if(this.gameUserInfo_left.isReady && this.gameUserInfo_right.isReady && this.isMaster){
+                    if(this.gameUserInfo_left.isReady && this.isMaster){
                         this.changeBtn = imgApi.start_btn;
                     }
                 }
             },
 
+            // 游戏时间到
             countdownOver(newValue){
-                let that = this;
-                console.log(newValue);
                 if(newValue){
-                    that.isCountdown = true;
-                    let clear_set = null;
-                    let i = 3;
-                    clear_set = setInterval(function() {
-                        i--;
-                        if(i == 2 ){
-                            that.countdown3 = that.countdown2;
-                        } else if( i == 1){
-                            that.countdown3 = that.countdown1;
+                    wx.showModal({
+                        content:'游戏时间到',
+                        showCancel:false,
+                        success:function(res) {
+                            if (res.confirm) {
+                                console.log('用户点击确定');
+                                // 提交数据
+
+                            }
                         }
-                        if(i<=0){
-                            that.isGaming = true;
-                            that.isCountdown = false;
-                            clearInterval(clear_set);
-                        }
-                        that.$apply();
-                    },1000);
+                    });
                 }
-                that.$apply();
             }
 
         };
@@ -249,51 +243,29 @@
 
             // 点击按钮
             clickBtn(e){
-                let that = this;
                 // 获取当前玩家信息
                 let gameUserInfo_shang =  this.gameUserInfo_shang;
                 let gameUserInfo_left =  this.gameUserInfo_left;
                 let gameUserInfo_right =  this.gameUserInfo_right;
                 // 都准备好,并且是房主,拥有开始游戏权利
-                if(gameUserInfo_shang.isReady && gameUserInfo_left.isReady && gameUserInfo_right.isReady && this.isMaster){
-                    // 开始游戏
+                if(gameUserInfo_shang.isReady && (gameUserInfo_left.isReady || gameUserInfo_right.isReady) && this.isMaster){
+                // if(gameUserInfo_shang.isReady && gameUserInfo_left.isReady && gameUserInfo_right.isReady && this.isMaster){
                     // 判断有没有选时间
-                    let selectTimeIndex = this.selectTimeIndex;
-                    if((selectTimeIndex[0] == 0 && selectTimeIndex[1] == 0 && selectTimeIndex[2] == 0) || this.timeConfirm){
-                        wx.showToast({
-                            title: '请选择时间',
-                            icon: 'none',
-                            duration: 1000
-                        });
+                    if(!this.isMasterTime()){
                         return;
                     }
 
                     // 倒计时
-                    that.isCountdown = true;
-                    let clear_set = null;
-                    let i = 3;
-                    clear_set = setInterval(function() {
-                        i--;
-                        if(i == 2 ){
-                            that.countdown3 = that.countdown2;
-                        } else if( i == 1){
-                            that.countdown3 = that.countdown1;
-                        }
-                        if(i<=0){
-                            that.isGaming = true;
-                            that.isCountdown = false;
-                            clearInterval(clear_set);
-                            that.$invoke('selecttime', 'countDown');
-                        }
-                        that.$apply();
-                    },1000);
+                    this.countDown();
                     return;
                 }
 
                 if(gameUserInfo_shang.isReady){
+                    // 准备
                     gameUserInfo_shang.isReady = false;
                     this.changeBtn = imgApi.ready_btn;
                 } else {
+                    // 取消准备
                     gameUserInfo_shang.isReady = true;
                     this.changeBtn = imgApi.no_cancel_btn;
                 }
@@ -301,16 +273,105 @@
 
             },
 
+            // 手抖抖动
+            handShake(e){
+                // 必须是手动模式(0手,1脚)
+                if(this.shakeStyle == 1){
+                    return;
+                }
+                // 必须在3-2-1之后才能开始,游戏中才能开始
+                if(!this.isGaming){
+                    return;
+                }
+                // 计时结束后点击无效
+                if(this.countdownOver){
+                    return;
+                }
+                // 获取当前玩家
+                let gameUserInfo_shang = this.gameUserInfo_shang;
+                // 修改当前玩家点击次数
+                gameUserInfo_shang.shakeNumber++;
+                this.gameUserInfo_shang = gameUserInfo_shang;
+                this.$apply();
+            },
+
             // 退出
             logout(){
+                this.selectTimeIndex = [0,0,0];
                 wepy.switchTab({
                     url: '/pages/go_shake'
                 })
             }
         };
 
-        // 声明组件之间的事件处理函数
-        events = {};
+        // 获取抖动方式和房间号
+        getShakeStyle(game,roomId){
+            if(game == 1){
+                this.shakeStyle = imgApi.leg_shake;
+            } else if(game == 0){
+                this.shakeStyle = imgApi.hand_shake;
+            }
+            this.roomId = roomId;
+            this.isMaster = true;
+            this.$apply();
+        }
+
+        // 建立好友关系
+        async buildFriend(user_id,share_id){
+
+            // 通过转发进来的建立好友关系
+            // if(!util.isEmpty(options.share)){
+                // console.log(shareId);
+                await api.inviteFriend({
+                    query:{
+                        userId:user_id,
+                        weChat:share_id,
+                    }
+                });
+            // }
+        }
+
+
+        // 倒计时
+        countDown(){
+            let that = this;
+            that.isCountdown = true;
+            let clear_set = null;
+            let i = 3;
+            clear_set = setInterval(function() {
+                i--;
+                if(i == 2 ){
+                    that.countdown3 = that.countdown2;
+                } else if( i == 1){
+                    that.countdown3 = that.countdown1;
+                }
+                if(i<=0){
+                    that.isGaming = true;
+                    that.isCountdown = false;
+                    that.haveChangeBtn = false;
+                    clearInterval(clear_set);
+                    that.$invoke('selecttime', 'countDown');
+                }
+                that.$apply();
+            },1000);
+        }
+
+        // 判断主账号有没有选时间
+        isMasterTime(){
+            let selectTimeIndex = this.selectTimeIndex;
+            if((selectTimeIndex[0] == 0 && selectTimeIndex[1] == 0 && selectTimeIndex[2] == 0) || this.timeConfirm){
+                wx.showToast({
+                    title: '请选择时间',
+                    icon: 'none',
+                    duration: 1000
+                });
+                return false;
+            }
+            return true;
+        }
+
+        // 房主开始游戏
+
     }
 </script>
 
@@ -401,6 +462,7 @@
                 justify-content: center;
                 align-items: center;
                 width: 100%;
+                height: 132rpx;
                 margin-top: 40rpx;
 
                 image{
@@ -410,8 +472,11 @@
             }
 
             .timer{
+                width: 100%;
+                height: 120rpx;
                 margin-top: 10rpx;
-                padding-left: 50rpx;
+                text-align: center;
+                /*padding-left: 50rpx;*/
                 box-sizing: border-box;
             }
 
