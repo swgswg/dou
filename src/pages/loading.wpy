@@ -55,8 +55,13 @@
 
         // 只在Page中存在的页面生命周期函数
         async onReady() {
-            // 创建房间
+
+            // 判断这个人当前有没有房间(中途退出或掉线)
+
+            // 没有创建 创建房间
             this.addRoom();
+
+            // 有继续之前的房间
 
             // 进度条加载
             this.progress();
@@ -72,6 +77,7 @@
             let res = await api.addRoom({
                 query:{
                     userId:this.userId,
+                    // 1抖腿,0手抖
                     status: this.game,
                 }
             });

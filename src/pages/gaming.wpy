@@ -30,7 +30,7 @@
                 <view class="circle-each xia-circle1">
                     <view class="circle-each xia-circle2">
                         <view class="circle-each xia-circle3">
-                            <image class="circle-each" src="{{shakeStyle}}"></image>
+                            <image class="circle-each" src="{{shakeStyleImg}}"></image>
                         </view>
                     </view>
                 </view>
@@ -60,7 +60,7 @@
 
         <!--倒计时3-2-1 start-->
         <view wx:if="{{isCountdown}}" class="mymodel" style="width:{{windowWidth}}px;heigght:{{windowHeight}}px">
-            <image src="{{countdown3}}"></image>
+            <image src="{{countdownImg}}"></image>
         </view>
         <!--倒计时3-2-1 end-->
 
@@ -72,7 +72,7 @@
     import util from '@/utils/util';
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
-    import { SYSTEM_INFO, USER_INFO } from '@/utils/constant';
+    import { SYSTEM_INFO, USER_INFO,SHAKE_HAND_TIME,SHAKE_HAND_NUMBER } from '@/utils/constant';
     import Stage from '@/components/stage';
     import Circle from '@/components/circle';
     import SelectTime from '@/components/select_time';
@@ -100,6 +100,8 @@
             windowHeight:0,
             // 抖动方式(1抖腿,0手抖)
             shakeStyle:null,
+            // 抖腿方式对应的图片
+            shakeStyleImg:null,
             // 房间号
             roomId:null,
             // 是不是房主
@@ -113,7 +115,7 @@
             gameUserInfo_shang:{isExiet:true,stageSize:'big',logo:imgApi.no_people,stage:imgApi.stage_red,isReady:false,score_bg:imgApi.score_bg_red,shakeNumber:0,headPortrait:''},
 
             // 左边玩家
-            gameUserInfo_left:{isExiet:false,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:false,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
+            gameUserInfo_left:{isExiet:true,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:false,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
 
             // 右边玩家
             gameUserInfo_right:{isExiet:true,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_blue,isReady:true,score_bg:imgApi.score_bg_blue,shakeNumber:0,headPortrait:'a'},
@@ -125,11 +127,12 @@
             // 按钮是否存在
             haveChangeBtn:true,
             // 选择的倒计时时间
-            selectTime:[],
+            // selectTime:[],
             selectTimeIndex:[0,0,0],
             // 倒计时结束(true为结束)
             countdownOver:false,
             // 3-2-1倒计时
+            countdownImg:'',
             countdown1:imgApi.countdown1,
             countdown2:imgApi.countdown2,
             countdown3:imgApi.countdown3,
@@ -146,6 +149,9 @@
             this.windowHeight = systemInfo.windowHeight;
 
             console.log(options);
+
+            // 进来判断是不是中途退出或掉线的那种
+
 
             // 获取抖动方式和房间号并判断是不是房主(抖动方式由房主确定) 创建房间才有
             if(options.game == 1 ||options.game == 0 ){
@@ -187,33 +193,30 @@
 
         // 声明数据watcher（详见后文介绍）
         watch = {
-            // 监听三个账号都准备好 房主按钮又ready->start
+            // 监听三个账号都准备好 房主按钮由ready->start
             gameUserInfo_shang(newValue){
                 if(newValue.isReady){
                     if(this.gameUserInfo_left.isExiet || this.gameUserInfo_right.isExiet){
-                        if( (this.gameUserInfo_left.isReady && this.isMaster) || (this.gameUserInfo_right.isReady && this.isMaster) ){
+                        if( (this.gameUserInfo_left.isExiet && this.gameUserInfo_left.isReady && this.isMaster) || (this.gameUserInfo_right.isExiet && this.gameUserInfo_right.isReady && this.isMaster) ){
                             this.changeBtn = imgApi.start_btn;
                         }
                     }
-
                 }
             },
 
             gameUserInfo_left(newValue){
                 if(newValue.isReady){
                     // if(this.gameUserInfo_shang.isReady && this.gameUserInfo_right.isReady && this.isMaster){
-                    if(this.gameUserInfo_shang.isReady && this.isMaster){
+                    if(this.gameUserInfo_shang.isExiet && this.gameUserInfo_shang.isReady && this.isMaster){
                         this.changeBtn = imgApi.start_btn;
                     }
                 }
             },
 
-
-
             gameUserInfo_right(newValue){
                 if(newValue.isReady){
-                    // if(this.gameUserInfo_left.isReady && this.gameUserInfo_right.isReady && this.isMaster){
-                    if(this.gameUserInfo_left.isReady && this.isMaster){
+                    // if(this.gameUserInfo_shang.isReady && this.gameUserInfo_left.isReady && this.isMaster){
+                    if(this.gameUserInfo_shang.isExiet && this.gameUserInfo_shang.isReady && this.isMaster){
                         this.changeBtn = imgApi.start_btn;
                     }
                 }
@@ -243,26 +246,43 @@
 
             // 点击按钮
             clickBtn(e){
+                let that = this;
                 // 获取当前玩家信息
                 let gameUserInfo_shang =  this.gameUserInfo_shang;
                 let gameUserInfo_left =  this.gameUserInfo_left;
                 let gameUserInfo_right =  this.gameUserInfo_right;
-                // 都准备好,并且是房主,拥有开始游戏权利
-                if(gameUserInfo_shang.isReady && (gameUserInfo_left.isReady || gameUserInfo_right.isReady) && this.isMaster){
-                // if(gameUserInfo_shang.isReady && gameUserInfo_left.isReady && gameUserInfo_right.isReady && this.isMaster){
-                    // 判断有没有选时间
-                    if(!this.isMasterTime()){
-                        return;
-                    }
 
-                    // 倒计时
-                    this.countDown();
-                    return;
+                // 都准备好,并且是房主,拥有开始游戏权利
+                if(gameUserInfo_shang.isReady && this.isMaster && ((gameUserInfo_left.isExiet && gameUserInfo_left.isReady) || (gameUserInfo_right.isExiet && gameUserInfo_right.isReady))){
+                // if(gameUserInfo_shang.isReady && gameUserInfo_left.isReady && gameUserInfo_right.isReady && this.isMaster){
+
+                    // 判断存在的用户是否准备好(存在用户都没有准备好不能开始游戏,只要有一个准备好了就可以开始游戏)
+                    if( !((gameUserInfo_left.isExiet && gameUserInfo_left.isReady) && (gameUserInfo_right.isExiet && gameUserInfo_right.isReady)) ){
+                        wx.showModal({
+                            title:'温馨提示',
+                            content:'还有玩家没有准备,确定开始游戏吗',
+                            success: function(res) {
+                                if (res.confirm) {
+                                    // 开始游戏
+                                    that.startGame();
+
+                                } else if (res.cancel) {
+
+                                }
+                            }
+                        });
+                    } else {
+                        // 开始游戏
+                        that.startGame();
+
+                    }
+                    return
                 }
 
                 if(gameUserInfo_shang.isReady){
                     // 准备
                     gameUserInfo_shang.isReady = false;
+                    gameUserInfo_shang.shakeNumber = 0;
                     this.changeBtn = imgApi.ready_btn;
                 } else {
                     // 取消准备
@@ -281,6 +301,8 @@
                 }
                 // 必须在3-2-1之后才能开始,游戏中才能开始
                 if(!this.isGaming){
+                    // 非游戏中的点击计入缓存
+                    this.changeShakeHandStorage();
                     return;
                 }
                 // 计时结束后点击无效
@@ -297,19 +319,41 @@
 
             // 退出
             logout(){
-                this.selectTimeIndex = [0,0,0];
+                let that = this;
+                let selectTimeIndex = this.selectTimeIndex;
+                if( (selectTimeIndex[0] != 0 || selectTimeIndex[1] != 0 || selectTimeIndex[2] != 0) && !this.timeConfirm){
+                    wx.showModal({
+                        title:'温馨提示',
+                        content:'您正在游戏中,谨慎退出',
+                        success:function(res) {
+                            if (res.confirm) {
+                                that.$apply();
+                                wepy.switchTab({
+                                    url: '/pages/go_shake'
+                                });
+                            } else if(res.cancel){
+
+                            }
+                        }
+                    });
+                    return;
+                }
                 wepy.switchTab({
                     url: '/pages/go_shake'
                 })
             }
+
+
         };
 
         // 获取抖动方式和房间号
         getShakeStyle(game,roomId){
             if(game == 1){
-                this.shakeStyle = imgApi.leg_shake;
+                this.shakeStyle = 1;
+                this.shakeStyleImg = imgApi.leg_shake;
             } else if(game == 0){
-                this.shakeStyle = imgApi.hand_shake;
+                this.shakeStyle = 0;
+                this.shakeStyleImg = imgApi.hand_shake;
             }
             this.roomId = roomId;
             this.isMaster = true;
@@ -332,25 +376,45 @@
         }
 
 
-        // 倒计时
+        // 3-2-1倒计时
         countDown(){
             let that = this;
             that.isCountdown = true;
             let clear_set = null;
             let i = 3;
             clear_set = setInterval(function() {
+
+                // if(i == 2 ){
+                //     that.countdown3 = that.countdown2;
+                // } else if( i == 1){
+                //     that.countdown3 = that.countdown1;
+                // }
+                that.countdownImg = that['countdown'+i];
                 i--;
-                if(i == 2 ){
-                    that.countdown3 = that.countdown2;
-                } else if( i == 1){
-                    that.countdown3 = that.countdown1;
-                }
-                if(i<=0){
+                if(i < 0){
+                    // 非游戏改为正在游戏中
                     that.isGaming = true;
+                    // 3-2-1倒计时结束
                     that.isCountdown = false;
+                    // 大按钮隐藏
                     that.haveChangeBtn = false;
+                    // 3-2-1倒计时变为3(方便继续游戏显示)
+                    // that.countdown3 = imgApi.countdown3;
                     clearInterval(clear_set);
-                    that.$invoke('selecttime', 'countDown');
+                    // 调用select_time组件中的倒计时方法
+                    that.$invoke('selecttime', 'countDown',()=>{
+                        // 重新显示按钮 如果是房主按钮改为ready
+                        that.haveChangeBtn = true;
+                        if(that.isMaster){
+                            that.changeBtn = imgApi.ready_btn;
+                        }
+
+                        // 将当前玩家改为为准备状态
+                        let gameUserInfo_shang =  that.gameUserInfo_shang;
+                        gameUserInfo_shang.isReady = false;
+                        that.gameUserInfo_shang = gameUserInfo_shang;
+
+                    });
                 }
                 that.$apply();
             },1000);
@@ -370,7 +434,43 @@
             return true;
         }
 
-        // 房主开始游戏
+
+        // 手动抖动不在游戏时间内的抖动,计入缓存中
+        changeShakeHandStorage(){
+            // 获取缓存中手动抖动的次数
+            let shakeHandNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
+            console.log('changeShakeHandStorage');
+            console.log(this.shakeStyle);
+            if(this.shakeStyle == 0){
+                let gameUserInfo_shang = this.gameUserInfo_shang;
+                gameUserInfo_shang.shakeNumber++;
+                shakeHandNumber++;
+                this.gameUserInfo_shang = gameUserInfo_shang;
+                console.log(shakeHandNumber);
+                this.$apply();
+                wepy.setStorageSync(SHAKE_HAND_NUMBER,shakeHandNumber);
+            }
+        }
+
+
+        // 开始游戏需要的逻辑
+        startGame(){
+            let that = this;
+            // 开始后玩家点击数量清零
+            let gameUserInfo_shang = that.gameUserInfo_shang;
+            gameUserInfo_shang.shakeNumber = 0;
+            that.gameUserInfo_shang = gameUserInfo_shang;
+
+            // 判断有没有选时间
+            if(!that.isMasterTime()){
+                return;
+            }
+
+            // 倒计时
+            that.countDown();
+            // 开始游戏后改变倒计时状态为初始状态(true为结束状态,false为开始状态)
+            that.countdownOver = false;
+        }
 
     }
 </script>

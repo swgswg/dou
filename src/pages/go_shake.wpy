@@ -87,15 +87,13 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-            // 手动抖动
+            // // 手动抖动
             // let that = this;
-            // setInterval(function() {
-            //     let shakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
-            //     // console.log(shakeHandTime);
-            //     shakeHandTime = util.secondToHMS(shakeHandTime);
-            //     that.shakeHandTime = shakeHandTime;
-            //     that.$apply();
-            // },1000)
+            // let shakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
+            // // console.log(shakeHandTime);
+            // shakeHandTime = util.secondToHMS(shakeHandTime);
+            // that.shakeHandTime = shakeHandTime;
+            // that.$apply();
             // console.log(this.userInfo);
         };
 
@@ -132,6 +130,7 @@
 
             // 开设房间
             openRoom(){
+
                 let that = this;
                 wepy.navigateTo({
                     url: '/pages/loading?game='+that.shakeData,
@@ -161,6 +160,15 @@
                 // 手抖
                 this.imgSrcData = imgApi.hand_shake;
                 this.shakeData = 0;
+
+                // 获取缓存中手抖的信息
+                // let shakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
+                let shakeHandNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
+                // console.log(shakeHandTime);
+                // shakeHandTime = util.secondToHMS(shakeHandTime);
+                // this.shakeHandTime = shakeHandTime;
+                this.shakeHandNumber = shakeHandNumber;
+
                 this.$apply();
             }
         }
