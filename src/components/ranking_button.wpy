@@ -1,8 +1,8 @@
 <template>
-    <view class="ranking-button">
+    <view class="ranking-button" style="height:{{80*px2rpxHeight}}px;padding: 0 {{98*px2rpxWidth}}px;">
         <view class="content">
             <block wx:for="{{tab}}" wx:key="{{index}}"  wx:for-item="tab">
-                <view class="btn {{currentTab == index ? 'active' : ''}}" data-current="{{index}}" @tap.stop="getRanking">{{tab}}</view>
+                <view class="btn {{currentTab == index ? 'active' : ''}}" style="width:{{200*px2rpxWidth}}px;" data-current="{{index}}" @tap.stop="getRanking">{{tab}}</view>
             </block>
         </view>
     </view>
@@ -10,10 +10,13 @@
 
 <script>
     import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
 
     export default class RankingButton extends wepy.component {
 
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             currentTab:0,
         };
 
@@ -29,6 +32,13 @@
                 twoWay: true,
             },
 
+        };
+
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
         };
 
         methods = {
@@ -64,8 +74,8 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        height: 80rpx;
-        padding:0 98rpx;
+        /*height: 80rpx;*/
+        /*padding:0 98rpx;*/
         box-sizing: border-box;
         /*border: 1rpx solid blue;*/
 
@@ -82,8 +92,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 200rpx;
+                /*width: 200rpx;*/
                 /*height: 80rpx;*/
+                height: 100%;
                 padding: 27rpx 0;
                 box-sizing: border-box;
                 font-size: 30rpx;

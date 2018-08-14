@@ -91,6 +91,15 @@ const updateSet = (params) => wxRequest(params, host + 'shakeLeg/user/updateSet'
 const inviteFriend = (params) => wxRequest(params, host + 'shakeLeg/user/inviteFriend');
 // 创建房间
 const addRoom = (params) => wxRequest(params, host + 'shakeLeg/user/addRoom');
+// 礼物列表
+const getGift = (params) => wxRequest(params, host + 'shakeLeg/admin/getGift');
+// 积分兑换礼物
+const convertGift = (params) => wxRequest(params, host + 'shakeLeg/user/convertGift');
+// 查询可用积分
+const getIntegral = (params) => wxRequest(params, host + 'shakeLeg/user/getIntegral');
+// 粉丝列表
+const getFans = (params) => wxRequest(params, host + 'shakeLeg/user/getFans');
+
 
 export default {
     host,
@@ -110,4 +119,8 @@ export default {
     updateSet,
     inviteFriend,
     addRoom,
+    getGift,
+    convertGift,
+    getIntegral,
+    getFans,
 };

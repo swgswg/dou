@@ -1,36 +1,57 @@
 // 历史排名--世界
 <template>
     <view class="ranking-world">
-        <view class="ranking-empty">
+        <view class="ranking-empty" style="height:{{770*px2rpxHeight}}px;">
             <block wx:if="{{!is_empty}}">
                 <!--前三名 start-->
                 <view class="first-three">
                     <block wx:for="{{first_three}}" wx:for-item="first_three" wx:key="{{index}}">
                         <view class="first-three-each">
-                            <view class="first-three-img">
+                            <view class="first-three-img" style="width:{{124*px2rpxWidth}}px;height:{{154*px2rpxWidth}}px;">
                                 <block wx:if="{{first_three.rownum == 2}}">
-                                    <image class="first-three-img2" src="{{history_no2}}"></image>
-                                    <image class="first-three-profile no2-profile" src="{{first_three.photo}}" data-userid="{{first_three.userId}}" @tap.stop="seeOtherGiftWall"></image>
+                                    <image class="first-three-img2"
+                                           style="width:{{108*px2rpxWidth}}px;height:{{115*px2rpxWidth}}px;"
+                                           src="{{history_no2}}">
+                                    </image>
+                                    <image class="first-three-profile no2-profile"
+                                           style="bottom:{{6*px2rpxWidth}}px;left:{{22*px2rpxWidth}}px;width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
+                                           src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
+                                           @tap.stop="seeOtherGiftWall">
+                                    </image>
                                 </block>
                                 <block wx:elif="{{first_three.rownum == 1}}">
-                                    <image class="first-three-img1" src="{{history_no1}}"></image>
-                                    <image class="first-three-profile no1-profile" src="{{first_three.photo}}" data-userid="{{first_three.userId}}" @tap.stop="seeOtherGiftWall"></image>
+                                    <image class="first-three-img1"
+                                           style="width:{{124*px2rpxWidth}}px;height:{{154*px2rpxWidth}}px;"
+                                           src="{{history_no1}}">
+                                    </image>
+                                    <image class="first-three-profile no1-profile"
+                                           style="bottom:{{6*px2rpxWidth}}px;left:{{6*px2rpxWidth}}px;width:{{108*px2rpxWidth}}px;height:{{108*px2rpxWidth}}px;"
+                                           src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
+                                           @tap.stop="seeOtherGiftWall">
+                                    </image>
                                 </block>
                                 <block wx:elif="{{first_three.rownum == 3}}">
-                                    <image class="first-three-img3" src="{{history_no3}}"></image>
-                                    <image class="first-three-profile no3-profile" src="{{first_three.photo}}" data-userid="{{first_three.userId}}" @tap.stop="seeOtherGiftWall"></image>
+                                    <image class="first-three-img3"
+                                           style="width:{{108*px2rpxWidth}}px;height:{{115*px2rpxWidth}}px;"
+                                           src="{{history_no3}}">
+                                    </image>
+                                    <image class="first-three-profile no3-profile"
+                                           style="bottom:{{6*px2rpxWidth}}px;left:{{14*px2rpxWidth}}px;width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
+                                           src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
+                                           @tap.stop="seeOtherGiftWall">
+                                    </image>
                                 </block>
                             </view>
-                            <view class="first-three-name">{{first_three.name}}</view>
-                            <view class="first-three-time">{{first_three.time}}</view>
-                            <view class="first-three-number">{{first_three.first_three}}</view>
+                            <view class="first-three-name" style="width:{{180*px2rpxWidth}}px;">{{first_three.name}}</view>
+                            <view class="first-three-time" style="width:{{180*px2rpxWidth}}px;margin-top:{{5*px2rpxHeight}}px;">{{first_three.time}}</view>
+                            <view class="first-three-number" style="margin-top:{{10*px2rpxHeight}}px;">{{first_three.first_three}}</view>
                         </view>
                     </block>
                 </view>
                 <!--前三名 end-->
 
                 <!--其余排名 start-->
-                <view class="remain">
+                <view class="remain" style="height:{{450*px2rpxHeight}}px">
                     <scroll-view scroll-y bindscrolltolower="scrollToLower" >
                         <ranking :ranking.sync="worldRanking"></ranking>
                         <!--加载更多时动画-->
@@ -46,12 +67,12 @@
         </view>
         <!--自己排名-->
         <block wx:if="{{myWorldRanking}}">
-            <view class="self-ranking">
-                <view class="sort">{{myWorldRanking.rownum}}</view>
-                <image class="img" src="{{myWorldRanking.photo}}"></image>
-                <view class="w100">{{myWorldRanking.name}}</view>
-                <view class="w150">{{myWorldRanking.time}}</view>
-                <view class="w150">{{myWorldRanking.shakeNum}}</view>
+            <view class="self-ranking" style="height:{{97*px2rpxHeight}}px;">
+                <view class="sort" style="width:{{90*px2rpxWidth}}px;height:{{97*px2rpxWidth}}px;">{{myWorldRanking.rownum}}</view>
+                <image class="img" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{myWorldRanking.photo}}"></image>
+                <view class="w100" style="width:{{100*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.name}}</view>
+                <view class="w150" style="width:{{150*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.time}}</view>
+                <view class="w150" style="width:{{150*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.shakeNum}}</view>
             </view>
         </block>
     </view>
@@ -62,7 +83,7 @@
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
-    import {USER_INFO} from '../utils/constant';
+    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import Ranking from '@/components/ranking';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
@@ -77,16 +98,17 @@
         };
 
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             history_no1:imgApi.history_no1,
             history_no2:imgApi.history_no2,
             history_no3:imgApi.history_no3,
-
             //是否没有数据
             is_empty: false,
             //是否显示 底部loading
             showLoading: false,
             page:1,
-            pageSize:8
+            pageSize:6
         };
 
         props = {
@@ -115,7 +137,21 @@
                 default:1,
                 twoWay:true
             },
+            // 设备榜/手动榜
+            status:{
+                type:String,
+                // 1脚,0手
+                default:'1',
+                twoWay:true
+            },
         };
+
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
 
         methods = {
 
@@ -132,10 +168,11 @@
                 // console.log(weekOrAll);
                 this.showLoading = true;
                 let page = this.page;
-                let pageSize = this.pageSize;
+                let pageSize = this.pageSize + 1;
+                this.pageSize = pageSize;
                 let weekOrAll = this.weekOrAll;
-                this.getWorldRanking(page,pageSize,weekOrAll);
-                this.pageSize = pageSize + 1;
+                let status = this.status;
+                this.getWorldRanking(page,pageSize,weekOrAll,status);
                 this.$apply();
             },
 
@@ -143,7 +180,7 @@
         };
 
         // 世界排行榜
-        async getWorldRanking(mypage,mypageSize,mytype){
+        async getWorldRanking(mypage,mypageSize,mytype,mystatus){
             let userInfo = wepy.getStorageSync(USER_INFO);
             let user_id = userInfo.id;
 
@@ -152,7 +189,8 @@
             let myres= await api.myWorldRankings({
                 query:{
                     userId:user_id,
-                    type:mytype
+                    type:mytype,
+                    status:mystatus
                 }
             });
             if(util.isEmpty(myres.data.data.name)){
@@ -170,6 +208,7 @@
                     page:mypage,
                     pageSize:mypageSize,
                     type:mytype, //周排行榜为1,总排行榜为空
+                    status:mystatus,// 0手,1脚
                 }
             });
             if(res.data.state == 1){
@@ -223,8 +262,8 @@
 
         .ranking-empty{
             width:100%;
-            height:790rpx;
-            padding-top:60rpx;
+            /*height:790rpx;*/
+            padding-top:30rpx;
             padding-left:10rpx;
             padding-right:10rpx;
             box-sizing:border-box;
@@ -239,7 +278,7 @@
             justify-content: space-around;
             align-items: center;
             width: 100%;
-            padding-top: 33rpx;
+            /*padding-top: 10rpx;*/
             font-size: 28rpx;
             box-sizing: border-box;
             background-color: #fff;
@@ -257,8 +296,8 @@
                     display: flex;
                     justify-content: center;
                     align-items: flex-end;
-                    width: 124rpx;
-                    height: 154rpx;
+                    /*width: 124rpx;*/
+                    /*height: 154rpx;*/
                     /*border: 1rpx solid red;*/
 
                     /*第一名*/
@@ -266,8 +305,8 @@
                         /*position: absolute;*/
                         /*top: 0;*/
                         /*left: 0;*/
-                        width: 124rpx;
-                        height: 154rpx;
+                        /*width: 124rpx;*/
+                        /*height: 154rpx;*/
                         /*border: 1rpx solid blue;*/
                     }
 
@@ -276,8 +315,8 @@
                         /*position: absolute;*/
                         /*top: 0;*/
                         /*left: 0;*/
-                        width: 108rpx;
-                        height: 115rpx;
+                        /*width: 108rpx;*/
+                        /*height: 115rpx;*/
                         /*border: 1rpx solid blue;*/
                     }
 
@@ -288,33 +327,41 @@
                     }
 
                     .no1-profile{
-                        bottom: 6rpx;
-                        left: 6rpx;
-                        width: 108rpx;
-                        height: 108rpx;
+                        /*bottom: 6rpx;*/
+                        /*left: 6rpx;*/
+                        /*width: 108rpx;*/
+                        /*height: 108rpx;*/
                     }
 
                     .no2-profile{
-                        bottom: 6rpx;
-                        left: 22rpx;
-                        width: 84rpx;
-                        height: 84rpx;
+                        /*bottom: 6rpx;*/
+                        /*left: 22rpx;*/
+                        /*width: 84rpx;*/
+                        /*height: 84rpx;*/
                     }
 
                     .no3-profile{
-                        bottom: 6rpx;
-                        left: 14rpx;
-                        width: 84rpx;
-                        height: 84rpx;
+                        /*bottom: 6rpx;*/
+                        /*left: 14rpx;*/
+                        /*width: 84rpx;*/
+                        /*height: 84rpx;*/
                     }
                 }
-
+                .first-three-name,.first-three-time,.first-three-number{
+                    /*display: flex;*/
+                    /*justify-content: center;*/
+                    /*align-items: center;*/
+                    text-align: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
                 .first-three-time{
-                    margin-top: 5rpx;
+                    /*margin-top: 5rpx;*/
                     color: #b30cdd;
                 }
                 .first-three-number{
-                    margin-top: 10rpx;
+                    /*margin-top: 10rpx;*/
                     color: #ff145c;
                 }
             }
@@ -323,7 +370,7 @@
         /*剩下排名*/
         .remain{
             width: 100%;
-            height: 450rpx;
+            /*height: 450rpx;*/
             padding-left:10rpx;
             padding-right:10rpx;
             box-sizing: border-box;
@@ -337,27 +384,28 @@
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            height: 97rpx;
+            /*height: 97rpx;*/
             font-size: 28rpx;
             color: #fff;
+            box-sizing: border-box;
 
             .sort{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 80rpx;
+                /*width: 80rpx;*/
                 /*border: 1rpx solid red;*/
             }
 
             image{
-                width: 60rpx;
-                height: 60rpx;
+                /*width: 60rpx;*/
+                /*height: 60rpx;*/
                 /*border: 1rpx solid red;*/
             }
 
             .w100,.w150{
-                width: 100rpx;
-                margin-left: 30rpx;
+                /*width: 100rpx;*/
+                /*margin-left: 30rpx;*/
                 /*border: 1rpx solid red;*/
                 white-space: nowrap;
                 overflow: hidden;
@@ -365,7 +413,7 @@
             }
 
             .w150{
-                width: 150rpx;
+                /*width: 150rpx;*/
             }
         }
 

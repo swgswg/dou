@@ -1,58 +1,238 @@
 <template>
     <view class="gift-info" style="width: 100%;height:100%">
-        <scroll-view scroll-y>
+        <scroll-view scroll-y bindscrolltolower="scrollToLower">
             <block wx:for="{{giftInfo}}" wx:for-item="giftInfo" wx:key="{{index}}">
-
-                <view class="gift-info-each">
+                <view class="gift-info-each" style="margin-bottom:{{20*px2rpxHeight}}px">
                     <view class="left">
-                        <view class="left-img">
-                            <image src="{{giftInfo.img}}"></image>
+                        <view class="left-img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
+                            <image style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;" src="{{fileUrl + giftInfo.url}}"></image>
                         </view>
-                        <view class="left-info">
+                        <view class="left-info" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
                             <view class="gift-name">{{giftInfo.name}}</view>
                             <view class="energy">
-                                <image src="{{energy}}"></image>
-                                <view>{{giftInfo.energy}}</view>
+                                <image style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxHeight}}px;margin-right:{{10*px2rpxHeight}}px" src="{{energy}}"></image>
+                                <view>{{giftInfo.score}}</view>
                             </view>
                         </view>
                     </view>
-                    <view class="right">
-                        <view class="gift-code">
-                            <image src="{{shake_code}}"></image>
-                            <view>{{giftInfo.code}}</view>
+                    <view class="right" style="height:{{150*px2rpxHeight}}px">
+                        <view class="gift-code" style="margin-top:{{29*px2rpxHeight}}px">
+                            <image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" src="{{shake_code}}"></image>
+                            <view>{{giftInfo.integral}}</view>
                         </view>
                         <view class="btn">
-                            <view class="btn1">5</view>
-                            <view class="btn2">购买</view>
+                            <input class="btn1" value="{{giftInfo.val}}" type="number" bindinput="buyNumber" data-giftid="{{giftInfo.id}}" data-integral="{{giftInfo.integral}}"  placeholder="购买数量" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" />
+                            <view class="btn2" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" data-giftid="{{giftInfo.id}}" data-index="{{index}}" @tap.stop="buy">兑换</view>
                         </view>
                     </view>
                 </view>
-
             </block>
+            <!--加载更多时动画-->
+            <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+            <!--暂无数据显示-->
+            <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
         </scroll-view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import util from '@/utils/util';
+    import BottomLoadMore from "@/components/common/bottomLoadMore";
+    import Placeholder from "@/components/common/placeholder";
 
     export default class GiftInfo extends wepy.component {
 
+        components = {
+            bottomLoadMore: BottomLoadMore,
+            placeholder: Placeholder
+        };
+
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
             energy: imgApi.energy,
             shake_code: imgApi.shake_code,
+            page:1,
+            pageSize:20,
+            // 是否是最后一页
+            isLastPage:true,
+            userInfo:null,
+            // 礼物信息
+            giftInfo:[],
+            // 购买的礼物
+            buyGift:{},// {id:,number:,},
+            //是否显示 底部loading
+            showLoading: false,
+            // 数据是否为空
+            is_empty: true,
         };
 
         props = {
-            // giftInfo:[
-            //     {img:'',name:'',code:''}
-            // ],
-            giftInfo:{
-                type:Array,
-                default:null,
+            integral:{
+                type:Number,
+                default:0,
+                twoWay:true
             }
-        }
+        };
+
+        async onLoad(){
+            // 获取屏幕尺寸适配
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            // 获取用户信息
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userInfo = userInfo;
+            this.$apply();
+
+            //获取礼物
+            this.getGift(1,20);
+        };
+
+        methods = {
+            //滚动到底部/右边，会触发 scrolltolower 事件
+            scrollToLower(){
+                if(!this.isLastPage){
+                    return;
+                }
+                this.showLoading = true;
+                let page = this.page + 1;
+                this.page = page;
+                let pageSize = this.pageSize;
+                this.getGift(page,pageSize);
+            },
+
+            // 购买的数量
+            buyNumber(e){
+                let id = e.currentTarget.dataset.giftid;
+                let integral = e.currentTarget.dataset.integral;
+                let val = e.detail.value;
+                let gift = this.giftInfo;
+                let len = gift.length;
+                for(let i = 0; i < len; i++){
+                    if(gift[i].id == id){
+                        gift[i].val = val;
+                    }
+                }
+                this.giftInfo = gift;
+                this.$apply();
+            },
+
+            // 购买(积分兑换)
+            async buy(e){
+                let that = this;
+                let id = e.currentTarget.dataset.giftid;
+                let index = e.currentTarget.dataset.index;
+                // 购买所需的积分
+                let sumIntegral = 0;
+                // 当前要购买的礼物
+                let gift = this.giftInfo[index];
+                let val = parseInt(gift.val);
+                let integral = parseInt(gift.integral);
+                // 大于0的数字
+                if(/\d/.test(val) && val > 0){
+                    sumIntegral = val * integral;
+                    // 判断用户的积分是否足够
+                    if(sumIntegral > this.userInfo.integral){
+                        wx.showToast({
+                            title: '您的积分不足',
+                            icon: 'none',
+                            duration: 1000
+                        });
+                        return;
+                    }
+                    // 积分兑换
+                    let res = await api.convertGift({
+                        query:{
+                            userId: that.userInfo.id,
+                            giftId:id,
+                            num: val,
+                            integral:sumIntegral
+                        }
+                    });
+                    console.log(res);
+                    if(res.data.state == 1){
+                        // 获取抖腿币,更新个人信息
+                        that.getIntegral();
+                        wx.showToast({
+                            title: '兑换成功',
+                            icon: 'none',
+                            duration: 1000
+                        });
+                    }
+                } else {
+                    wx.showToast({
+                        title: '请填写正确信息',
+                        icon: 'none',
+                        duration: 1000
+                    });
+                }
+            },
+
+
+
+
+        };
+
+        // 获取礼物
+        async getGift(mypage,mypageSize){
+            let res = await api.getGift({
+                query:{
+                    isUse:1,
+                    page:mypage,
+                    pageSize:mypageSize,
+                }
+            });
+            console.log(res);
+            // 获取礼物信息
+            let giftInfo = this.giftInfo;
+            if(util.isEmpty(giftInfo)){
+                // 如果礼物信息为空
+                giftInfo = [];
+            }
+            let gift = res.data.data.PageInfo.list;
+            let len = gift.length;
+            for(let i = 0; i < len; i++){
+                gift[i].val = '';
+                giftInfo.push(gift[i]);
+            }
+            this.giftInfo = giftInfo;
+            // 是否是最后一页
+            this.isLastPage = res.data.data.PageInfo.isLastPage;
+            this.showLoading = false;
+            if(len < 1){
+                this.is_empty = true;
+            } else {
+                this.is_empty = false;
+            }
+            this.$apply();
+        };
+
+        // 获取抖腿币,更新个人信息
+        async getIntegral(){
+            let that = this;
+            let userInfo = that.userInfo;
+            let res = await api.getIntegral({
+                query:{
+                    userId: userInfo.id
+                }
+            });
+            if(res.data.state == 1){
+                let integral = res.data.data.integral;
+                that.integral = integral;
+                userInfo.integral = integral;
+                that.userInfo = userInfo;
+                that.$apply();
+                // 更新缓存
+                wepy.setStorageSync(USER_INFO, userInfo);
+            }
+        };
 
     }
 </script>
@@ -60,7 +240,7 @@
 <style lang="less">
     .gift-info{
         display: flex;
-        padding: 20rpx 20rpx;
+        padding: 20rpx 20rpx 0 20rpx;
         box-sizing: border-box;
 
         .gift-info-each{
@@ -68,7 +248,7 @@
             justify-content: space-around;
             align-items: center;
             width: 100%;
-            margin-bottom: 20rpx;
+            /*margin-bottom: 20rpx;*/
             background-color: #fff;
 
             .left{
@@ -81,12 +261,12 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    width: 150rpx;
-                    height: 150rpx;
+                    /*width: 150rpx;*/
+                    /*height: 150rpx;*/
 
                     image{
-                        width: 120rpx;
-                        height: 120rpx;
+                        /*width: 120rpx;*/
+                        /*height: 120rpx;*/
                     }
                 }
 
@@ -95,17 +275,18 @@
                     flex-direction: column;
                     justify-content:flex-start;
                     align-items: center;
-                    width: 150rpx;
-                    height: 150rpx;
-                    margin-left: 20rpx;
+                    /*width: 150rpx;*/
+                    /*height: 150rpx;*/
+                    /*margin-left: 20rpx;*/
 
                     .gift-name{
                         display: flex;
                         justify-content: flex-start;
-                        align-items: flex-start;
+                        align-items: center;
+                        /*align-items: flex-start;*/
                         width: 100%;
                         height: 50%;
-                        font-size: 35rpx;
+                        font-size: 30rpx;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
@@ -120,9 +301,9 @@
                         font-size: 25rpx;
 
                         image{
-                            width: 21rpx;
-                            height: 26rpx;
-                            margin-right: 10rpx;
+                            /*width: 21rpx;*/
+                            /*height: 26rpx;*/
+                            /*margin-right: 10rpx;*/
                         }
                     }
                 }
@@ -133,7 +314,7 @@
                 justify-content: flex-end;
                 align-items: center;
                 width: 50%;
-                height: 150rpx;
+                /*height: 150rpx;*/
 
                 .gift-code{
                     display: flex;
@@ -141,12 +322,12 @@
                     align-items: flex-start;
                     width: 60%;
                     height: 100%;
-                    margin-top: 29rpx;
+                    /*margin-top: 29rpx;*/
 
                     image{
-                        width: 30rpx;
-                        height: 29rpx;
-                        margin-right: 8rpx;
+                        /*width: 30rpx;*/
+                        /*height: 29rpx;*/
+                        /*margin-right: 8rpx;*/
                     }
 
                     view{
@@ -166,14 +347,15 @@
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        width: 100rpx;
-                        height: 50rpx;
+                        /*width: 100rpx;*/
+                        /*height: 50rpx;*/
                         font-size: 25rpx;
                         border: 1rpx solid #ec2c98;
                         border-radius: 10rpx;
                     }
 
                     .btn1{
+                        text-align: center;
                         margin-bottom: 20rpx;
                         color: #333;
                         background-color: #fff;

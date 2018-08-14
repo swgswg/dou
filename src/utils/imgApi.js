@@ -6,6 +6,7 @@ const uploadFileUrl = api.uploadFileUrl+'doutui/';
  * @type {{}}
  */
 module.exports = {
+    fileUrl:uploadFileUrl,
     // 进入图片
     doutui_jinru1: uploadFileUrl + 'doutui_jinru1.png',
     doutui_jinru2: uploadFileUrl + 'doutui_jinru2.png',
@@ -130,7 +131,13 @@ module.exports = {
     // 商城产品
     mall_product:uploadFileUrl + 'mall_product.png',
     // 精选推荐
-    mall_recommendation:uploadFileUrl + 'mall_recommendation.png',
+    // mall_recommendation:uploadFileUrl + 'mall_recommendation.png',
+    // 推荐/礼物
+    mall_gift_active:uploadFileUrl + 'mall_gift_active.png',
+    mall_gift_inactive: uploadFileUrl + 'mall_gift_inactive.png',
+    mall_tuijian_active: uploadFileUrl + 'mall_tuijian_active.png',
+    mall_tuijian_inactive: uploadFileUrl + 'mall_tuijian_inactive.png',
+
     // 能量
     energy:uploadFileUrl + 'energy.png',
     // 抖腿币

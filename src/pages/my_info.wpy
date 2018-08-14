@@ -102,6 +102,7 @@
             // console.log(systemInfo);
             this.windowWidth = systemInfo.windowWidth;
             this.windowHeight = systemInfo.windowHeight;
+
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;

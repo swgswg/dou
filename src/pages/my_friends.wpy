@@ -22,7 +22,8 @@
 
 <script>
     import wepy from 'wepy';
-    import { PX_TO_RPX } from '@/utils/constant';
+    import api from '@/utils/api';
+    import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import Ranking from '@/components/ranking';
     import BottomLoadMore from "../components/common/bottomLoadMore";
     import Placeholder from "../components/common/placeholder";
@@ -44,6 +45,7 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            userId:null,
             // 排名数据
             rank:[
                 { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
@@ -74,7 +76,10 @@
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-            console.log(px2rpx);
+
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
+            this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -83,6 +88,7 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
+
         };
 
         // 声明数据watcher（详见后文介绍）
@@ -96,8 +102,12 @@
             },
         };
 
-        // 声明组件之间的事件处理函数
-        events = {};
+        // 好友总排行榜
+        async getFriends(){
+            // let res = await api.getFriend({
+            //     // query:
+            // });
+        };
     }
 </script>
 

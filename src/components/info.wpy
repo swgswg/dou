@@ -5,7 +5,7 @@
                 <view class="content" @tap.stop="goToMyShakeInfo">
                     <image class="profile" style="width:{{90*px2rpxHeight}}px;height:{{90*px2rpxHeight}}px;" src="{{photo}}"></image>
                     <!--<image class="profile" src="{{uploadFileUrl + ''}}"></image>-->
-                    <view class="info-name" style="width:{{200*px2rpxWidth}}px;margin-left:{{45*px2rpxWidth}}px">{{userName}}</view>
+                    <view class="info-name" style="width:{{300*px2rpxWidth}}px;margin-left:{{45*px2rpxWidth}}px">{{userName}}</view>
                 </view>
                 <view class="to-right" style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;">
                     <image style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;" src="{{right}}"></image>

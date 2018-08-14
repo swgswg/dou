@@ -1,7 +1,7 @@
 // 历史排名--好友
 <template>
     <view class="ranking-firend">
-        <view class="rank-data">
+        <view class="rank-data" style="height:{{800*px2rpxHeight}}px;">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <ranking :ranking.sync="friendRanking"></ranking>
                 <!--加载更多时动画-->
@@ -27,7 +27,7 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
-    import {USER_INFO} from '../utils/constant';
+    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import Ranking from '@/components/ranking';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
@@ -42,11 +42,12 @@
         };
 
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             prev_page:imgApi.prev_page,
             next_page:imgApi.next_page,
-
-
-            //是否没有数据
+            userId:null,
+            // 数据是否为空
             is_empty: true,
             //是否显示 底部loading
             showLoading: false,
@@ -78,8 +79,25 @@
                 // 1周,0总
                 default:1,
                 twoWay:true
-            }
+            },
+            // 设备榜/手动榜
+            status:{
+                type:String,
+                // 1脚,0手
+                default:'1',
+                twoWay:true
+            },
         };
+
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
+            this.$apply();
+        }
 
         methods = {
             // 上一页/下一页
@@ -116,7 +134,7 @@
                         page = page + 1;
                     }
                 }
-                this.getFriendRanking(page,this.friendRankingPageSize,this.weekOrAll);
+                this.getFriendRanking(page,this.friendRankingPageSize,this.weekOrAll,this.status);
                 this.friendRankingPage = page;
                 this.$apply();
             },
@@ -124,15 +142,15 @@
         };
 
         // 好友排行榜
-        async getFriendRanking(mypage,mypageSize,mytype){
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            let user_id = userInfo.id;
+        async getFriendRanking(mypage,mypageSize,mytype,mystatus){
+            let that = this;
             let res = await api.getFriend({
                 query:{
-                    userId:user_id,
+                    userId:that.userId,
                     page:mypage,
                     pageSize:mypageSize,
-                    type:mytype
+                    type:mytype,
+                    status:mystatus
                 }
             });
             if(res.data.state == 1){
@@ -178,7 +196,7 @@
 
         .rank-data{
             width: 100%;
-            height: 816rpx;
+            /*height: 816rpx;*/
             padding-top: 60rpx;
             padding-left: 10rpx;
             padding-right: 10rpx;

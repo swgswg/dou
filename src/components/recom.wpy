@@ -1,0 +1,156 @@
+<template>
+    <view class="recom" style="width: 100%;height:100%">
+        <scroll-view scroll-y bindscrolltolower="scrollToLower">
+            <block wx:for="recom" wx:for-item="recom" wx:key="{{index}}">
+                <view class="recom-each" style="width:{{702*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-bottom:{{20*px2rpxHeight}}px">
+                    <view class="recom-img" style="width:{{140*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
+                        <imgage style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;"></imgage>
+                    </view>
+                    <view class="name-direction" style="width:{{400*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
+                        <view class="recom-name" style="width:100%;height:{{50*px2rpxHeight}}px;">名称</view>
+                        <view class="recom-direction" style="width:100%;height:{{40*px2rpxHeight}}px;">简介</view>
+                    </view>
+                    <view class="recom-buy" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
+                        <view class="huangou">
+                            <view>314积分</view>
+                            <view>+69元换购</view>
+                        </view>
+                        <view class="goumai" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px">购买</view>
+                    </view>
+                </view>
+            </block>
+            <!--加载更多时动画-->
+            <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+            <!--暂无数据显示-->
+            <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
+        </scroll-view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import util from '@/utils/util';
+    import {USER_INFO, PX_TO_RPX} from '@/utils/constant';
+    import BottomLoadMore from "@/components/common/bottomLoadMore";
+    import Placeholder from "@/components/common/placeholder";
+
+    export default class Recom extends wepy.component {
+
+        components = {
+            bottomLoadMore: BottomLoadMore,
+            placeholder: Placeholder
+        };
+
+        data = {
+            windowWidth:0,
+            windowHeight:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
+            showLoading:false,
+            is_empty:true,
+            userInfo:null,
+        };
+
+        async onLoad(){
+            // 获取屏幕尺寸适配
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            // 获取用户信息
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userInfo = userInfo;
+            this.$apply();
+        };
+
+    }
+</script>
+
+<style lang="less">
+    .recom{
+        display: flex;
+        justify-content: center;
+        align-self: center;
+        padding: 20rpx 20rpx 0 20rpx;
+        box-sizing: border-box;
+
+            .recom-each{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                /*border: 1rpx solid red;*/
+                background-color: #fff;
+
+                .recom-img{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .name-direction{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding-top: 30rpx;
+                    padding-left: 30rpx;
+                    box-sizing: border-box;
+
+                    .recom-name{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        font-size: 30rpx;
+                        color:#000;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    .recom-direction{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        font-size: 25rpx;
+                        color: #aaa;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+
+                }
+
+                .recom-buy{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    /*padding-top: 20rpx;*/
+                    /*padding-right: 20rpx;*/
+                    box-sizing: border-box;
+                    /*border: 1rpx solid red;*/
+
+                    .huangou{
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 22rpx;
+                        color: #000;
+                    }
+
+                    .goumai{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 26rpx;
+                        color: #fff;
+                        border-radius: 10rpx;
+                        background: linear-gradient(to top right,#ec2c98, #f68668);
+                    }
+                }
+            }
+    }
+</style>

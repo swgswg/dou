@@ -1,15 +1,15 @@
 // page--商城
 <template>
-    <view class="mall" style="width: {{windowWidth}}px;height: {{windowHeight}}px;">
+    <view class="mall" style="width: {{750*px2rpxWidth}}px;height: {{1200*px2rpxHeight}}px;">
         <view class="mall-img">
             <image src="{{mall_product}}" style="width:{{windowWidth}}px;height:{{366/4*(750/windowWidth)}}px"></image>
         </view>
         <view class="gift-header">
-            <view class="shang">
+            <view class="shang" style="height:{{80*px2rpxHeight}}px">
                 <view class="left">
-                    <image src="{{shake_code}}"></image>
+                    <image style="width:{{46*px2rpxWidth}}px;height:{{44*px2rpxHeight}}px" src="{{shake_code}}"></image>
                     <view>抖腿币</view>
-                    <view class="num">1314</view>
+                    <view class="num">{{integral}}</view>
                 </view>
                 <view class="right">
                     <view class="right-a" @tap.stop="goToMyGift">
@@ -19,19 +19,34 @@
                 </view>
             </view>
             <view class="xia">
-                <image src="{{mall_recommendation}}"></image>
+                <!--<image style="width:{{352*px2rpxWidth}}px;height:{{55*px2rpxHeight}}px" src="{{mall_recommendation}}"></image>-->
+                <view class="tuijian-liwu">
+                    <view class="tuijian {{showStyle == '0' ? 'active' : ''}}" style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px" data-showstyle='0' @tap.stop="showStyleEvent">
+                        <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px" src="{{showStyle == '0' ? mall_tuijian_active:mall_tuijian_inactive}}"></image>
+                    </view>
+                    <view class="liwu {{showStyle == '1'? 'active' : ''}}" style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px" data-showstyle='1' @tap.stop="showStyleEvent">
+                        <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px" src="{{showStyle == '1' ? mall_gift_active:mall_gift_inactive}}" ></image>
+                    </view>
+                </view>
             </view>
         </view>
         <view style="width: 100%;height: 60%;">
-            <giftinfo :giftInfo.sync="giftInfo"></giftinfo>
+            <block wx:if="{{showStyle == '0'}}">
+                <recom></recom>
+            </block>
+            <block wx:if="{{showStyle == '1'}}">
+                <giftinfo :integral.sync="integral"></giftinfo>
+            </block>
         </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import GiftInfo from '@/components/gift_info';
+    import Recom from '@/components/recom';
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -42,30 +57,25 @@
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             giftinfo:GiftInfo,
+            recom:Recom,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             windowWidth:0,
             windowHeight:0,
             mall_product:imgApi.mall_product,
             shake_code:imgApi.shake_code,
-            mall_recommendation:imgApi.mall_recommendation,
-            giftInfo:[
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-                {img:imgApi.gift1,name:'aaaa',energy:1000,code:123456},
-            ],
+            // mall_recommendation:imgApi.mall_recommendation,
+            mall_gift_active:imgApi.mall_gift_active,
+            mall_gift_inactive:imgApi.mall_gift_inactive,
+            mall_tuijian_active:imgApi.mall_tuijian_active,
+            mall_tuijian_inactive:imgApi.mall_tuijian_inactive,
+            integral:0,
+            // 推荐/礼物
+            showStyle:'0',
         };
 
         // 在Page和Component共用的生命周期函数
@@ -73,6 +83,11 @@
             let systemInfo = wepy.getSystemInfoSync();
             this.windowWidth =systemInfo.windowWidth;
             this.windowHeight=systemInfo.windowHeight;
+
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
             this.$apply();
         };
 
@@ -82,7 +97,9 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.integral = userInfo.integral;
+            this.$apply();
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
@@ -92,6 +109,31 @@
                 wepy.navigateTo({
                     url: '/pages/my_gift'
                 })
+            },
+
+            // 选择礼物/推荐
+            showStyleEvent(e){
+                let style = e.currentTarget.dataset.showstyle;
+                this.showStyle = style;
+            },
+
+            // 获取抖腿币,更新个人信息
+            async getIntegral(){
+                let that = this;
+                let userInfo = wepy.getStorageSync(USER_INFO);
+                let res = await api.getIntegral({
+                    query:{
+                        userId: userInfo.id
+                    }
+                });
+                if(res.data.state == 1){
+                    that.integral = res.data.data.integral;
+                    that.$apply();
+                    userInfo.integral = res.data.data.integral;
+                    // 更新缓存
+                    wepy.setStorageSync(USER_INFO, userInfo);
+                }
+
             },
         };
 
@@ -131,7 +173,7 @@
                 justify-content: space-between;
                 align-items: center;
                 width: 100%;
-                height: 80rpx;
+                /*height: 80rpx;*/
 
                 .left{
                     display: flex;
@@ -140,11 +182,12 @@
                     width: 50%;
 
                     image{
-                        width: 46rpx;
-                        height: 44rpx;
+                        /*width: 46rpx;*/
+                        /*height: 44rpx;*/
                     }
 
                     .num{
+                        margin-left: 12rpx;
                         color:#ffc849;
                     }
                 }
@@ -175,27 +218,40 @@
                 justify-content: center;
                 align-items: center;
                 width: 100%;
+                /*border: 1rpx solid red;*/
 
-                image{
-                    width: 352rpx;
-                    height: 55rpx;
+                .tuijian-liwu{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+
+                    .tuijian,.liwu{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .active{
+                        border-bottom: 4rpx solid #ec2c98;
+                    }
                 }
             }
         }
 
-        .mall-each{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 300rpx;
+        /*.mall-each{*/
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            /*width: 100%;*/
+            /*!*height: 300rpx;*!*/
 
-            image{
-                width: 750rpx;
-                height: 300rpx;
-                border: 1rpx solid red;
-            }
-        }
+            /*image{*/
+                /*width: 750rpx;*/
+                /*height: 300rpx;*/
+                /*border: 1rpx solid red;*/
+            /*}*/
+        /*}*/
 
     }
 </style>

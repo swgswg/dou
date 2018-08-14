@@ -358,7 +358,7 @@ function isEmpty(data) {
     }
 
     if (typeof data == 'object') {
-        for (key in data) {
+        for (let key in data) {
             return false;
         }
         return true;

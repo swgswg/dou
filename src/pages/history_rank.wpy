@@ -1,6 +1,11 @@
 <template>
     <view class="history-rank">
-        <view class="tab">
+
+        <view class="rank-style" style="margin-top:{{10*px2rpxHeight}}px">
+            <rankingstyle :rankingStyle.sync="rankingStyle" :status.sync="currentStatus"></rankingstyle>
+        </view>
+
+        <view class="tab" style="height:{{100*px2rpxHeight}}px;margin-top:{{-10*px2rpxHeight}}px">
             <rankingbutton :tab.sync="tabData" :currentRanking.sync="currentRanking"></rankingbutton>
         </view>
 
@@ -8,24 +13,24 @@
 
             <view class="world-firend">
                 <view>
-                    <image class="world-img" src="{{currentWorldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFried"></image>
+                    <image class="world-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxHeight}}px;" src="{{currentWorldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFried"></image>
                 </view>
                 <view>
-                    <image class="friend-img" src="{{currentWorldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFried"></image>
+                    <image class="friend-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxHeight}}px;" src="{{currentWorldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFried"></image>
                 </view>
             </view>
 
             <block wx:if="{{currentWorldOrFriend == 'world'}}">
                 <!--世界 start-->
-                <view style="margin-top: -35rpx">
-                    <rankingworld :first_three.sync="firstThreeData" :worldRanking.sync="worldRankingData" :weekOrAll.sync="weekOrAll"></rankingworld>
+                <view style="margin-top:{{-35*px2rpxHeight}}px">
+                    <rankingworld :first_three.sync="firstThreeData" :worldRanking.sync="worldRankingData" :weekOrAll.sync="weekOrAll" :status.sync="currentStatus"></rankingworld>
                 </view>
                 <!--世界 end-->
             </block>
             <block wx:elif="{{currentWorldOrFriend == 'friend'}}">
                 <!--好友 start-->
-                <view style="margin-top: -35rpx">
-                    <rankingfriend :friendRanking.sync="friendRankingData" :friendRankingPage.sync="friendRankingPage" :weekOrAll.sync="weekOrAll"></rankingfriend>
+                <view style="margin-top:{{-35*px2rpxHeight}}px">
+                    <rankingfriend :friendRanking.sync="friendRankingData" :friendRankingPage.sync="friendRankingPage" :weekOrAll.sync="weekOrAll" :status.sync="currentStatus"></rankingfriend>
                 </view>
                 <!--好友 end-->
             </block>
@@ -36,7 +41,9 @@
 <script>
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
+    import {PX_TO_RPX } from '@/utils/constant';
     import RankingButton from '@/components/ranking_button';
+    import RankingStyle from '@/components/ranking_style';
     import RankingWorld from '@/components/ranking_world';
     import RankingFriend from '@/components/ranking_friend';
 
@@ -49,18 +56,23 @@
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             rankingbutton:RankingButton,
+            rankingstyle:RankingStyle,
             rankingworld:RankingWorld,
             rankingfriend:RankingFriend,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             world_active:imgApi.world_active,
             world_inactive:imgApi.world_inactive,
             friend_active:imgApi.friend_active,
             friend_inactive:imgApi.friend_inactive,
-
             // 排行类型
+            rankingStyle:[{name:'设备榜',status:'1'},{name:'手动榜',status:'0'}],
+            // 0手/1脚
+            currentStatus:'1',
             tabData:['本周排行','总排行'],
             // 当前排行类型week/all
             currentRanking: 'week',
@@ -83,8 +95,11 @@
         };
 
         // 在Page和Component共用的生命周期函数
-        onLoad() {
-
+        async onLoad() {
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -134,7 +149,7 @@
         };
 
         watch = {
-            currentRanking(newValue,oldValue){
+            currentRanking(newValue){
                 // console.log(newValue,oldValue);
                 let currentWorldOrFriend = this.currentWorldOrFriend;
                 let mytype = '';
@@ -146,27 +161,24 @@
                 }
                 //改变当前数据
                 this.getData(currentWorldOrFriend,mytype);
-                // if(currentWorldOrFriend == 'world'){
-                //     // 世界排行
-                //     this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype);
-                // } else if(currentWorldOrFriend == 'friend'){
-                //     // 好友排行
-                //     this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype);
-                // }
                 // 改变子组件值
                 this.weekOrAll = mytype;
                 this.$apply();
+            },
+
+            currentStatus(newValue){
+                let currentStatus = this.currentStatus;
             }
         };
 
         getData(currentWorldOrFriend,mytype){
             if(currentWorldOrFriend == 'world'){
                 // 世界排行
-                this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype);
+                this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype,this.currentStatus);
                 this.$apply();
             } else if(currentWorldOrFriend == 'friend'){
                 // 好友排行
-                this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype);
+                this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype,this.currentStatus);
                 this.$apply();
             }
         };
@@ -186,12 +198,20 @@
         width: 100%;
         height: 100%;
 
+        .rank-style{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+
+        }
+
         .tab{
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
-            height: 120rpx;
+            /*height: 120rpx;*/
         }
 
         .rank{
@@ -203,13 +223,13 @@
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
-                margin-top: 38rpx;
+                margin-top: 25rpx;
                 padding: 0 ;
                 /*border: 1rpx solid red;*/
 
                 .world-img,.friend-img{
-                    width: 290rpx;
-                    height: 75rpx;
+                    /*width: 290rpx;*/
+                    /*height: 75rpx;*/
                 }
 
             }
