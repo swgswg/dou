@@ -50,11 +50,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="history_rank.wpy" pinned="false" current-in-tab="true">
+      <file leaf-file-name="history_rank.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/history_rank.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="170" column="13" lean-forward="true" selection-start-line="170" selection-start-column="13" selection-end-line="170" selection-end-column="13" />
+            <state relative-caret-position="615">
+              <caret line="112" column="10" lean-forward="true" selection-start-line="112" selection-start-column="10" selection-end-line="112" selection-end-column="10" />
               <folding>
                 <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -68,13 +68,18 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ranking_friend.wpy" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ranking_friend.wpy" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/ranking_friend.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="586">
-              <caret line="144" column="64" selection-start-line="144" selection-start-column="56" selection-end-line="144" selection-end-column="64" />
+            <state relative-caret-position="68">
+              <caret line="3" column="71" lean-forward="true" selection-start-line="3" selection-start-column="71" selection-end-line="3" selection-end-column="71" />
               <folding>
                 <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#image#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#image#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="e#958#982#0" expanded="true" />
               </folding>
             </state>
@@ -84,7 +89,7 @@
       <file leaf-file-name="ranking_style.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/ranking_style.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="504">
+            <state relative-caret-position="-84">
               <caret line="60" column="10" lean-forward="true" selection-start-line="60" selection-start-column="10" selection-end-line="60" selection-end-column="10" />
               <folding>
                 <element signature="n#style#0;n#view#0;n#block#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -109,9 +114,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>integral</find>
-      <find>gift-energy</find>
-      <find>buyGift</find>
       <find>fans-title</find>
       <find>fans-data</find>
       <find>fans-data-each</find>
@@ -137,8 +139,11 @@
       <find>no2-profile</find>
       <find>no3-profile</find>
       <find>currentWorldOrFriend</find>
+      <find>weekOrAll</find>
       <find>currentRanking</find>
       <find>rank-data</find>
+      <find>change-page</find>
+      <find>prev-page</find>
     </findStrings>
     <replaceStrings>
       <replace>rpx</replace>
@@ -199,8 +204,8 @@
         <option value="$PROJECT_DIR$/src/components/ranking_style.wpy" />
         <option value="$PROJECT_DIR$/src/components/ranking_button.wpy" />
         <option value="$PROJECT_DIR$/src/components/ranking_world.wpy" />
-        <option value="$PROJECT_DIR$/src/components/ranking_friend.wpy" />
         <option value="$PROJECT_DIR$/src/pages/history_rank.wpy" />
+        <option value="$PROJECT_DIR$/src/components/ranking_friend.wpy" />
       </list>
     </option>
   </component>
@@ -220,7 +225,7 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
     <option name="width" value="1936" />
@@ -334,12 +339,12 @@
       <workItem from="1533778142925" duration="16812000" />
       <workItem from="1533863031644" duration="25962000" />
       <workItem from="1534123207592" duration="34714000" />
-      <workItem from="1534209189190" duration="41837000" />
+      <workItem from="1534209189190" duration="43936000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="563790000" />
+    <option name="totallyTimeSpent" value="565889000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -929,19 +934,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ranking_style.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="504">
-          <caret line="60" column="10" lean-forward="true" selection-start-line="60" selection-start-column="10" selection-end-line="60" selection-end-column="10" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#block#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#block#1;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#341#365#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/ranking_world.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="448">
@@ -969,21 +961,23 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/ranking_friend.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/ranking_style.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="586">
-          <caret line="144" column="64" selection-start-line="144" selection-start-column="56" selection-end-line="144" selection-end-column="64" />
+        <state relative-caret-position="-84">
+          <caret line="60" column="10" lean-forward="true" selection-start-line="60" selection-start-column="10" selection-end-line="60" selection-end-column="10" />
           <folding>
-            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#958#982#0" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#1;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#341#365#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/history_rank.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="170" column="13" lean-forward="true" selection-start-line="170" selection-start-column="13" selection-end-line="170" selection-end-column="13" />
+        <state relative-caret-position="615">
+          <caret line="112" column="10" lean-forward="true" selection-start-line="112" selection-start-column="10" selection-end-line="112" selection-end-column="10" />
           <folding>
             <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -992,6 +986,22 @@
             <element signature="n#style#0;n#view#0;n#block#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#0;n#block#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="e#1534#1558#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ranking_friend.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="3" column="71" lean-forward="true" selection-start-line="3" selection-start-column="71" selection-end-line="3" selection-end-column="71" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#958#982#0" expanded="true" />
           </folding>
         </state>
       </provider>

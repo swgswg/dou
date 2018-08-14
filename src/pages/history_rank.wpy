@@ -108,8 +108,8 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-            // 获取数据 周+好友
-            this.getData('friend',1);
+            // 获取数据 周+好友+设备
+            this.getData('friend',1,1);
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
@@ -132,16 +132,7 @@
                         mytype = 0;
                     }
                     //改变当前数据
-                    this.getData(currentWorldOrFriend,mytype);
-                    // if(currentWorldOrFriend == 'world'){
-                    //     // 世界排行
-                    //     this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype);
-                    //     this.$apply();
-                    // } else if(currentWorldOrFriend == 'friend'){
-                    //     // 好友排行
-                    //     this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype);
-                    //     this.$apply();
-                    // }
+                    this.getData(currentWorldOrFriend,mytype,this.currentStatus);
                     this.currentWorldOrFriend = currentWorldOrFriend;
                     this.$apply();
                 }
@@ -160,25 +151,35 @@
                     mytype = 0;
                 }
                 //改变当前数据
-                this.getData(currentWorldOrFriend,mytype);
+                this.getData(currentWorldOrFriend,mytype,this.currentStatus);
                 // 改变子组件值
                 this.weekOrAll = mytype;
                 this.$apply();
             },
 
             currentStatus(newValue){
-                let currentStatus = this.currentStatus;
+                let mytype = '';
+                if(this.currentRanking == 'week'){
+                    // 周排行
+                    mytype = 1;
+                } else if(this.currentRanking == 'all'){
+                    // 总排行
+                    mytype = 0;
+                }
+                this.getData(this.currentWorldOrFriend,mytype,newValue);
+                this.currentStatus = newValue;
+                this.$apply();
             }
         };
 
-        getData(currentWorldOrFriend,mytype){
+        getData(currentWorldOrFriend,mytype,mystatus){
             if(currentWorldOrFriend == 'world'){
                 // 世界排行
-                this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype,this.currentStatus);
+                this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype,mystatus);
                 this.$apply();
             } else if(currentWorldOrFriend == 'friend'){
                 // 好友排行
-                this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype,this.currentStatus);
+                this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype,mystatus);
                 this.$apply();
             }
         };
