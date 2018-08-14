@@ -178,7 +178,7 @@
 <script>
     import wepy from 'wepy';
     import 'wepy-async-function';
-    import { USER_INFO, SHAKE_HAND_TIME,SHAKE_HAND_NUMBER } from '@/utils/constant';
+    import { USER_INFO, SHAKE_HAND_TIME,SHAKE_HAND_NUMBER,PX_TO_RPX } from '@/utils/constant';
     import api from '@/utils/api';
     import util from '@/utils/util';
 
@@ -200,6 +200,7 @@
                 'pages/my_info',
                 'pages/gift_wall',
                 'pages/fans_rank',
+                'pages/my_friends',
                 'pages/gaming',
                 'pages/go_shake',
                 'pages/personal_record',
@@ -265,6 +266,10 @@
                 // console.log(rlt);
                 wepy.setStorageSync(USER_INFO, rlt.data.data);
             }
+
+            // 获取屏幕尺寸适配比例
+            this.px2rpx();
+
             // 把上次的记录存入数据库
             this.addRecord();
 
@@ -303,6 +308,14 @@
                     wepy.setStorageSync(SHAKE_HAND_NUMBER, 0);
                 }
             }
+        }
+
+        // px2rpx(尺寸适配比例) rpx = px * (目标设备宽 px 值 / 750)
+        px2rpx(){
+            let systemInfo = wepy.getSystemInfoSync();
+            console.log(systemInfo);
+            console.log(systemInfo.windowHeight / 1110);
+            wepy.setStorageSync(PX_TO_RPX, {px2rpxWidth:systemInfo.windowWidth / 750,px2rpxHeight:systemInfo.screenHeight / 1334});
         }
 
     }

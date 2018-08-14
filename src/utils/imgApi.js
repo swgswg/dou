@@ -137,22 +137,7 @@ module.exports = {
     shake_code:uploadFileUrl + 'shake_code.png',
 
     // 礼物
-    gift1: uploadFileUrl + 'gift1.png',
-    gift2: uploadFileUrl + 'gift2.png',
-    gift3: uploadFileUrl + 'gift3.png',
-    gift4: uploadFileUrl + 'gift4.png',
-    gift5: uploadFileUrl + 'gift5.png',
-    gift6: uploadFileUrl + 'gift6.png',
-    gift7: uploadFileUrl + 'gift7.png',
-    gift8: uploadFileUrl + 'gift8.png',
-    gift9: uploadFileUrl + 'gift9.png',
-    gift10:uploadFileUrl + 'gift10.png',
-    gift11:uploadFileUrl + 'gift11.png',
-    gift12:uploadFileUrl + 'gift12.png',
-    gift13:uploadFileUrl + 'gift13.png',
-    gift14:uploadFileUrl + 'gift14.png',
-    gift15:uploadFileUrl + 'gift15.png',
-    gift16:uploadFileUrl + 'gift16.png',
+
 
 
 

@@ -1,28 +1,28 @@
 // 礼物墙
 <template>
-    <view class="flex-center">
+    <view class="gift-canvas flex-center">
         <!--<canvas canvas-id="myCanvas" style="border: 1px solid;width:{{canvasWidth}}rpx;height:{{canvasHeight}}rpx;"/>-->
-        <movable-area style="width:{{canvasWidth}}rpx;height:{{canvasHeight}}rpx;background-color: #fff">
+        <movable-area style="width:{{canvasWidth*px2rpxWidth}}px;height:{{(canvasHeight*px2rpxHeight)}}px;background-color: #fff">
             <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.id}}">
                 <block wx:if="{{gift.status == 1}}">
                     <movable-view
-                            style="width:{{gift.width}}px; height:{{gift.height}}px;"
+                            style="width:{{gift.width*px2rpxWidth}}px; height:{{gift.height*px2rpxHeight}}px;"
                             x="{{gift.xaxle}}" y="{{gift.yaxle}}"
                             direction="all"
                             disabled
                             bindchange="moveGift"
                             data-index="{{index}}">
-                        <image src="{{flower}}" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
+                        <image src="{{flower}}" style="width:{{gift.width*px2rpxWidth}}px; height:{{gift.height*px2rpxHeight}}px;"></image>
                     </movable-view>
                 </block>
                 <block wx:else>
                     <movable-view
-                            style="width:{{gift.width}}px; height:{{gift.height}}px;"
+                            style="width:{{gift.width*px2rpxWidth}}px; height:{{gift.height*px2rpxHeight}}px;"
                             x="{{gift.xaxle}}" y="{{gift.yaxle}}"
                             direction="all"
                             bindchange="moveGift"
                             data-index="{{index}}">
-                        <image src="{{flower}}" style="width:{{gift.width}}px; height:{{gift.height}}px;"></image>
+                        <image src="{{flower}}" style="width:{{gift.width*px2rpxWidth}}px; height:{{gift.height*px2rpxHeight}}px;"></image>
                     </movable-view>
                 </block>
             </block>
@@ -33,11 +33,14 @@
 <script>
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
+    import { PX_TO_RPX } from '@/utils/constant';
 
     export default class GiftCanvas extends wepy.component {
 
         data = {
-            flower:imgApi.flower
+            flower:imgApi.flower,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
         };
 
         props = {
@@ -55,6 +58,13 @@
                 default:null,
                 twoWay:true
             }
+        };
+
+        onLoad(){
+            // 获取尺寸适配
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
         };
 
         methods = {

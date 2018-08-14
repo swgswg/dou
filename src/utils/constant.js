@@ -17,6 +17,12 @@ export const USER_INFO = "userInfo";
 export const SYSTEM_INFO = "systemInfo";
 
 /**
+ * px转rpx 尺寸适配
+ * @type {String}
+ */
+export const PX_TO_RPX = "pxToRpx";
+
+/**
  * 抖动时间(即进入小程序时间)
  * @type {String}
  */

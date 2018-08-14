@@ -2,14 +2,23 @@
     <view class="stage">
         <!--当前账号 start-->
         <block wx:if="{{gameUserInfo.stageSize == 'big'}}">
-            <view class="big-stage-img">
-                <image class="big-profile-img" src="{{gameUserInfo.logo}}"></image>
-                <image class="big-stage-img" src="{{gameUserInfo.stage}}"></image>
+            <view class="big-stage-img" style="width: {{240*px2rpxWidth}}px;height: {{271*px2rpxHeight}}px;">
+                <image class="big-profile-img"
+                       style="left:{{55*px2rpxWidth}}px;bottom:{{34*px2rpxHeight}}px;width:{{131*px2rpxWidth}}px;height:{{234*px2rpxHeight}}px"
+                       src="{{gameUserInfo.logo}}">
+                </image>
+                <image class="big-stage-img" style="width:{{240*px2rpxWidth}}px;height:{{78*px2rpxHeight}}px;" src="{{gameUserInfo.stage}}"></image>
                 <block wx:if="{{gameUserInfo.isReady}}">
-                    <image class="big-ready-img" src="{{ready}}"></image>
+                    <image class="big-ready-img"
+                           style="left:{{150*px2rpxWidth}}px;bottom:{{40*px2rpxHeight}}px;width:{{40*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"
+                           src="{{ready}}">
+                    </image>
                 </block>
                 <block wx:else>
-                    <image class="big-ready-img" src="{{no_ready}}"></image>
+                    <image class="big-ready-img"
+                           style="left:{{150*px2rpxWidth}}px;bottom:{{40*px2rpxHeight}}px;width:{{40*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"
+                           src="{{no_ready}}">
+                    </image>
                 </block>
             </view>
         </block>
@@ -17,42 +26,64 @@
 
         <!--其他玩家 start-->
         <block wx:elif="{{gameUserInfo.stageSize == 'small'}}">
-            <view class="small-stage-img">
-                <image class="small-profile-img" src="{{gameUserInfo.logo}}"></image>
-                <image class="small-stage-img" src="{{gameUserInfo.stage}}"></image>
+            <view class="small-stage-img" style="width: {{200*px2rpxWidth}}px;height: {{271*px2rpxHeight}}px;">
+                <image class="small-profile-img"
+                       style="left:{{34*px2rpxWidth}}px;bottom:{{36*px2rpxHeight}}px;width:{{131*px2rpxWidth}}px;height:{{234*px2rpxHeight}}px;"
+                       src="{{gameUserInfo.logo}}">
+                </image>
+                <image class="small-stage-img"
+                       style="width:{{200*px2rpxWidth}}px;height:{{65*px2rpxHeight}}px;"
+                       src="{{gameUserInfo.stage}}">
+                </image>
                 <block wx:if="{{gameUserInfo.isReady}}">
-                    <image class="small-ready-img" src="{{ready}}"></image>
+                    <image class="small-ready-img"
+                           style="left:{{125*px2rpxWidth}}px;bottom:{{40*px2rpxHeight}}px;width:{{40*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"
+                           src="{{ready}}">
+                    </image>
                 </block>
                 <block wx:else>
-                    <image class="small-ready-img" src="{{no_ready}}"></image>
+                    <image class="small-ready-img"
+                           style="left:{{125*px2rpxWidth}}px;bottom:{{40*px2rpxHeight}}px;width:{{40*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"
+                           src="{{no_ready}}">
+                    </image>
                 </block>
             </view>
         </block>
         <!--其他玩家 end-->
 
-        <view class="info">
+        <view class="info" style="margin-top:{{20*px2rpxHeight}}px;width:{{176*px2rpxWidth}}px;height:{{69*px2rpxHeight}}px;">
             <block wx:if="{{gameUserInfo.isExiet}}">
-                <image class="info-img" src="{{gameUserInfo.score_bg}}"></image>
+                <image class="info-img"
+                       style="width:{{176*px2rpxWidth}}px;height:{{69*px2rpxHeight}}px;"
+                       src="{{gameUserInfo.score_bg}}">
+                </image>
                 <view class="info-name">{{gameUserInfo.shakeNumber}}</view>
             </block>
             <block wx:else>
-                <image class="info-img" src="{{gameUserInfo.score_bg}}"></image>
+                <image class="info-img"
+                       style="width:{{176*px2rpxWidth}}px;height:{{69*px2rpxHeight}}px;"
+                       src="{{gameUserInfo.score_bg}}">
+                </image>
                 <button class="info-name" plain="true" open-type="share">邀请好友</button>
             </block>
-            <image class="info-profile" src="{{gameUserInfo.headPortrait}}"></image>
+            <image class="info-profile"
+                   style="top:{{-23*px2rpxHeight}}px;left:{{-23*px2rpxWidth}}px;width:{{46*px2rpxWidth}}px;height:{{46*px2rpxHeight}}px;"
+                   src="{{gameUserInfo.headPortrait}}">
+            </image>
         </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
-    import {USER_INFO} from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
 
     export default class Stage extends wepy.component {
 
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             imgApi:imgApi,
             // 灰人
             no_people:imgApi.no_people,
@@ -112,10 +143,14 @@
         };
 
         async onLoad(){
-             // 获取用户信息
-             let userInfo = await wepy.getStorageSync(USER_INFO);
-             this.userInfo = userInfo;
-             this.$apply();
+            // 获取用户信息
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userInfo = userInfo;
+            // 获取尺寸适配
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
         }
 
         // 转发
@@ -148,17 +183,17 @@
 
         .big-stage-img{
             position: relative;
-            width: 240rpx;
-            height: 271rpx;
+            /*width: 240rpx;*/
+            /*height: 271rpx;*/
             /*border: 1rpx solid red;*/
 
             .big-profile-img{
                 position: absolute;
-                bottom: 34rpx;
-                left: 55rpx;
+                /*bottom: 34rpx;*/
+                /*left: 55rpx;*/
                 z-index: 10;
-                width: 131rpx;
-                height: 234rpx;
+                /*width: 131rpx;*/
+                /*height: 234rpx;*/
                 /*background: rgba(255,255,255,0.5);*/
             }
 
@@ -167,34 +202,34 @@
                 bottom: 0;
                 left: 0;
                 z-index: 5;
-                width: 240rpx;
-                height: 78rpx;
+                /*width: 240rpx;*/
+                /*height: 78rpx;*/
 
             }
 
             .big-ready-img{
                 position: absolute;
-                bottom: 40rpx;
-                left: 150rpx;
+                /*bottom: 40rpx;*/
+                /*left: 150rpx;*/
                 z-index: 10;
-                width: 40rpx;
-                height: 40rpx;
+                /*width: 40rpx;*/
+                /*height: 40rpx;*/
             }
         }
 
         .small-stage-img{
             position: relative;
-            width: 200rpx;
-            height: 271rpx;
+            /*width: 200rpx;*/
+            /*height: 271rpx;*/
             /*border: 1rpx solid red;*/
 
             .small-profile-img{
                 position: absolute;
-                bottom: 34rpx;
-                left: 36rpx;
+                /*bottom: 34rpx;*/
+                /*left: 36rpx;*/
                 z-index: 10;
-                width: 131rpx;
-                height: 234rpx;
+                /*width: 131rpx;*/
+                /*height: 234rpx;*/
             }
 
             .small-stage-img{
@@ -202,17 +237,17 @@
                 bottom: 0;
                 left: 0;
                 z-index: 5;
-                width: 200rpx;
-                height: 65rpx;
+                /*width: 200rpx;*/
+                /*height: 65rpx;*/
             }
 
             .small-ready-img{
                 position: absolute;
-                bottom: 40rpx;
-                left: 125rpx;
+                /*bottom: 40rpx;*/
+                /*left: 125rpx;*/
                 z-index: 10;
-                width: 40rpx;
-                height: 40rpx;
+                /*width: 40rpx;*/
+                /*height: 40rpx;*/
             }
 
         }
@@ -223,16 +258,16 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 176rpx;
-            height: 69rpx;
-            margin-top: 20rpx;
+            /*width: 176rpx;*/
+            /*height: 69rpx;*/
+            /*margin-top: 20rpx;*/
 
             .info-img{
                 position: absolute;
                 top: 0;
                 left: 0;
-                width: 176rpx;
-                height: 69rpx;
+                /*width: 176rpx;*/
+                /*height: 69rpx;*/
             }
 
             .info-name{
@@ -244,10 +279,10 @@
 
             .info-profile{
                 position: absolute;
-                top: -23rpx;
-                left: -23rpx;
-                width: 46rpx;
-                height: 46rpx;
+                /*top: -23rpx;*/
+                /*left: -23rpx;*/
+                /*width: 46rpx;*/
+                /*height: 46rpx;*/
                 border-radius: 50%;
                 border: 1rpx solid red;
             }

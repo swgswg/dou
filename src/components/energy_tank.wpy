@@ -1,17 +1,24 @@
 // 能量槽
 <template>
     <view class="energy-tank">
-        <veiw class="tank-out" style="width:{{tankWidth}}rpx;height:{{tankHeight}}rpx;">
-            <view class="energy-number" style="top:{{tankHeight - energyHeight - 5}}rpx;">100</view>
-            <view class="tank-in" style="width:{{tankWidth}}rpx;height:{{energyHeight}}rpx;"></view>
+        <veiw class="tank-out" style="width:{{tankWidth*px2rpxWidth}}px;height:{{tankHeight*px2rpxHeight}}px;">
+            <view class="energy-number" style="width:{{60*px2rpxWidth}}px;height:{{tankWidth*px2rpxHeight}}px;top:{{tankHeight*px2rpxHeight - energyHeight*px2rpxHeight + 10}}px;left:{{-12*px2rpxWidth}}px">{{nowEnergy}}</view>
+            <view class="tank-in" style="width:{{tankWidth * px2rpxWidth}}px;height:{{energyHeight * px2rpxHeight}}px;"></view>
         </veiw>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import { PX_TO_RPX } from '@/utils/constant';
 
     export default class EnergyTank extends wepy.component {
+
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            energyHeight:0,
+        };
 
         props = {
             tankWidth:{
@@ -23,11 +30,47 @@
                 default:860
             },
             // 当前能量高度
-            energyHeight:{
+            // energyHeight:{
+            //     type:Number,
+            //     default:0,
+            //     twoWay:true
+            // },
+            // 当前能量
+            nowEnergy:{
                 type:Number,
-                default:500
+                default:0,
+            },
+            // 满能量
+            fullEnergy:{
+                type:Number,
+                default:1314,
             }
         };
+
+        async onLoad(){
+            // 获取尺寸适配
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+
+        };
+
+        methods = {
+            // 能量转化为高度
+            energyToHeight(energy){
+                let en = parseInt(energy);
+                this.energyHeight = en * this.tankHeight / this.fullEnergy;
+            }
+        };
+
+        watch = {
+            nowEnergy(newValue){
+                this.energyToHeight(newValue);
+            }
+        };
+
+
     }
 </script>
 
@@ -45,8 +88,11 @@
 
             .energy-number{
                 position: absolute;
-                left: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
                 font-size: 24rpx;
+                transform:rotate(90deg);
                 /*border: 1rpx solid red;*/
             }
 

@@ -3,7 +3,7 @@
         <image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="{{myinfo_bg}}"></image>
         <info :userName.sync="userName" :photo.sync="photo"></info>
         <block wx:if="{{isShowGift}}">
-            <view class="mt10 flex-between;position:relative;">
+            <view class="flex-between;position:relative;" style="margin-top:{{20*px2rpxHeight}}px">
                 <view>
                     <giftcanvas
                         :canvasWidth.sync="canvasWidth"
@@ -12,13 +12,13 @@
                     ></giftcanvas>
                 </view>
                 <veiw>
-                    <energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :energyHeight="energyHeight"></energytank>
+                    <energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :nowEnergy="nowEnergy" :fullEnergy.sync="fullEnergy"></energytank>
                 </veiw>
-                <image style="position:absolute;bottom:60rpx;right:80rpx;width: 131rpx;height:234rpx;" src="{{logo}}"></image>
+                <image style="position:absolute;bottom:{{60*px2rpxHeight}}px;right:{{80*px2rpxWidth}}px;width: {{131*px2rpxWidth}}px;height:{{234*px2rpxHeight}}px;" src="{{logo}}"></image>
             </view>
         </block>
-        <view class="show-gift" style="margin-top:{{isShowGift ? 15:27}}rpx">
-            <image src="{{show_gift}}" @tap.stop="showCurrentGiftWall"></image>
+        <view class="show-gift" style="margin-top:{{isShowGift ? (15*px2rpxHeight):(35*px2rpxHeight)}}px;">
+            <image src="{{show_gift}}" style="width:{{90*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px;" @tap.stop="showCurrentGiftWall"></image>
         </view>
 
         <block wx:if="{{!isShowGift}}">
@@ -32,7 +32,7 @@
     import wepy from 'wepy';
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
-    import {USER_INFO} from '@/utils/constant';
+    import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import Info from '@/components/info';
     import InfoItem from '@/components/info_item';
     import GiftCanvas from '@/components/gift_canvas';
@@ -54,6 +54,8 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             windowWidth:0,
             windowHeight:0,
             myinfo_bg:imgApi.myinfo_bg,
@@ -64,7 +66,7 @@
             showInfoList:[
                 {img:imgApi.shop, title:'商城', skip:'/pages/mall'},
                 {img:imgApi.fans, title:'粉丝大排名',skip:'/pages/fans_rank'},
-                {img:imgApi.friend, title:'我的好友',skip:''},
+                {img:imgApi.friend, title:'我的好友',skip:'/pages/my_friends'},
                 {img:imgApi.gift, title:'我的礼物',skip:'/pages/my_gift'},
                 {img:imgApi.gift_wall, title:'我的礼物墙',skip:'/pages/gift_picture'},
                 {img:imgApi.set, title:'设置',skip:'/pages/set'},
@@ -87,7 +89,9 @@
             // 能量槽高
             energyTankHeight:860,
             // 能量值
-            energyHeight:0
+            nowEnergy:100,
+            // 满能量
+            fullEnergy:1314,
 
         };
 
@@ -98,6 +102,9 @@
             // console.log(systemInfo);
             this.windowWidth = systemInfo.windowWidth;
             this.windowHeight = systemInfo.windowHeight;
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.$apply();
         };
 
@@ -144,6 +151,7 @@
                     }
                 });
                 this.giftList = getPresentsWall.data.data;
+                this.$invoke('energytank','energyToHeight',500);
                 this.$apply();
             },
         };
@@ -182,8 +190,8 @@
             /*border: 1rpx solid red;*/
 
             image{
-                width: 90rpx;
-                height: 45rpx;
+                /*width: 90rpx;*/
+                /*height: 45rpx;*/
             }
         }
     }
