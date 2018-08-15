@@ -2,21 +2,25 @@
 <template>
     <view class="ranking">
         <block wx:for="{{ranking}}" wx:key="{{index}}" wx:for-item="rank">
-            <view class="ranking-content" data-userid="{{rank.userId}}" @tap.stop="showOtherGiftWall">
-                <view class="sort">
+            <view class="ranking-content"
+                  style="height:{{80*px2rpxHeight}}px;margin-top:{{6*px2rpxHeight}}px;"
+                  data-userid="{{rank.userId}}"
+                  @tap.stop="showOtherGiftWall">
+
+                <view class="sort" style="width:{{106*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
                     {{rank.rownum}}
                 </view>
-                <view class="profile">
-                    <image src="{{rank.photo}}" />
+                <view class="profile" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
+                    <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;" src="{{rank.photo}}" />
                 </view>
-                <view class="info">
-                    <view class="f14 w100">
+                <view class="info" style="height:{{80*px2rpxHeight}}px;">
+                    <view class="f14 w100" style="width:{{100*px2rpxWidth}}px;">
                         <view>{{rank.name}}</view>
                     </view>
-                    <view class="ml10 f14 w150">
+                    <view class="ml10 f14 w150" style="width:{{150*px2rpxWidth}}px;">
                         <view>{{rank.time}}</view>
                     </view>
-                    <view class="ml10 f14 w150">
+                    <view class="ml10 f14 w150" style="width:{{150*px2rpxWidth}}px;">
                         <view>{{rank.shakeNum}}</view>
                     </view>
                 </view>
@@ -29,11 +33,15 @@
 <script >
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import { USER_INFO,PX_TO_RPX } from '@/utils/constant';
 
     export default class Ranking extends wepy.component {
 
         data = {
             uploadFileUrl:api.uploadFileUrl,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            userId:null,
         };
 
         props  = {
@@ -46,13 +54,26 @@
             }
         };
 
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
+            this.$apply();
+        }
+
         methods = {
 
             // 查看用户的礼物墙
             showOtherGiftWall(e){
-                let userId = e.currentTarget.dataset.userid;
+                let otherUserId = e.currentTarget.dataset.userid;
+                if(otherUserId == this.userId){
+                    return;
+                }
                 wepy.navigateTo({
-                   url: '/pages/gift_wall?userId='+userId
+                   url: '/pages/gift_wall?userId='+otherUserId
                 })
             },
         };
@@ -78,8 +99,8 @@
             justify-content: flex-start;
             align-items: center;
             width: 99%;
-            height: 80rpx;
-            margin-top: 6rpx;
+            /*height: 80rpx;*/
+            /*margin-top: 6rpx;*/
             /*box-shadow: 0 0 10rpx #ccc;*/
             border: 1rpx solid #fbbd46;
 
@@ -87,8 +108,8 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 106rpx;
-                height: 80rpx;
+                /*width: 106rpx;*/
+                /*height: 80rpx;*/
                 font-family: 'Edo SZ';
                 /*border: 1rpx solid red;*/
                 /*image{*/
@@ -102,13 +123,13 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 80rpx;
-                height: 80rpx;
+                /*width: 80rpx;*/
+                /*height: 80rpx;*/
                 /*border: 1rpx solid red;*/
 
                 image{
-                    width: 60rpx;
-                    height: 60rpx;
+                    /*width: 60rpx;*/
+                    /*height: 60rpx;*/
                 }
             }
 
@@ -117,11 +138,11 @@
                 justify-content: space-around;
                 align-items: center;
                 width: 100%;
-                height: 80rpx;
+                /*height: 80rpx;*/
                 /*border: 1rpx solid red;*/
 
                 .w100,.w150{
-                    width: 100rpx;
+                    /*width: 100rpx;*/
                     /*border: 1rpx solid red;*/
                     white-space: nowrap;
                     overflow: hidden;
@@ -129,7 +150,7 @@
                 }
 
                 .w150{
-                    width: 150rpx;
+                    /*width: 150rpx;*/
                 }
             }
         }

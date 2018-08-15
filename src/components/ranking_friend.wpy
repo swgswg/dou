@@ -73,13 +73,6 @@
             //     type:Number,
             //     default:1
             // },
-            // 周/总排行
-            weekOrAll:{
-                type:String,
-                // 1周,0总
-                default:1,
-                twoWay:true
-            },
             // 设备榜/手动榜
             status:{
                 type:String,
@@ -87,6 +80,14 @@
                 default:'1',
                 twoWay:true
             },
+            // 周/总排行
+            weekOrAll:{
+                type:String,
+                // 1周,0总
+                default:1,
+                twoWay:true
+            },
+
         };
 
         async onLoad(){
@@ -102,6 +103,7 @@
         methods = {
             // 上一页/下一页
             changePage(e){
+
                 let change = e.currentTarget.dataset.change;
                 let page = 0;
                 if(change == 'prev'){
@@ -155,6 +157,7 @@
             });
             if(res.data.state == 1){
                 let friendRankngData = res.data.data.PageInfo.list;
+                this.friendRanking = friendRankngData;
                 // console.log(friendRankngData);
                 if(friendRankngData.length < 1){
                     // 没有数据
@@ -163,7 +166,6 @@
                     this.$apply();
                     return;
                 }
-                this.friendRanking = friendRankngData;
                 // 是不是第一页
                 // this.isFirstPage = res.data.data.PageInfo.isFirstPage;
                 // 是不是最后一页

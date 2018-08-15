@@ -185,9 +185,9 @@
     export default class extends wepy.app {
         config = {
             pages: [
-
-                'pages/history_rank',
                 'pages/home',
+                'pages/history_rank',
+
                 'pages/my_gift',
                 'pages/select_sex',
                 'pages/not_connected',
@@ -285,6 +285,7 @@
         // 把上次的记录存入数据库(个人记录不需要房间号)
         async addRecord(){
             let userInfo = wepy.getStorageSync(USER_INFO);
+            console.log(userInfo);
             let prevShakeTime = wepy.getStorageSync(SHAKE_HAND_TIME);
             console.log('prevShakeTime' + '===' +prevShakeTime);
             let prevShakeNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);

@@ -2,7 +2,7 @@
 <template>
     <view class="gift-wall">
         <view class="gift-info">
-            <info :userName.sync="userName" :photo.sync="photo"></info>
+            <info :userName.sync="otherUserName" :photo.sync="otherPhoto"></info>
         </view>
         <view class="wall">
             <view>
@@ -13,11 +13,11 @@
                 ></giftcanvas>
             </view>
             <view>
-                <energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :energyHeight="energyHeight"></energytank>
+                <energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :nowEnergy.sync="nowEnergy" :fullEnergy.sync="fullEnergy"></energytank>
             </view>
         </view>
         <view style="width: 100%;background-color: #333;margin-top: 20rpx">
-            <mygift :giftList.sync="userGift" :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight"></mygift>
+            <mygift :myGift.sync="myGifts" :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight" :logoLocation.sync="logoLocation" :fansId.sync="otherUserId" :presentsWallId.sync="otherGiftWallId" :isTakeGift.sync="isTakeGift"></mygift>
         </view>
     </view>
 </template>
@@ -25,8 +25,9 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
-    import {USER_INFO} from '../utils/constant';
-
+    import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
+    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import Info from '@/components/info';
     import GiftCanvas from '@/components/gift_canvas';
     import EnergyTank from '@/components/energy_tank';
@@ -48,42 +49,89 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            fileUrl:imgApi.fileUrl,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            // 卡通人物形象的宽高
+            logoWidth:131,
+            logoHeight:234,
             // 礼物墙的宽
             canvasWidth:650,
             // 礼物墙的高
             canvasHeight:860,
-            userInfo:null,
-            userName:'',
-            photo:'',
-            userGift:'',
-            // 礼物
-            giftList:[
-                {id:1,giftId:1,width:50,height:50,xaxle:0,yaxle:0,presentsWallId:1,status:1},
-                {id:1,giftId:1,width:50,height:50,xaxle:50,yaxle:50,presentsWallId:1,status:0},
-                {id:1,giftId:1,width:50,height:50,xaxle:10,yaxle:10,presentsWallId:1,status:0},
-                {id:1,giftId:1,width:50,height:50,xaxle:100,yaxle:100,presentsWallId:1,status:1},
-            ],
+            // otherUserInfo:null,
+            otherUserId:null,
+            otherUserName:'',
+            otherPhoto:'',
+            otherGiftWallId:null,
+            // 用户拥有的礼物
+            myGifts:null,
+            // 被赠送礼物的礼物墙
+            giftList:[],
             // 能量槽宽
             energyTankWidth:30,
             // 能量槽高
             energyTankHeight:860,
-            // 能量值
-            energyHeight:100
+            // 当前能量值
+            nowEnergy:0,
+            // 满能量值
+            fullEnergy:1314,
+            // 是否还能赠送个礼物(能量值满不能赠送)
+            isTakeGift:true,
+            // 卡通人物所在的坐标
+            logoLocation:null,
         };
 
         // 在Page和Component共用的生命周期函数
         async onLoad(options) {
-            let userId = options.userId;
-            // 获取这个用户信息
-            let res = await api.getOneUserInfo({
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let otherUserId = options.userId;
+            this.otherUserId = otherUserId;
+            // 获取被送礼物用户的礼物墙
+            let otherUserGift = await api.getPresentsWall({
                 query:{
-                    userId:userId
+                    userId:otherUserId
                 }
             });
-            console.log(res.data.data);
-            this.userInfo = res.data.data;
-            this.userName = res.data.data.name;
-            this.photo = res.data.data.photo;
+            // console.log(otherUserGift);
+            // 请求成功
+            if(otherUserGift.data.state == 1){
+                let giftList = otherUserGift.data.data.axle;
+                // console.log(giftList)
+                if(util.isEmpty(giftList)){
+                    giftList = [];
+                }
+                // 礼物墙的id
+                this.otherGiftWallId = otherUserGift.data.data.id;
+                // 增加一个人物动漫形象
+                let logo = otherUserGift.data.data.logo;
+                let logoX = this.canvasWidth - this.logoWidth;
+                let logoY = this.canvasHeight - this.logoHeight;
+                // console.log('logoX=='+logoX,'logoY=='+logoY)
+                giftList.push({id:-1,giftId:-1,wide:131,high:234,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
+                this.logoLocation = {x:logoX,y:logoY};
+                // console.log(this.logoLocation);
+                // 当前礼物墙的总能量
+                let len = giftList.length;
+                let sumScore = 0;
+                for(let i = 0; i < len; i++){
+                    sumScore += parseInt(giftList[i].score);
+                }
+                this.nowEnergy = sumScore;
+                this.giftList = giftList;
+                this.otherUserName = otherUserGift.data.data.name;
+                this.otherPhoto = otherUserGift.data.data.photo;
+            } else {
+                wx.showToast({
+                    title: '网络错误',
+                    icon: 'none',
+                    duration: 1000
+                })
+            }
+
             this.$apply();
         };
 
@@ -101,31 +149,64 @@
                     userId:activeUserInfo.id
                 }
             });
-            this.userGift = activeUserGift;
-            this.$apply();
-
-            // 获取被送礼物用户的礼物墙
-            let unactiveUserInfo = this.userInfo;
-            let unactiveUserGift = await api.getPresentsWall({
-                query:{
-                    userId:unactiveUserInfo.id
-                }
-            });
-            this.giftList = unactiveUserGift;
+            this.myGifts = activeUserGift.data.data;
+            // console.log(activeUserGift.data.data);
             this.$apply();
         };
 
-        // 声明计算属性（详见后文介绍）
-        computed = {};
 
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
+        events = {
+            // 将所有礼物状态改为1(防止确定后依然可以拖动礼物)
+            updateTypeTo1(){
+                let gift = this.giftList;
+                let len = gift.length;
+                for(let i = 0; i < len; i++){
+                    gift[i].type = 1;
+                }
+                this.giftList = gift;
+                this.$apply();
+            },
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+            // 添加礼物
+            addGiftToWall(oneGift){
+                console.log(this.isTakeGift+'===111');
+                if(!this.isTakeGift){
+                    return;
+                }
+                // console.log(oneGift);
+                let giftList = this.giftList;
+                // console.log(giftList);
+                giftList.push(oneGift);
+                let len = giftList.length;
+                // 礼物墙的总能量
+                let sumScore = 0;
+                for(let i = 0; i < len; i++){
+                    sumScore += parseInt(giftList[i].score);
+                }
+                this.nowEnergy = sumScore;
+                // 判断能量是否已满
+                this.isFullEnergy(sumScore);
 
-        // 声明组件之间的事件处理函数
-        events = {};
+                this.giftList = giftList;
+                this.$apply();
+            }
+        };
+
+        // 判断是否满能量
+        isFullEnergy(en){
+            if(en >= this.fullEnergy){
+                wx.showModal({
+                    title: '温馨提示',
+                    content: '当前礼物墙能量已满,请点击下方确定按钮,重新开始新的礼物墙',
+                    showCancel:false,
+                    success: function(res) {
+                    }
+                });
+                this.isTakeGift = false;
+                this.$apply();
+            }
+        }
+
     }
 </script>
 

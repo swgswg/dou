@@ -1,7 +1,7 @@
 // 历史排名--世界
 <template>
     <view class="ranking-world">
-        <view class="ranking-empty" style="height:{{770*px2rpxHeight}}px;">
+        <view class="ranking-empty" style="height:{{774*px2rpxHeight}}px;">
             <block wx:if="{{!is_empty}}">
                 <!--前三名 start-->
                 <view class="first-three">
@@ -108,7 +108,8 @@
             //是否显示 底部loading
             showLoading: false,
             page:1,
-            pageSize:6
+            pageSize:6,
+            userId:null,
         };
 
         props = {
@@ -130,18 +131,19 @@
                 default:null,
                 twoWay:true
             },
-            // 周/总排行
-            weekOrAll:{
-                type:String,
-                // 1周,0总
-                default:1,
-                twoWay:true
-            },
+
             // 设备榜/手动榜
             status:{
                 type:String,
                 // 1脚,0手
                 default:'1',
+                twoWay:true
+            },
+            // 周/总排行
+            weekOrAll:{
+                type:String,
+                // 1周,0总
+                default:1,
                 twoWay:true
             },
         };
@@ -150,6 +152,9 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
             this.$apply();
         }
 
@@ -157,7 +162,10 @@
 
             // 查看其他人的礼物墙
             seeOtherGiftWall(e){
-                let userId = e.currentTarget.dataset.userid;
+                let otherUserId = e.currentTarget.dataset.userid;
+                if(otherUserId == this.userId){
+                    return;
+                }
                 wepy.navigateTo({
                     url: '/pages/gift_wall?userId='+userId
                 })

@@ -99,7 +99,8 @@ const convertGift = (params) => wxRequest(params, host + 'shakeLeg/user/convertG
 const getIntegral = (params) => wxRequest(params, host + 'shakeLeg/user/getIntegral');
 // 粉丝列表
 const getFans = (params) => wxRequest(params, host + 'shakeLeg/user/getFans');
-
+// 送礼物
+const addSendGifts = (params) => wxRequest(params, host + 'shakeLeg/user/addSendGifts');
 
 export default {
     host,
@@ -123,4 +124,5 @@ export default {
     convertGift,
     getIntegral,
     getFans,
+    addSendGifts,
 };

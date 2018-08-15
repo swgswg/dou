@@ -96,9 +96,9 @@
                 let index = e.currentTarget.dataset.index;
                 this.currentProfile = index;
                 if(this.currentSex == 0){
-                    this.logo = 'man'+(index+1);
+                    this.logo = 'man'+(index+1)+'.png';
                 } else if(this.currentSex == 1){
-                    this.logo = 'woman'+(index+1);
+                    this.logo = 'woman'+(index+1)+'.png';
                 }
                 this.$apply();
                 console.log(this.logo);

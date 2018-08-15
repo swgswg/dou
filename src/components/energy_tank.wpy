@@ -2,7 +2,8 @@
 <template>
     <view class="energy-tank">
         <veiw class="tank-out" style="width:{{tankWidth*px2rpxWidth}}px;height:{{tankHeight*px2rpxHeight}}px;">
-            <view class="energy-number" style="width:{{60*px2rpxWidth}}px;height:{{tankWidth*px2rpxHeight}}px;top:{{tankHeight*px2rpxHeight - energyHeight*px2rpxHeight + 10}}px;left:{{-12*px2rpxWidth}}px">{{nowEnergy}}</view>
+            <view class="energy-number" style="width:{{60*px2rpxWidth}}px;height:{{tankWidth*px2rpxHeight}}px;top:{{energyNum}}px;left:{{-14*px2rpxWidth}}px">{{nowEnergyPercent}}</view>
+            <!--<view class="energy-number" style="width:{{60*px2rpxWidth}}px;height:{{tankWidth*px2rpxHeight}}px;top:{{tankHeight*px2rpxHeight - energyHeight*px2rpxHeight-15}}px;left:{{-14*px2rpxWidth}}px">{{nowEnergyPercent}}</view>-->
             <view class="tank-in" style="width:{{tankWidth * px2rpxWidth}}px;height:{{energyHeight * px2rpxHeight}}px;"></view>
         </veiw>
     </view>
@@ -11,6 +12,7 @@
 <script>
     import wepy from 'wepy';
     import { PX_TO_RPX } from '@/utils/constant';
+    import tip from '@/utils/tip';
 
     export default class EnergyTank extends wepy.component {
 
@@ -18,6 +20,8 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             energyHeight:0,
+            energyNum:0,
+            nowEnergyPercent:'0%',
         };
 
         props = {
@@ -40,10 +44,11 @@
                 type:Number,
                 default:0,
             },
+
             // 满能量
             fullEnergy:{
                 type:Number,
-                default:1314,
+                default:0,
             }
         };
 
@@ -52,16 +57,17 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            // 能量百分比初始位置
+            this.energyNum =  this.tankHeight * this.px2rpxHeight - this.energyHeight * this.px2rpxHeight - 15;
             this.$apply();
+
 
         };
 
         methods = {
-            // 能量转化为高度
-            energyToHeight(energy){
-                let en = parseInt(energy);
-                this.energyHeight = en * this.tankHeight / this.fullEnergy;
-            }
+
+
         };
 
         watch = {
@@ -70,6 +76,27 @@
             }
         };
 
+        // 能量转化为高度
+        energyToHeight(energy){
+            let en = parseInt(energy);
+            if(en <= 0){
+                en = 0;
+            }
+            if(en >= this.fullEnergy){
+                en = this.fullEnergy;
+            }
+            this.energyHeight = en * this.tankHeight / this.fullEnergy;
+            this.nowEnergyPercent = '' + ((en / this.fullEnergy * 100).toFixed(2)) + '%';
+            if(this.energyHeight <= 50){
+                this.energyNum =  this.tankHeight * this.px2rpxHeight - this.energyHeight * this.px2rpxHeight - 20;
+            }else if(this.energyHeight >= (this.tankHeight - 20)){
+                this.energyNum = this.tankHeight * this.px2rpxHeight - this.energyHeight * this.px2rpxHeight + 20;
+            } else {
+                this.energyNum =  this.tankHeight * this.px2rpxHeight - this.energyHeight * this.px2rpxHeight;
+            }
+
+            this.$apply();
+        }
 
     }
 </script>
@@ -97,6 +124,7 @@
             }
 
             .tank-in{
+                font-size: 24rpx;
                 border-radius: 22rpx;
                 background: linear-gradient(to top right,#ec2c98, #f68668);
                 /*border: 1rpx solid blue;*/
