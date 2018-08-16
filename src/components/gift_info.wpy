@@ -5,7 +5,7 @@
                 <view class="gift-info-each" style="margin-bottom:{{20*px2rpxHeight}}px">
                     <view class="left">
                         <view class="left-img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
-                            <image style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;" src="{{fileUrl + giftInfo.url}}"></image>
+                            <image style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;" src="{{fileUrl + giftInfo.photo}}"></image>
                         </view>
                         <view class="left-info" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
                             <view class="gift-name">{{giftInfo.name}}</view>

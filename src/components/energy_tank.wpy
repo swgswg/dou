@@ -20,8 +20,10 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             energyHeight:0,
+            // 字的高度
             energyNum:0,
-            nowEnergyPercent:'0%',
+            // 字的内容
+            nowEnergyPercent:'0',
         };
 
         props = {
@@ -82,12 +84,13 @@
             if(en <= 0){
                 en = 0;
             }
+            this.nowEnergyPercent = en;
             if(en >= this.fullEnergy){
                 en = this.fullEnergy;
             }
             this.energyHeight = en * this.tankHeight / this.fullEnergy;
-            this.nowEnergyPercent = '' + ((en / this.fullEnergy * 100).toFixed(2)) + '%';
-            if(this.energyHeight <= 50){
+            // this.nowEnergyPercent = '' + ((en / this.fullEnergy * 100).toFixed(2)) + '%';
+            if(this.energyHeight <= 100){
                 this.energyNum =  this.tankHeight * this.px2rpxHeight - this.energyHeight * this.px2rpxHeight - 20;
             }else if(this.energyHeight >= (this.tankHeight - 20)){
                 this.energyNum = this.tankHeight * this.px2rpxHeight - this.energyHeight * this.px2rpxHeight + 20;

@@ -38,9 +38,9 @@
                             <view class="data-name">{{fans.name}}</view>
                         </view>
 
-                        <view class="data-right" style="padding-left:{{80*px2rpxWidth}}px">
+                        <view class="data-right" style="padding-left:{{80*px2rpxWidth}}px;">
                             <view>
-                                <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;"class="gift-img" src="/static/images/fans_data.png"></image>
+                                <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" class="gift-img" src="/static/images/fans_data.png"></image>
                             </view>
                             <view class="ml5">{{fans.score}}</view>
                         </view>

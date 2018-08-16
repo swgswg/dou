@@ -167,7 +167,7 @@
                     return;
                 }
                 wepy.navigateTo({
-                    url: '/pages/gift_wall?userId='+userId
+                    url: '/pages/gift_wall?userId='+otherUserId
                 })
             },
 
@@ -234,6 +234,7 @@
                 first_three.push(worldRankingData[1]);
                 first_three.push(worldRankingData[0]);
                 first_three.push(worldRankingData[2]);
+                // console.log(first_three);
                 // 删除原数据的前三名
                 worldRankingData.splice(0,1);
                 worldRankingData.splice(0,1);

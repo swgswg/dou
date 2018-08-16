@@ -2,41 +2,36 @@
 <template>
     <view class="gift-canvas flex-center">
         <movable-area style="width:{{canvasWidth*px2rpxWidth}}px;height:{{(canvasHeight*px2rpxHeight)}}px;background-color: #fff">
-            <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.id}}">
-                <!--<block wx:if="{{gift.type == 1}}">-->
-                    <!--<movable-view-->
-                            <!--style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"-->
-                            <!--x="{{gift.xaxle*px2rpxWidth}}" y="{{gift.yaxle*px2rpxHeight}}"-->
-                            <!--direction="all"-->
-                            <!--disabled-->
-                            <!--damping="5"-->
-                            <!--bindchange="moveGift"-->
-                            <!--data-index="{{index}}">-->
-                        <!--<image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>-->
-                    <!--</movable-view>-->
-                <!--</block>-->
-                <!--<block wx:else>-->
-                    <!--<movable-view-->
-                            <!--style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"-->
-                            <!--x="{{gift.xaxle*px2rpxWidth}}" y="{{gift.yaxle*px2rpxHeight}}"-->
-                            <!--direction="all"-->
-                            <!--damping="5"-->
-                            <!--bindchange="moveGift"-->
-                            <!--data-index="{{index}}">-->
-                        <!--<image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>-->
-                    <!--</movable-view>-->
-                <!--</block>-->
-                <movable-view
-                style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"
-                x="{{gift.xaxle*px2rpxWidth}}" y="{{gift.yaxle*px2rpxHeight}}"
-                direction="{{gift.type == 1 ? 'none':'all'}}"
-                damping='1'
-                friction='5'
-                animation="false"
-                bindchange="moveGift"
-                data-index="{{index}}">
-                <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>
-                </movable-view>
+            <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.giftId}}">
+                <block wx:if="{{gift.type == 1}}">
+                    <movable-view
+                            style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"
+                            x="{{gift.xaxle*px2rpxWidth*2}}" y="{{gift.yaxle*px2rpxHeight*2}}"
+                            direction="all"
+                            disabled
+                            bindchange="moveGift"
+                            data-index="{{index}}">
+                        <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>
+                    </movable-view>
+                </block>
+                <block wx:else>
+                    <movable-view
+                            style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"
+                            x="{{gift.xaxle*px2rpxWidth*2}}" y="{{gift.yaxle*px2rpxHeight*2}}"
+                            direction="all"
+                            bindchange="moveGift"
+                            data-index="{{index}}">
+                        <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>
+                    </movable-view>
+                </block>
+                <!--<movable-view-->
+                    <!--style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"-->
+                    <!--x="{{gift.xaxle*px2rpxWidth*2}}" y="{{gift.yaxle*px2rpxHeight*2}}"-->
+                    <!--direction="{{gift.type == 1 ? 'none':'all'}}"-->
+                    <!--bindchange="moveGift"-->
+                    <!--data-index="{{index}}">-->
+                    <!--<image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>-->
+                <!--</movable-view>-->
             </block>
         </movable-area>
     </view>

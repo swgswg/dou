@@ -8,7 +8,7 @@
                 <block wx:for="{{myGift}}" wx:for-item="gift" wx:key="{{index}}">
                     <view class="gift-img-each" style="width:{{100*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="takeGift">
                         <view class="gift-num" style="width:{{35*px2rpxWidth}}px;height:{{35*px2rpxWidth}}px">{{gift.num}}</view>
-                        <image style="width:{{60*px2rpxWidth}}px;height:{{56*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;" src="{{fileUrl + gift.url}}"></image>
+                        <image style="width:{{60*px2rpxWidth}}px;height:{{56*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;" src="{{fileUrl + gift.photo}}"></image>
                         <!--<view class="gift-name">赞</view>-->
                         <view class="gift-energy">{{gift.score}}能量</view>
                     </view>
@@ -111,11 +111,12 @@
                     return;
                 }
                 // 随机坐标
-                let x = util.rand(0,this.canvasWidth);
-                let y = util.rand(0,this.canvasHeight);
+                let x = util.rand(0,this.canvasWidth - 100);
+                let y = util.rand(0,this.canvasHeight - 100);
+                // console.log(x,y);
                 myGift[index].num = myGift[index].num - 1;
                 // giftList.push({id:0,giftId:myGift[index].giftId,wide:myGift[index].wide,high:myGift[index].high,xaxle:x,yaxle:y,url:myGift[index].photo,type:0});
-                let oneGift = {id:0,giftId:myGift[index].giftId,wide:parseInt(myGift[index].wide),high:parseInt(myGift[index].high),xaxle:x,yaxle:y,url:myGift[index].photo,score:myGift[index].score,type:0};
+                let oneGift = {id:0,giftId:myGift[index].giftId,wide:parseInt(myGift[index].wide),high:parseInt(myGift[index].high),xaxle:x,yaxle:y,url:myGift[index].url,score:myGift[index].score,type:0};
                 // 添加礼物到礼物墙
                 this.$emit('addGiftToWall',oneGift);
                 // 把添加到礼物墙的礼物添加临时变量
@@ -128,7 +129,14 @@
             async confirmGiftSeat(){
                 let that = this;
                 let giftVal = this.giftVal;
-                console.log(giftVal);
+                // 0能量不满/1满能量
+                let status = null;
+                if(this.isTakeGift){
+                    status = 0;
+                } else {
+                    status = 1;
+                }
+                // console.log(giftVal);
                 let len = giftVal.length;
                 let giftId = '';
                 let xaxle = '';
@@ -140,20 +148,29 @@
                 }
                 let res = await api.addSendGifts({
                     query:{
-                        userId:that.userId,
-                        fansId:that.fansId,
+                        userId:that.fansId,
+                        fansId:that.userId,
                         presentsWallId:that.presentsWallId,
                         giftId:giftId,
                         xaxle:xaxle,
-                        yaxle:yaxle
+                        yaxle:yaxle,
+                        status:status
                     }
                 });
+
+
                 if(res.data.state == 1){
                     wx.showToast({
                         title: '赠送成功',
                         icon: 'success',
                         duration: 1000
                     });
+
+                    // 满能量确定生成图片
+                    if(!this.isTakeGift){
+                        console.log('isTakeGift=='+this.isTakeGift);
+                        this.$emit('createImg',that.presentsWallId);
+                    }
 
                     // 将所有的礼物状态改为1
                     this.$emit('updateTypeTo1');
@@ -179,7 +196,6 @@
             this.giftVal = giftVal;
             this.$apply();
         }
-
 
     }
 </script>

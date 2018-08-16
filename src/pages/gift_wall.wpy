@@ -16,8 +16,11 @@
                 <energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :nowEnergy.sync="nowEnergy" :fullEnergy.sync="fullEnergy"></energytank>
             </view>
         </view>
-        <view style="width: 100%;background-color: #333;margin-top: 20rpx">
+        <view style="width: 100%;background-color: #333;margin-top:20rpx">
             <mygift :myGift.sync="myGifts" :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight" :logoLocation.sync="logoLocation" :fansId.sync="otherUserId" :presentsWallId.sync="otherGiftWallId" :isTakeGift.sync="isTakeGift"></mygift>
+        </view>
+        <view style='width:0px;height:0px;overflow:hidden;'>
+            <canvas canvas-id="myCanvas" style="width:{{canvasWidth*px2rpxWidth}}px;height:{{canvasHeight*px2rpxHeight}}px;" hidden="true"/>
         </view>
     </view>
 </template>
@@ -27,6 +30,8 @@
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
+    import tip from '@/utils/tip';
+    import weixin from '@/utils/weixin';
     import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import Info from '@/components/info';
     import GiftCanvas from '@/components/gift_canvas';
@@ -131,7 +136,6 @@
                     duration: 1000
                 })
             }
-
             this.$apply();
         };
 
@@ -164,6 +168,8 @@
                     gift[i].type = 1;
                 }
                 this.giftList = gift;
+                // console.log(gift)
+                // console.log(this.giftList)
                 this.$apply();
             },
 
@@ -189,11 +195,61 @@
 
                 this.giftList = giftList;
                 this.$apply();
+            },
+
+            // 满能量生成图片
+            createImg(mypresentsWallId){
+                console.log(mypresentsWallId);
+                tip.loading();
+                let that = this;
+                let giftList = this.giftList;
+                // console.log(giftList);
+                let len = giftList.length;
+                // 在画布上绘制图片
+                var ctx = wx.createCanvasContext('myCanvas');
+                // ctx.save();
+                for(let i = 0; i < len; i++){
+                    wx.downloadFile({
+                        url: that.fileUrl + giftList[i].url,
+                        success: function(res) {
+                            // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
+                            if (res.statusCode === 200) {
+                                ctx.drawImage( res.tempFilePath, giftList[i].xaxle, giftList[i].yaxle, giftList[i].wide, giftList[i].high);
+                                ctx.draw();
+                            }
+                        }
+                    });
+                }
+                // ctx.restore();
+                let width = that.canvasWidth * that.px2rpxWidth;
+                let height = that.canvasHeight * that.px2rpxHeight;
+                setTimeout(function () {
+                    wx.canvasToTempFilePath({
+                        x: 0,
+                        y: 0,
+                        width: width,
+                        height: height,
+                        // destWidth: 150,
+                        // destHeight: 100,
+                        canvasId: 'myCanvas',
+                        quality:1,
+                        success: function (res) {
+                            // console.log(res);
+                            weixin.uploadFiveToAliyunOOS(res.tempFilePath,function(fileNmae) {
+                                console.log('fileName=='+fileNmae);
+                                that.saveGiftWallPhoto(mypresentsWallId,fileNmae);
+                            });
+                        }
+                    });
+                },1000);
+                tip.loaded();
             }
+
         };
 
         // 判断是否满能量
         isFullEnergy(en){
+            let that = this;
             if(en >= this.fullEnergy){
                 wx.showModal({
                     title: '温馨提示',
@@ -204,6 +260,21 @@
                 });
                 this.isTakeGift = false;
                 this.$apply();
+            }
+        }
+
+        // 保存礼物墙照片
+        async saveGiftWallPhoto(mypresentsWallId,fileNmae){
+            let suc = await api.updatePresentsWall({
+                query:{
+                    presentsWallId:mypresentsWallId,
+                    url:fileNmae,
+                }
+            });
+            console.log(suc);
+            if(suc.data.state == 1){
+                // this.onLoad();
+                // this.onReady();
             }
         }
 
