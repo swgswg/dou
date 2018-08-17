@@ -53,6 +53,12 @@ const getFans = (params) => wxRequest(params, host + 'shakeLeg/user/getFans');
 const addSendGifts = (params) => wxRequest(params, host + 'shakeLeg/user/addSendGifts');
 // 保存礼物墙照片
 const updatePresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/updatePresentsWall');
+// 获取用户数据 获取手/脚的抖动的总记录数
+const getUserData = (params) => wxRequest(params, host + 'shakeLeg/admin/getUserData');
+// 根据礼物积分获取礼物
+const getOneGiftInfoByScore = (params) => wxRequest(params, host + 'shakeLeg/user/getGift');
+// 添加个人礼物
+const addUserGift = (params) => wxRequest(params, host + 'shakeLeg/user/addUserGift');
 
 export default {
     host,
@@ -76,5 +82,8 @@ export default {
     getIntegral,
     getFans,
     addSendGifts,
-    updatePresentsWall
+    updatePresentsWall,
+    getUserData,
+    getOneGiftInfoByScore,
+    addUserGift,
 };

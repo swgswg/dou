@@ -178,7 +178,7 @@
 <script>
     import wepy from 'wepy';
     import 'wepy-async-function';
-    import { USER_INFO, SHAKE_HAND_TIME,SHAKE_HAND_NUMBER,PX_TO_RPX } from '@/utils/constant';
+    import { USER_INFO, SHAKE_HAND_TIME,SHAKE_HAND_NUMBER,PX_TO_RPX,SHAKE_LEG_TIME,SHAKE_LEG_NUMBER } from '@/utils/constant';
     import api from '@/utils/api';
     import util from '@/utils/util';
 
@@ -270,8 +270,8 @@
             // 获取屏幕尺寸适配比例
             this.px2rpx();
 
-            // 把上次的记录存入数据库
-            this.addRecord();
+            // 把上次的手动记录存入数据库
+            this.addHandRecord();
 
             // 重新记录时间
             var shakeTime = 0;
@@ -282,40 +282,75 @@
             },1000);
         }
 
-        // 把上次的记录存入数据库(个人记录不需要房间号)
-        async addRecord(){
+        // 把上次的手动记录存入数据库(个人记录不需要房间号)
+        async addHandRecord(){
             let userInfo = wepy.getStorageSync(USER_INFO);
             console.log(userInfo);
-            let prevShakeTime = wepy.getStorageSync(SHAKE_HAND_TIME);
-            console.log('prevShakeTime' + '===' +prevShakeTime);
-            let prevShakeNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
-            console.log('prevShakeNumber' + '===' +prevShakeNumber);
-            if(!util.isEmpty(prevShakeTime)){
-                prevShakeTime = util.secondToDHMS(prevShakeTime);
-                if(util.isEmpty(prevShakeNumber)){
-                    prevShakeNumber = 0;
+
+            let prevShakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
+            console.log('prevShakeHandTime' + '===' +prevShakeHandTime);
+
+            let prevShakeHandNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
+            console.log('prevShakeHandNumber' + '===' +prevShakeHandNumber);
+
+            if(!util.isEmpty(prevShakeHandTime)){
+                prevShakeHandTime = util.secondToDHMS(prevShakeHandTime);
+
+                if(util.isEmpty(prevShakeHandNumber)){
+                    prevShakeHandNumber = 0;
                 }
+
                 let res = await api.addRecord({
                     query:{
                         userId:userInfo.id,
-                        time:prevShakeTime,
-                        shakeNum:prevShakeNumber,
-                        type:0,
+                        time:prevShakeHandTime,
+                        shakeNum:prevShakeHandNumber,
+                        type:0,  // 0自己,1好友
                         status: 0,// 0手动,1脚动
                     }
                 });
-                if(res.data.state){
+                if(res.data.state == 1){
                     wepy.setStorageSync(SHAKE_HAND_TIME, 0);
                     wepy.setStorageSync(SHAKE_HAND_NUMBER, 0);
                 }
             }
         }
 
+        /* 此接口等设备接入(连接蓝牙成功时使用) */
+        // 把上次的脚动记录存入数据库(个人记录不需要房间号)
+        // async addLegRecord(){
+        //     let userInfo = wepy.getStorageSync(USER_INFO);
+        //     let prevShakeLegTime = wepy.getStorageSync(SHAKE_LEG_TIME);
+        //     let prevShakeLegNumber = wepy.getStorageSync(SHAKE_LEG_NUMBER);
+        //     if(!util.isEmpty(prevShakeLegTime)){
+        //         prevShakeLegTime = util.secondToDHMS(prevShakeLegTime);
+        //
+        //         if(util.isEmpty(prevShakeLegNumber)){
+        //             prevShakeLegNumber = 0;
+        //         }
+        //
+        //         let res = await api.addRecord({
+        //             query:{
+        //                 userId:userInfo.id,
+        //                 time:prevShakeLegTime,
+        //                 shakeNum:prevShakeLegNumber,
+        //                 type:0, // 0自己,1好友
+        //                 status: 1,// 0手动,1脚动
+        //             }
+        //         });
+        //         if(res.data.state == 1){
+        //             wepy.setStorageSync(SHAKE_LEG_TIME, 0);
+        //             wepy.setStorageSync(SHAKE_LEG_NUMBER, 0);
+        //         }
+        //     }
+        // };
+
+
         // px2rpx(尺寸适配比例) rpx = px * (目标设备宽 px 值 / 750)
         px2rpx(){
             let systemInfo = wepy.getSystemInfoSync();
-            console.log(systemInfo);
-            console.log(systemInfo.windowHeight / 1110);
+            // console.log(systemInfo);
+            // console.log(systemInfo.windowHeight / 1110);
             wepy.setStorageSync(PX_TO_RPX, {px2rpxWidth:systemInfo.windowWidth / 750,px2rpxHeight:systemInfo.screenHeight / 1334});
         }
 

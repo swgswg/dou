@@ -1,31 +1,37 @@
 <template>
-    <view class="leg-shake">
-        <image class="open-room" src="{{open_room}}" @tap.stop="openRoom"></image>
-        <view class="leg-hand">
+    <view class="leg-shake" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px">
+        <image class="open-room" style="width:{{89*px2rpxWidth}}px;height:{{82*px2rpxWidth}}px;" src="{{open_room}}" @tap.stop="openRoom"></image>
+        <view class="leg-hand" style="margin-top:{{32*px2rpxWidth}}px;">
             <shakestyle :shake.sync="shakeData"></shakestyle>
         </view>
-        <view class="centent" @tap.stop="getClickNumber">
-            <image class="content-img-left"  src="{{leftImg}}" data-shake="1" @tap.stop="shakeTransform"/>
+        <view class="centent" style="height:{{500*px2rpxHeight}}px;margin-top:{{73*px2rpxHeight}}px;padding-left:{{30*px2rpxWidth}}px;" @tap.stop="getClickNumber">
+            <image class="content-img-left" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-right:{{37*px2rpxWidth}}px;" src="{{leftImg}}" data-shake="1" @tap.stop="shakeTransform"/>
             <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrl"></circle>
-            <image class="content-img-right" src="{{rightImg}}" data-shake="0" @tap.stop="shakeTransform"/>
+            <image class="content-img-right" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-left:{{37*px2rpxWidth}}px;" src="{{rightImg}}" data-shake="0" @tap.stop="shakeTransform"/>
         </view>
         <block wx:if="{{shakeData == 1}}">
-            <view class="shake-number">{{shakeLegNumber}}</view>
+            <view class="shake-number" style="margin-top:{{56*px2rpxHeight}}px">{{shakeLegNumber}}</view>
         </block>
         <block wx:if="{{shakeData == 0}}">
             <view class="shake-number">{{shakeHandNumber}}</view>
         </block>
-        <!--<view class="shake-time">持续时长：{{shakeTime}}</view>-->
+        <!--<view class="shake-time" style="margin-top:{{100*px2rpxHeight}}px">持续时长：{{shakeTime}}</view>-->
+        <view class="cover-layer" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;" wx:if="{{isShowCoverLayer}}">
+            <scoreenough :nowScore.sync="nowScore" :exchangeGiftName="exchangeGiftName" :exchangeGiftUrl.sync="exchangeGiftUrl" :shareUserId.sync="shareUserId" :shareGiftId.sync="shareGiftId" :sharePage.sync="sharePage"></scoreenough>
+        </view>
     </view>
 
 </template>
 <script>
     import wepy from 'wepy';
-    import {SHAKE_HAND_TIME,SHAKE_HAND_NUMBER,USER_INFO} from '@/utils/constant';
+    import {SHAKE_HAND_TIME, SHAKE_HAND_NUMBER, USER_INFO, PX_TO_RPX, SHAKE_LEG_TIME, SHAKE_LEG_NUMBER} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
     import util from '@/utils/util';
+    import tip from '@/utils/tip';
     import ShakeStyle from '@/components/shake_style';
     import Circle from '@/components/circle';
+    import ScoreEnough from '@/components/score_enough';
 
     export default class GoShake extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -37,10 +43,13 @@
         components = {
             shakestyle:ShakeStyle,
             circle:Circle,
+            scoreenough:ScoreEnough,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             open_room:imgApi.open_room,
             leftImg:imgApi.to_left,
             rightImg:imgApi.to_right,
@@ -58,13 +67,42 @@
             shakeHandNumber:0,
             // 抖动时间
             shakeHandTime:0,
+            // 脚/手抖动的总次数
+            shakeLegTotal:0,
+            shakeHandTotal:0,
+            // 是否显示遮盖层
+            isShowCoverLayer:false,
+            // 当前可兑换积分
+            nowScore:0,
+            // 兑换积分的礼物名称
+            exchangeGiftName:'aaaaaaa',
+            // 兑换积分的礼物图片
+            exchangeGiftUrl:'',
+            // 分享人的id
+            shareUserId:null,
+            shareGiftId:null,
+            // 当前分享页
+            sharePage:'go_shake',
+            // 判断积分到达的次数
+            handNumEnough5: 5,
+            handNumEnough7: 7,
+            handNumEnough36: 36,
+            legNumEnough20: 20,
+            legNumEnough50: 50,
+            legNumEnough129: 129,
         };
 
         // 在Page和Component共用的生命周期函数
         async onLoad(options) {
+
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
             // 获取用户信息
             let userInfo = await wepy.getStorageSync(USER_INFO);
             this.userInfo = userInfo;
+            this.shareUserId = userInfo.id;
             this.$apply();
 
             // 通过转发进来的建立好友关系
@@ -86,7 +124,8 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
+        async onReady() {
+            let that = this;
             // // 手动抖动
             // let that = this;
             // let shakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
@@ -95,6 +134,23 @@
             // that.shakeHandTime = shakeHandTime;
             // that.$apply();
             // console.log(this.userInfo);
+
+            // 获取手/脚的抖动的总记录数
+            let res = await api.getUserData({
+                query:{
+                    userId:that.userInfo.id,
+                }
+            });
+            if(res.data.state == 1){
+                this.shakeLegTotal = res.data.data.jShakeNum;
+                this.shakeHandTotal = res.data.data.sShakeNum;
+                console.log('shakeLegTotal=='+res.data.data.jShakeNum);
+                console.log('shakeHandTotal=='+res.data.data.sShakeNum);
+                this.$apply();
+            } else {
+                tip.error('网络错误');
+            }
+
         };
 
         // 转发
@@ -125,6 +181,17 @@
                     this.shakeHandNumber = shakeHandNumber;
                     this.$apply();
                     wepy.setStorageSync(SHAKE_HAND_NUMBER,shakeHandNumber);
+
+                    // 手动抖动次数 25000送5积分礼物/35000 7积分礼物/180000 36积分礼物
+                    if( (this.shakeHandTotal + shakeHandNumber) == (this.handNumEnough5*5000) ){
+                        this.isExchangeScore(this.handNumEnough5);
+
+                    } else if( (this.shakeHandTotal + shakeHandNumber) == (this.handNumEnough7*5000) ){
+                        this.isExchangeScore(this.handNumEnough7);
+
+                    } else if( (this.shakeHandTotal + shakeHandNumber) == (this.handNumEnough36*5000) ){
+                        this.isExchangeScore(this.handNumEnough36);
+                    }
                 }
             },
 
@@ -144,9 +211,6 @@
                 this.shakeChange(newValue);
             },
         };
-
-        // 声明组件之间的事件处理函数
-        events = {};
 
         // 抖动方式改变
         shakeChange(shake){
@@ -173,6 +237,37 @@
             }
         }
 
+        // 手动达到积分兑换
+        async isExchangeScore(myscore){
+            let that = this;
+            // 根据积分获取礼物信息
+            let res = await api.getOneGiftInfoByScore({
+                query:{
+                    score:myscore,
+                }
+            });
+            console.log(res);
+            if(res.data.state == 1){
+                this.isShowCoverLayer = true;
+                this.nowScore = myscore;
+                this.exchangeGiftName = res.data.data.name;
+                this.exchangeGiftUrl = res.data.data.phone;
+                this.shareGiftId = res.data.data.id;
+                this.$apply();
+
+                // 添加相应的礼物
+                let data = await api.addUserGift({
+                    query:{
+                        userId: that.userInfo.id,
+                        giftId: res.data.data.id,
+                        num:1
+                    }
+                });
+
+            } else {
+                tip.error('网络错误');
+            }
+        };
 
 
     }
@@ -196,12 +291,12 @@
             position: absolute;
             top: 50rpx;
             right: 24rpx;
-            width: 89rpx;
-            height: 82rpx;
+            /*width: 89rpx;*/
+            /*height: 82rpx;*/
         }
 
         .leg-hand{
-            margin-top: 32rpx;
+            /*margin-top: 32rpx;*/
         }
 
         .centent{
@@ -209,23 +304,23 @@
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            height: 500rpx;
-            margin-top: 73rpx;
-            padding-left: 30rpx;
+            /*height: 500rpx;*/
+            /*margin-top: 73rpx;*/
+            /*padding-left: 30rpx;*/
             box-sizing: border-box;
             /*border: 1rpx solid blue;*/
 
             .content-img-left,.content-img-right{
-                width: 58rpx;
-                height: 101rpx;
+                /*width: 58rpx;*/
+                /*height: 101rpx;*/
                 /*border: 1rpx solid blue;*/
             }
 
             .content-img-left{
-                margin-right: 37rpx;
+                /*margin-right: 37rpx;*/
             }
             .content-img-right{
-                margin-left: 37rpx;
+                /*margin-left: 37rpx;*/
             }
         }
 
@@ -234,7 +329,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin-top: 56rpx;
+            /*margin-top: 56rpx;*/
             font-size: 149rpx;
             font-family: 'Edo SZ';
             font-weight: normal;
@@ -247,12 +342,23 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            margin-top: 100rpx;
+            /*margin-top: 100rpx;*/
             font-size: 36rpx;
             font-family: AdobeHeitiStd Regular;
             color: #fff;
         }
 
+        /*遮盖层*/
+        .cover-layer{
+            position: absolute;
+            top:0;
+            left: 0;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.5);
+        }
     }
 
 </style>

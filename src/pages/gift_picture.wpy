@@ -51,6 +51,7 @@
             is_empty: true,
             //是否显示 底部loading
             showLoading: false,
+            userId:null,
             //当前页面
             page: 1,
             // 每页数据数
@@ -68,6 +69,9 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
             this.$apply();
         };
 
@@ -140,14 +144,13 @@
 
         // 获取图片数据
         async getPicture(mypage,mypageSize){
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            console.log(userInfo);
+            let that = this;
             let pictureList = this.pictureList;
             const res = await api.getPresentsWalls({
                 query: {
                     page: mypage || 1,
                     pageSize: mypageSize || 20,
-                    userId: userInfo.userId,
+                    userId: that.userId,
                 }
             });
             if(res.data.state == 1){

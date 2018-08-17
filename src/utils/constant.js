@@ -23,14 +23,25 @@ export const SYSTEM_INFO = "systemInfo";
 export const PX_TO_RPX = "pxToRpx";
 
 /**
- * 抖动时间(即进入小程序时间)
+ * 手动抖动时间(即进入小程序时间)
  * @type {String}
  */
 export const SHAKE_HAND_TIME = "shakeTime";
 
 /**
- * 抖动次数
+ * 手动抖动次数
  * @type {String}
  */
 export const SHAKE_HAND_NUMBER = "shakeNumber";
 
+/**
+ * 脚抖动时间(即进入小程序时间)
+ * @type {String}
+ */
+export const SHAKE_LEG_TIME = "shakeLegTime";
+
+/**
+ * 脚抖动次数
+ * @type {String}
+ */
+export const SHAKE_LEG_NUMBER = "shakeLegNumber";

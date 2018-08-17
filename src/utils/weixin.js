@@ -2,6 +2,7 @@
 const tip = require('@/utils/tip.js');
 const env = require('@/utils/weixinFileToaliyun/env.js');
 const uploadAliyun = require('@/utils/weixinFileToaliyun/uploadAliyun.js');
+import api from '@/utils/api';
 
 module.exports = {
     /**
@@ -77,6 +78,54 @@ module.exports = {
         } else {
             tip.error('网络错误');
         }
+
+    },
+
+
+    // webSocket
+    weixinWebSocket(){
+
+        let socketOpen = false;
+        let socketMsgQueue = [];
+
+        //建立连接
+        wx.connectSocket({
+            url: api.wshost +_this.data.openid+"/"+options.to,
+        });
+
+        //连接成功
+        wx.onSocketOpen(function () {
+            console.log('连接成功');
+            socketOpen = true;
+            for (var i = 0; i < socketMsgQueue.length; i++){
+                // sendSocketMessage(socketMsgQueue[i]);
+                if (socketOpen) {
+                    // 发送webSocket信息
+                    wx.sendSocketMessage({
+                        data:socketMsgQueue[i]
+                    })
+                } else {
+                    socketMsgQueue.push(socketMsgQueue[i]);
+                }
+            }
+            socketMsgQueue = [];
+        });
+
+        wx.onSocketError(function(res){
+            console.log('WebSocket连接打开失败，请检查！')
+        });
+
+        // 接收webSocket信息
+        wx.onSocketMessage(function(res){
+            // var list = [];
+            // list = _this.data.newsList;
+            var  _data = JSON.parse(res.data);
+            // list.push(_data);
+            // console.log(list);
+            // _this.setData({
+            //     newsList:list
+            // })
+        });
 
     }
 

@@ -46,6 +46,9 @@ module.exports = {
     // 抖腿/手动
     leg_shake: uploadFileUrl + 'leg_shake.png',
     hand_shake: uploadFileUrl + 'hand_shake.png',
+    score_enough:uploadFileUrl + 'score_enough.png',
+    double_integral:uploadFileUrl + 'double_integral.png',
+    instant_exchange:uploadFileUrl + 'instant_exchange.png',
     // 开设房间
     open_room: uploadFileUrl + 'open_room.png',
 
@@ -144,7 +147,6 @@ module.exports = {
     shake_code:uploadFileUrl + 'shake_code.png',
 
     // 礼物
-
 
 
 

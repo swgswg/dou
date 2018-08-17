@@ -1,0 +1,164 @@
+<template>
+    <view class="score_enough">
+        <view style="position:relative;width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;">
+
+            <!--背景图 start-->
+            <view style="position:absolute;top:0;left:0;width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;">
+                <image style="width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;" src="{{score_enough}}"></image>
+            </view>
+            <!--背景图 end-->
+
+            <!--文字 start-->
+            <view class="score-enough-text" style="top:{{371*px2rpxWidth}}px;left:0;width:{{553*px2rpxWidth}}px;height:{{100*px2rpxWidth}}px;">
+                <view style="font-size:36rpx;color:#00a4de;">积分已达<text style="color:#ff6742;margin: 0 {{20*px2rpxWidth}}px">{{nowScore}}</text>分</view>
+                <view class="score-enough-gift" style="font-size:36rpx;color:#00a4de;">可兑换
+                    <image style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" src="{{fileUrl + exchangeGiftUrl}}"></image>
+                    <text style="color:#ff6742;margin: 0 {{20*px2rpxWidth}}px">{{exchangeGiftName}}</text>
+                </view>
+            </view>
+            <!--文字 end-->
+
+            <!--按钮 start-->
+            <view class="score-enough-btn" style="top:{{500*px2rpxWidth}}px;left:0;width:{{553*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;padding: 0 {{53*px2rpxWidth}}px">
+                <button class="btn" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" open-type="share" plain="true" @tap="btnShare">
+                    <image style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{double_integral}}"></image>
+                </button>
+                <view class="flex-center" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
+                    <image style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{instant_exchange}}" @tap.stop="instantExchange"></image>
+                </view>
+            </view>
+            <!--按钮 end-->
+
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX} from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+
+    export default class ScoreEnough extends wepy.component {
+
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
+            score_enough:imgApi.score_enough,
+            double_integral:imgApi.double_integral,
+            instant_exchange:imgApi.instant_exchange,
+        };
+
+        props = {
+            nowScore:{
+                type:Number,
+                default:0,
+            },
+            exchangeGiftName:{
+                type:String,
+                default:'',
+            },
+            exchangeGiftUrl:{
+                type:String,
+                default:'',
+            },
+            shareUserId:{
+                type:Number,
+                default:null,
+            },
+            shareGiftId:{
+                type:Number,
+                default:null,
+            },
+            sharePage:{
+                type:String,
+                default:null,
+            },
+        };
+
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        };
+
+        // 转发
+        onShareAppMessage(res) {
+            let that = this;
+            if (res.from === 'button') {
+                // 来自页面内转发按钮
+                console.log(res.target);
+                return {
+                    title: '分享礼物加倍',
+                    path: '/page/'+ that.sharePage +'?share='+that.shareUserId,
+                    success: function(res) {
+                        // 转发成功 礼物加倍
+                        console.log('分享礼物加倍=='+res);
+                        api.addUserGift({
+                            query:{
+                                userId: that.shareUserId,
+                                giftId: that.shareGiftId,
+                                num:1
+                            }
+                        });
+                    },
+                }
+            }
+        }
+
+        methods = {
+            // 马上兑换
+            instantExchange(){
+                wepy.navigateTo({
+                    url: '/pages/mall',
+                })
+            },
+        };
+
+        // 双倍积分
+
+
+    }
+</script>
+
+<style lang="less">
+    .score_enough{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        /*width: 100%;*/
+
+        .score-enough-text{
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .score-enough-gift{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+
+        .score-enough-btn{
+            position: absolute;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            box-sizing: border-box;
+
+            .btn{
+                display: flex;
+                justify-content:center;
+                align-items: center;
+                margin: 0;
+                padding: 0;
+                border: 0 solid #fff;
+            }
+        }
+    }
+</style>
