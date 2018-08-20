@@ -15,7 +15,11 @@
                             <view>314积分</view>
                             <view>+69元换购</view>
                         </view>
-                        <view class="goumai" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px">购买</view>
+                        <view class="goumai"
+                              style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px"
+                              data-goodsid="{{recom.id}}"
+                              @tap.stop="buyGoods"
+                        >购买</view>
                     </view>
                 </view>
             </block>
@@ -64,6 +68,17 @@
             let userInfo = await wepy.getStorageSync(USER_INFO);
             this.userInfo = userInfo;
             this.$apply();
+        };
+
+
+        methods = {
+            // 购买
+            buyGoods(e){
+                let id = e.currentTarget.dataset.goodsid;
+                wepy.navigateTo({
+                    url:'/pages/goods_detail?id='+id,
+                });
+            },
         };
 
     }

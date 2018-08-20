@@ -1,14 +1,19 @@
 <template>
-    <view class="my-switch">
-        <view class="kuang {{activeDot == 1 ? 'ac':'inac'}}"></view>
-        <view class="yuan {{activeDot == 1 ? 'active':'inactive'}}" @tap.stop="dot"></view>
+    <view class="my-switch" style="width:{{90*px2rpxWidth}}px;height:{{46*px2rpxWidth}}px;">
+        <view class="kuang {{activeDot == 1 ? 'ac':'inac'}}" style="width:{{90*px2rpxWidth}}px;height:{{42*px2rpxWidth}}px;"></view>
+        <view class="yuan {{activeDot == 1 ? 'active':'inactive'}}" style="width:{{53*px2rpxWidth}}px;height:{{53*px2rpxWidth}}px;" @tap.stop="dot"></view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
 
     export default class MySwitch extends wepy.component {
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+        };
 
         props = {
             activeDot: {
@@ -17,6 +22,13 @@
                 twoWay: true,
             },
         };
+
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
 
         methods = {
             dot(){
@@ -34,15 +46,15 @@
 <style lang="less">
     .my-switch{
         position: relative;
-        width: 90rpx;
-        height: 46rpx;
+        /*width: 90rpx;*/
+        /*height: 46rpx;*/
 
         .kuang{
             position: absolute;
             top:0;
             left: 0;
-            width: 90rpx;
-            height: 42rpx;
+            /*width: 90rpx;*/
+            /*height: 42rpx;*/
             border: 4rpx solid #fff;
             border-radius: 10rpx;
         }
@@ -57,8 +69,8 @@
         .yuan{
             position: absolute;
             top: -2rpx;
-            width: 53rpx;
-            height: 53rpx;
+            /*width: 53rpx;*/
+            /*height: 53rpx;*/
             border-radius: 50%;
         }
         .inactive{

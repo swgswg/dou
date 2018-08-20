@@ -1,0 +1,233 @@
+<template>
+    <view class="commit-order">
+        <view class="commit-order-content">
+            <!--地址 start-->
+            <block wx:if="{{hasDefaultAddress}}">
+                <view style="width:100%;height:{{160*px2rpxHeight}}px;">
+                    <addresslist :addressList.sync="addressList"></addresslist>
+                </view>
+            </block>
+            <block wx:else>
+                <view class="" style="width:100%;height:{{154*px2rpxHeight}}px;">
+                    <emptyaddress ></emptyaddress>
+                </view>
+            </block>
+            <!--地址 end-->
+
+            <!--商品信息 start-->
+            <view class="goods-infomation" style="margin-top:{{20*px2rpxHeight}}px;padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;box-sizing: border-box">
+                <view class="infomation">
+                    <view class="info-img" style="width:{{185*px2rpxWidth}}px;">
+                        <image src="" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
+                    </view>
+                    <view class="name-price-num" style="width:{{480*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
+                        <view class="name-price">
+                            <view class="name">商品名称</view>
+                            <view class="price">¥198.00</view>
+                        </view>
+                        <view class="num" style="margin-top:{{45*px2rpxHeight}}px;">x1</view>
+                    </view>
+                </view>
+                <view class="express">
+                    <view style="font-size:30rpx;color:#000;">配送方式</view>
+                    <view class="express-right" style="width:{{150*px2rpxWidth}}px;">普通快递 <text class="iconfont icon-youjiantou" style="margin-top:{{5*px2rpxHeight}}px;"></text></view>
+                </view>
+            </view>
+            <!--商品信息 end-->
+
+            <!--合计 start-->
+            <view class="heji" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
+                <view>合计</view>
+                <view style="color:#f03e3e">¥198.00</view>
+            </view>
+            <!--合计 end-->
+
+            <!--提交订单 start-->
+            <view class="commit" style="height:{{98*px2rpxHeight}}px;">
+                <veiw class="heji" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">合计：<text style="color:#f03e3e;">¥198.00</text></veiw>
+                <view class="btn" style="width:{{231*px2rpxWidth}}px;">提交订单</view>
+            </view>
+            <!--提交订单 end-->
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX} from '@/utils/constant';
+    import EmptyAddress from '@/components/empty_address';
+    import AddressList from '@/components/address_list';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '提交订单'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            emptyaddress:EmptyAddress,
+            addresslist:AddressList,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            // 是否有默认地址
+            hasDefaultAddress:false,
+            // 默认地址
+            addressList:[]
+        };
+
+        // 在Page和Component共用的生命周期函数
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        // 声明页面所引用的Mixin实例
+        mixins = [];
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+    .commit-order{
+
+        .commit-order-content{
+
+            .goods-infomation{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                background-color: #fff;
+                border-bottom: 1rpx solid #bbb;
+
+                .infomation{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 100%;
+
+                    .info-img{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+
+                    .name-price-num{
+                        display: flex;
+                        flex-direction: column;
+
+                        .name-price{
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            
+                            .name{
+                                font-size: 32rpx;
+                                color: #000;
+                            }
+                            .price{
+                                font-size: 24rpx;
+                                color: #f03e3e;
+                            }
+                        }
+
+                        .num{
+                            display: flex;
+                            justify-content: flex-end;
+                            align-items: center;
+                            font-size: 24rpx;
+                            color: #aaa;
+                        }
+                    }
+                }
+
+                .express{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 30rpx;
+
+                    .express-right{
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        font-size: 24rpx;
+                        color: #aaa;
+
+                        .icon-youjiantou{
+                            font-size: 22rpx;
+                        }
+
+                    }
+
+                }
+            }
+
+            .heji{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 30rpx;
+                box-sizing: border-box;
+                background-color: #fff;
+            }
+
+            .commit{
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                background-color: #fff;
+
+                .heji{
+                    display: flex;
+                    justify-content:flex-end;
+                    align-items: center;
+                    height: 100%;
+                    box-sizing: border-box;
+                }
+
+                .btn{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100%;
+                    background-color: #ffd824;
+                }
+            }
+        }
+    }
+</style>

@@ -161,6 +161,10 @@ function checkReg(flag, data) {
             // 折扣正则(如8.8)
             reg = /[1-9](\.[1-9])?|0\.[1-9]/;
             break;
+        case 6:
+            // 非零的正整数
+            reg = /^[1-9]\d*$/;
+            break;
     }
     return reg.test(data);
 }

@@ -185,9 +185,13 @@
     export default class extends wepy.app {
         config = {
             pages: [
+                'pages/address_edit',
+                'pages/address_add',
+                'pages/commit_order',
+                'pages/goods_detail',
                 'pages/home',
                 'pages/history_rank',
-
+                'pages/address_list',
                 'pages/my_gift',
                 'pages/select_sex',
                 'pages/not_connected',

@@ -146,7 +146,8 @@ module.exports = {
     // 抖腿币
     shake_code:uploadFileUrl + 'shake_code.png',
 
-    // 礼物
+    // 空地址背景
+    empty_address_bg:uploadFileUrl + 'empty_address_bg.png',
 
 
 

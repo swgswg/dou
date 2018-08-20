@@ -8,9 +8,15 @@
             </view>
             <!--背景图 end-->
 
+            <!--关闭按钮 start-->
+            <view class="score-enough-cancle" style="top:0;right:0;">
+                <view class="cancle" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelModel">X</view>
+            </view>
+            <!--关闭按钮 end-->
+
             <!--文字 start-->
             <view class="score-enough-text" style="top:{{371*px2rpxWidth}}px;left:0;width:{{553*px2rpxWidth}}px;height:{{100*px2rpxWidth}}px;">
-                <view style="font-size:36rpx;color:#00a4de;">积分已达<text style="color:#ff6742;margin: 0 {{20*px2rpxWidth}}px">{{nowScore}}</text>分</view>
+                <view style="font-size:36rpx;color:#00a4de;">抖动次数已达<text style="color:#ff6742;margin: 0 {{20*px2rpxWidth}}px">{{nowScore}}</text>次</view>
                 <view class="score-enough-gift" style="font-size:36rpx;color:#00a4de;">可兑换
                     <image style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" src="{{fileUrl + exchangeGiftUrl}}"></image>
                     <text style="color:#ff6742;margin: 0 {{20*px2rpxWidth}}px">{{exchangeGiftName}}</text>
@@ -115,6 +121,11 @@
                     url: '/pages/mall',
                 })
             },
+
+            // 取消遮盖层
+            cancelModel(){
+                this.$emit('cancelCoverLayer');
+            }
         };
 
         // 双倍积分
@@ -129,6 +140,23 @@
         justify-content: center;
         align-items: center;
         /*width: 100%;*/
+
+        .score-enough-cancle{
+            position: absolute;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .cancle{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 36rpx;
+                color:#aaa;
+                border: 1rpx solid #ccc;
+                border-radius: 50%;
+            }
+        }
 
         .score-enough-text{
             position: absolute;

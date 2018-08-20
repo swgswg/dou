@@ -1,0 +1,77 @@
+<template>
+    <view class="empty-address">
+        <view class="empty-address-content" style="heigth:{{154*px2rpxHeight}}px;padding: 0 {{30*px2rpxWidth}}px;line-height:{{154*px2rpxHeight}}px;">
+            <view class="add" style="width:{{54*px2rpxWidth}}px;height:{{54*px2rpxWidth}}px;">
+                <text class="iconfont icon-add"></text>
+            </view>
+            <view class="text" style="margin-left:{{38*px2rpxWidth}}px;">新建收货地址</view>
+            <view class="youjiantou" style="margin-left:{{310*px2rpxWidth}}px;">
+                <text class="iconfont icon-youjiantou"></text>
+            </view>
+            <image class="bg" style="width:100%;height:{{154*px2rpxHeight}}px;" src="{{empty_address_bg}}"></image>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX} from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+
+    export default class EmptyAddress extends wepy.component {
+
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            empty_address_bg:imgApi.empty_address_bg,
+        };
+
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
+
+    }
+</script>
+
+<style lang="less">
+    .empty-address{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        .empty-address-content{
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+
+            .add{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 4rpx solid #1a8fff;
+                border-radius: 50%;
+
+                .icon-add{
+                    font-size: 40rpx;
+                    font-weight: bolder;
+                    color: #1a8fff;
+                }
+            }
+
+            .bg{
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: -1;
+            }
+        }
+
+    }
+</style>

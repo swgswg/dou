@@ -1,6 +1,11 @@
 <template>
     <view class="leg-shake" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px">
         <image class="open-room" style="width:{{89*px2rpxWidth}}px;height:{{82*px2rpxWidth}}px;" src="{{open_room}}" @tap.stop="openRoom"></image>
+        
+        <!--签到 start-->
+        <view class="sign" style="width:{{80*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;">签到</view>
+        <!--签到 end-->
+        
         <view class="leg-hand" style="margin-top:{{32*px2rpxWidth}}px;">
             <shakestyle :shake.sync="shakeData"></shakestyle>
         </view>
@@ -182,7 +187,8 @@
                     this.$apply();
                     wepy.setStorageSync(SHAKE_HAND_NUMBER,shakeHandNumber);
 
-                    // 手动抖动次数 25000送5积分礼物/35000 7积分礼物/180000 36积分礼物
+                    // 手动抖动次数 25000/5积分礼物   35000/7积分礼物   180000/36积分礼物
+                    // 脚动抖动次数 20000/20积分礼物  50000/50积分礼物  129000/129积分礼物(待写)
                     if( (this.shakeHandTotal + shakeHandNumber) == (this.handNumEnough5*5000) ){
                         this.isExchangeScore(this.handNumEnough5);
 
@@ -209,6 +215,15 @@
             shakeData(newValue,oldValue){
                 // console.log(newValue)
                 this.shakeChange(newValue);
+            },
+        };
+
+        events = {
+            // 取消遮盖层
+            cancelCoverLayer(){
+                console.log(111)
+                this.isShowCoverLayer = false;
+                this.$apply();
             },
         };
 
@@ -294,7 +309,21 @@
             /*width: 89rpx;*/
             /*height: 82rpx;*/
         }
-
+        
+        /* 签到 */
+        .sign{
+            position: absolute;
+            top: 10rpx;
+            left: 10rpx;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 26rpx;
+            color: #fff;
+            border: 1rpx solid #fff;
+            border-radius: 10rpx;
+        }
+        
         .leg-hand{
             /*margin-top: 32rpx;*/
         }

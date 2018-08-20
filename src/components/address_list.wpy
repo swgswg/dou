@@ -1,0 +1,127 @@
+<template>
+    <view class="address-list">
+        <view class="address-list-content">
+            <block wx:for="{{addressList}}" wx:for-item="{{addr}}" wx:key="{{addr.id}}">
+                <view class="address-each" style="height:{{160*px2rpxHeight}}px;padding:{{20*px2rpxHeight}}px {{40*px2rpxWidth}}px;">
+                    <view class="name-tel">
+                        <view class="name">姓名</view>
+                        <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">12345678910</view>
+                    </view>
+                    <view class="addr" style="height:{{90*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
+                        <view class="default-text" style="width:{{130*px2rpxWidth}}px;" wx:if="{{isDefault}}">[默认地址]</view>
+                        <view class="default" style="width:{{430*px2rpxWidth}}px;">地址地址地址地址地址地址地址地址地址地址地址</view>
+                        <view style="width:{{36*px2rpxWidth}}px;"><text class="iconfont icon-write"></text></view>
+                    </view>
+                </view>
+            </block>
+            <!--加载更多时动画-->
+            <!--<bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>-->
+            <!--暂无数据显示-->
+            <placeholder :show.sync="is_empty" message="您还没有地址"></placeholder>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX} from '@/utils/constant';
+    // import BottomLoadMore from "../components/common/bottomLoadMore";
+    import Placeholder from "../components/common/placeholder";
+
+    export default class AddressList extends wepy.component {
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            // 是否是默认地址
+            isDefault:true,
+            //是否显示 底部loading
+            showLoading: false,
+            is_empty: false
+        };
+
+        components = {
+            // bottomLoadMore: BottomLoadMore,
+            placeholder: Placeholder
+        };
+
+        props = {
+            addressList:{
+                type:Array,
+                default:null,
+            }
+        };
+
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        };
+
+    }
+</script>
+
+<style lang="less">
+    .address-list{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        .address-list-content{
+            display: flex;
+            flex-direction: column;
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            width: 100%;
+
+            .address-each{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                box-sizing: border-box;
+                border-bottom: 2rpx solid #ccc;
+
+                .name-tel{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 100%;
+
+                    .name{
+                        font-size: 30rpx;
+                        color: #000;
+                    }
+                    .tel{
+                        font-size: 24rpx;
+                        color: #aaa;
+                    }
+                }
+
+                .addr{
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: flex-start;
+                    width: 100%;
+
+                    .default-text{
+                        font-size: 24rpx;
+                        color: #ff0101;
+                    }
+
+                    .default{
+                        font-size: 24rpx;
+                        color: #000;
+                    }
+                    .icon-write{
+                        font-size: 40rpx;
+                    }
+                }
+
+            }
+        }
+
+
+    }
+</style>
