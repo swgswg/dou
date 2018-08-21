@@ -1,14 +1,20 @@
 // page--礼物墙照片
 <template>
     <view class="gift-picture">
-        <!--<block wx:for="{{pictureList}}" wx:for-item="{{picture}}" wx:key="{{index}}">-->
-        <view class="picture" style="height:{{1080*px2rpxHeight}}px">
-            <scroll-view style="text-align: center" scroll-y bindscrolltolower="scrollToLower">
+        <view class="select-edit">
+            <view class="ml10 button button-highlight button-rounded button-wx-tiny" wx:if="{{showAllSelect}}">全选</view>
+            <view class="ml10 button button-primary button-rounded button-wx-tiny">{{editOrCancel}}</view>
+        </view>
+        <view class="picture" style="height:{{showAllSelect ? 1010*px2rpxHeight : 1110*px2rpxHeight}}px">
+            <scroll-view style="text-align: center;" scroll-y bindscrolltolower="scrollToLower">
+                <!--<block wx:for="{{pictureList}}" wx:for-item="{{picture}}" wx:key="{{index}}">-->
                 <block wx:for="{{50}}" wx:for-item="picture" wx:key="{{index}}">
-                    <view class="picture-each" style="width:{{220*px2rpxWidth}}px;height:{{265*px2rpxHeight}}px;margin-bottom:{{10*px2rpxHeight}}px;padding-left:{{10*px2rpxWidth}}px">
-                        <view class="picture-each-content" style="width:{{200*px2rpxWidth}}px;height:{{265*px2rpxHeight}}px;">
-                            <view class="check" style="width:{{30*px2rpxWidth}}px;height:{{30*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="selectPicture"><text wx:if="{{checked}}" class="iconfont icon-check"></text></view>
-                            <image class="img" style="width:{{200*px2rpxWidth}}px;height:{{265*px2rpxHeight}}px" src="" data-url="{{}}" data-index="{{index}}" @tap.stop="preview"></image>
+                    <view class="picture-each" style="width:{{236*px2rpxWidth}}px;height:{{279*px2rpxHeight}}px;">
+                        <view class="picture-each-content" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px;">
+                            <view wx:if="{{showAllSelect}}" class="check {{checked ? 'ischeck' : ''}}" style="width:{{30*px2rpxWidth}}px;height:{{30*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="selectPicture">
+                                <text wx:if="{{checked}}" class="iconfont icon-check" style="margin-left:{{5*px2rpxWidth}}px;"></text>
+                            </view>
+                            <image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="" data-url="{{}}" data-index="{{index}}" @tap.stop="preview"></image>
                         </view>
                     </view>
                 </block>
@@ -17,9 +23,9 @@
                 <placeholder :show.sync="is_empty" message="您还没有图片哦"></placeholder>
             </scroll-view>
         </view>
-        <view class="btn">
-            <view class="btn-each button button-primary button-rounded" @tap.stop="save">保存</view>
-            <view class="btn-each button button-highlight button-rounded" @tap.stop="cancel">取消</view>
+        <view class="btn" wx:if="{{showAllSelect}}">
+            <view class="btn-each button button-highlight button-rounded" @tap.stop="save">保存</view>
+            <view class="btn-each button button-rounded" @tap.stop="cancel">删除</view>
         </view>
     </view>
 </template>
@@ -47,6 +53,10 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            // 是否显示全选按钮
+            showAllSelect:true,
+            // 编辑/取消
+            editOrCancel:'编辑',
             //是否有数据
             is_empty: true,
             //是否显示 底部loading
@@ -60,6 +70,7 @@
             pictureList:[
                 // {id:1,url:'',status:1,checked:false}
             ],
+            checked:false,
             // 图片所有地址
             urlAllList:[],
         };
@@ -179,7 +190,8 @@
     }
 
     .icon-check{
-        color: red;
+        font-size: 28rpx;
+        color: #fff;
     }
 
     .gift-picture{
@@ -192,41 +204,43 @@
         padding-bottom: 0;
         box-sizing: border-box;
 
+        .select-edit{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 20rpx;
+        }
+
         .picture{
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
-            /*height: 1000rpx;*/
-            /*border: 1rpx solid blue;*/
 
             .picture-each{
                 display:inline-block;
-                /*width: 220rpx;*/
-                /*height: 265rpx;*/
-                /*margin-bottom: 10rpx;*/
-                /*padding-left: 10rpx;*/
                 box-sizing: border-box;
-                /*border: 1rpx solid blue;*/
 
                 .picture-each-content{
                     position: relative;
                     z-index: 0;
-                    /*width: 200rpx;*/
-                    /*height: 265rpx;*/
                     border: 1rpx solid red;
 
                     .check{
                         position: absolute;
-                        top: 0;
-                        left: 0;
+                        top: 10rpx;
+                        left: 10rpx;
                         z-index: 10;
                         display: flex;
                         justify-content: center;
                         align-items: center;
-                        /*width: 30rpx;*/
-                        /*height: 30rpx;*/
-                        border: 2rpx solid #666;
+                        background-color: #fff;
+                        border: 1rpx solid red;
+                    }
+
+                    .ischeck{
+                        background-color: #f68668;
                     }
 
                     .img{
@@ -234,8 +248,6 @@
                         top: 0;
                         left: 0;
                         z-index: 5;
-                        /*width: 200rpx;*/
-                        /*height: 265rpx;*/
                     }
                 }
             }

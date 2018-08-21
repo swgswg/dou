@@ -1,0 +1,45 @@
+// 遮盖层
+<template>
+    <view class="cover-layer" catchtouchmove="move" style="width:{{windowWidth}}px;height:{{windowHeight}}px;">
+        <slot name="content"></slot>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+
+    export default class CoverLayer extends wepy.component {
+
+        data = {
+            windowWidth:0,
+            windowHeight:0,
+        };
+
+        async onLoad(){
+            let systemInfo = await wepy.getSystemInfoSync();
+            this.windowWidth = systemInfo.windowWidth;
+            this.windowHeight = systemInfo.windowHeight;
+            this.$apply();
+        };
+
+        methods = {
+            // 遮盖层禁止底层移动
+            move(){}
+        };
+
+    }
+</script>
+
+<style lang="less">
+    .cover-layer{
+        position: absolute;
+        top:0;
+        left: 0;
+        z-index: 9999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: rgba(0,0,0,0.5);
+    }
+</style>

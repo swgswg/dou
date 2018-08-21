@@ -173,6 +173,12 @@
         width: 100%;
         height: 100%;
     }
+
+    ::-webkit-scrollbar{
+        width: 0;
+        height:0;
+        color:transparent;
+    }
 </style>
 
 <script>
@@ -185,11 +191,14 @@
     export default class extends wepy.app {
         config = {
             pages: [
+                'pages/order_detail',
+                'pages/home',
+                'pages/order',
                 'pages/address_edit',
                 'pages/address_add',
                 'pages/commit_order',
                 'pages/goods_detail',
-                'pages/home',
+                'pages/gift_picture',
                 'pages/history_rank',
                 'pages/address_list',
                 'pages/my_gift',
@@ -199,7 +208,6 @@
                 'pages/select_bluetooth',
                 'pages/loading',
                 'pages/mall',
-                'pages/gift_picture',
                 'pages/set',
                 'pages/my_info',
                 'pages/gift_wall',

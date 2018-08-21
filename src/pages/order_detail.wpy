@@ -1,0 +1,348 @@
+<template>
+    <view class="order-detail">
+
+        <!--订单状态 start-->
+        <view class="status" style="height:{{145*px2rpxHeight}}px;padding-left:{{30*px2rpxWidth}}px;">
+            <view class="status-icon" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;">
+                <text class="iconfont icon-check"></text>
+            </view>
+            <view class="status-text" style="margin-left:{{14*px2rpxWidth}}px;">完成</view>
+        </view>
+        <!--订单状态 end-->
+
+        <!--地址 start-->
+        <view class="addr" style="height:{{150*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
+            <view class="addr-left">
+                <text class="iconfont icon-location"></text>
+            </view>
+            <view class="addr-right" style="margin-left:{{10*px2rpxWidth}}px;">
+                <view class="addr-right-top">
+                    <view class="name">姓名</view>
+                    <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">12345678910</view>
+                </view>
+                <view class="addr-right-bottom" style="margin-top:{{10*px2rpxHeight}}px">
+                    <view>地址： 天津市天津市天津市天津市天津市天津市天津市天津市天津市</view>
+                </view>
+            </view>
+        </view>
+        <!--地址 end-->
+
+        <!--商品信息 start-->
+        <view class="goods" style="margin-top:{{20*px2rpxHeight}}px;">
+            <block wx:for="{{2}}" wx:for-item="goods" wx:key="{{index}}">
+                <view class="goods-info" style="height:{{200*px2rpxHeight}}px;padding:{{24*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
+                    <view class="info-left">
+                        <image src="" style="width:{{138*px2rpxWidth}}px;height:{{138*px2rpxWidth}}px;"></image>
+                    </view>
+                    <view class="info-right" style="margin-left:{{18*px2rpxWidth}}px;">
+                        <view class="goods-name">商品名称</view>
+                        <view class="goods-num" style="margin-top:{{16*px2rpxHeight}}px;">x1</view>
+                        <view class="goods-price" style="margin-top:{{30*px2rpxHeight}}px;">¥129.00</view>
+                    </view>
+                </view>
+            </block>
+        </view>
+        <!--商品信息 end-->
+
+        <!--订单信息 start-->
+        <view class="order-info" style="height:{{301*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
+            <view>订单编号： 123456789</view>
+            <view class="order-time" style="margin-top:{{25*px2rpxHeight}}px;padding-bottom:{{25*px2rpxHeight}}px;">下单时间： 2018-08-14 12:12:12</view>
+            <view style="margin-top:{{25*px2rpxHeight}}px">支付方式： 微信支付</view>
+            <view style="margin-top:{{25*px2rpxHeight}}px">支付时间： 2018-08-14 12:12:12</view>
+        </view>
+        <!--订单信息 end-->
+
+        <!--总价 start-->
+        <view class="total-price" style="height:{{202*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
+            <view class="price-top">
+                <view>商品总额:</view>
+                <view>¥129.00</view>
+            </view>
+            <view class="price-middle" style="margin-top:{{20*px2rpxHeight}}px;">
+                <view>运费</view>
+                <view>+0.00</view>
+            </view>
+            <view class="price-bottom" style="margin-top:{{20*px2rpxHeight}}px;">
+                <view>实付款：<text style="color:#f03e3e">¥129.00</text></view>
+            </view>
+        </view>
+        <!--总价 end-->
+
+        <!--订单状态操作 start-->
+        <view class="order-status" style="height:{{100*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
+            <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">付款</view>
+            <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">取消</view>
+        </view>
+        <!--订单状态操作 end-->
+
+        <!--遮盖层 start-->
+        <view wx:if="{{showCoverLayer}}">
+            <coverlayer>
+                <view class="shouhou" slot="content" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
+                    <view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;">
+                        <text class="iconfont icon-close"></text>
+                    </view>
+                    <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
+                    <view class="neirong" style="margin-top:{{50*px2rpxHeight}}px;">
+                        <image style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
+                    </view>
+                </view>
+            </coverlayer>
+        </view>
+        <!--遮盖层 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import CoverLayer from '@/components/common/cover_layer';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '订单详情'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            coverlayer:CoverLayer,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            customer_service:imgApi.customer_service,
+            // 显示遮盖层
+            showCoverLayer:true,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        // 声明页面所引用的Mixin实例
+        mixins = [];
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+    .order-detail{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+
+        .status{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            background: linear-gradient(to top right,#ec2c98, #f68668);
+            opacity: 0.7;
+
+            .status-icon{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                border: 1px solid #fff;
+
+
+                .icon-check{
+                    font-size: 30rpx;
+                    color: #fff;
+                }
+            }
+            .status-text{
+                font-size: 35rpx;
+                color: #fff;
+            }
+        }
+
+        .addr{
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #fff;
+
+            .addr-left{
+                font-size: 35rpx;
+            }
+
+            .addr-right{
+                font-size: 24rpx;
+                color: #666;
+
+                .addr-right-top{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-end;
+
+                    .name{
+                        font-size: 30rpx;
+                        color: #000;
+                    }
+                }
+            }
+        }
+
+        .goods-info{
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            width: 100%;
+            box-sizing: border-box;
+            border-bottom: 1px solid #aaa;
+            background-color: #fff;
+
+
+            .info-right{
+                display: flex;
+                flex-direction: column;
+
+                .goods-name{
+                    font-size: 32rpx;
+                    color: #333;
+                }
+
+                .goods-num{
+                    font-size: 24rpx;
+                    color: #333;
+                }
+
+                .goods-price{
+                    font-size: 30rpx;
+                    color: #f03e3e;
+                }
+            }
+        }
+
+        .order-info{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            font-size: 28rpx;
+            color: #666;
+            box-sizing: border-box;
+            background-color: #fff;
+            
+            .order-time{
+                border-bottom: 1px solid #aaa;
+                box-sizing: border-box;
+            }
+        }
+
+        .total-price{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #fff;
+
+            .price-top,.price-middle{
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                font-size: 28rpx;
+                color: #666;
+            }
+            .price-bottom{
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                font-size: 28rpx;
+                color: #000;
+            }
+        }
+
+        .order-status{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            background-color: #fff;
+
+            .status-btn{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 24rpx;
+                border: 1rpx solid #ccc;
+            }
+        }
+
+        .shouhou{
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .cancel{
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid #aaa;
+                border-radius: 50%;
+
+                .icon-close{
+                    font-size: 35rpx;
+                    color:#aaa;
+                }
+            }
+
+            .img-bg{
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            .neirong{
+                z-index: 10;
+                display: flex;
+                flex-direction: column;
+
+            }
+        }
+    }
+</style>

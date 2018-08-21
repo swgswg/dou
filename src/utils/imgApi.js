@@ -149,9 +149,14 @@ module.exports = {
     // 空地址背景
     empty_address_bg:uploadFileUrl + 'empty_address_bg.png',
 
+    // 签到背景/按钮/金币/对号/签到7天
+    sign_in_bg:uploadFileUrl + 'sign_in_bg.png',
+    sign_in_btn:uploadFileUrl + 'sign_in_btn.png',
+    sign_in_code:uploadFileUrl + 'sign_in_code.png',
+    sign_in_dui:uploadFileUrl + 'sign_in_dui.png',
+    sign_in_7day:uploadFileUrl + 'sign_in_7day.png',
 
-
-
-
+    // 售后
+    customer_service:uploadFileUrl + 'customer_service.png',
 
 };

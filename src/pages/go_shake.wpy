@@ -3,7 +3,7 @@
         <image class="open-room" style="width:{{89*px2rpxWidth}}px;height:{{82*px2rpxWidth}}px;" src="{{open_room}}" @tap.stop="openRoom"></image>
         
         <!--签到 start-->
-        <view class="sign" style="width:{{80*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;">签到</view>
+        <view class="sign" style="width:{{80*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="goSignIn">签到</view>
         <!--签到 end-->
         
         <view class="leg-hand" style="margin-top:{{32*px2rpxWidth}}px;">
@@ -22,7 +22,15 @@
         </block>
         <!--<view class="shake-time" style="margin-top:{{100*px2rpxHeight}}px">持续时长：{{shakeTime}}</view>-->
         <view class="cover-layer" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;" wx:if="{{isShowCoverLayer}}">
-            <scoreenough :nowScore.sync="nowScore" :exchangeGiftName="exchangeGiftName" :exchangeGiftUrl.sync="exchangeGiftUrl" :shareUserId.sync="shareUserId" :shareGiftId.sync="shareGiftId" :sharePage.sync="sharePage"></scoreenough>
+
+            <block wx:if="{{showScoreEnough}}">
+                <scoreenough :nowScore.sync="nowScore" :exchangeGiftName="exchangeGiftName" :exchangeGiftUrl.sync="exchangeGiftUrl" :shareUserId.sync="shareUserId" :shareGiftId.sync="shareGiftId" :sharePage.sync="sharePage"></scoreenough>
+            </block>
+
+            <block wx:if="{{showSignIn}}">
+                <signin></signin>
+            </block>
+
         </view>
     </view>
 
@@ -37,6 +45,7 @@
     import ShakeStyle from '@/components/shake_style';
     import Circle from '@/components/circle';
     import ScoreEnough from '@/components/score_enough';
+    import SignIn from '@/components/sign_in';
 
     export default class GoShake extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -49,6 +58,7 @@
             shakestyle:ShakeStyle,
             circle:Circle,
             scoreenough:ScoreEnough,
+            signin:SignIn
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
@@ -77,6 +87,10 @@
             shakeHandTotal:0,
             // 是否显示遮盖层
             isShowCoverLayer:false,
+            // 显示积分达到
+            showScoreEnough:false,
+            // 显示签到
+            showSignIn:false,
             // 当前可兑换积分
             nowScore:0,
             // 兑换积分的礼物名称
@@ -208,7 +222,15 @@
                 wepy.navigateTo({
                     url: '/pages/loading?game='+that.shakeData,
                 });
-            }
+            },
+
+            // 签到
+            goSignIn(){
+                // 显示遮盖层
+                this.isShowCoverLayer = true;
+                // 显示签到
+                this.showSignIn = true;
+            },
         };
 
         watch = {
@@ -221,9 +243,7 @@
         events = {
             // 取消遮盖层
             cancelCoverLayer(){
-                console.log(111)
-                this.isShowCoverLayer = false;
-                this.$apply();
+               this.hideAllShowModel();
             },
         };
 
@@ -264,6 +284,7 @@
             console.log(res);
             if(res.data.state == 1){
                 this.isShowCoverLayer = true;
+                this.showScoreEnough = true;
                 this.nowScore = myscore;
                 this.exchangeGiftName = res.data.data.name;
                 this.exchangeGiftUrl = res.data.data.phone;
@@ -284,6 +305,16 @@
             }
         };
 
+        // 隐藏遮盖层里的所有控件
+        hideAllShowModel(){
+            // 是否显示遮盖层
+            this.isShowCoverLayer = false;
+            // 显示积分达到
+            this.showScoreEnough = false;
+            // 显示签到
+            this.showSignIn = false;
+            this.$apply();
+        }
 
     }
 </script>

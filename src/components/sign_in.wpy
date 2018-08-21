@@ -1,214 +1,184 @@
-// 登录模块
+// 签到
 <template>
-    <view class="sign">
-        <view class="sign-content">
-            <view class="sign-box">
-                <view class="sign-dot sign-dot-blue"></view>
-                <view class="sign-item">
-                    <view class="sign-title">
-                        <image src="/static/images/signIn_user.png"></image>
-                        <!--<image src="{{uploadFileUrl + 'signIn_user.png'}}"></image>-->
-                        <text class="username">Username</text>
+    <view class="sign-in" style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;">
+        <view class="sign-in-cancel" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelSignIn">
+            <text class="iconfont icon-close" style="margin-top:{{5*px2rpxWidth}}px;"></text>
+        </view>
+        <image class="img-bg" src="{{sign_in_bg}}" style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;"></image>
+
+        <view class="sign-in-content" style="margin-top:{{224*px2rpxHeight}}px;">
+            <block wx:for="{{6}}" wx:for-item="day" wx:key="{{index}}">
+                <view class="sign-in-each">
+                    <view class="day">1day</view>
+                    <view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
+                        <image src="{{sign_in_code}}" style="width:{{100*px2rpxWidth}}px;height:{{100*px2rpxWidth}}px;"></image>
+                        <text class="num">x1</text>
+
+                        <!--已经签到 start-->
+                        <view wx:if="{{isSignIn}}" class="dui" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
+                            <image src="{{sign_in_dui}}" style="width:{{76*px2rpxWidth}}px;height:{{78*px2rpxWidth}}px;"></image>
+                        </view>
+                        <!--已经签到 end-->
                     </view>
-                    <input bindinput="getUsername" type="text" placeholder="您可以输入邮箱或者手机号" focus="true" placeholder-style="color:#ccc"/>
                 </view>
-            </view>
-            <view class="sign-box">
-                <view class="sign-dot sign-dot-green"></view>
-                <view class="sign-item">
-                    <view class="sign-title">
-                        <image src="/static/images/signIn_user.png"></image>
-                        <!--<image src="{{uploadFileUrl + 'signIn_user.png'}}"></image>-->
-                        <text class="pass">Password</text>
+            </block>
+
+            <!--第七天 start-->
+            <view class="sign-in-each day7">
+                <view class="day">7day</view>
+                <view class="img" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
+                    <image src="{{sign_in_7day}}" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;"></image>
+                    <!--<text class="num">x1</text>-->
+
+                    <!--已经签到 start-->
+                    <view wx:if="{{isSignIn}}" class="dui" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
+                        <image src="{{sign_in_dui}}" style="width:{{76*px2rpxWidth}}px;height:{{78*px2rpxWidth}}px;"></image>
                     </view>
-                    <input bindinput="getPassword" password="true" placeholder="您可以输入密码" focus="true" placeholder-style="color:#ccc"/>
-                    <image class="question" src="/static/images/siginin_wenhao.png"></image>
-                    <!--<image class="question" src="{{uploadFileUrl + 'siginin_wenhao.png'}}"></image>-->
+                    <!--已经签到 end-->
                 </view>
             </view>
-            <view class="sign-btn">
-                <view class="forget"><text @tap="forgetPass">忘记密码</text></view>
-                <view class="btn">
-                    <text class="flex-center gradients button button-highlight button-pill button-small">
-                        <text class="button button-1f93ce button-circle button-tiny"><text class="iconfont icon-check"></text></text>
-                    </text>
-                </view>
-            </view>
+            <!--第七天 end-->
+
+        </view>
+        <view class="sign-in-btn" style="margin-top:{{24*px2rpxHeight}}px;">
+            <image src="{{sign_in_btn}}" style="width:{{289*px2rpxWidth}}px;height:{{112*px2rpxWidth}}px;"></image>
         </view>
     </view>
-
 </template>
 
 <script>
     import wepy from 'wepy';
-    import api from '@/utils/api';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
 
     export default class SignIn extends wepy.component {
 
         data = {
-            uploadFileUrl:api.uploadFileUrl,
-            uname:'',
-            passwd:'',
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
+            sign_in_bg:imgApi.sign_in_bg,
+            sign_in_btn:imgApi.sign_in_btn,
+            sign_in_code:imgApi.sign_in_code,
+            sign_in_dui:imgApi.sign_in_dui,
+            sign_in_7day:imgApi.sign_in_7day,
+            isSignIn:false,
+        };
+
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
         };
 
         methods = {
-            // 获取用户名
-            getUsername (e) {
-                console.log(e);
-                this.uname = e.detail.value;
-                this.$apply();
-                // console.log(this.uname);
-            },
-            // 获取密码
-            getPassword (e) {
-                this.passwd = e.detail.value;
-                this.$apply();
-                // console.log(this.passwd);
-            },
-            // 忘记密码
-            forgetPass () {
-                wepy.$navigate('./pages/forget_pass', {username:this.data.uname});
+            // 取消
+            cancelSignIn(){
+                this.$emit('cancelCoverLayer');
             },
         };
-    };
+    }
 </script>
 
 <style lang="less">
-
-    .sign {
+    .sign-in{
+        position: relative;
         display: flex;
+        flex-direction: column;
         justify-content: center;
-        align-items: center;
-        width: 100%;
-        height: 554rpx;
+        /*align-items: center;*/
 
-        .sign-content {
+        .sign-in-cancel{
+            position: absolute;
+            top: 0;
+            right: 0;
+            z-index: 5;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
-            width: 655rpx;
-            height: 100%;
-            /*padding-top: 30rpx;*/
-            box-sizing: border-box;
-            border-radius: 10rpx;
-            box-shadow: 0px 0px 10px #586C94;
-            background-color: #fff;
-            /*border: 1rpx solid red;*/
+            border-radius: 50%;
+            border: 1rpx solid #ccc;
 
-            .sign-box {
-                position: relative;
+            .icon-close{
+                font-size: 30rpx;
+                color: #aaa;
+            }
+        }
+
+        .img-bg{
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 0;
+        }
+
+        .sign-in-content{
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+
+            .sign-in-each{
                 display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 585rpx;
-                height: 150rpx;
-                /*padding-top: 50rpx;*/
-                box-sizing: border-box;
-                /*border-bottom: 2rpx solid #ccc;*/
-                /*border: 1rpx solid red;*/
+                flex-direction: column;
+                margin: 0 10rpx 10rpx 0;
 
-                .sign-dot {
-                    position: absolute;
-                    top: 10rpx;
-                    left: 0;
-                    width: 12rpx;
-                    height: 12rpx;
-                    border-radius: 50%;
+                .day{
+                    z-index: 5;
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    font-size: 24rpx;
+                    font-weight: bold;
+                    color: #fe588a;
                 }
-                .sign-dot-blue{
-                    box-shadow: 0 0 20rpx #d2e8fd;
-                    background-color: #2089f8;
-                }
-                .sign-dot-green{
-                    box-shadow: 0 0 20rpx #d1f4ef;
-                    background-color: #1bc8ae;
-                }
-                .sign-item{
+
+                .img{
                     position: relative;
                     display: flex;
-                    flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    /*border: 1rpx solid blue;*/
+                    margin-top: 10rpx;
+                    overflow: hidden;
+                    background-color: #0b747d;
 
-                    .sign-title{
+                    .num{
+                        position: absolute;
+                        right: 10rpx;
+                        bottom: 10rpx;
+                        z-index: 0;
+                        font-size: 24rpx;
+                        color: #aaa;
+                        font-family: "Edo SZ";
+                    }
+
+                    .dui{
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        z-index: 10;
                         display: flex;
                         justify-content: center;
                         align-items: center;
-
-                        image {
-                            width: 70rpx;
-                            height: 70rpx;
-                        }
-                        text{
-                            font-size: 30rpx;
-                            font-weight: bold;
-                        }
-                        .username{
-                            color: #2089f8;
-                        }
-                        .pass{
-                            color: #1bc8ae;
-                        }
-                    }
-                    input {
-                        width: 585rpx;
-                        font-size: 30rpx;
-                        text-align: center;
-                        border-bottom: 2rpx solid #ccc;
-                        /*border: 1rpx solid green;*/
-                    }
-                    .question{
-                        position: absolute;
-                        bottom: 10rpx;
-                        right: 0;
-                        width: 35rpx;
-                        height: 35rpx;
-                    }
-                }
-
-            }
-
-            .sign-btn{
-                display: flex;
-                flex-direction: column;
-                /*justify-content: center;*/
-                align-items: center;
-                width: 100%;
-                height: 200rpx;
-                /*border: 1rpx solid red;*/
-
-                .forget{
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    width: 585rpx;
-                    height: 60rpx;
-                    font-size: 30rpx;
-                    color: #ccc;
-                    /*border: 1rpx solid red;*/
-                }
-                .btn{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    width: 585rpx;
-                    height: 150rpx;
-
-                    .gradients{
-                        background: linear-gradient(to right, #206dfa , #22e0bb);
-                    }
-                    .button-1f93ce{
-                        background-color: #1f93ce;
-                    }
-                    .icon-check{
-                        font-size: 38rpx;
-                        font-weight: bold;
-                        color: #fff;
+                        background: rgba(0,0,0,0.5);
                     }
                 }
             }
+
+            .day7{
+                .img{
+                    background-color: #fff;
+                }
+            }
+        }
+
+        .sign-in-btn{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            /*width: 100%;*/
         }
     }
 </style>

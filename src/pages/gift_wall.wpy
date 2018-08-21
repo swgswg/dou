@@ -214,9 +214,9 @@
                             success: function(res) {
                                 // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
                                 if (res.statusCode === 200) {
-                                    ctx.save();
+                                    // ctx.save();
                                     ctx.drawImage( res.tempFilePath, giftList[i].xaxle, giftList[i].yaxle, giftList[i].wide, giftList[i].high);
-                                    ctx.restore();
+                                    // ctx.restore();
                                     ctx.draw(true);
                                 }
                             }
@@ -225,7 +225,7 @@
                 }
                 let width = that.canvasWidth * that.px2rpxWidth*2;
                 let height = that.canvasHeight * that.px2rpxHeight*2;
-                await ctx.draw(true, setTimeout(function () {
+                setTimeout(function () {
                     wx.canvasToTempFilePath({
                         x: 0,
                         y: 0,
@@ -243,7 +243,7 @@
                             });
                         }
                     });
-                },1000));
+                },2000);
 
                 tip.loaded();
             }
