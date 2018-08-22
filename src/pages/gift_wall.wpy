@@ -2,7 +2,7 @@
 <template>
     <view class="gift-wall">
         <view class="gift-info">
-            <info :userName.sync="otherUserName" :photo.sync="otherPhoto"></info>
+            <info :userId.sync="otherUserId" :userName.sync="otherUserName" :photo.sync="otherPhoto" :showRight="showRight"></info>
         </view>
         <view class="wall">
             <view>
@@ -68,6 +68,8 @@
             otherUserId:null,
             otherUserName:'',
             otherPhoto:'',
+            // 显示个人信息模块的右箭头
+            showRight:true,
             otherGiftWallId:null,
             // 用户拥有的礼物
             myGifts:null,

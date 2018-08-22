@@ -1,25 +1,25 @@
 <template>
-    <view class="best-record">
+    <view class="best-record" style="padding:{{20*px2rpxHeight}}px {{20*px2rpxWidth}}px;">
         <view class="text1">历史最佳战绩:</view>
-        <view class="text2">TAKE ME HAND</view>
-        <view class="record">
-            <view>时长：4:12</view>
-            <view class="ml10">次数：952</view>
-            <view class="ml10">总排名：1</view>
+        <view class="text2" style="margin-top:{{20*px2rpxHeight}}px;">TAKE ME HAND</view>
+        <view class="record" style="margin-top:{{20*px2rpxHeight}}px;">
+            <view>时长：{{record.time}}</view>
+            <view class="ml10">次数：{{record.shakeNum}}</view>
+            <view class="ml10">总排名：{{record.rownum}}</view>
         </view>
-        <view class="img">
-            <view class="flower">
-                <image src="/static/images/flower.png"></image>
-                <!--<image src="{{uploadFileUrl + ''}}"></image>-->
-                <view>520</view>
-            </view>
-            <view class="bomb">
-                <image src="/static/images/bomb.png"></image>
-                <!--<image src="{{uploadFileUrl + ''}}"></image>-->
-                <view>5520</view>
-            </view>
-        </view>
-        <image class="code" wx:if="{{isShow}}" src="/static/images/my_code.png"></image>
+        <!--<view class="img">-->
+            <!--<view class="flower">-->
+                <!--<image src="/static/images/flower.png"></image>-->
+                <!--&lt;!&ndash;<image src="{{uploadFileUrl + ''}}"></image>&ndash;&gt;-->
+                <!--<view>520</view>-->
+            <!--</view>-->
+            <!--<view class="bomb">-->
+                <!--<image src="/static/images/bomb.png"></image>-->
+                <!--&lt;!&ndash;<image src="{{uploadFileUrl + ''}}"></image>&ndash;&gt;-->
+                <!--<view>5520</view>-->
+            <!--</view>-->
+        <!--</view>-->
+        <!--<image class="code" wx:if="{{isShow}}" src="/static/images/my_code.png"></image>-->
         <!--<image class="code" wx:if="{{isShow}}" src="{{uploadFileUrl + ''}}"></image>-->
     </view>
 </template>
@@ -27,20 +27,59 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api'
+    import tip from '@/utils/tip'
+    import {PX_TO_RPX } from '@/utils/constant';
 
     export default class BestRecord extends wepy.component {
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             uploadFileUrl:api.uploadFileUrl,
+            record:null,
         };
 
         props  = {
-            isShow:{
-                type:Boolean,
-                default:false,
+            userId:{
+                type:Number,
+                default:null,
             }
+            // isShow:{
+            //     type:Boolean,
+            //     default:false,
+            // }
         };
 
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
 
+            this.getBestRecord();
+
+            this.$apply();
+        }
+
+        methods = {
+
+        };
+
+        // 获取最佳成绩(抖腿/世界)
+        async getBestRecord(){
+            let that = this;
+            let res = await api.myWorldRankings({
+                query:{
+                    userId: that.userId,
+                    type:0,
+                    status:1
+                }
+            });
+            if(res.data.state == 1){
+                this.record = res.data.data;
+                this.$apply();
+            } else {
+                tip.error('网路错误');
+            }
+        }
 
     }
 </script>
@@ -49,7 +88,7 @@
     .best-record{
         position: relative;
         width: 100%;
-        padding: 20rpx;
+        /*padding: 20rpx;*/
         box-sizing: border-box;
         border-radius: 10rpx;
         background-color: #fff;
@@ -60,7 +99,6 @@
             align-items: center;
             width: 100%;
             font-size: 30rpx;
-            font-family: NotoSansHans Regular;
             color: #333;
         }
         .text2{
@@ -68,9 +106,10 @@
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            margin-top: 20rpx;
+            /*margin-top: 20rpx;*/
             font-size: 48rpx;
-            font-family: Edo;
+            font-family: 'Edo SZ';
+            color: #ec2c98;
         }
 
         .record{
@@ -79,47 +118,46 @@
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            margin-top: 20rpx;
+            /*margin-top: 20rpx;*/
             font-size: 30rpx;
-            font-family: NotoSansHans Regular;
             color: #737373;
         }
 
-        .img{
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-            margin-top: 35rpx;
-            padding: 0 80rpx;
-            box-sizing: border-box;
-            font-size: 40rpx;
-            color: #aaa;
+        /*.img{*/
+            /*display: flex;*/
+            /*justify-content: space-around;*/
+            /*align-items: center;*/
+            /*width: 100%;*/
+            /*margin-top: 35rpx;*/
+            /*padding: 0 80rpx;*/
+            /*box-sizing: border-box;*/
+            /*font-size: 40rpx;*/
+            /*color: #aaa;*/
 
-            .flower{
+            /*.flower{*/
 
-                image{
-                    width: 80rpx;
-                    height: 80rpx;
-                }
-            }
+                /*image{*/
+                    /*width: 80rpx;*/
+                    /*height: 80rpx;*/
+                /*}*/
+            /*}*/
 
-            .bomb{
+            /*.bomb{*/
 
-                image{
-                    width: 80rpx;
-                    height: 80rpx;
-                }
-            }
-        }
+                /*image{*/
+                    /*width: 80rpx;*/
+                    /*height: 80rpx;*/
+                /*}*/
+            /*}*/
+        /*}*/
 
-        .code{
-            position: absolute;
-            top: 50rpx;
-            right: 0;
-            width: 155rpx;
-            height: 155rpx;
-        }
+        /*.code{*/
+            /*position: absolute;*/
+            /*top: 50rpx;*/
+            /*right: 0;*/
+            /*width: 155rpx;*/
+            /*height: 155rpx;*/
+        /*}*/
         
     }
 </style>

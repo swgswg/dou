@@ -1,7 +1,7 @@
 <template>
     <view class="my-info">
         <image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="{{myinfo_bg}}"></image>
-        <info :userName.sync="userName" :photo.sync="photo"></info>
+        <info :userId.sync="userId" :userName.sync="userName" :photo.sync="photo" :showRight.sync="showRight"></info>
         <block wx:if="{{isShowGift}}">
             <view class="flex-between;position:relative;" style="margin-top:{{20*px2rpxHeight}}px">
                 <view>
@@ -60,8 +60,10 @@
             windowHeight:0,
             myinfo_bg:imgApi.myinfo_bg,
             show_gift:imgApi.show_gift,
+            userId:null,
             userName:'',
             photo:'',
+            showRight:true,
             logo:'',
             showInfoList:[
                 {img:imgApi.shop, title:'商城', skip:'/pages/mall'},
@@ -117,6 +119,7 @@
         async onReady() {
             let userInfo = wepy.getStorageSync(USER_INFO);
             let user_id = userInfo.id;
+            this.userId = user_id;
             // 获取个人信息
             let OneUserInfo = await api.getOneUserInfo({
                 query:{

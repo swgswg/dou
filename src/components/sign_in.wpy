@@ -9,8 +9,17 @@
         <view class="sign-in-content" style="margin-top:{{224*px2rpxHeight}}px;">
             <block wx:for="{{6}}" wx:for-item="day" wx:key="{{index}}">
                 <view class="sign-in-each">
-                    <view class="day">1day</view>
-                    <view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
+                    <view class="day">{{index + 1}}day</view>
+                    <!--<block wx:if="{{index%3 == 0}}">-->
+                        <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#f5a9c7;">-->
+                    <!--</block>-->
+                    <!--<block wx:if="{{index%3 == 1}}">-->
+                        <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#a7f1d4;">-->
+                    <!--</block>-->
+                    <!--<block wx:if="{{index%3 == 2}}">-->
+                        <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#65dfea;">-->
+                    <!--</block>-->
+                    <view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;background-color:{{index%2 == 0 ? '#f5a9c7':'#a7f1d4'}}">
                         <image src="{{sign_in_code}}" style="width:{{100*px2rpxWidth}}px;height:{{100*px2rpxWidth}}px;"></image>
                         <text class="num">x1</text>
 

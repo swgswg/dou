@@ -2,21 +2,18 @@
     <view class="info">
         <view class="info-each">
             <view class="info-content" style="height:{{140*px2rpxHeight}}px">
-                <view class="content" @tap.stop="goToMyShakeInfo">
+                <!--<view class="content" @tap.stop="goToMyShakeInfo">-->
+                <view class="content">
                     <image class="profile" style="width:{{90*px2rpxHeight}}px;height:{{90*px2rpxHeight}}px;" src="{{photo}}"></image>
                     <!--<image class="profile" src="{{uploadFileUrl + ''}}"></image>-->
                     <view class="info-name" style="width:{{300*px2rpxWidth}}px;margin-left:{{45*px2rpxWidth}}px">{{userName}}</view>
                 </view>
-                <view class="to-right" style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;">
-                    <image style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;" src="{{right}}"></image>
-                    <!--<image src=" {{uploadFileUrl + 'right.png'}}"></image>-->
-                </view>
+                <block wx:if="{{showRight}}">
+                    <view class="to-right" style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;" @tap.stop="goToRecord">
+                        <image style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;" src="{{right}}"></image>
+                    </view>
+                </block>
             </view>
-            <!--<view class="info-btn">-->
-                <!--<view @tap.stop="weiChat">微信号</view>-->
-                <!--<view @tap.stop="myAssociation">我的社群</view>-->
-                <!--<view @tap.stop="myRecord">我的记录</view>-->
-            <!--</view>-->
         </view>
     </view>
 
@@ -36,6 +33,10 @@
         };
 
         props = {
+            userId:{
+                type:Number,
+                default:null,
+            },
             userName:{
                 type:String,
                 default:'',
@@ -44,6 +45,10 @@
                 type:String,
                 default:'',
             },
+            showRight:{
+                type:Boolean,
+                default:true,
+            }
         };
 
         async onLoad(){
@@ -55,14 +60,14 @@
         };
 
         methods = {
-            // 微信号
-            weiChat(){},
-            // 我的社群
-            myAssociation(){},
-            // 我的记录
-            myRecord(){},
             // 跳转去我的记录
-            goToMyShakeInfo(){}
+            // goToMyShakeInfo(){}
+            goToRecord(){
+                let that = this;
+                wepy.navigateTo({
+                    url: '/pages/record?userId='+that.userId+'&userName='+that.userName+'&photo='+that.photo,
+                });
+            }
         };
     }
 </script>

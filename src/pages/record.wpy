@@ -1,0 +1,92 @@
+<template>
+    <view class="page-record">
+        <view class="user-info" style="margin-top:{{20*px2rpxHeight}}px;">
+            <info :userId.sync="userId" :userName.sync="userName" :photo.sync="photo" :showRight.sync="showRight"></info>
+        </view>
+
+        <view  style="margin-top:{{20*px2rpxHeight}}px;">
+            <bestrecord :userId.sync="userId"></bestrecord>
+        </view>
+        <view  style="margin-top:{{20*px2rpxHeight}}px;">
+            <record :userId.sync="userId"></record>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import Info from '@/components/info';
+    import Record from '@/components/record';
+    import BestRecord from '@/components/best_record';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '历史记录'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            info:Info,
+            record:Record,
+            bestrecord:BestRecord,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            userId:null,
+            userName:'',
+            photo:'',
+            // 显示个人信息的右箭头
+            showRight:false,
+            ranking:10,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        async onLoad(options){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            this.userId = options.userId;
+            this.userName = options.userName;
+            this.photo = options.photo;
+
+            this.$apply();
+        }
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        async onReady() {
+        };
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+
+    .page-record{
+        display: flex;
+        flex-direction: column;
+        padding: 0 30rpx;
+        box-sizing: border-box;
+    }
+
+</style>

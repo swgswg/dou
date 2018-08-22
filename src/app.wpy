@@ -5,7 +5,6 @@
 
     page{
         letter-spacing:2rpx;
-        font-family: NotoSansHans Regular;
     }
 
     .container {
@@ -191,8 +190,10 @@
     export default class extends wepy.app {
         config = {
             pages: [
-                'pages/order_detail',
+
                 'pages/home',
+                'pages/order_detail',
+                'pages/record',
                 'pages/order',
                 'pages/address_edit',
                 'pages/address_add',
@@ -216,7 +217,6 @@
                 'pages/gaming',
                 'pages/go_shake',
                 'pages/personal_record',
-                'pages/my_record',
                 'pages/connect_success',
                 'pages/authorize',
                 'pages/index',

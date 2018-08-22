@@ -156,7 +156,7 @@ module.exports = {
     sign_in_dui:uploadFileUrl + 'sign_in_dui.png',
     sign_in_7day:uploadFileUrl + 'sign_in_7day.png',
 
-    // 售后
+    // 售后背景/按钮
     customer_service:uploadFileUrl + 'customer_service.png',
-
+    customer_service_btn:uploadFileUrl + 'customer_service_btn.png',
 };

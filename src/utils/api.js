@@ -59,6 +59,8 @@ const getUserData = (params) => wxRequest(params, host + 'shakeLeg/admin/getUser
 const getOneGiftInfoByScore = (params) => wxRequest(params, host + 'shakeLeg/user/getGift');
 // 添加个人礼物
 const addUserGift = (params) => wxRequest(params, host + 'shakeLeg/user/addUserGift');
+//  游戏历史记录
+const getRecord = (params) => wxRequest(params, host + 'shakeLeg/user/getRecord');
 
 export default {
     host,
@@ -86,4 +88,5 @@ export default {
     getUserData,
     getOneGiftInfoByScore,
     addUserGift,
+    getRecord,
 };

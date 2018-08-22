@@ -79,15 +79,22 @@
         <!--遮盖层 start-->
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
-                <view class="shouhou" slot="content" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
-                    <view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;">
-                        <text class="iconfont icon-close"></text>
+                    <view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
+                        <view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelAfterSale">
+                            <text class="iconfont icon-close"></text>
+                        </view>
+                        <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
+                        <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
+                            <view class="each">
+                                <image style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
+                            </view>
+                            <view class="each weixinhao">微信号:123456789</view>
+                            <view class="each direc" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
+                            <view class="each fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
+                                <image src="{{customer_service_btn}}" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
+                            </view>
+                        </view>
                     </view>
-                    <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
-                    <view class="neirong" style="margin-top:{{50*px2rpxHeight}}px;">
-                        <image style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
-                    </view>
-                </view>
             </coverlayer>
         </view>
         <!--遮盖层 end-->
@@ -117,8 +124,11 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             customer_service:imgApi.customer_service,
+            customer_service_btn:imgApi.customer_service_btn,
             // 显示遮盖层
             showCoverLayer:true,
+            // 显示售后
+            showAfterSale:true,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -137,20 +147,39 @@
         onReady() {
         };
 
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
-
         // 声明数据watcher（详见后文介绍）
         watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            // 取消售后
+            cancelAfterSale(){
+                this.cancelShow();
+            },
+            // 复制微信号
+            copyWeixinhao(){
+                // 设置系统剪贴板的内容
+                wx.setClipboardData({
+                    data: 'data',
+                    success: function(res) {
+                        wx.showToast({
+                            title:'复制成功',
+                            icon:'success',
+                            duration: 1000
+                        });
+                    }
+                })
+            }
+        };
 
         // 声明组件之间的事件处理函数
         events = {};
+
+        // 取消所有遮盖层内容
+        cancelShow(){
+            this.showCoverLayer = false;
+            this.showAfterSale = false;
+        }
     }
 </script>
 
@@ -311,7 +340,7 @@
             position: relative;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
 
             .cancel{
                 position: absolute;
@@ -341,7 +370,24 @@
                 z-index: 10;
                 display: flex;
                 flex-direction: column;
+                padding: 0 80rpx;
+                border: 1rpx solid red;
 
+                .each{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .weixinhao{
+                    font-size: 30rpx;
+                    color: #000;
+                }
+
+                .direc{
+                    font-size: 24rpx;
+                    color:#666;
+                }
             }
         }
     }
