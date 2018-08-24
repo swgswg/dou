@@ -71,8 +71,12 @@ const getGoodsDetails = (params) => wxRequest(params, host + 'shakeLeg/admin/get
 const getAddress = (params) => wxRequest(params, host + 'shakeLeg/user/getAddress');
 // 查询默认地址
 const getMoRen = (params) => wxRequest(params, host + 'shakeLeg/user/getMoRen');
+// 添加地址
+const addAddress = (params) => wxRequest(params, host + 'shakeLeg/user/addAddress');
 // 添加订单
 const addOrders = (params) => wxRequest(params, host + 'shakeLeg/user/addOrders');
+// 修改订单状态
+const updateOrdersStatus = (params) => wxRequest(params, host + 'shakeLeg/user/updateOrdersStatus');
 
 export default {
     host,
@@ -106,5 +110,7 @@ export default {
     getGoodsDetails,
     getAddress,
     getMoRen,
+    addAddress,
     addOrders,
+    updateOrdersStatus
 };

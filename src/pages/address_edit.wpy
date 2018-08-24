@@ -1,18 +1,21 @@
 <template>
     <view class="edit-address">
         <view style="width: 100%;">
-            <addressadd></addressadd>
+            <addressadd :consignee.sync="consignee" :mobile.sync="mobile" :region.sync="region" :street.sync="street" :status.sync="status"></addressadd>
         </view>
         <view class="btn" style="height:{{98*px2rpxHeight}}px;margin-top:{{140*px2rpxHeight}}px;padding:0 {{70*px2rpxWidth}}px;">
-            <view class="btn-each btn-delete" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;">删除</view>
-            <view class="btn-each btn-save" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;">保存</view>
+            <view class="btn-each btn-delete" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="deleteAddress">删除</view>
+            <view class="btn-each btn-save" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="saveAddress">保存</view>
         </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX } from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
+    import api from '@/utils/api';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
     import AddressAdd from '@/components/address_add';
 
     export default class MyPage extends wepy.page {
@@ -31,13 +34,30 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            userId:null,
+            addressId:null,
+            consignee:null,
+            mobile:null,
+            region:null,
+            street:null,
+            status:0,
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(){
+        async onLoad(options){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
+
+            if(util.isEmpty(options.addressId)){
+               tip.error('网络错误');
+            } else {
+                this.addressId = options.addressId;
+            }
+
             this.$apply();
         }
 
@@ -47,13 +67,9 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
+            // 通过地址id获取地址详情
+
         };
-
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
 
         // 声明数据watcher（详见后文介绍）
         watch = {};

@@ -1,15 +1,18 @@
 <template>
     <view class="add-address">
         <view style="width: 100%;">
-            <addressadd></addressadd>
+            <addressadd :consignee.sync="consignee" :mobile.sync="mobile" :region.sync="region" :street.sync="street" :status.sync="status"></addressadd>
         </view>
-        <view class="btn" style="height:{{98*px2rpxHeight}}px;margin-top:{{50*px2rpxHeight}}px">保存</view>
+        <view class="btn" style="height:{{98*px2rpxHeight}}px;margin-top:{{50*px2rpxHeight}}px" @tap.stop="saveAddress">保存</view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX } from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
+    import api from '@/utils/api';
     import AddressAdd from '@/components/address_add';
 
     export default class MyPage extends wepy.page {
@@ -27,6 +30,12 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            userId:null,
+            consignee:null,
+            mobile:null,
+            region:['北京市','北京市','东城区'],
+            street:null,
+            status:0,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -34,6 +43,9 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
             this.$apply();
         }
 
@@ -45,17 +57,15 @@
         onReady() {
         };
 
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
-
         // 声明数据watcher（详见后文介绍）
         watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            async saveAddress(){
+                this.$broadcast('saveAddr');
+            },
+        };
 
         // 声明组件之间的事件处理函数
         events = {};
@@ -76,6 +86,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #fff;
             background-color: #ffd824;
         }
     }

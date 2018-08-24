@@ -1,7 +1,7 @@
 <template>
     <view class="address-list">
         <view class="address-list-content">
-            <block wx:for="{{addressList}}" wx:for-item="{{addr}}" wx:key="{{index}}">
+            <block wx:for="{{addressList}}" wx:for-item="addr" wx:key="{{index}}">
                 <view class="address-each"
                       style="height:{{160*px2rpxHeight}}px;padding:{{20*px2rpxHeight}}px {{40*px2rpxWidth}}px;"
                       data-index="{{index}}"
@@ -80,8 +80,16 @@
                 wx.redirectTo({
                     url:'/'+prevUrl,
                 });
-            }
-        }
+            },
+
+            // 编辑地址
+            editAddress(e){
+                let addrid = e.currentTarget.dataset.addrid;
+                wepy.navigateTo({
+                    url:'/pages/address_edit?addressId='+addrid
+                });
+            },
+        };
 
     }
 </script>

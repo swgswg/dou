@@ -1,17 +1,17 @@
 <template>
     <view class="info-item">
         <repeat for="{{list}}" key="index" index="index" item="item">
-            <view>
+            <view data-skip="{{item.skip}}" @tap.stop="goTo">
                 <view class="itme" style="height: {{176*px2rpxHeight}}rpx">
                     <view class="info-left">
                         <view class="info-img" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
                             <image src="{{item.img}}" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;"></image>
-                            <!--<image src="{{ uploadFileUrl + item.img}}"></image>-->
                         </view>
                         <view class="info-title" style="margin-left:{{20*px2rpxWidth}}px">{{item.title}}</view>
                     </view>
                     <view class="info-right" style="width:{{21*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px">
-                        <image src="{{right}}" style="width:{{21*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px" data-skip="{{item.skip}}" @tap.stop="goTo"></image>
+                        <image src="{{right}}" style="width:{{21*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px"></image>
+                        <!--<image src="{{right}}" style="width:{{21*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px" data-skip="{{item.skip}}" @tap.stop="goTo"></image>-->
                     </view>
                 </view>
                 <view class="line"></view>

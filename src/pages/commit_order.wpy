@@ -60,6 +60,7 @@
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import calculate from '@/utils/calculate';
+    import weixin from '@/utils/weixin';
     import EmptyAddress from '@/components/empty_address';
     import AddressList from '@/components/address_list';
 
@@ -100,7 +101,7 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-            console.log(options);
+            // console.log(options);
             this.getDataIsEmpty(options);
             this.$apply();
         };
@@ -144,11 +145,24 @@
         methods = {
             // 提交订单
             async commitOrder(){
+                let that = this;
                 let res = await api.addOrders({
                     query:{
-                        
+                        goodsId:that.goodsId,
+                        userId:that.userInfo.id,
+                        num:that.goodsNum,
+                        status:0,
+                        consignee:that.address.consignee,
+                        mobile:that.address.mobile,
+                        site:that.address.site,
                     }
                 });
+                if(res.data.state == 1){
+                    this.pay(res.data.data);
+                } else {
+                    tip.error('网络错误');
+
+                }
             }
         };
 
@@ -170,7 +184,31 @@
                     this[k] = mydata[k];
                 }
             }
+        }
 
+        // 付钱
+        pay(myorderId){
+            let that = this;
+            weixin.weixinPay(function(res) {
+                that.updateOrdersStatusFun(myorderId);
+            });
+        }
+
+        // 修改订单状态
+        async updateOrdersStatusFun(myorderId){
+            let res = await api.updateOrdersStatus({
+                query:{
+                    orderId:myorderId,
+                    status:1,
+                }
+            });
+            if(res.data.state == 1){
+                wepy.switchTab({
+                    url:'/pages/my_info'
+                });
+            } else {
+                tip.error('网络错误');
+            }
         }
     }
 </script>

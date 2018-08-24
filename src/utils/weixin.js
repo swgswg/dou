@@ -81,7 +81,6 @@ module.exports = {
 
     },
 
-
     // webSocket
     weixinWebSocket(){
 
@@ -127,7 +126,24 @@ module.exports = {
             // })
         });
 
-    }
+    },
+
+    // 付款
+    weixinPay(suFun){
+        wx.requestPayment({
+            'timeStamp': '',
+            'nonceStr': '',
+            'package': '',
+            'signType': 'MD5',
+            'paySign': '',
+            'success':function(res){
+                suFun(res)
+            },
+            'fail':function(res){
+                tip.alert('支付失败');
+            }
+        })
+    },
 
 
 };

@@ -16,6 +16,7 @@
         };
 
         props = {
+            // 1选择/0不选
             activeDot: {
                 type: Number,
                 default: 0,

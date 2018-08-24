@@ -3,12 +3,12 @@
         <view class="address-add-content">
             <view class="each" style="height:{{90*px2rpxHeight}}px;">
                 <view class="each-title">收货人</view>
-                <input class="each-input" style="width:{{490*px2rpxWidth}}px;" type="text" placeholder="姓名" />
+                <input class="each-input" value="{{consignee}}" style="width:{{490*px2rpxWidth}}px;" type="text" placeholder="姓名" bindinput="inputConsignee" />
             </view>
 
             <view class="each" style="height:{{90*px2rpxHeight}}px;">
                 <view class="each-title">联系电话</view>
-                <input class="each-input" style="width:{{490*px2rpxWidth}}px;" type="number" placeholder="手机号码" />
+                <input class="each-input" value="{{mobile}}" style="width:{{490*px2rpxWidth}}px;" type="number" placeholder="手机号码" bindinput="inputMobile"/>
             </view>
 
             <view class="each" style="height:{{90*px2rpxHeight}}px;">
@@ -22,7 +22,7 @@
 
             <view class="each" style="height:{{90*px2rpxHeight}}px;">
                 <view class="each-title">详细地址</view>
-                <input class="each-input" style="width:{{490*px2rpxWidth}}px;" type="number" placeholder="如街道、小区门牌号等" />
+                <input class="each-input" value="{{street}}" style="width:{{490*px2rpxWidth}}px;" type="number" placeholder="如街道、小区门牌号等" bindinput="inputStreet"/>
             </view>
 
             <view class="set-default" style="height:{{90*px2rpxHeight}}px;">
@@ -35,7 +35,10 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX } from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
+    import api from '@/utils/api';
     import MySwitch from '@/components/common/my_switch';
 
     export default class AddressAdd extends wepy.component {
@@ -46,23 +49,131 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            region: ['北京市','北京市','东城区'],
+            userId:null,
+            // 收货人
+            // consignee:null,
+            // 电话
+            // mobile:null,
+            // street:null,
+            // region: ['北京市','北京市','东城区'],
             // 1设为默认/0不默认
             activeDot:0,
+        };
+
+        props = {
+            consignee:{
+                type:String,
+                default:null,
+                twoWay:true,
+            },
+            mobile:{
+                type:Number,
+                default:null,
+                twoWay:true,
+            },
+            region:{
+                type:Array,
+                default:['北京市','北京市','东城区'],
+                twoWay:true,
+            },
+            street:{
+                type:String,
+                default:null,
+                twoWay:true,
+            },
+            status:{
+                type:Number,
+                default:0,
+                twoWay:true,
+            }
+
         };
 
         async onLoad(){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            this.activeDot = this.status;
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
             this.$apply();
         }
 
         methods = {
+            // 修改省市区
             bindRegionChange: function (e) {
                 this.region = e.detail.value;
+                // console.log(this.region);
+            },
+
+            // 获取收货人
+            inputConsignee(e){
+                this.consignee = e.detail.value;
+            },
+
+            // 获取联系电话
+            inputMobile(e){
+                this.mobile = e.detail.value;
+            },
+
+            // 获取详细地址
+            inputStreet(e){
+                this.street = e.detail.value;
+            },
+
+        };
+
+        watch = {
+            activeDot(newValue){
+                this.status = newValue;
+                this.$apply();
             }
         };
+
+        events = {
+            // 保存地址
+            async saveAddr(){
+                let that = this;
+                let consignee = this.consignee;
+                if(util.isEmpty(consignee)){
+                    tip.error('收货人不能为空');
+                    return;
+                }
+
+                let mobile = this.mobile;
+                if(!util.checkReg(1,mobile)){
+                    tip.error('手机号不正确');
+                    return;
+                }
+
+                let street = this.street;
+                if(util.isEmpty(street)){
+                    tip.error('详细地址不能为空');
+                    return;
+                }
+                let site = this.region.join(' ') + this.street;
+                let res = await api.addAddress({
+                    query:{
+                        userId:that.userId,
+                        site:site,
+                        consignee:consignee,
+                        mobile:mobile,
+                        status:that.status
+                    }
+                });
+                if(res.data.state == 1){
+                    tip.toast('添加成功');
+                    wepy.redirectTo({
+                        url:'/pages/address_list'
+                    });
+                } else {
+                    tip.error('网络错误');
+                }
+            }
+        };
+
+
     }
 </script>
 
