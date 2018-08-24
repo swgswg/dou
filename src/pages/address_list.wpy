@@ -2,12 +2,12 @@
     <view class="address">
         <block wx:if="{{hasData}}">
             <view style="width:100%;">
-                <addresslist :addressList.sync="addressList"></addresslist>
+                <addresslist :addressList.sync="addressList" :isAllowEdit.sync="isAllowEditAddress"></addresslist>
             </view>
         </block>
         <block wx:else>
             <view style="width:100%;height:{{154*px2rpxHeight}}px;">
-                <emptyaddress></emptyaddress>
+                <emptyaddress :selectOrAdd.sync="selectOrAdd"></emptyaddress>
             </view>
         </block>
         <view class="add-btn" style="height:{{98*px2rpxHeight}}px;">
@@ -18,7 +18,10 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX} from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
+    import api from '@/utils/api';
+    import tip from '@/utils/tip';
+    import util from '@/utils/util';
     import EmptyAddress from '@/components/empty_address';
     import AddressList from '@/components/address_list';
 
@@ -38,9 +41,13 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            userInfo:null,
             hasData:true,
-            // 默认地址
+            // 地址
             addressList:[],
+            // 是否允许编辑地址
+            isAllowEditAddress:true,
+            selectOrAdd:'新建',
         };
 
         // 在Page和Component共用的生命周期函数
@@ -48,6 +55,9 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userInfo = userInfo;
             this.$apply();
         };
 
@@ -56,7 +66,27 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
+        async onReady() {
+            let that = this;
+            // 获取地址列表
+            let res = await api.getAddress({
+                query:{
+                    userId:that.userInfo.id
+                }
+            });
+            // console.log('addr==',res.data.data);
+            if(res.data.state == 1){
+                let addr = res.data.data;
+                if(util.isEmpty(addr)){
+                    this.hasData = false;
+                } else {
+                    this.hasData = true;
+                    this.addressList = addr;
+                }
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
         };
 
         // 声明页面所引用的Mixin实例
@@ -69,10 +99,18 @@
         watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            add(){
+                wepy.redirectTo({
+                    url:'/pages/address_add'
+                });
+            },
+        };
 
         // 声明组件之间的事件处理函数
-        events = {};
+        events = {
+
+        };
     }
 </script>
 

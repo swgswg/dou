@@ -1,21 +1,29 @@
 <template>
     <view class="address-list">
         <view class="address-list-content">
-            <block wx:for="{{addressList}}" wx:for-item="{{addr}}" wx:key="{{addr.id}}">
-                <view class="address-each" style="height:{{160*px2rpxHeight}}px;padding:{{20*px2rpxHeight}}px {{40*px2rpxWidth}}px;">
+            <block wx:for="{{addressList}}" wx:for-item="{{addr}}" wx:key="{{index}}">
+                <view class="address-each"
+                      style="height:{{160*px2rpxHeight}}px;padding:{{20*px2rpxHeight}}px {{40*px2rpxWidth}}px;"
+                      data-index="{{index}}"
+                      @tap.stop="selectAddrToOtherPage"
+                >
                     <view class="name-tel">
-                        <view class="name">姓名</view>
-                        <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">12345678910</view>
+                        <view class="name">{{addr.consignee}}</view>
+                        <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">{{addr.mobile}}</view>
                     </view>
                     <view class="addr" style="height:{{90*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
-                        <view class="default-text" style="width:{{130*px2rpxWidth}}px;" wx:if="{{isDefault}}">[默认地址]</view>
-                        <view class="default" style="width:{{430*px2rpxWidth}}px;">地址地址地址地址地址地址地址地址地址地址地址</view>
-                        <view style="width:{{36*px2rpxWidth}}px;"><text class="iconfont icon-write"></text></view>
+                        <view class="default-text" style="width:{{130*px2rpxWidth}}px;" wx:if="{{addr.status == 1}}">[默认地址]</view>
+                        <view class="default" style="width:{{430*px2rpxWidth}}px;">{{addr.site}}</view>
+
+                        <!--编辑 start-->
+                        <block wx:if="{{isAllowEdit}}">
+                            <view style="width:{{36*px2rpxWidth}}px;"><text class="iconfont icon-write" data-addrid="{{addr.id}}" @tap.stop="editAddress"></text></view>
+                        </block>
+                        <!--编辑 end-->
+
                     </view>
                 </view>
             </block>
-            <!--加载更多时动画-->
-            <!--<bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>-->
             <!--暂无数据显示-->
             <placeholder :show.sync="is_empty" message="您还没有地址"></placeholder>
         </view>
@@ -25,8 +33,8 @@
 <script>
     import wepy from 'wepy';
     import {PX_TO_RPX} from '@/utils/constant';
-    // import BottomLoadMore from "../components/common/bottomLoadMore";
-    import Placeholder from "../components/common/placeholder";
+    import util from '@/utils/util';
+    import Placeholder from "@/components/common/placeholder";
 
     export default class AddressList extends wepy.component {
         data = {
@@ -48,6 +56,10 @@
             addressList:{
                 type:Array,
                 default:null,
+            },
+            isAllowEdit:{
+                type:Boolean,
+                default:true,
             }
         };
 
@@ -57,6 +69,19 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.$apply();
         };
+
+        methods = {
+            // 选择地址再跳转回去
+            selectAddrToOtherPage(e){
+                let index = e.currentTarget.dataset.index;
+                let address = this.addressList[index];
+                this.$emit('changeAddress',address);
+                let prevUrl = util.getPrevPageUrl();
+                wx.redirectTo({
+                    url:'/'+prevUrl,
+                });
+            }
+        }
 
     }
 </script>

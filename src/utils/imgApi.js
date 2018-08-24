@@ -113,13 +113,15 @@ module.exports = {
     set_sound: uploadFileUrl + 'set_sound.png',
     set_vibrance: uploadFileUrl + 'set_vibrance.png',
 
-    // 商城/娱乐模式/粉丝大排名/我的礼物墙/设置
+    // 商城/娱乐模式/粉丝大排名/我的礼物墙/我的订单/我的地址/设置
     shop: uploadFileUrl + 'shop.png',
     happy: uploadFileUrl + 'happy.png',
     fans: uploadFileUrl + 'fans.png',
     gift: uploadFileUrl + 'gift.png',
     set: uploadFileUrl + 'set.png',
     friend:uploadFileUrl + 'friend.png',
+    order:uploadFileUrl + 'order.png',
+    addr:uploadFileUrl + 'addr.png',
     gift_wall:uploadFileUrl + 'gift_wall.png',
 
     // 个人信息背景

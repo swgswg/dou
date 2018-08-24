@@ -2,14 +2,14 @@
     <view class="commit-order">
         <view class="commit-order-content">
             <!--地址 start-->
-            <block wx:if="{{hasDefaultAddress}}">
+            <block wx:if="{{hasAddress}}">
                 <view style="width:100%;height:{{160*px2rpxHeight}}px;">
-                    <addresslist :addressList.sync="addressList"></addresslist>
+                    <addresslist :addressList.sync="address" :isAllowEdit.sync="isAllowEditAddress"></addresslist>
                 </view>
             </block>
             <block wx:else>
                 <view class="" style="width:100%;height:{{154*px2rpxHeight}}px;">
-                    <emptyaddress ></emptyaddress>
+                    <emptyaddress :selectOrAdd.sync="selectOrAdd"></emptyaddress>
                 </view>
             </block>
             <!--地址 end-->
@@ -18,19 +18,19 @@
             <view class="goods-infomation" style="margin-top:{{20*px2rpxHeight}}px;padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;box-sizing: border-box">
                 <view class="infomation">
                     <view class="info-img" style="width:{{185*px2rpxWidth}}px;">
-                        <image src="" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
+                        <image src="{{fileUrl + goodsImg}}" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
                     </view>
                     <view class="name-price-num" style="width:{{480*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
                         <view class="name-price">
-                            <view class="name">商品名称</view>
-                            <view class="price">¥198.00</view>
+                            <view class="name">{{goodsName}}</view>
+                            <view class="price">¥{{goodsPrice}}</view>
                         </view>
-                        <view class="num" style="margin-top:{{45*px2rpxHeight}}px;">x1</view>
+                        <view class="num" style="margin-top:{{45*px2rpxHeight}}px;">x{{goodsNum}}</view>
                     </view>
                 </view>
                 <view class="express">
                     <view style="font-size:30rpx;color:#000;">配送方式</view>
-                    <view class="express-right" style="width:{{150*px2rpxWidth}}px;">普通快递 <text class="iconfont icon-youjiantou" style="margin-top:{{5*px2rpxHeight}}px;"></text></view>
+                    <view class="express-right" style="width:{{130*px2rpxWidth}}px;">普通快递 <text class="iconfont icon-youjiantou" style="margin-top:{{5*px2rpxHeight}}px;"></text></view>
                 </view>
             </view>
             <!--商品信息 end-->
@@ -38,14 +38,14 @@
             <!--合计 start-->
             <view class="heji" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
                 <view>合计</view>
-                <view style="color:#f03e3e">¥198.00</view>
+                <view style="color:#f03e3e">¥{{goodsTotal}}</view>
             </view>
             <!--合计 end-->
 
             <!--提交订单 start-->
             <view class="commit" style="height:{{98*px2rpxHeight}}px;">
-                <veiw class="heji" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">合计：<text style="color:#f03e3e;">¥198.00</text></veiw>
-                <view class="btn" style="width:{{231*px2rpxWidth}}px;">提交订单</view>
+                <veiw class="heji" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">合计：<text style="color:#f03e3e;">¥{{goodsTotal}}</text></veiw>
+                <view class="btn" style="width:{{231*px2rpxWidth}}px;" @tap.stop="commitOrder">提交订单</view>
             </view>
             <!--提交订单 end-->
         </view>
@@ -54,7 +54,12 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX} from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
+    import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
+    import calculate from '@/utils/calculate';
     import EmptyAddress from '@/components/empty_address';
     import AddressList from '@/components/address_list';
 
@@ -74,17 +79,29 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
+            userInfo:null,
             // 是否有默认地址
-            hasDefaultAddress:false,
-            // 默认地址
-            addressList:[]
+            hasAddress:false,
+            address:null,
+            // 是否允许编辑地址
+            isAllowEditAddress:false,
+            selectOrAdd:'选择',
+            goodsId:null,
+            goodsNum:null,
+            goodsName:null,
+            goodsImg:null,
+            goodsPrice:null,
+            goodsTotal:null,
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(){
+        async onLoad(options){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+            console.log(options);
+            this.getDataIsEmpty(options);
             this.$apply();
         };
 
@@ -93,23 +110,68 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
+        async onReady() {
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.userInfo = userInfo;
+            // 合计
+            this.goodsTotal = calculate.calcMul(parseFloat(this.goodsPrice),parseInt(this.goodsNum));
+            // 获取默认地址
+            let res = await api.getMoRen({
+                query:{
+                    userId:userInfo.id,
+                }
+            });
+            if(res.data.state == 1){
+                let addr = res.data.data;
+                if(util.isEmpty(addr)){
+                    this.hasAddress = false;
+                } else {
+                    this.hasAddress = true;
+                    this.address = [addr];
+                }
+            } else {
+                tip.error('网络错误')
+            }
         };
 
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
+        // 声明计算属性
         computed = {};
 
         // 声明数据watcher（详见后文介绍）
         watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            // 提交订单
+            async commitOrder(){
+                let res = await api.addOrders({
+                    query:{
+                        
+                    }
+                });
+            }
+        };
 
         // 声明组件之间的事件处理函数
-        events = {};
+        events = {
+            // 更改地址
+            changeAddress(addr){
+                this.address = [addr];
+                this.hasAddress = true;
+            },
+        };
+
+        // 判断值是否为空
+        getDataIsEmpty(mydata){
+            for(let k in mydata){
+                if(util.isEmpty(mydata[k])){
+                    tip.error('网络错误');
+                } else {
+                    this[k] = mydata[k];
+                }
+            }
+
+        }
     }
 </script>
 

@@ -61,6 +61,18 @@ const getOneGiftInfoByScore = (params) => wxRequest(params, host + 'shakeLeg/use
 const addUserGift = (params) => wxRequest(params, host + 'shakeLeg/user/addUserGift');
 //  游戏历史记录
 const getRecord = (params) => wxRequest(params, host + 'shakeLeg/user/getRecord');
+// 送礼物人的头像
+const getGiveGiftUserPhoto = (params) => wxRequest(params, host + 'shakeLeg/user/getUserPhoto');
+// 商品列表
+const getGoods = (params) => wxRequest(params, host + 'shakeLeg/admin/getGoods');
+// 商品详情
+const getGoodsDetails = (params) => wxRequest(params, host + 'shakeLeg/admin/getGoodsDetails');
+// 地址列表
+const getAddress = (params) => wxRequest(params, host + 'shakeLeg/user/getAddress');
+// 查询默认地址
+const getMoRen = (params) => wxRequest(params, host + 'shakeLeg/user/getMoRen');
+// 添加订单
+const addOrders = (params) => wxRequest(params, host + 'shakeLeg/user/addOrders');
 
 export default {
     host,
@@ -89,4 +101,10 @@ export default {
     getOneGiftInfoByScore,
     addUserGift,
     getRecord,
+    getGiveGiftUserPhoto,
+    getGoods,
+    getGoodsDetails,
+    getAddress,
+    getMoRen,
+    addOrders,
 };

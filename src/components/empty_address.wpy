@@ -1,10 +1,13 @@
 <template>
     <view class="empty-address">
-        <view class="empty-address-content" style="heigth:{{154*px2rpxHeight}}px;padding: 0 {{30*px2rpxWidth}}px;line-height:{{154*px2rpxHeight}}px;">
+        <view class="empty-address-content"
+              style="heigth:{{154*px2rpxHeight}}px;padding: 0 {{30*px2rpxWidth}}px;line-height:{{154*px2rpxHeight}}px;"
+              @tap.stop="selectAddress"
+        >
             <view class="add" style="width:{{54*px2rpxWidth}}px;height:{{54*px2rpxWidth}}px;">
                 <text class="iconfont icon-add"></text>
             </view>
-            <view class="text" style="margin-left:{{38*px2rpxWidth}}px;">新建收货地址</view>
+            <view class="text" style="margin-left:{{38*px2rpxWidth}}px;">{{selectOrAdd}}收货地址</view>
             <view class="youjiantou" style="margin-left:{{310*px2rpxWidth}}px;">
                 <text class="iconfont icon-youjiantou"></text>
             </view>
@@ -17,6 +20,7 @@
     import wepy from 'wepy';
     import {PX_TO_RPX} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
 
     export default class EmptyAddress extends wepy.component {
 
@@ -26,11 +30,34 @@
             empty_address_bg:imgApi.empty_address_bg,
         };
 
+        props = {
+            selectOrAdd:{
+                type:String,
+                default:null,
+            }
+        };
+
         async onLoad(){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.$apply();
+        };
+
+        methods = {
+            // 选择地址
+            selectAddress(){
+                if(this.selectOrAdd == '选择'){
+                    wepy.navigateTo({
+                        url: '/pages/address_list',
+                    });
+                } else if(this.selectOrAdd == '新建'){
+                    wepy.navigateTo({
+                        url: '/pages/address_add',
+                    });
+                }
+
+            },
         }
 
     }

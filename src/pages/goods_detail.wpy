@@ -5,9 +5,9 @@
         <!--轮播图 start-->
         <view class="goods-detail-swiper">
             <swiper indicator-dots="true" autoplay="true" interval="2000" circular="true">
-                <block wx:for="{{goodsImgUrls}}" wx:for-item="goods" wx:key="{{goods.id}}">
+                <block wx:for="{{goodsInfo.photo1}}" wx:for-item="img" wx:key="{{index}}">
                     <swiper-item>
-                        <image src="{{item}}" class="slide-image" style="width:{{750*px2rpxWidth}}px;height:{{750*px2rpxWidth}}px;"/>
+                        <image src="{{fileUrl + img}}" class="slide-image" style="width:{{750*px2rpxWidth}}px;height:{{750*px2rpxWidth}}px;"/>
                     </swiper-item>
                 </block>
             </swiper>
@@ -17,7 +17,7 @@
         <!--商品信息 start-->
         <view class="goods-info">
             <view class="goods-name">
-                <view class="name">商品名称</view>
+                <view class="name">{{goodsInfo.name}}</view>
                 <view class="share">
                     <button plain="true" open-type="share"
                             class="flex-center"
@@ -25,40 +25,40 @@
                     ><text class="iconfont icon-share"></text></button>
                 </view>
             </view>
-            <view class="money" style="height:{{130*px2rpxHeight}}px;padding:{{40*px2rpxHeight}}px 0;">¥129.00</view>
+            <view class="money" style="height:{{80*px2rpxHeight}}px;padding:{{40*px2rpxHeight}}px 0;">¥{{goodsInfo.money}}</view>
             <view class="expenses" style="padding:{{20*px2rpxHeight}}px 0;">运费:免运费</view>
         </view>
         <!--商品信息 end-->
 
         <!--收货地址 start-->
-        <view class="take-delivery" style="height:{{120*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px">
-            <block wx:if="{{haveDefaultAddress}}">
-                <view class="have-addr">
-                    <view class="people" >
-                        <view class="name">收货人：姓名</view>
-                        <view class="tel">12345678910</view>
-                    </view>
-                    <view class="addr" style="margin-top:{{10*px2rpxHeight}}px">详细地址详细地址详细地址详细地址详细地址详细地址详细地址</view>
-                </view>
-            </block>
-            <block wx:else>
-                <view class="no-addr" >
-                    <view class="new-build">
-                        <view class="flex-center" style="width:{{160*px2rpxWidth}}px;height:100%;">新建收货地址</view>
-                        <view class="youjiantou" style="width:{{30*px2rpxWidth}}px;"><text class="iconfont icon-youjiantou"></text></view>
-                    </view>
-                </view>
-            </block>
-        </view>
+        <!--<view class="take-delivery" style="height:{{120*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px">-->
+            <!--<block wx:if="{{haveDefaultAddress}}">-->
+                <!--<view class="have-addr">-->
+                    <!--<view class="people" >-->
+                        <!--<view class="name">收货人：姓名</view>-->
+                        <!--<view class="tel">12345678910</view>-->
+                    <!--</view>-->
+                    <!--<view class="addr" style="margin-top:{{10*px2rpxHeight}}px">详细地址详细地址详细地址详细地址详细地址详细地址详细地址</view>-->
+                <!--</view>-->
+            <!--</block>-->
+            <!--<block wx:else>-->
+                <!--<view class="no-addr" >-->
+                    <!--<view class="new-build">-->
+                        <!--<view class="flex-center" style="width:{{160*px2rpxWidth}}px;height:100%;">新建收货地址</view>-->
+                        <!--<view class="youjiantou" style="width:{{30*px2rpxWidth}}px;"><text class="iconfont icon-youjiantou"></text></view>-->
+                    <!--</view>-->
+                <!--</view>-->
+            <!--</block>-->
+        <!--</view>-->
         <!--收货地址 end-->
 
         <!--商品详情图 start-->
         <view class="detail" style="margin-top:{{20*px2rpxHeight}}px;">
             <view class="detail-text" style="height:{{88*px2rpxHeight}}px;">商品详情</view>
-            <block wx:for="{{goodsDetailImg}}" wx:for-item="img" wx:key="{{img.id}}">
+            <block wx:for="{{[goodsInfo.photo]}}" wx:for-item="img" wx:key="{{index}}">
                 <view class="detail-img">
                     <view class="img flex-center">
-                        <image style="width:{{750*px2rpxWidth}}px;height:{{2000*px2rpxWidth}}px;" src=""></image>
+                        <image src="{{fileUrl + img}}" style="width:{{750*px2rpxWidth}}px;height:{{2000*px2rpxWidth}}px;"></image>
                     </view>
                 </view>
             </block>
@@ -75,11 +75,11 @@
                 <view class="cover-layout-content" style="height:{{338*px2rpxHeight}}px;margin-top:{{771*px2rpxHeight}}px;">
                     <view class="info" style="height:{{179*px2rpxHeight}}px;">
                         <view class="info-img" style="width:{{106*px2rpxWidth}}px;padding-top:{{22*px2rpxHeight}}px;">
-                            <image style="width:{{106*px2rpxWidth}}px;height:{{106*px2rpxWidth}}px;"></image>
+                            <image src="{{fileUrl + goodsInfo.photo}}" style="width:{{106*px2rpxWidth}}px;height:{{106*px2rpxWidth}}px;"></image>
                         </view>
                         <view class="name-price" style="width:{{500*px2rpxWidth}}px;padding: {{26*px2rpxHeight}}px 0 0 {{26*px2rpxHeight}}px">
-                            <view class="name">商品名称</view>
-                            <view class="price" style="margin-top:{{15*px2rpxHeight}}px;">¥129.00</view>
+                            <view class="name">{{goodsInfo.name}}</view>
+                            <view class="price" style="margin-top:{{15*px2rpxHeight}}px;">¥{{goodsInfo.money}}</view>
                         </view>
                         <view class="quxiao" style="width:{{40*px2rpxWidth}}px;padding-top:{{24*px2rpxHeight}}px;margin-left:{{48*px2rpxWidth}}px;">
                             <view class="yuan" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelCoverLayout">
@@ -107,6 +107,8 @@
     import {PX_TO_RPX} from '@/utils/constant';
     import util from '@/utils/util';
     import tip from '@/utils/tip';
+    import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
     import ChangeNumber from '@/components/common/change_number';
 
     export default class MyPage extends wepy.page {
@@ -124,17 +126,19 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
             goodsId:null,
+            goodsInfo:null,
             // 轮播图图片
-            goodsImgUrls:[],
+            // goodsImgUrls:[],
             // 是否有默认地址
             haveDefaultAddress:false,
             // 商品详情图
-            goodsDetailImg:[],
+            // goodsDetailImg:[],
             // 按钮显示文字
             btnText:'购买',
             // 是否显示遮盖层
-            isShowCoverLayout:true,
+            isShowCoverLayout:false,
             // 购买数量
             num:1,
         };
@@ -145,6 +149,7 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
+            this.goodsId = options.goodsId;
             this.$apply();
         }
 
@@ -153,8 +158,23 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
-            // 获取默认地址
+        async onReady() {
+            let that = this;
+           // 获取商品信息
+            let res = await api.getGoodsDetails({
+                query:{
+                    goodsId: that.goodsId
+                }
+            });
+            if(res.data.state == 1){
+                let goodsInfo = res.data.data;
+                goodsInfo.photo1 = goodsInfo.photo1.split(',');
+                that.goodsInfo = goodsInfo;
+                console.log(that.goodsInfo);
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
         };
 
         // 声明页面所引用的Mixin实例
@@ -170,17 +190,18 @@
         methods = {
             // 购买
             buyOneGoods(){
-                let goodsId = this.goodsId;
-                let num = this.num;
                 if(this.btnText == '下一步'){
-
+                    let num = this.num;
                     if(!util.checkReg(6,num)){
                         tip.error('请输入正确数量');
                         return;
                     }
-
+                    let goodsId = this.goodsId;
+                    let name = this.goodsInfo.name;
+                    let img = this.goodsInfo.photo;
+                    let goodsPrice = this.goodsInfo.money;
                     wepy.navigateTo({
-                        utl:'/pages/submit_order?goodsId=' + goodsId + '&num=' + num
+                        url:'/pages/commit_order?goodsId=' + goodsId + '&goodsNum=' + num+'&goodsName='+name + '&goodsImg='+img + '&goodsPrice='+goodsPrice
                     });
                 }
                 this.isShowCoverLayout = true;

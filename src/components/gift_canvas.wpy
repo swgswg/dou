@@ -24,14 +24,6 @@
                         <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>
                     </movable-view>
                 </block>
-                <!--<movable-view-->
-                    <!--style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"-->
-                    <!--x="{{gift.xaxle*px2rpxWidth*2}}" y="{{gift.yaxle*px2rpxHeight*2}}"-->
-                    <!--direction="{{gift.type == 1 ? 'none':'all'}}"-->
-                    <!--bindchange="moveGift"-->
-                    <!--data-index="{{index}}">-->
-                    <!--<image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>-->
-                <!--</movable-view>-->
             </block>
         </movable-area>
     </view>

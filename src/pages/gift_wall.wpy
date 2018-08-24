@@ -19,9 +19,9 @@
         <view style="width: 100%;background-color: #333;margin-top:20rpx">
             <mygift :myGift.sync="myGifts" :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight" :logoLocation.sync="logoLocation" :fansId.sync="otherUserId" :presentsWallId.sync="otherGiftWallId" :isTakeGift.sync="isTakeGift"></mygift>
         </view>
-        <view style='width:0px;height:0px;overflow:hidden;'>
-            <canvas canvas-id="myCanvas" style="width:{{canvasWidth*px2rpxWidth}}px;height:{{canvasHeight*px2rpxHeight}}px;background-color: #fff;" hidden="true"/>
-        </view>
+        <!--<view style='width:0px;height:0px;overflow:hidden;'>-->
+            <canvas canvas-id="myCanvas" style="position:absolute;top:-1000px;left:-1000px;width:{{canvasWidth*px2rpxWidth}}px;height:{{canvasHeight*px2rpxHeight+70}}px;background-color: #fff;"/>
+        <!--</view>-->
     </view>
 </template>
 
@@ -31,6 +31,7 @@
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
     import tip from '@/utils/tip';
+    import wxdraw from '@/utils/wxdraw';
     import weixin from '@/utils/weixin';
     import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import Info from '@/components/info';
@@ -87,6 +88,8 @@
             isTakeGift:true,
             // 卡通人物所在的坐标
             logoLocation:null,
+            // 需要创建一个对象来接受wxDraw对象
+            wxCanvas:null,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -95,12 +98,32 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
-            let otherUserId = options.userId;
-            this.otherUserId = otherUserId;
+            this.otherUserId = options.userId;
+            this.$apply();
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        async onReady() {
+            let that = this;
+            let activeUserInfo = wepy.getStorageSync(USER_INFO);
+            // 获取送礼物用户拥有的礼物
+            let activeUserGift = await api.getUserGift({
+                query:{
+                    userId:activeUserInfo.id
+                }
+            });
+            this.myGifts = activeUserGift.data.data;
+            // console.log(activeUserGift.data.data);
+
             // 获取被送礼物用户的礼物墙
             let otherUserGift = await api.getPresentsWall({
                 query:{
-                    userId:otherUserId
+                    userId:that.otherUserId
                 }
             });
             // console.log(otherUserGift);
@@ -115,8 +138,8 @@
                 this.otherGiftWallId = otherUserGift.data.data.id;
                 // 增加一个人物动漫形象
                 let logo = otherUserGift.data.data.logo;
-                let logoX = this.canvasWidth - this.logoWidth;
-                let logoY = this.canvasHeight - this.logoHeight;
+                let logoX = this.canvasWidth*this.px2rpxWidth - this.logoWidth;
+                let logoY = this.canvasHeight*this.px2rpxHeight - this.logoHeight;
                 // console.log('logoX=='+logoX,'logoY=='+logoY)
                 giftList.push({id:-1,giftId:-1,wide:131,high:234,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
                 this.logoLocation = {x:logoX,y:logoY};
@@ -141,25 +164,6 @@
             this.$apply();
         };
 
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-
-        };
-
-        // 只在Page中存在的页面生命周期函数
-        async onReady() {
-            let activeUserInfo = wepy.getStorageSync(USER_INFO);
-            // 获取送礼物用户拥有的礼物
-            let activeUserGift = await api.getUserGift({
-                query:{
-                    userId:activeUserInfo.id
-                }
-            });
-            this.myGifts = activeUserGift.data.data;
-            // console.log(activeUserGift.data.data);
-            this.$apply();
-        };
-
 
         events = {
             // 将所有礼物状态改为1(防止确定后依然可以拖动礼物)
@@ -177,7 +181,7 @@
 
             // 添加礼物
             addGiftToWall(oneGift){
-                console.log(this.isTakeGift+'===111');
+                // console.log(this.isTakeGift+'===111');
                 if(!this.isTakeGift){
                     return;
                 }
@@ -200,41 +204,52 @@
             },
 
             // 满能量生成图片
-            async createImg(mypresentsWallId){
-                console.log(mypresentsWallId);
+            createImg(mypresentsWallId){
+                console.log('mypresentsWallId=='+mypresentsWallId);
                 tip.loading();
                 let that = this;
                 let giftList = this.giftList;
                 // console.log(giftList);
                 let len = giftList.length;
+                let width = parseFloat(that.canvasWidth) * parseFloat(that.px2rpxWidth);
+                let height = parseFloat(that.canvasHeight) * parseFloat(that.px2rpxHeight);
+                // console.log('width=='+width);
+                // console.log('height=='+height);
                 // 在画布上绘制图片
-                var ctx = wx.createCanvasContext('myCanvas');
+                var ctx = wepy.createCanvasContext('myCanvas');
+                that.wxCanvas = new wxdraw.wxDraw(ctx,0,0,width,height+70);
+                // 创建白色背景
+                let rect = new wxdraw.Shape('rect', {x: width/2, y: (height+70)/2, w: width, h: height+70, fillStyle: "#fff"}, 'fill', true);
+                that.wxCanvas.add(rect);//添加到canvas上面
+                // 绘制礼物墙
                 for(let i = 0; i < len; i++){
-                    await setTimeout(function() {
-                        wx.downloadFile({
-                            url: that.fileUrl + giftList[i].url,
-                            success: function(res) {
-                                // 只要服务器有响应数据，就会把响应内容写入文件并进入 success 回调，业务需要自行判断是否下载到了想要的内容
-                                if (res.statusCode === 200) {
-                                    // ctx.save();
-                                    ctx.drawImage( res.tempFilePath, giftList[i].xaxle, giftList[i].yaxle, giftList[i].wide, giftList[i].high);
-                                    // ctx.restore();
-                                    ctx.draw(true);
-                                }
-                            }
-                        });
-                    },100);
+                    // console.log(giftList[i]);
+                    let _src = that.fileUrl + giftList[i].url;
+                    let w = parseFloat(giftList[i].wide);
+                    let h = parseFloat(giftList[i].high);
+                    let x = parseFloat(giftList[i].xaxle) + w/2;
+                    let y = parseFloat(giftList[i].yaxle) + h/2;
+                    wx.getImageInfo({
+                        src: _src,
+                        success: function(res) {
+                            console.log(res);
+                            let img = new wxdraw.Shape('image', { x: x, y: y,w: w,h: h, file:res.path}, 'fill', true);
+                            that.wxCanvas.add(img);
+                        }
+                    });
+                    // that.getImgInfoDrawCanvas(_src,x,y,w,h);
                 }
-                let width = that.canvasWidth * that.px2rpxWidth*2;
-                let height = that.canvasHeight * that.px2rpxHeight*2;
+                // 绘制送礼物人头像墙
+                that._getGiveGiftUserPhoto(mypresentsWallId,height);
+
                 setTimeout(function () {
                     wx.canvasToTempFilePath({
                         x: 0,
                         y: 0,
                         width: width,
-                        height: height,
+                        height: height+70,
                         destWidth: width,
-                        destHeight: height,
+                        destHeight: height+70,
                         canvasId: 'myCanvas',
                         quality:1,
                         success: function (res) {
@@ -242,12 +257,12 @@
                             weixin.uploadFiveToAliyunOOS(res.tempFilePath,function(fileNmae) {
                                 console.log('fileName=='+fileNmae);
                                 that.saveGiftWallPhoto(mypresentsWallId,fileNmae);
+                                tip.loaded();
                             });
                         }
                     });
-                },2000);
-
-                tip.loaded();
+                },1000);
+                that.$apply();
             }
 
         };
@@ -270,18 +285,76 @@
 
         // 保存礼物墙照片
         async saveGiftWallPhoto(mypresentsWallId,fileNmae){
+            let that = this;
             let suc = await api.updatePresentsWall({
                 query:{
                     presentsWallId:mypresentsWallId,
                     url:fileNmae,
+                    userId:that.otherUserId
                 }
             });
             console.log(suc);
             if(suc.data.state == 1){
-                // this.onLoad();
                 // this.onReady();
+                wx.navigateBack({
+                    delta: 1
+                })
             }
         }
+
+        // 通过礼物墙id获取送礼物的前19个人
+        async _getGiveGiftUserPhoto(mypresentsWallId,myheight){
+            let that = this;
+            let res = await api.getGiveGiftUserPhoto({
+                query:{
+                    presentsWallId:mypresentsWallId
+                }
+            });
+            if(res.data.state == 1){
+                // console.log('photo==',res.data.data);
+                let giveGiftUserPhotoData = res.data.data;
+                console.log('giveGiftUserPhotoData',giveGiftUserPhotoData);
+                let len2 = giveGiftUserPhotoData.length;
+                for(let j = 0; j < len2; j++){
+                    let photo_src = giveGiftUserPhotoData[j].photo;
+                    let photo_w = 25;
+                    let photo_h = 25;
+                    let photo_x = 25*j + 5*j + photo_w/2;
+                    let photo_y = 0;
+                    if(j<10){
+                        photo_y = myheight+10;
+                    } else if(j > 10 && j < 20){
+                        photo_y = myheight+45;
+                    }
+                    // that.getImgInfoDrawCanvas(photo_src, photo_x, photo_y, photo_w, photo_h);
+                    wx.getImageInfo({
+                        src: photo_src,
+                        success: function(res) {
+                            console.log(res);
+                            let img = new wxdraw.Shape('image', { x: photo_x, y: photo_y,w: photo_w,h: photo_h, file:res.path}, 'fill', true);
+                            that.wxCanvas.add(img);
+                        }
+                    });
+                }
+            } else {
+                tip.error('网络错误');
+            }
+        }
+
+        // 获取图片信息,并绘制到canvas上
+        // getImgInfoDrawCanvas(mysrc,myx,myy,myw,myh,){
+        //     let that = this;
+        //     setTimeout(function() {
+        //         wx.getImageInfo({
+        //             src: mysrc,
+        //             success: function(res) {
+        //                 console.log(res);
+        //                 let img = new wxdraw.Shape('image', { x: myx, y: myy,w: myw,h: myh, file:res.path}, 'fill', true);
+        //                 that.wxCanvas.add(img);
+        //             }
+        //         });
+        //     },500);
+        // }
 
     }
 </script>

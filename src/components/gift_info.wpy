@@ -156,7 +156,7 @@
                             integral:sumIntegral
                         }
                     });
-                    console.log(res);
+                    // console.log(res);
                     if(res.data.state == 1){
                         // 获取抖腿币,更新个人信息
                         that.getIntegral();

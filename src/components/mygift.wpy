@@ -111,12 +111,20 @@
                     return;
                 }
                 // 随机坐标
-                let x = util.rand(0,this.canvasWidth - 100);
-                let y = util.rand(0,this.canvasHeight - 100);
+                let w = parseFloat(myGift[index].wide);
+                let h = parseFloat(myGift[index].high);
+                let x = util.rand(0,this.canvasWidth * this.px2rpxWidth - w);
+                let y = util.rand(0,this.canvasHeight * this.px2rpxHeight - h);
+                if(x > this.canvasWidth * this.px2rpxWidth){
+                    x = this.canvasWidth * this.px2rpxWidth / 2;
+                }
+                if(y > this.canvasHeight * this.px2rpxHeight){
+                    y = this.canvasHeight * this.px2rpxHeight / 2
+                }
                 // console.log(x,y);
                 myGift[index].num = myGift[index].num - 1;
                 // giftList.push({id:0,giftId:myGift[index].giftId,wide:myGift[index].wide,high:myGift[index].high,xaxle:x,yaxle:y,url:myGift[index].photo,type:0});
-                let oneGift = {id:0,giftId:myGift[index].giftId,wide:parseInt(myGift[index].wide),high:parseInt(myGift[index].high),xaxle:x,yaxle:y,url:myGift[index].url,score:myGift[index].score,type:0};
+                let oneGift = {id:0,giftId:myGift[index].giftId,wide:w,high:h,xaxle:x,yaxle:y,url:myGift[index].url,score:myGift[index].score,type:0};
                 // 添加礼物到礼物墙
                 this.$emit('addGiftToWall',oneGift);
                 // 把添加到礼物墙的礼物添加临时变量
@@ -130,12 +138,12 @@
                 let that = this;
                 let giftVal = this.giftVal;
                 // 0能量不满/1满能量
-                let status = null;
-                if(this.isTakeGift){
-                    status = 0;
-                } else {
-                    status = 1;
-                }
+                // let status = null;
+                // if(this.isTakeGift){
+                //     status = 0;
+                // } else {
+                //     status = 1;
+                // }
                 // console.log(giftVal);
                 let len = giftVal.length;
                 let giftId = '';
@@ -154,11 +162,9 @@
                         giftId:giftId,
                         xaxle:xaxle,
                         yaxle:yaxle,
-                        status:status
+                        // status:status
                     }
                 });
-
-
                 if(res.data.state == 1){
                     wx.showToast({
                         title: '赠送成功',
