@@ -8,6 +8,14 @@ const wshost = 'ws://192.168.3.52:8080/MicroPlatform/websocket/';
 // 上传文件/解析图片 地址
 const uploadFileUrl = 'http://jiaoyuvideo.oss-cn-beijing.aliyuncs.com/';
 
+// 订单状态 全部'' 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
+const all = '';
+const unpaid = 0;
+const notDelivered = 1;
+const notReceived = 2;
+const accomplish = 3;
+const returnGoods = 4;
+const exchangeGoods = 5;
 
 /**
  * 接口
@@ -71,17 +79,36 @@ const getGoodsDetails = (params) => wxRequest(params, host + 'shakeLeg/admin/get
 const getAddress = (params) => wxRequest(params, host + 'shakeLeg/user/getAddress');
 // 查询默认地址
 const getMoRen = (params) => wxRequest(params, host + 'shakeLeg/user/getMoRen');
+// 根据id查询地址
+const getAddressId = (params) => wxRequest(params, host + 'shakeLeg/user/getAddressId');
 // 添加地址
 const addAddress = (params) => wxRequest(params, host + 'shakeLeg/user/addAddress');
+// 设为默认地址
+const updateStatus = (params) => wxRequest(params, host + 'shakeLeg/user/updateStatus');
+// 修改地址
+const updateAddress = (params) => wxRequest(params, host + 'shakeLeg/user/updateAddress');
+// 删除地址
+const deleteAddress = (params) => wxRequest(params, host + 'shakeLeg/user/deleteAddress');
 // 添加订单
 const addOrders = (params) => wxRequest(params, host + 'shakeLeg/user/addOrders');
 // 修改订单状态
 const updateOrdersStatus = (params) => wxRequest(params, host + 'shakeLeg/user/updateOrdersStatus');
+// 订单列表
+const getOrders = (params) => wxRequest(params, host + 'shakeLeg/user/getOrders');
+//  订单详情
+const getOrdersDetails = (params) => wxRequest(params, host + 'shakeLeg/user/getOrdersDetails');
 
 export default {
     host,
     wshost,
     uploadFileUrl,
+    all,
+    unpaid,
+    notDelivered,
+    notReceived,
+    accomplish,
+    returnGoods,
+    exchangeGoods,
     myLogin,
     updateSex,
     addRecord,
@@ -110,7 +137,13 @@ export default {
     getGoodsDetails,
     getAddress,
     getMoRen,
+    getAddressId,
     addAddress,
+    updateStatus,
+    updateAddress,
+    deleteAddress,
     addOrders,
-    updateOrdersStatus
+    updateOrdersStatus,
+    getOrders,
+    getOrdersDetails,
 };

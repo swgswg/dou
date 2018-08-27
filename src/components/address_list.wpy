@@ -85,7 +85,7 @@
             // 编辑地址
             editAddress(e){
                 let addrid = e.currentTarget.dataset.addrid;
-                wepy.navigateTo({
+                wepy.redirectTo({
                     url:'/pages/address_edit?addressId='+addrid
                 });
             },

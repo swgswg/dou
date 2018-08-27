@@ -6,7 +6,14 @@
             <view class="status-icon" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;">
                 <text class="iconfont icon-check"></text>
             </view>
-            <view class="status-text" style="margin-left:{{14*px2rpxWidth}}px;">完成</view>
+            <view class="status-text" style="margin-left:{{14*px2rpxWidth}}px;">
+                <block wx:if="{{order.status == unpaid}}">待付款</block>
+                <block wx:if="{{order.status == notDelivered}}">待发货</block>
+                <block wx:if="{{order.status == notReceived}}">待收货</block>
+                <block wx:if="{{order.status == accomplish}}">完成</block>
+                <block wx:if="{{order.status == returnGoods}}">退货</block>
+                <block wx:if="{{order.status == exchangeGoods}}">换货</block>
+            </view>
         </view>
         <!--订单状态 end-->
 
@@ -17,11 +24,11 @@
             </view>
             <view class="addr-right" style="margin-left:{{10*px2rpxWidth}}px;">
                 <view class="addr-right-top">
-                    <view class="name">姓名</view>
-                    <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">12345678910</view>
+                    <view class="name">{{order.consignee}}</view>
+                    <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">{{order.mobile}}</view>
                 </view>
                 <view class="addr-right-bottom" style="margin-top:{{10*px2rpxHeight}}px">
-                    <view>地址： 天津市天津市天津市天津市天津市天津市天津市天津市天津市</view>
+                    <view>地址： {{order.site}}</view>
                 </view>
             </view>
         </view>
@@ -29,24 +36,24 @@
 
         <!--商品信息 start-->
         <view class="goods" style="margin-top:{{20*px2rpxHeight}}px;">
-            <block wx:for="{{2}}" wx:for-item="goods" wx:key="{{index}}">
+            <!--<block wx:for="{{2}}" wx:for-item="goods" wx:key="{{index}}">-->
                 <view class="goods-info" style="height:{{200*px2rpxHeight}}px;padding:{{24*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
                     <view class="info-left">
-                        <image src="" style="width:{{138*px2rpxWidth}}px;height:{{138*px2rpxWidth}}px;"></image>
+                        <image src="{{order.photo}}" style="width:{{138*px2rpxWidth}}px;height:{{138*px2rpxWidth}}px;"></image>
                     </view>
                     <view class="info-right" style="margin-left:{{18*px2rpxWidth}}px;">
-                        <view class="goods-name">商品名称</view>
-                        <view class="goods-num" style="margin-top:{{16*px2rpxHeight}}px;">x1</view>
-                        <view class="goods-price" style="margin-top:{{30*px2rpxHeight}}px;">¥129.00</view>
+                        <view class="goods-name">{{order.goodsName}}</view>
+                        <view class="goods-num" style="margin-top:{{16*px2rpxHeight}}px;">x{{order.num}}</view>
+                        <view class="goods-price" style="margin-top:{{30*px2rpxHeight}}px;"><text style="font-size:20rpx;">{{order.integral}}积分+</text>¥{{order.money}}</view>
                     </view>
                 </view>
-            </block>
+            <!--</block>-->
         </view>
         <!--商品信息 end-->
 
         <!--订单信息 start-->
         <view class="order-info" style="height:{{301*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
-            <view>订单编号： 123456789</view>
+            <view>订单编号： {{order.order_uuid}}</view>
             <view class="order-time" style="margin-top:{{25*px2rpxHeight}}px;padding-bottom:{{25*px2rpxHeight}}px;">下单时间： 2018-08-14 12:12:12</view>
             <view style="margin-top:{{25*px2rpxHeight}}px">支付方式： 微信支付</view>
             <view style="margin-top:{{25*px2rpxHeight}}px">支付时间： 2018-08-14 12:12:12</view>
@@ -57,44 +64,61 @@
         <view class="total-price" style="height:{{202*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
             <view class="price-top">
                 <view>商品总额:</view>
-                <view>¥129.00</view>
+                <view>¥{{order.moneys}}</view>
             </view>
             <view class="price-middle" style="margin-top:{{20*px2rpxHeight}}px;">
                 <view>运费</view>
                 <view>+0.00</view>
             </view>
             <view class="price-bottom" style="margin-top:{{20*px2rpxHeight}}px;">
-                <view>实付款：<text style="color:#f03e3e">¥129.00</text></view>
+                <view>实付款：<text style="color:#f03e3e">¥{{order.moneys}}</text></view>
             </view>
         </view>
         <!--总价 end-->
 
         <!--订单状态操作 start-->
         <view class="order-status" style="height:{{100*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
-            <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">付款</view>
-            <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">取消</view>
+            <block wx:if="{{order.status == unpaid}}">
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">取消订单</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">付款</view>
+            </block>
+            <block wx:if="{{order.status == notDelivered}}">
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">提醒发货</view>
+            </block>
+            <block wx:if="{{order.status == notReceived}}">
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">确认收货</view>
+            </block>
+            <block wx:if="{{order.status == accomplish}}">
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;" @tap.stop="applyAfterSale">申请售后</view>
+            </block>
+            <block wx:if="{{order.status == returnGoods}}">
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">售后/退货</view>
+            </block>
+            <block wx:if="{{order.status == exchangeGoods}}">
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">售后/换货</view>
+            </block>
         </view>
         <!--订单状态操作 end-->
 
         <!--遮盖层 start-->
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
-                    <view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
-                        <view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelAfterSale">
-                            <text class="iconfont icon-close"></text>
+                <view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
+                    <view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">
+                        <text class="iconfont icon-close"></text>
+                    </view>
+                    <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
+                    <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
+                        <view class="each">
+                            <image style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
                         </view>
-                        <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
-                        <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
-                            <view class="each">
-                                <image style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
-                            </view>
-                            <view class="each weixinhao">微信号:123456789</view>
-                            <view class="each direc" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
-                            <view class="each fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
-                                <image src="{{customer_service_btn}}" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
-                            </view>
+                        <view class="each weixinhao">微信号:123456789</view>
+                        <view class="each direc" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
+                        <view class="each fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
+                            <image src="{{customer_service_btn}}" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
                         </view>
                     </view>
+                </view>
             </coverlayer>
         </view>
         <!--遮盖层 end-->
@@ -106,6 +130,9 @@
     import wepy from 'wepy';
     import {PX_TO_RPX } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
     import CoverLayer from '@/components/common/cover_layer';
 
     export default class MyPage extends wepy.page {
@@ -125,17 +152,34 @@
             px2rpxHeight:0,
             customer_service:imgApi.customer_service,
             customer_service_btn:imgApi.customer_service_btn,
+            orderId:null,
+            // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
+            all:api.all,
+            unpaid:api.unpaid,
+            notDelivered:api.notDelivered,
+            notReceived:api.notReceived,
+            accomplish:api.accomplish,
+            returnGoods:api.returnGoods,
+            exchangeGoods:api.exchangeGoods,
+            order:null,
             // 显示遮盖层
-            showCoverLayer:true,
+            showCoverLayer:false,
             // 显示售后
-            showAfterSale:true,
+            showAfterSale:false,
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(){
+        async onLoad(options){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            if(util.isEmpty(options.orderId)){
+                tip.error('网络错误');
+            } else {
+                this.orderId = options.orderId;
+            }
+
             this.$apply();
         }
 
@@ -144,7 +188,19 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
+        async onReady() {
+            let that = this;
+            let res = await api.getOrdersDetails({
+                query:{
+                    orderId:that.orderId
+                }
+            });
+            if(res.data.state == 1){
+                this.order = res.data.data;
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
         };
 
         // 声明数据watcher（详见后文介绍）
@@ -152,8 +208,14 @@
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
-            // 取消售后
-            cancelAfterSale(){
+            // 申请售后
+            applyAfterSale(){
+                this.showCoverLayer = true;
+                this.showAfterSale = true;
+            },
+
+            // 取消遮盖层
+            cancelCoverLayer(){
                 this.cancelShow();
             },
             // 复制微信号
@@ -332,7 +394,12 @@
                 justify-content: center;
                 align-items: center;
                 font-size: 24rpx;
+                color: #aaa;
                 border: 1rpx solid #ccc;
+            }
+            .status-btn2{
+                border: 1rpx solid #f03e3e;
+                color: #f03e3e;
             }
         }
 
@@ -371,7 +438,7 @@
                 display: flex;
                 flex-direction: column;
                 padding: 0 80rpx;
-                border: 1rpx solid red;
+                /*border: 1rpx solid red;*/
 
                 .each{
                     display: flex;

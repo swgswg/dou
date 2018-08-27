@@ -2,31 +2,59 @@
     <view class="order">
         <!--tab模块-->
         <view class="swiper-tab-pd">
-            <tab @currentTab.user="getCurrentTab" :tabList.sync="tabList" :currentTab.sync="currentTab"></tab>
+            <tab :tabList.sync="tabList" :currentTab.sync="currentTab"></tab>
         </view>
 
         <!--订单列表 start-->
         <view class="order-list" style="height:{{1110*px2rpxHeight}}px">
-            <scroll-view scroll-y="true" bindscrolltolower="onReachBottom">
-                <orderitem></orderitem>
+            <scroll-view scroll-y="true" bindscrolltolower="scrollToLower">
+                <orderitem :orderList.sync="orderList"></orderitem>
                 <!--加载更多时动画-->
                 <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
                 <!--暂无数据显示-->
-                <placeholder :show.sync="is_empty" message="暂无发现数据"></placeholder>
+                <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
             </scroll-view>
         </view>
         <!--订单列表 end-->
 
+        <!--遮盖层 start-->
+        <view wx:if="{{showCoverLayer}}">
+            <coverlayer>
+                <!-- 申请售后 start-->
+                <view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
+                    <view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">
+                        <text class="iconfont icon-close"></text>
+                    </view>
+                    <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
+                    <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
+                        <view class="each">
+                            <image style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
+                        </view>
+                        <view class="each weixinhao">微信号:123456789</view>
+                        <view class="each direc" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
+                        <view class="each fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
+                            <image src="{{customer_service_btn}}" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
+                        </view>
+                    </view>
+                </view>
+                <!-- 申请售后 end-->
+            </coverlayer>
+        </view>
+        <!--遮盖层 end-->
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX } from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
+    import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
+    import tip from '@/utils/tip';
     import Tab from '@/components/common/tab';
     import OrderItem from '@/components/order_item';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
+    import CoverLayer from '@/components/common/cover_layer';
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -39,15 +67,39 @@
             tab:Tab,
             orderitem:OrderItem,
             bottomLoadMore: BottomLoadMore,
-            placeholder: Placeholder
+            placeholder: Placeholder,
+            coverlayer:CoverLayer,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            userId:null,
+            page:1,
+            pageSize:20,
+            isLastPage:false,
             tabList: ["全部", "待支付","待发货", "待收货", "已完成"],
-            // (可退货),3待收货,4收货待评价(订单完成),5评价完成,6换货,7退货
+            currentTab:0,
+            status:'',
+            // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
+            all:api.all,
+            unpaid:api.unpaid,
+            notDelivered:api.notDelivered,
+            notReceived:api.notReceived,
+            accomplish:api.accomplish,
+            returnGoods:api.returnGoods,
+            exchangeGoods:api.exchangeGoods,
+            // 订单列表
+            orderList:null,
+            showLoading:false,
+            is_empty:true,
+            // 显示遮盖层
+            showCoverLayer:false,
+            // 显示售后
+            showAfterSale:false,
+            customer_service:imgApi.customer_service,
+            customer_service_btn:imgApi.customer_service_btn,
 
         };
 
@@ -56,31 +108,111 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
             this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
         onShow() {
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
+            // 获取数据
+            this.getOrdersData(1,20,this.status);
         };
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
+
         };
-
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
 
         // 声明数据watcher（详见后文介绍）
         watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            // 滚动到底部/右边，会触发 scrolltolower 事件
+            scrollToLower(){
+                if(this.isLastPage){
+                    return;
+                }
+                this.showLoading = true;
+                this.pageSize = this.pageSize + 20;
+                this.getOrdersData(this.page,this.pageSize,this.status);
+            },
+
+            // 取消遮盖层
+            cancelCoverLayer(){
+                this.cancelShow();
+            },
+        };
 
         // 声明组件之间的事件处理函数
-        events = {};
+        events = {
+            CurrentTabChange(cur) {
+                this.currentTab = cur;
+                console.log("cur",cur);
+                if (cur == 0) {
+                    console.log("所有订单类型");
+                    this.status = "";
+                    this.getOrdersData(this.page,this.pageSize,this.status);
+                } else if (cur == 1) {
+                    console.log("未付款订单类型");
+                    this.status = this.unpaid;
+                    this.getOrdersData(this.page,this.pageSize,this.status);
+                } else if (cur == 2) {
+                    console.log("待发货订单类型");
+                    this.status = this.notDelivered;
+                    this.getOrdersData(this.page,this.pageSize,this.status);
+                    // that.receiveFlg = 2;
+                } else if (cur == 3) {
+                    console.log("待收货订单类型");
+                    this.status = this.notReceived;
+                    this.getOrdersData(this.page,this.pageSize,this.status);
+                    // that.receiveFlg = 4;
+                } else if (cur == 4){
+                    console.log("已完成");
+                    this.status = this.accomplish;
+                    this.getOrdersData(this.page,this.pageSize,this.status);
+                }
+                console.log('status',this.status);
+                this.$apply();
+            },
+        };
+
+        // 获取订单数据
+        async getOrdersData(mypage,mypageSize,mystatus){
+            let that = this;
+            this.showLoading = false;
+            let res = await api.getOrders({
+                query:{
+                    userId: that.userId,
+                    page:mypage,
+                    pageSize:mypageSize,
+                    status:mystatus
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data.PageInfo;
+                this.orderList = data.list;
+                this.isLastPage = data.isLastPage;
+                if(data.list.length < 1){
+                    this.is_empty = true;
+                } else {
+                    this.is_empty = false;
+                }
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        };
+
+        // 取消所有遮盖层内容
+        cancelShow(){
+            this.showCoverLayer = false;
+            this.showAfterSale = false;
+        }
     }
 </script>
 
@@ -100,6 +232,61 @@
             justify-content: center;
             align-items: center;
             width: 100%;
+        }
+
+        .shouhou{
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+
+            .cancel{
+                position: absolute;
+                top: 0;
+                right: 0;
+                z-index: 0;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: 1px solid #aaa;
+                border-radius: 50%;
+
+                .icon-close{
+                    font-size: 35rpx;
+                    color:#aaa;
+                }
+            }
+
+            .img-bg{
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            .neirong{
+                z-index: 10;
+                display: flex;
+                flex-direction: column;
+                padding: 0 80rpx;
+                /*border: 1rpx solid red;*/
+
+                .each{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .weixinhao{
+                    font-size: 30rpx;
+                    color: #000;
+                }
+
+                .direc{
+                    font-size: 24rpx;
+                    color:#666;
+                }
+            }
         }
     }
 </style>

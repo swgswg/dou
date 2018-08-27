@@ -1,34 +1,81 @@
 <template>
     <view class="order-item">
-        <block wx:for="{{[1,2]}}" wx:for-item="order" wx:key="{{index}}">
+        <block wx:for="{{orderList}}" wx:for-item="order" wx:key="{{order.id}}">
             <view class="list" style="padding:0 {{30*px2rpxWidth}}px;margin-top:{{20*px2rpxHeight}}px;">
 
                 <!--商品信息 start-->
-                <block wx:for="{{[1,2]}}" wx:for-item="goods" wx:key="{{index}}">
-                    <view class="infomation" style="padding:{{20*px2rpxHeight}}px 0;">
+                <!--<block wx:for="{{goods}}" wx:for-item="goods" wx:key="{{goods.goodsId}}">-->
+                    <view class="infomation" style="padding:{{20*px2rpxHeight}}px 0;" data-orderid="{{order.id}}" @tap.stop="goToDetail">
                         <view class="info-img" style="width:{{150*px2rpxWidth}}px;">
-                            <image src="" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;"></image>
+                            <image src="{{order.photo}}" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;"></image>
                         </view>
                         <view class="name-price-specific-num" style="width:{{480*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
                             <view class="name-price">
-                                <view class="name">商品名称</view>
-                                <view class="price">¥198.00</view>
+                                <view class="name">{{order.goodsName}}</view>
+                                <view class="price">
+                                    <view><text style="font-size:22rpx">{{order.integral}}积分+</text>¥{{order.money}}</view>
+                                    <view style="font-size:20rpx">
+                                        <block wx:if="{{order.status == 0}}">待付款</block>
+                                        <block wx:if="{{order.status == 1}}">待发货</block>
+                                        <block wx:if="{{order.status == 2}}">已发货</block>
+                                        <block wx:if="{{order.status == 3}}">交易完成</block>
+                                    </view>
+                                </view>
                             </view>
-                            <view class="specific" style="height:{{35*px2rpxHeight}};margin-top:{{10*px2rpxHeight}}px;">商品规格商品规格商品规格商品规格商品规格商品规格</view>
-                            <view class="num">x1</view>
+                            <!--<view class="specific" style="height:{{35*px2rpxHeight}};margin-top:{{10*px2rpxHeight}}px;">商品规格商品规格商品规格商品规格商品规格商品规格</view>-->
+                            <!--<view class="specific" style="height:{{35*px2rpxHeight}};margin-top:{{10*px2rpxHeight}}px;"></view>-->
+                            <view class="num" style="margin-top:{{20*px2rpxHeight}}px;">x{{order.num}}</view>
                         </view>
                     </view>
-                </block>
+                <!--</block>-->
                 <!--商品信息 end-->
 
                 <view class="heji" style="height:{{80*px2rpxHeight}}px;">
-                    <view>共1件商品 合计:¥198.00(含运费¥0.00)</view>
+                    <!--<view>共1件商品 合计:¥198.00(含运费¥0.00)</view>-->
+                    <view>共1件商品 合计:¥{{order.moneys}}(含运费¥0.00)</view>
                 </view>
 
                 <!--订单状态 start-->
                 <view class="order-status" style="height:{{80*px2rpxHeight}}px;">
-                    <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">付款</view>
-                    <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">取消</view>
+
+                    <!--0未付款 start-->
+                    <block wx:if="{{order.status == unpaid}}">
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">取消订单</view>
+                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">付款</view>
+                    </block>
+                    <!--0未付款 end-->
+
+                    <!--1待发货 start-->
+                    <block wx:if="{{order.status == notDelivered}}">
+                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">提醒发货</view>
+                    </block>
+                    <!--1待发货 end-->
+
+                    <!--2待收货 start-->
+                    <block wx:if="{{order.status == notReceived}}">
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">查看物流</view>
+                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">确认收货</view>
+                    </block>
+                    <!--2待收货 end-->
+
+                    <!--3完成 start-->
+                    <block wx:if="{{order.status == accomplish}}">
+                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">申请售后</view>
+                    </block>
+                    <!--3完成 end-->
+
+                    <!--4退货 start-->
+                    <block wx:if="{{order.status == returnGoods}}">
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/退货</view>
+                    </block>
+                    <!--4退货 end-->
+
+                    <!--5换货 start-->
+                    <block wx:if="{{order.status == exchangeGoods}}">
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/换货</view>
+                    </block>
+                    <!--5换货 end-->
+
                 </view>
                 <!--订单状态 end-->
             </view>
@@ -39,21 +86,27 @@
 <script>
     import wepy from 'wepy';
     import {PX_TO_RPX } from '@/utils/constant';
+    import api from '@/utils/api';
 
     export default class OrderItem extends wepy.component {
 
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            // (可退货),3待收货,4收货待评价(订单完成),5评价完成,6换货,7退货
+            // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
+            all:api.all,
+            unpaid:api.unpaid,
+            notDelivered:api.notDelivered,
+            notReceived:api.notReceived,
+            accomplish:api.accomplish,
+            returnGoods:api.returnGoods,
+            exchangeGoods:api.exchangeGoods,
         };
 
         props = {
             orderList: {
+                type:Array,
                 default: [],
-                flag: "",
-                orderNo: "",
-                list: []
             }
         };
 
@@ -64,7 +117,15 @@
             this.$apply();
         };
 
-
+        methods = {
+            // 前去订单详情
+            goToDetail(e){
+                let orderId = e.currentTarget.dataset.orderid;
+                wx.redirectTo({
+                    url:'/pages/order_detail?orderId='+orderId
+                });
+            },
+        };
     }
 </script>
 
@@ -90,7 +151,7 @@
                 justify-content: flex-start;
                 align-items: center;
                 width: 100%;
-                border-bottom: 1rpx solid #eee;
+                border-bottom: 1rpx solid #f0f0f0;
 
                 .info-img{
                     display: flex;
@@ -108,7 +169,7 @@
                     .name-price{
                         display: flex;
                         justify-content: space-between;
-                        align-items: center;
+                        align-items: flex-start;
                         width: 100%;
 
                         .name{
@@ -116,6 +177,9 @@
                             color:#000;
                         }
                         .price{
+                            display: flex;
+                            flex-direction: column;
+                            align-items: flex-end;
                             font-size: 30rpx;
                             color:#f03e3e;
                         }
@@ -163,8 +227,14 @@
                     justify-content: center;
                     align-items: center;
                     font-size: 24rpx;
+                    color: #aaa;
                     border: 1rpx solid #ccc;
                 }
+                .status-btn2{
+                    border: 1rpx solid #f03e3e;
+                    color: #f03e3e;
+                }
+                
             }
 
         }

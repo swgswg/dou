@@ -21,7 +21,8 @@
 
         props = {
             currentTab: {
-                default: 0
+                default: 0,
+                twoWay:true
             },
             tabList: {
                 type: Object
@@ -47,7 +48,7 @@
                     that.currentTab = e.target.dataset.current;
                     that.$apply();
                 }
-                this.$emit("currentTab", that.currentTab)
+                this.$emit("CurrentTabChange", that.currentTab)
             },
 
             /**
@@ -59,12 +60,6 @@
                 this.tabList = dotList;
             }
         };
-
-        watch = {
-            currentTab(newValue, oldValue) {
-                console.log(`currentTab value: ${oldValue} -> ${newValue}`)
-            }
-        }
     }
 </script>
 

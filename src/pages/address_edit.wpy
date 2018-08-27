@@ -4,8 +4,8 @@
             <addressadd :consignee.sync="consignee" :mobile.sync="mobile" :region.sync="region" :street.sync="street" :status.sync="status"></addressadd>
         </view>
         <view class="btn" style="height:{{98*px2rpxHeight}}px;margin-top:{{140*px2rpxHeight}}px;padding:0 {{70*px2rpxWidth}}px;">
-            <view class="btn-each btn-delete" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="deleteAddress">删除</view>
-            <view class="btn-each btn-save" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="saveAddress">保存</view>
+            <view class="btn-each btn-delete" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="deleteAddr">删除</view>
+            <view class="btn-each btn-save" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="editAddr">保存</view>
         </view>
     </view>
 </template>
@@ -36,6 +36,7 @@
             px2rpxHeight:0,
             userId:null,
             addressId:null,
+            // address:null,
             consignee:null,
             mobile:null,
             region:null,
@@ -45,6 +46,7 @@
 
         // 在Page和Component共用的生命周期函数
         async onLoad(options){
+            let that = this;
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
@@ -57,7 +59,6 @@
             } else {
                 this.addressId = options.addressId;
             }
-
             this.$apply();
         }
 
@@ -66,16 +67,60 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onReady() {
+        async onReady() {
+            let that = this;
             // 通过地址id获取地址详情
-
+            let res = await api.getAddressId({
+                query:{
+                    addressId:that.addressId
+                }
+            });
+            if(res.data.state == 1){
+                let addr = res.data.data;
+                console.log(addr);
+                this.consignee = addr.consignee;
+                this.mobile = addr.mobile;
+                this.status = addr.status;
+                this.region = addr.site.split(' ').slice(0,3);
+                this.street = addr.site.split(' ').slice(3).join(' ');
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
         };
 
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            // 删除地址
+            async deleteAddr(){
+                let addressId = this.addressId;
+                let res = await api.deleteAddress({
+                    query:{
+                        addressId:addressId
+                    }
+                });
+                if(res.data.state == 1){
+                    wx.showToast({
+                        title: '删除成功',
+                        icon: 'success',
+                        mask:true,
+                        duration: 1000,
+                        success:function() {
+                            setTimeout(function() {
+                                wepy.redirectTo({
+                                    url: '/pages/address_list'
+                                })
+                            },1100);
+                        }
+                    });
+                }
+            },
+
+            // 保存编辑地址
+            editAddr(){
+                this.$broadcast('saveAddr','edit',this.addressId);
+            },
+        };
 
         // 声明组件之间的事件处理函数
         events = {};

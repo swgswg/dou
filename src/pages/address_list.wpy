@@ -55,6 +55,7 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.$apply();
+
         };
 
         async onShow() {
@@ -85,7 +86,7 @@
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             add(){
-                wepy.navigateTo({
+                wepy.redirectTo({
                     url:'/pages/address_add'
                 });
             },
