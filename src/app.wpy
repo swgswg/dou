@@ -192,6 +192,7 @@
             pages: [
 
                 'pages/home',
+                'pages/check_logistics',
                 'pages/order_detail',
                 'pages/record',
                 'pages/order',

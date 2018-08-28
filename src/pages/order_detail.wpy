@@ -79,17 +79,18 @@
         <!--订单状态操作 start-->
         <view class="order-status" style="height:{{100*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
             <block wx:if="{{order.status == unpaid}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">取消订单</view>
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">付款</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">取消订单</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">付款</view>
             </block>
             <block wx:if="{{order.status == notDelivered}}">
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">提醒发货</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="remindSendGoods">提醒发货</view>
             </block>
             <block wx:if="{{order.status == notReceived}}">
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">确认收货</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;"  data-order_uuid="{{order.order_uuid}}" @tap.stop="checkOneLogistics">查看物流</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="takeOverGoods">确认收货</view>
             </block>
             <block wx:if="{{order.status == accomplish}}">
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;" @tap.stop="applyAfterSale">申请售后</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;" @tap.stop="applyAfterOneSale">申请售后</view>
             </block>
             <block wx:if="{{order.status == returnGoods}}">
                 <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">售后/退货</view>
@@ -134,6 +135,7 @@
     import util from '@/utils/util';
     import tip from '@/utils/tip';
     import CoverLayer from '@/components/common/cover_layer';
+    import OrderItem from '@/components/order_item';
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -144,6 +146,7 @@
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             coverlayer:CoverLayer,
+            orderitem:OrderItem,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
@@ -208,6 +211,26 @@
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
+            // 取消订单
+            cancelOneOrder(e){
+                this.$invoke("orderitem", "cancellationOfOrder",e);
+            },
+
+            // 提醒发货
+            remindSendGoods(e){
+                this.$invoke("orderitem", "reminderDelivery",e);
+            },
+
+            // 查看物流
+            checkOneLogistics(e){
+                this.$invoke("orderitem", "checkLogistics",e);
+            },
+
+            // 确认收货
+            takeOverGoods(e){
+                this.$invoke("orderitem", "confirmationOfReceipt",e);
+            },
+
             // 申请售后
             applyAfterSale(){
                 this.showCoverLayer = true;

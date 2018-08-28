@@ -146,6 +146,21 @@
             cancelCoverLayer(){
                 this.cancelShow();
             },
+
+            // 复制微信号
+            copyWeixinhao(){
+                // 设置系统剪贴板的内容
+                wx.setClipboardData({
+                    data: 'data',
+                    success: function(res) {
+                        wx.showToast({
+                            title:'复制成功',
+                            icon:'success',
+                            duration: 1000
+                        });
+                    }
+                })
+            }
         };
 
         // 声明组件之间的事件处理函数
@@ -154,30 +169,36 @@
                 this.currentTab = cur;
                 console.log("cur",cur);
                 if (cur == 0) {
-                    console.log("所有订单类型");
                     this.status = "";
                     this.getOrdersData(this.page,this.pageSize,this.status);
                 } else if (cur == 1) {
-                    console.log("未付款订单类型");
                     this.status = this.unpaid;
                     this.getOrdersData(this.page,this.pageSize,this.status);
                 } else if (cur == 2) {
-                    console.log("待发货订单类型");
                     this.status = this.notDelivered;
                     this.getOrdersData(this.page,this.pageSize,this.status);
                     // that.receiveFlg = 2;
                 } else if (cur == 3) {
-                    console.log("待收货订单类型");
                     this.status = this.notReceived;
                     this.getOrdersData(this.page,this.pageSize,this.status);
                     // that.receiveFlg = 4;
                 } else if (cur == 4){
-                    console.log("已完成");
                     this.status = this.accomplish;
                     this.getOrdersData(this.page,this.pageSize,this.status);
                 }
                 console.log('status',this.status);
                 this.$apply();
+            },
+
+            // 申请售后
+            apply_after_sale(){
+                this.showCoverLayer = true;
+                this.showAfterSale = true;
+            },
+
+            // 刷新数据
+            refreshOrderList(){
+                this.getOrdersData(this.page,this.pageSize,this.status);
             },
         };
 

@@ -129,7 +129,7 @@ module.exports = {
     },
 
     // 付款
-    weixinPay(suFun){
+    weixinPay(suFun,errFun){
         wx.requestPayment({
             'timeStamp': '',
             'nonceStr': '',
@@ -140,7 +140,13 @@ module.exports = {
                 suFun(res)
             },
             'fail':function(res){
-                tip.alert('支付失败');
+                wx.showToast({
+                    title: '支付失败',
+                    image: "../static/images/error.png",
+                    mask: true,
+                    duration: 500
+                });
+                errFun();
             }
         })
     },

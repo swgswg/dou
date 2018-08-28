@@ -25,7 +25,7 @@
                     ><text class="iconfont icon-share"></text></button>
                 </view>
             </view>
-            <view class="money" style="height:{{80*px2rpxHeight}}px;padding:{{40*px2rpxHeight}}px 0;">¥{{goodsInfo.money}}</view>
+            <view class="money" style="height:{{80*px2rpxHeight}}px;padding-bottom:{{20*px2rpxHeight}}px;">¥{{goodsInfo.money}}<text style="font-size:20rpx">({{goodsInfo.integral}}积分)</text></view>
             <view class="expenses" style="padding:{{20*px2rpxHeight}}px 0;">运费:免运费</view>
         </view>
         <!--商品信息 end-->
@@ -104,11 +104,12 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX} from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import util from '@/utils/util';
     import tip from '@/utils/tip';
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
+    import calculate from '@/utils/calculate';
     import ChangeNumber from '@/components/common/change_number';
 
     export default class MyPage extends wepy.page {
@@ -127,6 +128,7 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             fileUrl:imgApi.fileUrl,
+            userId:null,
             goodsId:null,
             goodsInfo:null,
             // 轮播图图片
@@ -141,6 +143,8 @@
             isShowCoverLayout:false,
             // 购买数量
             num:1,
+            // 积分是否足够
+            enoughIntegral:true,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -148,6 +152,9 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
 
             this.goodsId = options.goodsId;
             this.$apply();
@@ -160,7 +167,7 @@
         // 只在Page中存在的页面生命周期函数
         async onReady() {
             let that = this;
-           // 获取商品信息
+            // 获取商品信息
             let res = await api.getGoodsDetails({
                 query:{
                     goodsId: that.goodsId
@@ -170,21 +177,22 @@
                 let goodsInfo = res.data.data;
                 goodsInfo.photo1 = goodsInfo.photo1.split(',');
                 that.goodsInfo = goodsInfo;
-                console.log(that.goodsInfo);
+                that.isEnoughIntegral(1);
             } else {
                 tip.error('网络错误');
             }
             this.$apply();
         };
 
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
         // 声明计算属性（详见后文介绍）
         computed = {};
 
         // 声明数据watcher（详见后文介绍）
-        watch = {};
+        watch = {
+            num(newValue){
+                this.isEnoughIntegral(newValue);
+            }
+        };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
@@ -196,12 +204,13 @@
                         tip.error('请输入正确数量');
                         return;
                     }
+                    if(!this.enoughIntegral){
+                        tip.longtoast('您的积分不够,不能购买');
+                        return;
+                    }
                     let goodsId = this.goodsId;
-                    let name = this.goodsInfo.name;
-                    let img = this.goodsInfo.photo;
-                    let goodsPrice = this.goodsInfo.money;
                     wepy.navigateTo({
-                        url:'/pages/commit_order?goodsId=' + goodsId + '&goodsNum=' + num+'&goodsName='+name + '&goodsImg='+img + '&goodsPrice='+goodsPrice
+                        url:'/pages/commit_order?goodsId=' + goodsId + '&goodsNum=' + num
                     });
                 }
                 this.isShowCoverLayout = true;
@@ -217,6 +226,30 @@
 
         // 声明组件之间的事件处理函数
         events = {};
+
+        // 判断用户积分是否满足
+        async isEnoughIntegral(num){
+            let that = this;
+            let integral = this.goodsInfo.integral;
+            let integrals = calculate.calcMul(integral,num);
+            // 查询用户可用积分
+            let res = await api.getIntegral({
+                query:{
+                    userId:that.userId
+                }
+            });
+            if(res.data.state == 1){
+                if(integrals > res.data.data.integral){
+                    this.enoughIntegral = false;
+                    tip.alert('您的积分不足');
+                } else if(integrals <= res.data.data.integral){
+                    this.enoughIntegral = true;
+                }
+            } else {
+                tip.error('网络错误')
+            }
+            this.$apply();
+        };
     }
 </script>
 
@@ -278,7 +311,7 @@
             .money{
                 display: flex;
                 justify-content: flex-start;
-                align-items: center;
+                align-items: flex-end;
                 width: 100%;
                 box-sizing: border-box;
                 font-size: 40rpx;

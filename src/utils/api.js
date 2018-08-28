@@ -16,7 +16,7 @@ const notReceived = 2;
 const accomplish = 3;
 const returnGoods = 4;
 const exchangeGoods = 5;
-
+const cancelOrder = 6;
 /**
  * 接口
  * @param  {[type]} params [description]
@@ -92,11 +92,13 @@ const deleteAddress = (params) => wxRequest(params, host + 'shakeLeg/user/delete
 // 添加订单
 const addOrders = (params) => wxRequest(params, host + 'shakeLeg/user/addOrders');
 // 修改订单状态
-const updateOrdersStatus = (params) => wxRequest(params, host + 'shakeLeg/user/updateOrdersStatus');
+const updateOrdersStatus = (params) => wxRequest(params, host + 'shakeLeg/admin/updateOrdersStatus');
 // 订单列表
 const getOrders = (params) => wxRequest(params, host + 'shakeLeg/user/getOrders');
 //  订单详情
 const getOrdersDetails = (params) => wxRequest(params, host + 'shakeLeg/user/getOrdersDetails');
+// 获取物流信息
+const getTransInfo = (params) => wxRequest(params, host + 'shakeLeg/user/getTransInfo');
 
 export default {
     host,
@@ -109,6 +111,7 @@ export default {
     accomplish,
     returnGoods,
     exchangeGoods,
+    cancelOrder,
     myLogin,
     updateSex,
     addRecord,
@@ -146,4 +149,5 @@ export default {
     updateOrdersStatus,
     getOrders,
     getOrdersDetails,
+    getTransInfo,
 };

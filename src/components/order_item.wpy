@@ -40,27 +40,27 @@
 
                     <!--0未付款 start-->
                     <block wx:if="{{order.status == unpaid}}">
-                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">取消订单</view>
-                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">付款</view>
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="cancellationOfOrder">取消订单</view>
+                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="goPay">付款</view>
                     </block>
                     <!--0未付款 end-->
 
                     <!--1待发货 start-->
                     <block wx:if="{{order.status == notDelivered}}">
-                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">提醒发货</view>
+                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="reminderDelivery">提醒发货</view>
                     </block>
                     <!--1待发货 end-->
 
                     <!--2待收货 start-->
                     <block wx:if="{{order.status == notReceived}}">
-                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">查看物流</view>
-                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">确认收货</view>
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-order_uuid="{{order.order_uuid}}" @tap.stop="checkLogistics">查看物流</view>
+                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="confirmationOfReceipt">确认收货</view>
                     </block>
                     <!--2待收货 end-->
 
                     <!--3完成 start-->
                     <block wx:if="{{order.status == accomplish}}">
-                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">申请售后</view>
+                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="applyAfterSale">申请售后</view>
                     </block>
                     <!--3完成 end-->
 
@@ -76,6 +76,12 @@
                     </block>
                     <!--5换货 end-->
 
+                    <!--6订单取消 start-->
+                    <block wx:if="{{order.status == cancelOrder}}">
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">订单取消</view>
+                    </block>
+                    <!--6订单取消 end-->
+
                 </view>
                 <!--订单状态 end-->
             </view>
@@ -87,13 +93,15 @@
     import wepy from 'wepy';
     import {PX_TO_RPX } from '@/utils/constant';
     import api from '@/utils/api';
+    import tip from '@/utils/tip';
+    import weixin from '@/utils/weixin';
 
     export default class OrderItem extends wepy.component {
 
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
+            // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）6(取消订单)
             all:api.all,
             unpaid:api.unpaid,
             notDelivered:api.notDelivered,
@@ -101,6 +109,7 @@
             accomplish:api.accomplish,
             returnGoods:api.returnGoods,
             exchangeGoods:api.exchangeGoods,
+            cancelOrder:api.cancelOrder,
         };
 
         props = {
@@ -121,11 +130,80 @@
             // 前去订单详情
             goToDetail(e){
                 let orderId = e.currentTarget.dataset.orderid;
-                wx.redirectTo({
+                wx.navigateTo({
                     url:'/pages/order_detail?orderId='+orderId
                 });
             },
+
+            // 取消订单
+            cancellationOfOrder(e){
+                let orderId = e.currentTarget.dataset.orderid;
+                this.editOrdersStatus(orderId,this.cancelOrder,'取消订单');
+            },
+
+            // 付款
+            goPay(e){
+                let that = this;
+                let orderId = e.currentTarget.dataset.orderid;
+                weixin.weixinPay(function() {
+                    that.editOrdersStatus(orderId,this.accomplish,'付款成功');
+                },function() {
+
+                });
+            },
+
+            // 提醒发货
+            reminderDelivery(e){
+                let orderId = e.currentTarget.dataset.orderid;
+                tip.toast('提醒买家成功');
+            },
+
+            // 查看物流
+            checkLogistics(e){
+                let orderUUID = e.currentTarget.dataset.order_uuid;
+                wx.navigateTo({
+                    url:'/pages/check_logistics?orderUUID='+orderUUID
+                });
+            },
+
+            // 确认收货
+            confirmationOfReceipt(e){
+                let that= this;
+                let orderId = e.currentTarget.dataset.orderid;
+                wx.showModal({
+                    title: '温馨提示',
+                    content: '请确定您已经收到货物',
+                    success: function(res) {
+                        if (res.confirm) {
+                            that.editOrdersStatus(orderId,this.notDelivered,'收货成功');
+                        }
+                    }
+                });
+            },
+
+            // 申请售后
+            applyAfterSale(){
+                this.$emit('apply_after_sale');
+            },
         };
+
+        // 修改订单状态
+        async editOrdersStatus(myorderId,mystatus,msg){
+            let res = await api.updateOrdersStatus({
+                query:{
+                    orderId:myorderId,
+                    status:mystatus
+                }
+            });
+            if(res.data.state == 1){
+                tip.toast(msg+'成功');
+                // 刷新数据
+                this.$emit('refreshOrderList');
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        }
     }
 </script>
 

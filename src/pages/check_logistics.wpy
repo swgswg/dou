@@ -1,0 +1,138 @@
+<template>
+    <view class="check-logistics">
+        <view class="num">订单号：123456799123456</view>
+        <block wx:for="{{logistics}}" wx:for-item="traces" wx:key="{{index}}">
+            <view class="logistics-each">
+                <view class="dot" style="top:{{-10*px2rpxWidth}}px;left:{{-10*px2rpxWidth}}px;width:{{20*px2rpxWidth}}px;height:{{20*px2rpxWidth}}px;">
+                    <view class="active" style="width:{{15*px2rpxWidth}}px;height:{{15*px2rpxWidth}}px;"></view>
+                </view>
+                <view class="content" style="width:{{600*px2rpxHeight}}px;">
+                    <view style="width:{{600*px2rpxHeight}}px;word-wrap:break-word; word-break:break-all;">{{traces.acceptstation}}</view>
+                    <view style="width:100%;margin-top:{{20*px2rpxHeight}}px;font-size:20rpx">{{traces.accepttime}}</view>
+                </view>
+            </view>
+        </block>
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
+    import api from '@/utils/api';
+    import {PX_TO_RPX } from '@/utils/constant';
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '查看物流'
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            orderUUID:null,
+            logistics:null,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad(options) {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            if(util.isEmpty(options.orderUUID)){
+                tip.error('网络错误');
+            } else {
+                this.orderUUID = options.orderUUID;
+            }
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        async onReady() {
+            let that = this;
+            let res = await api.getTransInfo({
+                query:{
+                    orderUUID:that.orderUUID
+                }
+            });
+            if(res.data.state == 1){
+                this.logistics = res.data.data.traces;
+            } else {
+                tip.error('网络错误');
+            }
+        };
+
+        // 声明页面所引用的Mixin实例
+        mixins = [];
+
+        // 声明计算属性（详见后文介绍）
+        computed = {};
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {};
+    }
+</script>
+
+<style lang="less">
+    .check-logistics{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        padding: 30rpx 50rpx;
+        box-sizing: border-box;
+
+        .num{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 50rpx;
+            border-bottom: 1rpx solid #999;
+        }
+        .logistics-each{
+            position: relative;
+            display: flex;
+            justify-content:flex-start;
+            align-items: flex-start;
+            width: 100%;
+            padding: 20rpx 50rpx 50rpx 30rpx;
+            box-sizing: border-box;
+            border-left: 4rpx solid red;
+            /*border-top: 1rpx solid #aaa;*/
+
+            .dot{
+                position: absolute;
+                display:flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                border: 2rpx solid #aaa;
+                background-color: #fff;
+
+                view{
+                    border-radius: 50%;
+                }
+                .active{
+                    background-color: #FF4351;
+                }
+            }
+            .content{
+                display: flex;
+                flex-direction: column;
+                line-height: 13px;
+            }
+        }
+    }
+</style>

@@ -73,13 +73,23 @@
         methods = {
             // 选择地址再跳转回去
             selectAddrToOtherPage(e){
-                let index = e.currentTarget.dataset.index;
-                let address = this.addressList[index];
-                this.$emit('changeAddress',address);
-                let prevUrl = util.getPrevPageUrl();
-                wx.redirectTo({
-                    url:'/'+prevUrl,
-                });
+                let currentPage = util.getCurrentPageUrl();
+                if(currentPage == 'pages/commit_order'){
+                    wx.navigateTo({
+                        url:'/pages/address_list'
+                    });
+                } else {
+                    let index = e.currentTarget.dataset.index;
+                    let address = this.addressList[index];
+                    let prevUrl = util.getPrevPageUrl();
+                    if(prevUrl == 'pages/commit_order'){
+                        let pages = getCurrentPages();
+                        let prevPage = pages[pages.length - 2];
+                        prevPage.changeAddr(address);
+                        wepy.navigateBack();
+                    }
+                }
+
             },
 
             // 编辑地址

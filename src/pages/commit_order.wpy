@@ -3,7 +3,7 @@
         <view class="commit-order-content">
             <!--地址 start-->
             <block wx:if="{{hasAddress}}">
-                <view style="width:100%;height:{{160*px2rpxHeight}}px;">
+                <view style="width:100%;height:{{160*px2rpxHeight}}px;background-color:#fff;">
                     <addresslist :addressList.sync="address" :isAllowEdit.sync="isAllowEditAddress"></addresslist>
                 </view>
             </block>
@@ -18,12 +18,12 @@
             <view class="goods-infomation" style="margin-top:{{20*px2rpxHeight}}px;padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;box-sizing: border-box">
                 <view class="infomation">
                     <view class="info-img" style="width:{{185*px2rpxWidth}}px;">
-                        <image src="{{fileUrl + goodsImg}}" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
+                        <image src="{{fileUrl + goodsInfo.photo}}" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
                     </view>
                     <view class="name-price-num" style="width:{{480*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
                         <view class="name-price">
-                            <view class="name">{{goodsName}}</view>
-                            <view class="price">¥{{goodsPrice}}</view>
+                            <view class="name">{{goodsInfo.name}}</view>
+                            <view class="price">¥{{goodsInfo.money}}</view>
                         </view>
                         <view class="num" style="margin-top:{{45*px2rpxHeight}}px;">x{{goodsNum}}</view>
                     </view>
@@ -38,14 +38,14 @@
             <!--合计 start-->
             <view class="heji" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
                 <view>合计</view>
-                <view style="color:#f03e3e">¥{{goodsTotal}}</view>
+                <view style="color:#f03e3e">¥{{goodsTotal}}<text style="font-size:20rpx">({{goodsIntegrals}}积分)</text></view>
             </view>
             <!--合计 end-->
 
             <!--提交订单 start-->
             <view class="commit" style="height:{{98*px2rpxHeight}}px;">
-                <veiw class="heji" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">合计：<text style="color:#f03e3e;">¥{{goodsTotal}}</text></veiw>
-                <view class="btn" style="width:{{231*px2rpxWidth}}px;" @tap.stop="commitOrder">提交订单</view>
+                <veiw class="heji" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">合计：<text style="color:#f03e3e;">¥{{goodsTotal}}</text><text style="font-size:20rpx;color:#f03e3e;">({{goodsIntegrals}}积分)</text></veiw>
+                <view class="btn" style="width:{{231*px2rpxWidth}}px;" @tap.stop="commitOrder">{{btnText}}</view>
             </view>
             <!--提交订单 end-->
         </view>
@@ -81,7 +81,7 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             fileUrl:imgApi.fileUrl,
-            userInfo:null,
+            userId:null,
             // 是否有默认地址
             hasAddress:false,
             address:null,
@@ -89,11 +89,14 @@
             isAllowEditAddress:false,
             selectOrAdd:'选择',
             goodsId:null,
+            goodsInfo:null,
             goodsNum:null,
-            goodsName:null,
-            goodsImg:null,
-            goodsPrice:null,
+            // 总金额
             goodsTotal:null,
+            // 总积分
+            goodsIntegrals:null,
+            btnText:'提交订单',
+            orderId:null,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -101,8 +104,21 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
+
             // console.log(options);
-            this.getDataIsEmpty(options);
+            if(util.isEmpty(options.goodsId)){
+                tip.error('网络错误');
+            } else {
+                this.goodsId = options.goodsId;
+            }
+            if(util.isEmpty(options.goodsNum)){
+                tip.error('网络错误');
+            } else {
+                this.goodsNum = options.goodsNum;
+            }
             this.$apply();
         };
 
@@ -112,14 +128,27 @@
 
         // 只在Page中存在的页面生命周期函数
         async onReady() {
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            this.userInfo = userInfo;
+            let that = this;
+            // 获取商品信息
+            let result = await api.getGoodsDetails({
+                query:{
+                    goodsId: that.goodsId
+                }
+            });
+            if(result.data.state == 1){
+                that.goodsInfo = result.data.data;
+            } else {
+                tip.error('网络错误');
+            }
+
             // 合计
-            this.goodsTotal = calculate.calcMul(parseFloat(this.goodsPrice),parseInt(this.goodsNum));
+            this.goodsTotal = calculate.calcMul(parseFloat(this.goodsInfo.money),parseInt(this.goodsNum));
+            // 总积分
+            this.goodsIntegrals = calculate.calcMul(parseFloat(this.goodsInfo.integral),parseInt(this.goodsNum));
             // 获取默认地址
             let res = await api.getMoRen({
                 query:{
-                    userId:userInfo.id,
+                    userId:that.userId,
                 }
             });
             if(res.data.state == 1){
@@ -133,65 +162,51 @@
             } else {
                 tip.error('网络错误')
             }
+            this.$apply();
         };
-
-        // 声明计算属性
-        computed = {};
-
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 提交订单
             async commitOrder(){
                 let that = this;
-                let res = await api.addOrders({
-                    query:{
-                        goodsId:that.goodsId,
-                        userId:that.userInfo.id,
-                        num:that.goodsNum,
-                        status:0,
-                        consignee:that.address.consignee,
-                        mobile:that.address.mobile,
-                        site:that.address.site,
+                if(this.btnText == '提交订单'){
+                    let res = await api.addOrders({
+                        query:{
+                            goodsId:that.goodsId,
+                            userId:that.userId,
+                            num:that.goodsNum,
+                            status:0,
+                            consignee:that.address.consignee,
+                            mobile:that.address.mobile,
+                            site:that.address.site,
+                            integral:that.goodsIntegrals,
+                            moneys:that.goodsTotal,
+                        }
+                    });
+                    if(res.data.state == 1){
+                        this.orderId = res.data.data;
+                        this.pay(res.data.data);
+                    } else {
+                        tip.error('网络错误');
+
                     }
-                });
-                if(res.data.state == 1){
-                    this.pay(res.data.data);
-                } else {
-                    tip.error('网络错误');
-
+                } else if(this.btnText == '继续支付'){
+                    this.pay(that.orderId);
                 }
+                this.$apply();
             }
         };
-
-        // 声明组件之间的事件处理函数
-        events = {
-            // 更改地址
-            changeAddress(addr){
-                this.address = [addr];
-                this.hasAddress = true;
-            },
-        };
-
-        // 判断值是否为空
-        getDataIsEmpty(mydata){
-            for(let k in mydata){
-                if(util.isEmpty(mydata[k])){
-                    tip.error('网络错误');
-                } else {
-                    this[k] = mydata[k];
-                }
-            }
-        }
 
         // 付钱
         pay(myorderId){
             let that = this;
             weixin.weixinPay(function(res) {
                 that.updateOrdersStatusFun(myorderId);
+            },function() {
+                that.btnText = '继续支付';
             });
+            this.$apply();
         }
 
         // 修改订单状态
@@ -209,6 +224,12 @@
             } else {
                 tip.error('网络错误');
             }
+        };
+
+        // 改变地址,供子组件调用
+        changeAddr(addr){
+            this.address = [addr];
+            this.hasAddress = true;
         }
     }
 </script>
@@ -325,6 +346,7 @@
                     justify-content: center;
                     align-items: center;
                     height: 100%;
+                    color: #fff;
                     background-color: #ffd824;
                 }
             }

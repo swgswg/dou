@@ -189,7 +189,7 @@
                     pageSize:mypageSize,
                 }
             });
-            console.log(res);
+            // console.log(res);
             // 获取礼物信息
             let giftInfo = this.giftInfo;
             if(util.isEmpty(giftInfo)){
