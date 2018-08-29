@@ -177,9 +177,9 @@
                             userId:that.userId,
                             num:that.goodsNum,
                             status:0,
-                            consignee:that.address.consignee,
-                            mobile:that.address.mobile,
-                            site:that.address.site,
+                            consignee:that.address[0].consignee,
+                            mobile:that.address[0].mobile,
+                            site:that.address[0].site,
                             integral:that.goodsIntegrals,
                             moneys:that.goodsTotal,
                         }
@@ -187,6 +187,7 @@
                     if(res.data.state == 1){
                         this.orderId = res.data.data;
                         this.pay(res.data.data);
+                        this.$apply();
                     } else {
                         tip.error('网络错误');
 
@@ -201,15 +202,15 @@
         // 付钱
         pay(myorderId){
             let that = this;
-            weixin.weixinPay(function(res) {
+            weixin.weixinPay((res)=>{
                 that.updateOrdersStatusFun(myorderId);
-            },function() {
+            },()=>{
                 that.btnText = '继续支付';
             });
             this.$apply();
         }
 
-        // 修改订单状态
+        // 修改订单状态(未付款0->付款1)
         async updateOrdersStatusFun(myorderId){
             let res = await api.updateOrdersStatus({
                 query:{

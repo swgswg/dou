@@ -121,6 +121,8 @@
                 let goods = res.data.data.PageInfo.list;
                 this.goods = goods;
                 if(goods.length < 1){
+                    this.is_empty = true;
+                } else {
                     this.is_empty = false;
                 }
                 this.isLastPage = res.data.data.PageInfo.isLastPage;

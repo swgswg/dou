@@ -2,13 +2,13 @@ import { wxRequest } from '@/utils/wxRequest';
 
 // 域名
 const host = 'http://39.107.70.80:8080/';
-// const host = 'http://192.168.3.56:8080/';
+// const host = 'http://192.168.1.117:8080/';
 // webScocket
 const wshost = 'ws://192.168.3.52:8080/MicroPlatform/websocket/';
 // 上传文件/解析图片 地址
 const uploadFileUrl = 'http://jiaoyuvideo.oss-cn-beijing.aliyuncs.com/';
 
-// 订单状态 全部'' 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
+// 订单状态 全部'' 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）6(订单取消)
 const all = '';
 const unpaid = 0;
 const notDelivered = 1;
@@ -99,6 +99,8 @@ const getOrders = (params) => wxRequest(params, host + 'shakeLeg/user/getOrders'
 const getOrdersDetails = (params) => wxRequest(params, host + 'shakeLeg/user/getOrdersDetails');
 // 获取物流信息
 const getTransInfo = (params) => wxRequest(params, host + 'shakeLeg/user/getTransInfo');
+// 删除订单
+const delOrders = (params) => wxRequest(params, host + 'shakeLeg/user/delOrders');
 
 export default {
     host,
@@ -150,4 +152,5 @@ export default {
     getOrders,
     getOrdersDetails,
     getTransInfo,
+    delOrders,
 };

@@ -45,6 +45,8 @@
     import wepy from 'wepy';
     import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import tip from '@/utils/tip';
     import GiftInfo from '@/components/gift_info';
     import Recom from '@/components/recom';
 
@@ -73,6 +75,7 @@
             mall_gift_inactive:imgApi.mall_gift_inactive,
             mall_tuijian_active:imgApi.mall_tuijian_active,
             mall_tuijian_inactive:imgApi.mall_tuijian_inactive,
+            userId:null,
             integral:0,
             // 推荐/礼物
             showStyle:'0',
@@ -88,18 +91,31 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
             this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
-        onShow() {
+        async onShow() {
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
+            // 获取用户的抖腿币
+            let res = await api.getIntegral({
+                query:{
+                    userId:userInfo.id
+                }
+            });
+            if(res.data.state == 1){
+                this.integral = res.data.data.integral;
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            this.integral = userInfo.integral;
-            this.$apply();
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明

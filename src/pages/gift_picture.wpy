@@ -2,13 +2,13 @@
 <template>
     <view class="gift-picture">
         <view class="select-edit">
-            <view class="ml10 button button-highlight button-rounded button-wx-tiny" wx:if="{{showAllSelect}}">全选</view>
-            <view class="ml10 button button-primary button-rounded button-wx-tiny">{{editOrCancel}}</view>
+            <view class="ml10 button button-highlight button-rounded button-wx-tiny" wx:if="{{showAllSelect}}" @tap.stop="selectAllPicture">全选</view>
+            <view class="ml10 button button-primary button-rounded button-wx-tiny" @tap.stop="editOrCancelEvent">{{editOrCancel}}</view>
         </view>
         <view class="picture" style="height:{{showAllSelect ? 1010*px2rpxHeight : 1110*px2rpxHeight}}px">
             <scroll-view style="text-align: center;" scroll-y bindscrolltolower="scrollToLower">
                 <!--<block wx:for="{{pictureList}}" wx:for-item="{{picture}}" wx:key="{{index}}">-->
-                <block wx:for="{{50}}" wx:for-item="picture" wx:key="{{index}}">
+                <block wx:for="{{pictureList}}" wx:for-item="picture" wx:key="{{index}}">
                     <view class="picture-each" style="width:{{236*px2rpxWidth}}px;height:{{279*px2rpxHeight}}px;">
                         <view class="picture-each-content" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px;">
                             <view wx:if="{{showAllSelect}}" class="check {{checked ? 'ischeck' : ''}}" style="width:{{30*px2rpxWidth}}px;height:{{30*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="selectPicture">
@@ -25,7 +25,7 @@
         </view>
         <view class="btn" wx:if="{{showAllSelect}}">
             <view class="btn-each button button-highlight button-rounded" @tap.stop="save">保存</view>
-            <view class="btn-each button button-rounded" @tap.stop="cancel">删除</view>
+            <view class="btn-each button button-rounded" @tap.stop="deleteImg">删除</view>
         </view>
     </view>
 </template>
@@ -33,6 +33,7 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import tip from '@/utils/tip';
     import { USER_INFO,PX_TO_RPX } from '@/utils/constant';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
@@ -73,6 +74,8 @@
             checked:false,
             // 图片所有地址
             urlAllList:[],
+            // true全选/false全不选
+            flag:true,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -97,10 +100,32 @@
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
+            // 编辑或者取消
+            editOrCancelEvent(){
+                if(this.editOrCancel == '编辑'){
+                    this.showAllSelect = true;
+                    this.editOrCancel = '取消';
+                } else if(this.editOrCancel == '取消'){
+                    this.showAllSelect = false;
+                    this.editOrCancel = '编辑';
+                }
+            },
+
+            // 全选
+            selectAllPicture(){
+                let pictureList = this.pictureList;
+                let flag = this.flag;
+                let len = pictureList.len;
+                for(let i = 0; i < len; i++){
+                    pictureList[i].checked = flag;
+                }
+                this.flag = !flag;
+            },
+
             // 选中图片
             selectPicture(e){
                 let index = e.currentTarget.dataset.index;
-                console.log(e);
+                // console.log(e);
                 let pictureList = this.pictureList;
                 let checked = pictureList[index].checked;
                 pictureList[index].checked = !checked;
@@ -131,23 +156,24 @@
                 api.downloadSaveFiles(urlSelectList);
             },
 
-            // 取消图片
-            cancel(){
+            // 删除图片
+            deleteImg(){
                 let pictureList = this.pictureList;
                 let len = pictureList.length;
                 for(let i = 0; i < len; i++){
                     pictureList[i].checked = false;
                 }
                 this.pictureList = pictureList;
+                this.showAllSelect = false;
                 this.$apply();
             },
 
             // 滚动到底部/右边，会触发 scrolltolower 事件
-            async scrollToLower(){
+            scrollToLower(){
                 this.showLoading = true;
                 let page = this.page+1;
                 let pageSize = this.page;
-                await this.getPicture(page,pageSize);
+                this.getPicture(page,pageSize);
                 this.page = page;
                 this.$apply();
             },
@@ -171,15 +197,19 @@
                     //暂无数据
                     this.is_empty = true;
                 } else {
+                    this.is_empty = false;
                     for(let i = 0; i < len; i++){
                         data[i].checked = false;
                         data[i].url = api.uploadFileUrl + url;
                         pictureList.push(data[i]);
                     }
                     this.pictureList = pictureList;
-                    this.$apply();
                 }
+            } else {
+                tip.error('网络错误');
             }
+            this.showLoading = false;
+            this.$apply();
         };
     }
 </script>

@@ -13,6 +13,7 @@
                 <block wx:if="{{order.status == accomplish}}">完成</block>
                 <block wx:if="{{order.status == returnGoods}}">退货</block>
                 <block wx:if="{{order.status == exchangeGoods}}">换货</block>
+                <block wx:if="{{order.status == cancelOrder}}">订单取消</block>
             </view>
         </view>
         <!--订单状态 end-->
@@ -78,25 +79,34 @@
 
         <!--订单状态操作 start-->
         <view class="order-status" style="height:{{100*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
+
             <block wx:if="{{order.status == unpaid}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">取消订单</view>
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">付款</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">取消订单</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="payOneOrder">付款</view>
             </block>
             <block wx:if="{{order.status == notDelivered}}">
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="remindSendGoods">提醒发货</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">取消订单</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="remindSendGoods">提醒发货</view>
             </block>
             <block wx:if="{{order.status == notReceived}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;"  data-order_uuid="{{order.order_uuid}}" @tap.stop="checkOneLogistics">查看物流</view>
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="takeOverGoods">确认收货</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-order_uuid="{{order.order_uuid}}" @tap.stop="checkOneLogistics">查看物流</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="takeOverGoods">确认收货</view>
             </block>
             <block wx:if="{{order.status == accomplish}}">
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;" @tap.stop="applyAfterOneSale">申请售后</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
+                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" @tap.stop="applyAfterOneSale">申请售后</view>
             </block>
             <block wx:if="{{order.status == returnGoods}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">售后/退货</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/退货</view>
             </block>
             <block wx:if="{{order.status == exchangeGoods}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;">售后/换货</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/换货</view>
+            </block>
+            <block wx:if="{{order.status == cancelOrder}}">
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
+                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">订单取消</view>
             </block>
         </view>
         <!--订单状态操作 end-->
@@ -164,6 +174,7 @@
             accomplish:api.accomplish,
             returnGoods:api.returnGoods,
             exchangeGoods:api.exchangeGoods,
+            cancelOrder:api.cancelOrder,
             order:null,
             // 显示遮盖层
             showCoverLayer:false,
@@ -191,19 +202,8 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        async onReady() {
-            let that = this;
-            let res = await api.getOrdersDetails({
-                query:{
-                    orderId:that.orderId
-                }
-            });
-            if(res.data.state == 1){
-                this.order = res.data.data;
-            } else {
-                tip.error('网络错误');
-            }
-            this.$apply();
+        onReady() {
+            this.refresh();
         };
 
         // 声明数据watcher（详见后文介绍）
@@ -211,9 +211,22 @@
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
+            // 删除订单
+            deleteOneOrder(e){
+                this.$invoke("orderitem", "deleteOrder",e);
+                this.refresh();
+            },
+
             // 取消订单
             cancelOneOrder(e){
                 this.$invoke("orderitem", "cancellationOfOrder",e);
+                this.refresh();
+            },
+
+            // 付款
+            payOneOrder(e){
+                this.$invoke("orderitem", "goPay",e);
+
             },
 
             // 提醒发货
@@ -229,6 +242,7 @@
             // 确认收货
             takeOverGoods(e){
                 this.$invoke("orderitem", "confirmationOfReceipt",e);
+                this.refresh();
             },
 
             // 申请售后
@@ -264,7 +278,24 @@
         cancelShow(){
             this.showCoverLayer = false;
             this.showAfterSale = false;
+        };
+
+        // 刷新数据
+        async refresh(){
+            let that = this;
+            let res = await api.getOrdersDetails({
+                query:{
+                    orderId:that.orderId
+                }
+            });
+            if(res.data.state == 1){
+                this.order = res.data.data;
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
         }
+
     }
 </script>
 
