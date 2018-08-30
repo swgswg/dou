@@ -3,19 +3,21 @@
  */
 function timeStamp(flag, mytimer){
     // mytimer = '2015/06/23 08:00:20'
+    let _time = null;
     if(flag == 1){
         // 当前时间 秒数
-       mytime = String(Date.parse(new Date())).slice(0, -3);
+       _time = String(Date.parse(new Date())).slice(0, -3);
     } else if(flag == 2){
         // 当前时间 毫秒数
-        mytime = (new Date()).getTime();
+        _time = (new Date()).getTime();
     } else if(flag == 3){
         // 任意时间时间戳 毫秒数
-        mytime = (new Date(mytimer)).getTime();
+        _time = (new Date(mytimer)).getTime();
     } else if (flag == 4){
         // 任意时间时间戳 秒数
-        mytime = ( (new Date(mytimer)).getTime() ) / 1000;
+        _time = ( (new Date(mytimer)).getTime() ) / 1000;
     }
+    return _time;
 }
 
 /**

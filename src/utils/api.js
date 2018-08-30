@@ -2,7 +2,7 @@ import { wxRequest } from '@/utils/wxRequest';
 
 // 域名
 const host = 'http://39.107.70.80:8080/';
-// const host = 'http://192.168.1.117:8080/';
+// const host = 'http://192.168.1.153:8080/';
 // webScocket
 const wshost = 'ws://192.168.3.52:8080/MicroPlatform/websocket/';
 // 上传文件/解析图片 地址
@@ -101,6 +101,12 @@ const getOrdersDetails = (params) => wxRequest(params, host + 'shakeLeg/user/get
 const getTransInfo = (params) => wxRequest(params, host + 'shakeLeg/user/getTransInfo');
 // 删除订单
 const delOrders = (params) => wxRequest(params, host + 'shakeLeg/user/delOrders');
+// 查询七天签到礼物
+const getSignGift = (params) => wxRequest(params, host + 'shakeLeg/admin/getSignGift');
+// 用户签到
+const updateSignDays = (params) => wxRequest(params, host + 'shakeLeg/user/updateSignDays');
+//  获取最新签到日期
+const getRecordTime = (params) => wxRequest(params, host + 'shakeLeg/user/getRecordTime');
 
 export default {
     host,
@@ -153,4 +159,7 @@ export default {
     getOrdersDetails,
     getTransInfo,
     delOrders,
+    getSignGift,
+    updateSignDays,
+    getRecordTime,
 };

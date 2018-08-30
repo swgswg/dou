@@ -7,58 +7,71 @@
         <image class="img-bg" src="{{sign_in_bg}}" style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;"></image>
 
         <view class="sign-in-content" style="margin-top:{{224*px2rpxHeight}}px;">
-            <block wx:for="{{6}}" wx:for-item="day" wx:key="{{index}}">
-                <view class="sign-in-each">
-                    <view class="day">{{index + 1}}day</view>
-                    <!--<block wx:if="{{index%3 == 0}}">-->
-                        <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#f5a9c7;">-->
-                    <!--</block>-->
-                    <!--<block wx:if="{{index%3 == 1}}">-->
-                        <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#a7f1d4;">-->
-                    <!--</block>-->
-                    <!--<block wx:if="{{index%3 == 2}}">-->
-                        <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#65dfea;">-->
-                    <!--</block>-->
-                    <view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;background-color:{{index%2 == 0 ? '#f5a9c7':'#a7f1d4'}}">
-                        <image src="{{sign_in_code}}" style="width:{{100*px2rpxWidth}}px;height:{{100*px2rpxWidth}}px;"></image>
-                        <text class="num">x1</text>
+            <block wx:for="{{signDayData}}" wx:for-item="day" wx:key="{{index}}">
+                <block wx:if="{{index < 6}}">
+                    <view class="sign-in-each">
+                        <view class="day">{{index + 1}}day</view>
+                        <!--<block wx:if="{{index%3 == 0}}">-->
+                            <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#f5a9c7;">-->
+                        <!--</block>-->
+                        <!--<block wx:if="{{index%3 == 1}}">-->
+                            <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#a7f1d4;">-->
+                        <!--</block>-->
+                        <!--<block wx:if="{{index%3 == 2}}">-->
+                            <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#65dfea;">-->
+                        <!--</block>-->
+                        <view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;background-color:{{index%2 == 0 ? '#f5a9c7':'#a7f1d4'}}">
+                            <!--签到1礼物/0积分 start-->
+                            <block wx:if="{{day.type == 1}}">
+                                <image src="{{fileUrl + day.photo}}" style="width:{{100*px2rpxWidth}}px;height:{{100*px2rpxWidth}}px;"></image>
+                                <text class="num">x1</text>
+                            </block>
+                            <block wx:if="{{day.type == 0}}">
+                                <image src="{{sign_in_code}}" style="width:{{100*px2rpxWidth}}px;height:{{100*px2rpxWidth}}px;"></image>
+                                <text class="num">x{{day.integral}}</text>
+                            </block>
+                            <!--签到0礼物/0积分 end-->
 
-                        <!--已经签到 start-->
-                        <view wx:if="{{isSignIn}}" class="dui" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
-                            <image src="{{sign_in_dui}}" style="width:{{76*px2rpxWidth}}px;height:{{78*px2rpxWidth}}px;"></image>
+                            <!--已经签到 start-->
+                            <view wx:if="{{ index+1 < signDays}}" class="dui" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
+                                <image src="{{sign_in_dui}}" style="width:{{76*px2rpxWidth}}px;height:{{78*px2rpxWidth}}px;"></image>
+                            </view>
+                            <!--已经签到 end-->
                         </view>
-                        <!--已经签到 end-->
                     </view>
-                </view>
+                </block>
+                <!--第七天 start-->
+                <block wx:if="{{index >= 6}}">
+                    <view class="sign-in-each day7">
+                        <view class="day">7day</view>
+                        <view class="img" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
+                            <image src="{{sign_in_7day}}" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;"></image>
+                            <!--<text class="num">x1</text>-->
+
+                            <!--已经签到 start-->
+                            <view wx:if="{{ index+1 < signDays}}" class="dui" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
+                                <image src="{{sign_in_dui}}" style="width:{{76*px2rpxWidth}}px;height:{{78*px2rpxWidth}}px;"></image>
+                            </view>
+                            <!--已经签到 end-->
+                        </view>
+                    </view>
+                </block>
+                <!--第七天 end-->
             </block>
-
-            <!--第七天 start-->
-            <view class="sign-in-each day7">
-                <view class="day">7day</view>
-                <view class="img" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
-                    <image src="{{sign_in_7day}}" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;"></image>
-                    <!--<text class="num">x1</text>-->
-
-                    <!--已经签到 start-->
-                    <view wx:if="{{isSignIn}}" class="dui" style="width:{{310*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;">
-                        <image src="{{sign_in_dui}}" style="width:{{76*px2rpxWidth}}px;height:{{78*px2rpxWidth}}px;"></image>
-                    </view>
-                    <!--已经签到 end-->
-                </view>
-            </view>
-            <!--第七天 end-->
-
         </view>
         <view class="sign-in-btn" style="margin-top:{{24*px2rpxHeight}}px;">
-            <image src="{{sign_in_btn}}" style="width:{{289*px2rpxWidth}}px;height:{{112*px2rpxWidth}}px;"></image>
+            <image src="{{sign_in_btn}}" style="width:{{289*px2rpxWidth}}px;height:{{112*px2rpxWidth}}px;" @tap.stop="signInEvent"></image>
         </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX } from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import tip from '@/utils/tip';
+    import util from '@/utils/util';
 
     export default class SignIn extends wepy.component {
 
@@ -72,12 +85,26 @@
             sign_in_dui:imgApi.sign_in_dui,
             sign_in_7day:imgApi.sign_in_7day,
             isSignIn:false,
+            userId:null,
+            signDays:null,
+        };
+
+        props = {
+            signDayData:{
+                type:Array,
+                default:null,
+            }
         };
 
         async onLoad(){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            // 获取签到的天数
+            let userInfo = await wepy.getStorageSync(USER_INFO);
+            this.userId = userInfo.id;
+            this.signDays = userInfo.signDays;
             this.$apply();
         };
 
@@ -86,7 +113,76 @@
             cancelSignIn(){
                 this.$emit('cancelCoverLayer');
             },
+
+            // 签到
+            async signInEvent(){
+                let userId = this.userId;
+                // 判断上次签到的时间在不在今天的时间戳范围
+                let isSign = await this.signTimeInToDayRange();
+                if(isSign){
+                    tip.toast('您今天已经签到');
+                    return;
+                }
+
+                let signDay = this.signDays-1;
+                let oneSignDay = this.signDayData[signDay];
+                let myquery = {};
+                myquery.userId = userId;
+                myquery.type = oneSignDay.type;
+                // 0积分/1礼物
+                if(oneSignDay.type == 0){
+                    myquery.integral = oneSignDay.integral;
+                } else if(oneSignDay.type == 1){
+                    myquery.giftId = oneSignDay.giftId;
+                    myquery.num = 1;
+                }
+                // console.log(myquery);
+                let res = await api.updateSignDays({
+                    query:myquery
+                });
+                if(res.data.state == 1){
+                    tip.toast('签到成功');
+                    this.signDays = this.signDays + 1;
+                } else {
+                    tip.error('网络错误');
+                }
+                this.$apply();
+            },
         };
+
+        // 判断上次签到的时间在不在今天的时间戳范围
+        async signTimeInToDayRange(){
+            let userId = this.userId;
+            // 获取之前签到的时间
+            let createTime = null;
+            let res = await api.getRecordTime({
+                query:{
+                    userId:userId
+                }
+            });
+            if(res.data.state == 1){
+                if(util.isEmpty(res.data.data)){
+                    createTime = 0;
+                } else {
+                    createTime = util.timeStamp(3,res.data.data.createTime);
+                }
+                // console.log(createTime);
+            } else {
+                tip.error('网络错误')
+            }
+
+            // 今天的00:00:00时间戳
+            let today00 = new Date().setHours(0, 1, 0);
+            // console.log(today00);
+            // 今天23:59:59时间戳
+            let today24 = new Date().setHours(23,59,0);
+            // console.log(today24);
+            if(createTime >= today00 && createTime <= today24){
+                return true;
+            } else {
+                return false;
+            }
+        }
     }
 </script>
 

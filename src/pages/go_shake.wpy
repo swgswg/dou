@@ -28,7 +28,7 @@
             </block>
 
             <block wx:if="{{showSignIn}}">
-                <signin></signin>
+                <signin :signDayData.sync="signDayData"></signin>
             </block>
 
         </view>
@@ -109,6 +109,8 @@
             legNumEnough20: 20,
             legNumEnough50: 50,
             legNumEnough129: 129,
+            // 签到数据
+            signDayData:null,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -225,11 +227,22 @@
             },
 
             // 签到
-            goSignIn(){
+            async goSignIn(){
                 // 显示遮盖层
                 this.isShowCoverLayer = true;
                 // 显示签到
                 this.showSignIn = true;
+                // 获取签到设定的礼物
+                let res = await api.getSignGift({
+                    query:{}
+                });
+                if(res.data.state == 1){
+                    // console.log(res.data.data);
+                    this.signDayData = res.data.data;
+                } else {
+                    tip.error('网络错误')
+                }
+                this.$apply();
             },
         };
 

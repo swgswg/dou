@@ -56,7 +56,7 @@ export default class Tips {
                 title: title,
                 icon: icon,
                 mask: true,
-                duration: 500
+                duration: 1000
             });
         }, 300);
 
@@ -64,7 +64,7 @@ export default class Tips {
         if (onHide) {
             setTimeout(() => {
                 onHide();
-            }, 500);
+            }, 1000);
         }
     }
 
@@ -88,13 +88,13 @@ export default class Tips {
             title: title,
             image: "../static/images/error.png",
             mask: true,
-            duration: 500
+            duration: 1000
         });
         // 隐藏结束回调
         if (onHide) {
             setTimeout(() => {
                 onHide();
-            }, 500);
+            }, 1000);
         }
     }
 
