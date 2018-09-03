@@ -1,6 +1,7 @@
 import api from '@/utils/api';
 
-const uploadFileUrl = api.uploadFileUrl+'doutui/';
+// const uploadFileUrl = api.uploadFileUrl+'doutui/';
+const uploadFileUrl = api.uploadFileUrl;
 /**
  * 图片api
  * @type {{}}
@@ -113,7 +114,7 @@ module.exports = {
     set_sound: uploadFileUrl + 'set_sound.png',
     set_vibrance: uploadFileUrl + 'set_vibrance.png',
 
-    // 商城/娱乐模式/粉丝大排名/我的礼物墙/我的订单/我的地址/设置
+    // 商城/娱乐模式/粉丝大排名/我的礼物墙/我的订单/我的地址/设置/vip礼物墙
     shop: uploadFileUrl + 'shop.png',
     happy: uploadFileUrl + 'happy.png',
     fans: uploadFileUrl + 'fans.png',
@@ -123,6 +124,8 @@ module.exports = {
     order:uploadFileUrl + 'order.png',
     addr:uploadFileUrl + 'addr.png',
     gift_wall:uploadFileUrl + 'gift_wall.png',
+    vip_active:uploadFileUrl + 'vip_active.png',
+    vip_inactive:uploadFileUrl + 'vip_inactive.png',
 
     // 个人信息背景
     myinfo_bg: uploadFileUrl + 'myinfo_bg.png',

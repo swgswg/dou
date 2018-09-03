@@ -1,49 +1,57 @@
 <template>
     <view class="fans-rank">
 
-        <view class="fans-title" style="height:{{80*px2rpxHeight}}px">
-            <view class="title-left">
-                <view>排名</view>
-                <view>头像</view>
-                <view>用户名</view>
-            </view>
-
-            <view class="title-right">
-                <view>礼物值</view>
-            </view>
+        <view class="fans-title" style="height:{{60*px2rpxHeight}}px">
+            <view class="title-center" style="margin-left:{{10*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">排名</view>
+            <view class="title-center" style="margin-left:{{25*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">头像</view>
+            <view class="title-center" style="margin-left:{{25*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">用户名</view>
+            <view class="title-center" style="margin-left:{{40*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">VIP墙</view>
+            <view class="title-center" style="margin-left:{{50*px2rpxWidth}}px;width:{{200*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">礼物值</view>
         </view>
 
         <view class="fans-data" style="{{1080*px2rpxHeight}}px">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <block wx:for="{{fansList}}" wx:for-item="fans" wx:key="{{index}}">
                     <view class="fans-data-each" style="height:{{80*px2rpxHeight}}px;margin-bottom:{{10*px2rpxHeight}}px">
-                        <view class="data-left">
-                            <view class="data-no">
-                                <block wx:if="{{fans.rownum == 1}}">
-                                    <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no1.png"></image>
-                                </block>
-                                <block wx:elif="{{fans.rownum == 2}}">
-                                    <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no2.png"></image>
-                                </block>
-                                <block wx:elif="{{fans.rownum == 3}}">
-                                    <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no3.png"></image>
-                                </block>
-                                <block wx:else>
-                                    {{fans.rownum}}
-                                </block>
-                            </view>
-                            <view class="data-profile">
-                                <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;" src="{{fans.photo}}"></image>
-                            </view>
-                            <view class="data-name">{{fans.name}}</view>
+                        <!--排名 start-->
+                        <view class="data-no data-center" style="margin-left:{{10*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
+                            <block wx:if="{{fans.rownum == 1}}">
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no1.png"></image>
+                            </block>
+                            <block wx:elif="{{fans.rownum == 2}}">
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no2.png"></image>
+                            </block>
+                            <block wx:elif="{{fans.rownum == 3}}">
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no3.png"></image>
+                            </block>
+                            <block wx:else>
+                                {{fans.rownum}}
+                            </block>
                         </view>
+                        <!--排名 end-->
 
-                        <view class="data-right" style="padding-left:{{80*px2rpxWidth}}px;">
-                            <view>
-                                <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" class="gift-img" src="/static/images/fans_data.png"></image>
-                            </view>
-                            <view class="ml5">{{fans.score}}</view>
+                        <!--头像 start-->
+                        <view class="data-profile data-center" style="margin-left:{{25*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
+                            <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;" src="{{fans.photo}}"></image>
                         </view>
+                        <!--头像 end-->
+
+                        <!--昵称 start-->
+                        <view class="data-name data-center" style="margin-left:{{25*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">{{fans.name}}</view>
+                        <!--昵称 end-->
+
+                        <!--vip墙 start-->
+                        <view class="vip-qiang data-center" style="margin-left:{{40*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">
+                            <image style="width:{{25*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"></image>
+                        </view>
+                        <!--vip墙 end-->
+
+                        <!--礼物值 start-->
+                        <view class="gift-data" style="margin-left:{{50*px2rpxWidth}}px;width:{{200*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">
+                            <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" class="gift-img" src="{{fans_data}}"></image>
+                            <view class="data-center" style="margin-left:{{8*px2rpxWidth}}px;">{{fans.score}}</view>
+                        </view>
+                        <!--礼物值 end-->
                     </view>
                 </block>
                 <!--正在加载显示-->
@@ -58,6 +66,7 @@
 <script>
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
     import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
@@ -77,6 +86,7 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            fans_data:imgApi.fans_data,
             px2rpxWidth:0,
             px2rpxHeight:0,
             page:1,
@@ -175,7 +185,7 @@
 
         .fans-title{
             display: flex;
-            justify-content: space-between;
+            justify-content: flex-start;
             align-items: center;
             width: 100%;
             /*height: 80rpx;*/
@@ -184,20 +194,10 @@
             background: linear-gradient(to top right,#ec2c98, #f68668);
             /*border: 1rpx solid red;*/
 
-            .title-left{
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                /*border: 1rpx solid red;*/
-                width: 50%;
-            }
-
-            .title-right{
+            .title-center{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                /*border: 1rpx solid red;*/
-                width: 50%;
             }
         }
 
@@ -214,56 +214,22 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                width: 99.5%;
-                /*height: 80rpx;*/
-                /*margin-bottom: 10rpx;*/
+                width: 100%;
                 font-size: 28rpx;
                 color: #333;
                 border: 2rpx solid #ffe78c;
 
-                .data-left{
+                .data-center{
                     display: flex;
-                    justify-content: space-around;
+                    justify-content: center;
                     align-items: center;
-                    /*border: 1rpx solid red;*/
-                    width: 50%;
-
-                    .data-no{
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-
-                        image{
-                            /*width: 42rpx;*/
-                            /*height: 31rpx;*/
-                        }
-                    }
-
-                    .data-profile{
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-
-                        image{
-                            /*width: 60rpx;*/
-                            /*height: 60rpx;*/
-                        }
-                    }
                 }
 
-                .data-right{
+                .gift-data{
                     display: flex;
                     justify-content: flex-start;
                     align-items: center;
-                    width: 50%;
-                    /*padding-left: 80rpx;*/
                     box-sizing: border-box;
-                    /*border: 1rpx solid red;*/
-
-                    image{
-                        /*width: 40rpx;*/
-                        /*height: 28rpx;*/
-                    }
                 }
             }
         }

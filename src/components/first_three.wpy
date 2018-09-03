@@ -1,0 +1,124 @@
+// 礼物墙前三名
+<template>
+    <view class="first-three" style="width: 100%;height:{{320*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
+        <block wx:for="{{firstOfThree}}" wx:for-item="data" wx:key="{{index}}">
+            <view class="first-three-each" style="width:{{210*px2rpxWidth}}px;height:{{320*px2rpxHeight}}px;">
+
+                <block wx:if="{{index == 1}}">
+                    <!--头像 start-->
+                    <view class="first-three-profile" style="width:{{200*px2rpxWidth}}px;height:{{200*px2rpxWidth}}px;border:4rpx solid #fed530">
+                        <image src="{{data.photo}}" style="width:{{196*px2rpxWidth}}px;height:{{196*px2rpxWidth}}px;"></image>
+                    </view>
+                    <!--头像 end-->
+
+                    <!--昵称 start-->
+                    <view class="first-three-name" style="width:{{169*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;margin-top:{{42*px2rpxHeight}}px;">
+                        <image src="{{fans_no1}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                        <view style="color:#fed530">{{data.name}}</view>
+                    </view>
+                    <!--昵称 end-->
+                </block>
+                <block wx:if="{{index == 0}}">
+                    <view class="first-three-profile" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;border:4rpx solid #d6e0e9;">
+                        <image src="{{data.photo}}" style="width:{{165*px2rpxWidth}}px;height:{{165*px2rpxWidth}}px;"></image>
+                    </view>
+
+                    <!--昵称 start-->
+                    <view class="first-three-name" style="width:{{169*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;margin-top:{{42*px2rpxHeight}}px;">
+                        <image src="{{fans_no2}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                        <view style="color:#d6e0e9">{{data.name}}</view>
+                    </view>
+                    <!--昵称 end-->
+                </block>
+                <block wx:if="{{index == 2}}">
+                    <view class="first-three-profile" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;border:4rpx solid #d7a574;">
+                        <image src="{{data.photo}}" style="width:{{165*px2rpxWidth}}px;height:{{165*px2rpxWidth}}px;"></image>
+                    </view>
+
+                    <!--昵称 start-->
+                    <view class="first-three-name" style="width:{{169*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;margin-top:{{42*px2rpxHeight}}px;">
+                        <image src="{{fans_no3}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                        <view style="color:#d7a574">{{data.name}}</view>
+                    </view>
+                    <!--昵称 end-->
+                </block>
+
+                <!--能量值 start-->
+                <view class="first-three-energy" style="width:{{169*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;margin-top:{{10*px2rpxHeight}}px;">
+                    <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-left:{{10*px2rpxWidth}}px;"></image>
+                    <view style="color:#fed530">{{data.score}}</view>
+                </view>
+                <!--能量值 end-->
+            </view>
+        </block>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+
+    export default class FirstThree extends wepy.component {
+
+        data = {
+            fans_no1:imgApi.fans_no1,
+            fans_no2:imgApi.fans_no2,
+            fans_no3:imgApi.fans_no3,
+            energy:imgApi.energy,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+
+        };
+
+        props = {
+            firstOfThree:{
+                type:Array,
+                default:null,
+            }
+        };
+
+        onLoad() {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        };
+    }
+</script>
+
+<style lang="less">
+    .first-three{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        /*background-color: #f0f0f0;*/
+        box-sizing: border-box;
+
+        .first-three-each{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            .first-three-profile{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+            }
+
+            .first-three-name,.first-three-energy{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                font-size: 30rpx;
+            }
+            .first-three-energy{
+                font-size: 24rpx;
+            }
+        }
+
+    }
+
+</style>

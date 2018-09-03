@@ -33,8 +33,8 @@
 
         </view>
     </view>
-
 </template>
+
 <script>
     import wepy from 'wepy';
     import {SHAKE_HAND_TIME, SHAKE_HAND_NUMBER, USER_INFO, PX_TO_RPX, SHAKE_LEG_TIME, SHAKE_LEG_NUMBER} from '@/utils/constant';

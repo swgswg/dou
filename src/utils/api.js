@@ -6,7 +6,8 @@ const host = 'http://39.107.70.80:8080/';
 // webScocket
 const wshost = 'ws://192.168.3.52:8080/MicroPlatform/websocket/';
 // 上传文件/解析图片 地址
-const uploadFileUrl = 'http://jiaoyuvideo.oss-cn-beijing.aliyuncs.com/';
+// const uploadFileUrl = 'http://jiaoyuvideo.oss-cn-beijing.aliyuncs.com/';
+const uploadFileUrl = 'http://doutui.oss-cn-beijing.aliyuncs.com/';
 
 // 订单状态 全部'' 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）6(订单取消)
 const all = '';
@@ -107,6 +108,10 @@ const getSignGift = (params) => wxRequest(params, host + 'shakeLeg/admin/getSign
 const updateSignDays = (params) => wxRequest(params, host + 'shakeLeg/user/updateSignDays');
 //  获取最新签到日期
 const getRecordTime = (params) => wxRequest(params, host + 'shakeLeg/user/getRecordTime');
+//  查询私墙排行榜
+const getSPresentWallall = (params) => wxRequest(params, host + 'shakeLeg/user/getSPresentWallall');
+// 查看单个礼物墙
+const getSPresentsWallOne = (params) => wxRequest(params, host + 'shakeLeg/user/getSPresentsWallOne');
 
 export default {
     host,
@@ -162,4 +167,6 @@ export default {
     getSignGift,
     updateSignDays,
     getRecordTime,
+    getSPresentWallall,
+    getSPresentsWallOne,
 };

@@ -1,0 +1,337 @@
+<template>
+    <view class="friend-gift-wall">
+        <block wx:if="{{!is_empty}}">
+            <!--前三名 start-->
+            <view style="margin-top:{{60*px2rpxHeight}}px;">
+                <firstthree :firstOfThree.sync="firstOfThree"></firstthree>
+            </view>
+            <!--前三名 end-->
+
+            <view style="width:100%;height:{{30*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;box-sizing:border-box;">
+                <view class="fans-list-btn">
+                    <view>粉丝霸榜</view>
+                    <text style="margin-left:{{5*px2rpxWidth}}px;" class="iconfont icon-youjiantou"></text>
+                </view>
+            </view>
+
+            <!--前三名的礼物墙 start-->
+            <swiper class="three-swiper"
+                    current="1" circular="true" previous-margin="{{90*px2rpxWidth}}px" next-margin="{{90*px2rpxWidth}}px"
+                    bindchange="swiperChange"
+                    style="width:100%;height:{{canvasHeight*threeWallRatio1*2*px2rpxHeight+10}}px;margin-top:{{30*px2rpxHeight}}px;">
+                <block wx:for="{{threeGiftWall}}" wx:for-item="data" wx:key="{{index}}">
+                    <swiper-item class="three-swiper-item" style="position:relative;">
+                        <!--{{index}}-->
+                        <view class="move-view" style="width:{{canvasWidth*threeWallRatio1*2*px2rpxWidth}}px;height:{{canvasHeight*threeWallRatio1*2*px2rpxHeight}}px;">
+                            <block wx:for="data" wx:for-item="gift" wx:key="{{index}}">
+                                <view class="move-view-sub" style="width:{{}}px;height:{{}}px;top:{{}}px;left:{{}}px;">
+                                    <image src="" style=""></image>
+                                </view>
+                            </block>
+
+                            <view class="move-view-sub user-info" style="width:{{canvasWidth*threeWallRatio1*2*px2rpxWidth}}px;height:{{120*px2rpxWidth*threeWallRatio1}}px;top:{{(canvasHeight-60)*threeWallRatio1*2*px2rpxHeight}}px;left:0;">
+                                <view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
+                                    <image src="" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
+                                </view>
+                                <view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">昵称</view>
+                                <view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">
+                                    <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
+                                    <view>123456789</view>
+                                </view>
+                            </view>
+                        </view>
+                    </swiper-item>
+                </block>
+            </swiper>
+            <!--前三名的礼物墙 end-->
+        </block>
+        <!--暂无数据显示-->
+        <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
+
+        <view class="send-vip-wall-btn" style="margin-top:{{16*px2rpxHeight}}px;">
+            <view class="button button-highlight button-pill button-small" style="background-color:#fed530">送VIP墙</view>
+        </view>
+
+        <view style="width:100%;height:{{30*px2rpxHeight}}px;margin-top:{{27*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;box-sizing:border-box;">
+            <view class="fans-list-btn">
+                <view>历史记录</view>
+                <text style="margin-left:{{5*px2rpxWidth}}px;" class="iconfont icon-youjiantou"></text>
+            </view>
+        </view>
+
+        <!--公共的礼物墙 start-->
+        <view class="public-gift-wall">
+            <view class="public-gift-wall-center" style="width:{{}}px;height:{{}}px;">
+                <block wx:for="" wx:for-item="gift" wx:key="{{index}}"></block>
+                <view class="public-gift-wall-center-each" style="top:{{}}px;left:{{}}px;width:{{}}px;height:{{}}px;">
+                    <image src="" style="width:{{}}px;height:{{}}px;"></image>
+                </view>
+            </view>
+        </view>
+        <!--公共的礼物墙 end-->
+
+        <!--遮盖层 start-->
+        <view class="cover">
+            <block wx:if="showCoverLayer">
+                <coverlayer>
+                    <view class="content" slot="content">
+                        <image src="{{customer_service}}" style="top:0;left:0;width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;"></image>
+
+                    </view>
+                </coverlayer>
+            </block>
+        </view>
+        <!--遮盖层 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
+    import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
+    import FirstThree from '@/components/first_three';
+    import Placeholder from "@/components/common/placeholder";
+    import CoverLayer from "@/components/common/cover_layer";
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '首页'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            firstthree:FirstThree,
+            placeholder: Placeholder,
+            coverlayer: CoverLayer
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
+            energy:imgApi.energy,
+            customer_service:imgApi.customer_service,
+            userId:null,
+            firstOfThree:null,
+            is_empty:true,
+            // 礼物墙 325*430
+            canvasWidth:325,
+            canvasHeight:430,
+            threeGiftWall:null,
+            // 当前礼物墙的系数
+            threeWallRatio1:0.8,
+            // 旁边2个礼物墙的系数
+            threeWallRatio2:0.6,
+            showCoverLayer:false,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad(options) {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            if(util.isEmpty(options.userId)){
+                tip.error('网络错误');
+            } else {
+                this.userId = options.userId;
+            }
+            this.$apply();
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        async onReady() {
+            let that = this;
+            let res = await api.getSPresentWallall({
+                query:{
+                    // userId: that.userId,
+                    userId: 17,
+                    page:1,
+                    pageSize:3
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data.PageInfo.list;
+                if(util.isEmpty(data[0])){
+                    this.is_empty = true;
+                } else {
+                    let firstOfThree = [];
+                    firstOfThree.push(data[1]);
+                    this.getSPresentsWallOneEvent(data[1].id);
+                    firstOfThree.push(data[0]);
+                    this.getSPresentsWallOneEvent(data[2].id);
+                    firstOfThree.push(data[2]);
+                    this.firstOfThree = firstOfThree;
+                    this.getSPresentsWallOneEvent(data[3].id);
+                    this.is_empty = false;
+                }
+
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        };
+
+        // 声明数据watcher（详见后文介绍）
+        watch = {};
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {
+            swiperChange(e){
+                // console.log(e);
+                console.log(e.detail);
+            }
+        };
+
+        // 声明组件之间的事件处理函数
+        events = {};
+
+        // 根据id获取完成私墙
+        async getSPresentsWallOneEvent(mypresentswallId){
+            let res = await api.getSPresentsWallOne({
+                query:{
+                    presentswallId:mypresentswallId
+                }
+            });
+            if(res.data.state == 1){
+                let threeGiftWall = this.threeGiftWall;
+                if(util.isEmpty(threeGiftWall)){
+                    threeGiftWall = [];
+                }
+                let dataList = res.data.data.list;
+                // 增加一个人物动漫形象
+                let logo = res.data.data.logo;
+                let logoX = (this.canvasWidth - this.logoWidth)*threeWallRatio1;
+                let logoY = (this.canvasHeight - this.logoHeight)*threeWallRatio1;
+                dataList.unshift({giftId:-1,wide:131*this.threeWallRatio1,high:234*this.threeWallRatio1,xaxle:logoX,yaxle:logoY,url:logo});
+                threeGiftWall.push(dataList);
+                this.threeGiftWall = threeGiftWall;
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        }
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+    .friend-gift-wall{
+
+        .fans-list-btn{
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            font-size: 24rpx;
+            color: #666;
+
+            .icon-youjiantou{
+                font-size: 22rpx;
+            }
+        }
+
+        .three-swiper{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .three-swiper-item{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border-radius: 10rpx;
+                overflow: hidden;
+
+                .move-view{
+                    position: relative;
+                    background-color:#fff;
+                    border:4rpx solid #fed530;
+                    border-radius:10px;
+
+                    .move-view-sub{
+                        position: absolute;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                }
+
+                .user-info{
+                    /*position: absolute;*/
+                    /*bottom: 0;*/
+                    /*left: 0;*/
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    border-bottom-left-radius: 10rpx;
+                    border-bottom-right-radius: 10rpx;
+                    background-color: rgba(0,0,0,0.5);
+
+                    .user-profile{
+                        border-radius: 50%;
+                        overflow: hidden;
+                    }
+
+                    .user-name{
+                        font-size: 24rpx;
+                        color:#fff;
+                    }
+
+                    .user-score{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 24rpx;
+                        color: #fed530;
+                    }
+                }
+            }
+        }
+
+        .send-vip-wall-btn{
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .public-gift-wall{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .public-gift-wall-center{
+                position: relative;
+
+                .public-gift-wall-center-each{
+                    position: absolute;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+
+        .cover{
+
+            .content{
+                position: relative;
+            }
+
+        }
+
+    }
+</style>

@@ -2,27 +2,29 @@
     <view class="my-info">
         <image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="{{myinfo_bg}}"></image>
         <info :userId.sync="userId" :userName.sync="userName" :photo.sync="photo" :showRight.sync="showRight"></info>
-        <block wx:if="{{isShowGift}}">
-            <view class="flex-between;position:relative;" style="margin-top:{{20*px2rpxHeight}}px">
-                <view>
-                    <giftcanvas
-                        :canvasWidth.sync="canvasWidth"
-                        :canvasHeight.sync="canvasHeight"
-                        :giftList.sync="giftList"
-                    ></giftcanvas>
-                </view>
-                <veiw>
-                    <energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :nowEnergy="nowEnergy" :fullEnergy.sync="fullEnergy"></energytank>
-                </veiw>
-                <image style="position:absolute;bottom:{{60*px2rpxHeight}}px;right:{{80*px2rpxWidth}}px;width: {{131*px2rpxWidth}}px;height:{{234*px2rpxHeight}}px;" src="{{logo}}"></image>
-            </view>
-        </block>
-        <view class="show-gift" style="margin-top:{{isShowGift ? (15*px2rpxHeight):(35*px2rpxHeight)}}px;">
-            <image src="{{show_gift}}" style="width:{{90*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px;" @tap.stop="showCurrentGiftWall"></image>
-        </view>
+        <!--<block wx:if="{{isShowGift}}">-->
+            <!--<view class="flex-between;position:relative;" style="margin-top:{{20*px2rpxHeight}}px">-->
+                <!--<view>-->
+                    <!--<giftcanvas-->
+                        <!--:canvasWidth.sync="canvasWidth"-->
+                        <!--:canvasHeight.sync="canvasHeight"-->
+                        <!--:giftList.sync="giftList"-->
+                    <!--&gt;</giftcanvas>-->
+                <!--</view>-->
+                <!--<veiw>-->
+                    <!--<energytank :tankWidth.sync="energyTankWidth" :tankHeight.sync="energyTankHeight" :nowEnergy="nowEnergy" :fullEnergy.sync="fullEnergy"></energytank>-->
+                <!--</veiw>-->
+                <!--<image style="position:absolute;bottom:{{60*px2rpxHeight}}px;right:{{80*px2rpxWidth}}px;width: {{131*px2rpxWidth}}px;height:{{234*px2rpxHeight}}px;" src="{{logo}}"></image>-->
+            <!--</view>-->
+        <!--</block>-->
+        <!--<view class="show-gift" style="margin-top:{{isShowGift ? (15*px2rpxHeight):(35*px2rpxHeight)}}px;">-->
+            <!--<image src="{{show_gift}}" style="width:{{90*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px;" @tap.stop="showCurrentGiftWall"></image>-->
+        <!--</view>-->
 
         <block wx:if="{{!isShowGift}}">
-            <infoitem :list.sync="showInfoList"></infoitem>
+            <view style="margin-top:{{20*px2rpxHeight}}px;">
+                <infoitem :list.sync="showInfoList"></infoitem>
+            </view>
         </block>
 
     </view>
@@ -70,7 +72,8 @@
                 {img:imgApi.fans, title:'粉丝大排名',skip:'/pages/fans_rank'},
                 {img:imgApi.friend, title:'我的好友',skip:'/pages/my_friends'},
                 {img:imgApi.gift, title:'我的礼物',skip:'/pages/my_gift'},
-                {img:imgApi.gift_wall, title:'我的礼物墙',skip:'/pages/gift_picture'},
+                {img:imgApi.gift_wall, title:'公共礼物墙',skip:'/pages/gift_picture'},
+                {img:imgApi.vip_active, title:'VIP礼物墙',skip:'/pages/gift_picture'},
                 {img:imgApi.order, title:'我的订单',skip:'/pages/order'},
                 {img:imgApi.addr, title:'我的地址',skip:'/pages/address_list'},
                 {img:imgApi.set, title:'设置',skip:'/pages/set'},
