@@ -192,7 +192,6 @@
             pages: [
                 'pages/friend_gift_wall',
                 'pages/home',
-
                 'pages/check_logistics',
                 'pages/order_detail',
                 'pages/record',

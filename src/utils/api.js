@@ -40,7 +40,7 @@ const worldRankings = (params) => wxRequest(params, host + 'shakeLeg/user/worldR
 const myWorldRankings = (params) => wxRequest(params, host + 'shakeLeg/user/myWorldRankings');
 // 用户拥有礼物数
 const getUserGift = (params) => wxRequest(params, host + 'shakeLeg/user/getUserGift');
-// 查询未完成礼物墙
+// 查询公共墙
 const getPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/getPresentsWall');
 // 查询完成的礼物墙
 const getPresentsWalls = (params) => wxRequest(params, host + 'shakeLeg/user/getPresentsWalls');
