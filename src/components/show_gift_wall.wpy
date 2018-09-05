@@ -1,0 +1,76 @@
+// components-展示礼物墙
+<template>
+    <view class="show-gift-wall">
+        <view class="wall-content" style="width:{{canvasWidth*widthRatio}}px;height:{{canvasHeight*heightRatio}}px;">
+            <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{index}}">
+                <view class="gift" style="width:{{gift.wide*widthRatio}}px;height:{{gift.high*widthRatio}}px;top:{{gift.yaxle*heightRatio}}px;left:{{gift.xaxle*widthRatio}}px;">
+                    <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px;height:{{gift.high*widthRatio}}px;"></image>
+                </view>
+            </block>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+
+    export default class ShowGiftWall extends wepy.component {
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
+            canvasWidth:325,
+            canvasHeight:430,
+            widthRatio:0,
+            heightRatio:0,
+        };
+
+        props = {
+            giftList:{
+                type:Array,
+                default:null,
+            },
+            // 系数
+            ratio:{
+                type:Number,
+                default:1,
+            },
+        };
+
+        onLoad() {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.widthRatio = this.px2rpxWidth*2*this.ratio;
+            this.heightRatio = this.px2rpxHeight*2*this.ratio;
+            this.$apply();
+        };
+    }
+</script>
+
+<style lang="less">
+    .show-gift-wall{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        .wall-content{
+            position: relative;
+            width: 100%;
+            border-radius: 20rpx;
+            border: 3rpx solid #ec2c98;
+            overflow: hidden;
+            background-color: #fff;
+
+            .gift{
+                position: absolute;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            }
+        }
+    }
+</style>

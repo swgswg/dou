@@ -1,32 +1,65 @@
 // page--礼物墙照片
 <template>
     <view class="gift-picture">
-        <view class="select-edit">
-            <view class="ml10 button button-highlight button-rounded button-wx-tiny" wx:if="{{showAllSelect}}" @tap.stop="selectAllPicture">全选</view>
-            <view class="ml10 button button-primary button-rounded button-wx-tiny" @tap.stop="editOrCancelEvent">{{editOrCancel}}</view>
+        <!--tab选项 start-->
+        <view class="tab" style="height:{{88*px2rpxHeight}}px;padding:0 {{100*px2rpxWidth}}px;">
+            <view class="tab-each {{currentTab == 0 ? 'active' : ''}}" style="width:{{180*px2rpxWidth}}px;height:{{85*px2rpxHeight}}px;" data-current="0" @tap.stop="switchTab">收到礼物</view>
+            <view class="tab-each {{currentTab == 1 ? 'active' : ''}}" style="width:{{180*px2rpxWidth}}px;height:{{85*px2rpxHeight}}px;" data-current="1" @tap.stop="switchTab">送出礼物</view>
         </view>
-        <view class="picture" style="height:{{showAllSelect ? 1010*px2rpxHeight : 1110*px2rpxHeight}}px">
-            <scroll-view style="text-align: center;" scroll-y bindscrolltolower="scrollToLower">
+        <!--tab选项 end-->
+
+        <!--图片 start-->
+        <!--<view class="picture" style="height:{{showAllSelect ? 1010*px2rpxHeight : 1110*px2rpxHeight}}px">-->
+        <view class="picture" style="height:{{1110*px2rpxHeight}}px;padding:{{20*px2rpxHeight}}px {{20*px2rpxWidth}}px 0 {{20*px2rpxWidth}}px;">
+            <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <!--<block wx:for="{{pictureList}}" wx:for-item="{{picture}}" wx:key="{{index}}">-->
-                <block wx:for="{{pictureList}}" wx:for-item="picture" wx:key="{{index}}">
-                    <view class="picture-each" style="width:{{236*px2rpxWidth}}px;height:{{279*px2rpxHeight}}px;">
+                <block wx:for="{{giftList}}" wx:for-item="list" wx:key="{{index}}">
+                    <view class="picture-each" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px">
+                        <!--<view class="picture-each-content" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px;">-->
+                            <!--<view wx:if="{{showAllSelect}}" class="check {{checked ? 'ischeck' : ''}}" style="width:{{30*px2rpxWidth}}px;height:{{30*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="selectPicture">-->
+                                <!--<text wx:if="{{checked}}" class="iconfont icon-check" style="margin-left:{{5*px2rpxWidth}}px;"></text>-->
+                            <!--</view>-->
+                            <!--<image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="" data-url="{{}}" data-index="{{index}}" @tap.stop="preview"></image>-->
+                        <!--</view>-->
                         <view class="picture-each-content" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px;">
-                            <view wx:if="{{showAllSelect}}" class="check {{checked ? 'ischeck' : ''}}" style="width:{{30*px2rpxWidth}}px;height:{{30*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="selectPicture">
-                                <text wx:if="{{checked}}" class="iconfont icon-check" style="margin-left:{{5*px2rpxWidth}}px;"></text>
+                            <block wx:if="{{list.slt}}">
+                                <image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.slt}}" ></image>
+                            </block>
+                            <block wx:else>
+                                <image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.logo}}" ></image>
+                            </block>
+                            <view class="info" style="height:{{50*px2rpxHeight}}px;padding:0 {{10*px2rpxWidth}}px;">
+                                <image src="{{list.photo}}" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;"></image>
+                                <view class="info-right">
+                                    <image src="{{energy}}" style="width:{{11*px2rpxWidth}}px;height:{{13*px2rpxWidth}}px;margin-right:{{5*px2rpxWidth}}px;"></image>
+                                    <view>{{list.score}}</view>
+                                </view>
                             </view>
-                            <image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="" data-url="{{}}" data-index="{{index}}" @tap.stop="preview"></image>
                         </view>
                     </view>
                 </block>
                 <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
                 <!--暂无数据显示-->
-                <placeholder :show.sync="is_empty" message="您还没有图片哦"></placeholder>
+                <block wx:if="{{receive_is_empty && currentTab == 0}}">
+                    <placeholder :show.sync="receive_is_empty" message="您还没有图片哦"></placeholder>
+                </block>
+                <block wx:if="{{send_is_empty && currentTab == 1}}">
+                    <placeholder :show.sync="send_is_empty" message="您还没有图片哦"></placeholder>
+                </block>
             </scroll-view>
         </view>
-        <view class="btn" wx:if="{{showAllSelect}}">
-            <view class="btn-each button button-highlight button-rounded" @tap.stop="save">保存</view>
-            <view class="btn-each button button-rounded" @tap.stop="deleteImg">删除</view>
-        </view>
+        <!--图片 end-->
+
+        <!--底部按钮 start-->
+        <!--<block wx:if="{{currentTab == 0}}">-->
+            <!--<view class="btn" wx:if="{{showAllSelect}}">-->
+                <!--<view class="edit">编辑</view>-->
+                <!--<view class="btn-each button button-highlight button-rounded" @tap.stop="save">保存</view>-->
+                <!--<view class="btn-each button button-rounded" @tap.stop="deleteImg">删除</view>-->
+            <!--</view>-->
+        <!--</block>-->
+        <!--底部按钮 end-->
+
     </view>
 </template>
 
@@ -34,6 +67,8 @@
     import wepy from 'wepy';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
+    import util from '@/utils/util';
+    import imgApi from '@/utils/imgApi';
     import { USER_INFO,PX_TO_RPX } from '@/utils/constant';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
@@ -52,30 +87,40 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            fileUrl:imgApi.fileUrl,
+            energy:imgApi.energy,
             px2rpxWidth:0,
             px2rpxHeight:0,
+            tabList:['收到礼物','送出礼物'],
+            currentTab:0,
             // 是否显示全选按钮
-            showAllSelect:true,
+            //showAllSelect:true,
             // 编辑/取消
-            editOrCancel:'编辑',
-            //是否有数据
-            is_empty: true,
-            //是否显示 底部loading
-            showLoading: false,
+            //editOrCancel:'编辑',
             userId:null,
-            //当前页面
-            page: 1,
-            // 每页数据数
-            pageSize:20,
-            // 图片数据
-            pictureList:[
-                // {id:1,url:'',status:1,checked:false}
-            ],
-            checked:false,
+            //checked:false,
             // 图片所有地址
-            urlAllList:[],
+            //urlAllList:[],
             // true全选/false全不选
-            flag:true,
+            //flag:true,
+            giftList:null,
+            // 收到
+            receive_is_empty: true,
+            receive_giftList:null,
+            receive_page:1,
+            receive_pageSize:20,
+            receive_isLastPage:false,
+            receive_currentPage:0,
+            // 送出
+            send_is_empty:true,
+            send_giftList:null,
+            send_page:1,
+            send_pageSize:20,
+            send_isLastPage:false,
+            send_currentPage:0,
+
+            showLoading: false,
+
         };
 
         // 在Page和Component共用的生命周期函数
@@ -95,11 +140,18 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-            this.getPicture();
+            // 默认收到礼物
+            this.get_qSPresentsWall(this.receive_page,this.receive_pageSize);
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
+            switchTab(e){
+                let current = e.currentTarget.dataset.current;
+                this.currentTab = current;
+            },
+
+
             // 编辑或者取消
             editOrCancelEvent(){
                 if(this.editOrCancel == '编辑'){
@@ -124,91 +176,157 @@
 
             // 选中图片
             selectPicture(e){
-                let index = e.currentTarget.dataset.index;
-                // console.log(e);
-                let pictureList = this.pictureList;
-                let checked = pictureList[index].checked;
-                pictureList[index].checked = !checked;
-                this.pictureList = pictureList;
-                this.$apply();
+                // let index = e.currentTarget.dataset.index;
+                // // console.log(e);
+                // let pictureList = this.pictureList;
+                // let checked = pictureList[index].checked;
+                // pictureList[index].checked = !checked;
+                // this.pictureList = pictureList;
+                // this.$apply();
             },
 
             // 预览图片
             preview(e){
-                let index = e.currentTarget.dataset.index;
-                let urlList = this.urlList;
-                wx.previewImage({
-                    current: urlLIst[index], // 当前显示图片的http链接
-                    urls: urlList            // 需要预览的图片http链接列表
-                })
+                // let index = e.currentTarget.dataset.index;
+                // let urlList = this.urlList;
+                // wx.previewImage({
+                //     current: urlLIst[index], // 当前显示图片的http链接
+                //     urls: urlList            // 需要预览的图片http链接列表
+                // })
             },
 
             // 保存图片
             save(){
-                let pictureList = this.pictureList;
-                let len = pictureList.length;
-                let urlSelectList = [];
-                for(let i = 0; i < len; i++){
-                    if(pictureList[i].checked){
-                        urlSelectList.push(pictureList[i].url);
-                    }
-                }
-                api.downloadSaveFiles(urlSelectList);
+                // let pictureList = this.pictureList;
+                // let len = pictureList.length;
+                // let urlSelectList = [];
+                // for(let i = 0; i < len; i++){
+                //     if(pictureList[i].checked){
+                //         urlSelectList.push(pictureList[i].url);
+                //     }
+                // }
+                // api.downloadSaveFiles(urlSelectList);
             },
 
             // 删除图片
             deleteImg(){
-                let pictureList = this.pictureList;
-                let len = pictureList.length;
-                for(let i = 0; i < len; i++){
-                    pictureList[i].checked = false;
-                }
-                this.pictureList = pictureList;
-                this.showAllSelect = false;
-                this.$apply();
+                // let pictureList = this.pictureList;
+                // let len = pictureList.length;
+                // for(let i = 0; i < len; i++){
+                //     pictureList[i].checked = false;
+                // }
+                // this.pictureList = pictureList;
+                // this.showAllSelect = false;
+                // this.$apply();
             },
 
             // 滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
                 this.showLoading = true;
-                let page = this.page+1;
-                let pageSize = this.page;
-                this.getPicture(page,pageSize);
-                this.page = page;
+                if(currentTab == 0){
+                    // 收到礼物
+                    if(this.receive_isLastPage){
+                        return;
+                    }
+                    let page = this.receive_page+1;
+                    let pageSize = this.send_pageSize;
+                    this.get_qSPresentsWall(page,pageSize);
+                } else if(currentTab == 1){
+                    // 送出礼物
+                    if(this.send_isLastPage){
+                        return;
+                    }
+                    let page = this.send_page+1;
+                    let pageSize = this.send_pageSize;
+                    this.get_qSPresentsWalls(page,pageSize);
+                }
                 this.$apply();
             },
         };
 
-        // 获取图片数据
-        async getPicture(mypage,mypageSize){
-            let that = this;
-            let pictureList = this.pictureList;
-            const res = await api.getPresentsWalls({
-                query: {
-                    page: mypage || 1,
-                    pageSize: mypageSize || 20,
-                    userId: that.userId,
+        watch = {
+            currentTab(newVal){
+                if(newVal == 0){
+                    this.get_qSPresentsWall(this.receive_page,this.send_pageSize);
+                } else if(newVal == 1){
+                    this.get_qSPresentsWalls(this.send_page,this.send_pageSize);
+                }
+            },
+        };
+
+        // 查询收到的礼物墙
+        async get_qSPresentsWall(mypage,mypageSize){
+            let userId = this.userId;
+            let receive_giftList = this.receive_giftList;
+            let receive_currentPage = this.receive_currentPage;
+            if(util.isEmpty(receive_giftList)){
+                receive_giftList = [];
+            }
+            let res = await api.qSPresentsWall({
+                query:{
+                    userId:userId,
+                    page:mypage,
+                    pageSize:mypageSize
                 }
             });
             if(res.data.state == 1){
-                let data = res.data.data;
-                let len = data.length;
-                if(len < 1){
-                    //暂无数据
-                    this.is_empty = true;
-                } else {
-                    this.is_empty = false;
-                    for(let i = 0; i < len; i++){
-                        data[i].checked = false;
-                        data[i].url = api.uploadFileUrl + url;
-                        pictureList.push(data[i]);
-                    }
-                    this.pictureList = pictureList;
+                let data = res.data.data.PageInfo;
+                this.receive_isLastPage = data.isLastPage;
+                if(receive_currentPage < data.pageNum){
+                    receive_giftList = receive_giftList.concat(data.list);
                 }
+                this.receive_currentPage = data.pageNum;
+                this.receive_giftList = receive_giftList;
+                this.giftList = receive_giftList;
+                if(util.isEmpty(data.list)){
+                    this.receive_is_empty = true;
+                } else {
+                    this.receive_is_empty = false;
+                }
+                this.receive_page = mypage;
+                this.receive_pageSize = mypageSize;
+                this.showLoading = false;
             } else {
                 tip.error('网络错误');
             }
-            this.showLoading = false;
+            this.$apply();
+        };
+
+        // 查询送出的礼物墙
+        async get_qSPresentsWalls(mypage,mypageSize){
+            let userId = this.userId;
+            let send_giftList = this.send_giftList;
+            let send_currentPage = this.send_currentPage;
+            if(util.isEmpty(send_giftList)){
+                send_giftList = [];
+            }
+            let res = await api.qSPresentsWalls({
+                query:{
+                    userId:userId,
+                    page:mypage,
+                    pageSize:mypageSize
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data.PageInfo;
+                this.send_isLastPage = data.isLastPage;
+                if(send_currentPage < data.pageNum){
+                    send_giftList = send_giftList.concat(data.list);
+                }
+                this.send_currentPage = data.pageNum;
+                this.send_giftList = send_giftList;
+                this.giftList = send_giftList;
+                if(util.isEmpty(data.list)){
+                    this.send_is_empty = true;
+                } else {
+                    this.send_is_empty = false;
+                }
+                this.send_page = mypage;
+                this.send_pageSize = mypageSize;
+                this.showLoading = false;
+            } else {
+                tip.error('网络错误');
+            }
             this.$apply();
         };
     }
@@ -230,9 +348,29 @@
         justify-content: center;
         align-items: center;
         width: 100%;
-        padding: 20rpx 20rpx;
+        /*padding: 20rpx 20rpx;*/
         padding-bottom: 0;
         box-sizing: border-box;
+
+        .tab{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 30rpx;
+            background: linear-gradient(to top right,#ec2c98, #f68668);
+
+            .tab-each{
+                display: flex;
+                justify-content:center;
+                align-items: center;
+                color: #fff;
+            }
+            .active{
+                border-bottom: 5px solid #fff;
+            }
+        }
 
         .select-edit{
             display: flex;
@@ -247,6 +385,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
+            box-sizing: border-box;
 
             .picture-each{
                 display:inline-block;
@@ -256,6 +395,29 @@
                     position: relative;
                     z-index: 0;
                     border: 1rpx solid red;
+
+                    .info{
+                        position: absolute;
+                        left: 0;
+                        bottom: 0;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                        width: 100%;
+                        box-sizing: border-box;
+                        background-color: rgba(0,0,0,0.5);
+
+                        image{
+                            border-radius: 50%;
+                        }
+
+                        .info-right{
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            font-size: 20rpx;
+                        }
+                    }
 
                     .check{
                         position: absolute;
@@ -281,8 +443,6 @@
                     }
                 }
             }
-
-
         }
 
         .btn{

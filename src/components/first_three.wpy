@@ -6,7 +6,7 @@
 
                 <block wx:if="{{index == 1}}">
                     <!--头像 start-->
-                    <view class="first-three-profile" style="width:{{200*px2rpxWidth}}px;height:{{200*px2rpxWidth}}px;border:4rpx solid #fed530">
+                    <view class="first-three-profile" style="width:{{200*px2rpxWidth}}px;height:{{200*px2rpxWidth}}px;border:4rpx solid #fed530" data-wallid="" @tap.stop="goToVipWall">
                         <image src="{{data.photo}}" style="width:{{196*px2rpxWidth}}px;height:{{196*px2rpxWidth}}px;"></image>
                     </view>
                     <!--头像 end-->
@@ -19,7 +19,7 @@
                     <!--昵称 end-->
                 </block>
                 <block wx:if="{{index == 0}}">
-                    <view class="first-three-profile" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;border:4rpx solid #d6e0e9;">
+                    <view class="first-three-profile" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;border:4rpx solid #d6e0e9;" data-wallid="" @tap.stop="goToVipWall">
                         <image src="{{data.photo}}" style="width:{{165*px2rpxWidth}}px;height:{{165*px2rpxWidth}}px;"></image>
                     </view>
 
@@ -31,7 +31,7 @@
                     <!--昵称 end-->
                 </block>
                 <block wx:if="{{index == 2}}">
-                    <view class="first-three-profile" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;border:4rpx solid #d7a574;">
+                    <view class="first-three-profile" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;border:4rpx solid #d7a574;" data-wallid="" @tap.stop="goToVipWall">
                         <image src="{{data.photo}}" style="width:{{165*px2rpxWidth}}px;height:{{165*px2rpxWidth}}px;"></image>
                     </view>
 
@@ -68,7 +68,6 @@
             energy:imgApi.energy,
             px2rpxWidth:0,
             px2rpxHeight:0,
-
         };
 
         props = {
@@ -84,6 +83,16 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.$apply();
         };
+
+        methods = {
+            // 查看vip墙
+            goToVipWall(e){
+                let wallId = e.currentTarget.dataset.wallid;
+                wx.navigateTo({
+                    url:'/pages/VIP_wall?wallId='+wallId
+                });
+            },
+        }
     }
 </script>
 

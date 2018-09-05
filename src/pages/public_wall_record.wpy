@@ -1,0 +1,202 @@
+// page-公共墙记录
+<template>
+    <view class="public-wall-record" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
+        <view class="title" style="height:{{100*px2rpxHeight}}px;">
+            <view class="time left">时间</view>
+            <view class="right">
+                <view class="energy">能量值</view>
+                <view class="num">参与人数</view>
+            </view>
+        </view>
+        <view class="content" style="height:{{1060*px2rpxHeight}}px;">
+            <scroll-view class="scroll" scroll-y bindscrolltolower="scrollToLower">
+                <block wx:for="{{recordList}}" wx:for-item="record" wx:key="{{index}}">
+                    <view class="each" style="height:{{100*px2rpxHeight}}px;">
+                        <view class="time-text left">{{record.time}}</view>
+                        <view class="right">
+                            <view class="energy-text">{{record.score}}</view>
+                            <view class="num-text">{{record.num}}人</view>
+                        </view>
+                    </view>
+                </block>
+                <!--加载更多时动画-->
+                <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+                <!--暂无数据显示-->
+                <placeholder :show.sync="is_empty" message="暂无发现数据"></placeholder>
+            </scroll-view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
+    import api from '@/utils/api';
+    import BottomLoadMore from "@/components/common/bottomLoadMore";
+    import Placeholder from "@/components/common/placeholder";
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '公共墙记录'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            bottomLoadMore: BottomLoadMore,
+            placeholder: Placeholder,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            publicWallId:null,
+            recordList:null,
+            showLoading:false,
+            is_empty:true,
+            page:1,
+            pageSize:20,
+            isLastPage:false,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        async onLoad(options){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            if(util.isEmpty(options.publicWallId)){
+                tip.error('网络错误');
+            } else {
+                this.publicWallId = options.publicWallId;
+            }
+            this.$apply();
+        }
+
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+            this.getPresentWallallScoreEvent(this.page,this.pageSize);
+        };
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {
+            scrollToLower(){
+                if(isLastPage){
+                    return;
+                }
+                this.showLoading = true;
+                let page = this.page;
+                let pageSize = this.pageSize;
+                this.getPresentWallallScoreEvent(page,pageSize);
+            },
+        };
+
+        // 查询公共墙周记录
+        async getPresentWallallScoreEvent(mypage,mypageSize){
+            let presentWallId = this.publicWallId;
+            // 查询公共墙周记录
+            let res = await api.getPresentWallallScore({
+                query:{
+                    presentWallId:presentWallId,
+                    page:mypage,
+                    pageSize:mypageSize
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data.PageInfo;
+                if(util.isEmpty(data.list)){
+                    this.is_empty = true;
+                } else {
+                    this.is_empty = false;
+                }
+                this.recordList = data.list;
+                this.isLastPage = data.isLastPage;
+                this.showLoading = false;
+                this.page = mypage;
+                this.pageSize = mypageSize + 20;
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        }
+    }
+</script>
+
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+
+    .public-wall-record{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        box-sizing: border-box;
+        background-color: #fff;
+
+        .title{
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            width: 100%;
+            font-size: 35rpx;
+            color: #666;
+            border-bottom: 1rpx solid #ccc;
+        }
+
+        .content{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+
+            .scroll{
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+
+                .each{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 30rpx;
+                    color: #aaa;
+                    border-bottom: 1rpx solid #ccc;
+                }
+            }
+        }
+
+        .left{
+            width: 50%;
+        }
+        .right{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 50%;
+        }
+
+        .time,.time-text{
+            display: flex;
+            justify-content:flex-start;
+            align-items: center;
+        }
+
+        .energy,.energy-text,.num,.num-text{
+            display: flex;
+            justify-content:flex-end;
+            align-items: center;
+        }
+    }
+</style>

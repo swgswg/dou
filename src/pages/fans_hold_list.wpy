@@ -1,38 +1,40 @@
-// 粉丝霸榜
+// pagw-粉丝霸榜
 <template>
     <view class="fans-hold-list">
+        <block wx:if="{{!is_empty}}">
+            <!--前三名 start-->
+            <view style="margin-top:{{60*px2rpxHeight}}px;">
+                <firstthree :firstOfThree.sync="firstOfThree"></firstthree>
+            </view>
+            <!--前三名 end-->
 
-        <!--前三名 start-->
-        <view style="margin-top:{{60*px2rpxHeight}}px;">
-            <firstthree :firstOfThree.sync="firstOfThree"></firstthree>
-        </view>
-        <!--前三名 end-->
+            <!--剩下名次 start-->
+            <view style="width:100%;height:{{790*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;padding:0 {{45*px2rpxWidth}}px;box-sizing:border-box;background-color: #fff;">
+                <scroll-view class="fans-list" scroll-y="true" bindscrolltolower="scrollToLower">
+                        <block wx:for="{{fansList}}" wx:for-item="fans" wx:key="{{fans.id}}">
+                            <view class="fans-list-each" style="width:100%;height:{{100*px2rpxHeight}}px;" data-wallid="{{fans.id}}" @tap.stop="goToVIPWall">
+                                <view class="each-left">
+                                    <view class="fans-sort">{{index+4}}</view>
+                                    <view class="fans-profile" style="margin-left:{{45*px2rpxWidth}}px;">
+                                        <image src="{{fans.photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
+                                    </view>
+                                    <view class="fans-name" style="margin-left:{{45*px2rpxWidth}}px;">{{fans.name}}</view>
+                                </view>
 
-        <view style="width:{{345*px2rpxWidth}}px;height:{{405*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;">
-            <scroll-view scroll-y="true">
-                <view class="fans-list" style="width:{{345*px2rpxWidth}}px;height:{{405*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;">
-                    <block wx:for="{{5}}" wx:for-item="" wx:key="{{index}}">
-                        <view class="fans-list-each" style="width:100%;height:{{100*px2rpxHeight}}px;">
-                            <view class="fans-sort">1</view>
-                            <view class="fans-progile" style="margin-left:{{45*px2rpxWidth}}px;">
-                                <image src="" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
+                                <view class="each-right">
+                                    <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{15*px2rpxWidth}}px;"></image>
+                                    <view class="energy">{{fans.score}}</view>
+                                </view>
                             </view>
-                            <view class="fans-name">黎明</view>
-                            <view class="energy">
-                                <image src="" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-left:{{15*px2rpxWidth}}px;"></image>
-                                <view>35555</view>
-                            </view>
-                        </view>
-                    </block>
-                </view>
-                <!--加载更多时动画-->
-                <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
-                <!--暂无数据显示-->
-                <placeholder :show.sync="is_empty" message="暂无发现数据"></placeholder>
-            </scroll-view>
-        </view>
-
-
+                        </block>
+                    <!--加载更多时动画-->
+                    <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+                </scroll-view>
+            </view>
+            <!--剩下名次 end-->
+        </block>
+        <!--暂无数据显示-->
+        <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
     </view>
 </template>
 
@@ -64,13 +66,28 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            energy:imgApi.energy,
+            showLoading:false,
+            is_empty:true,
+            userId:null,
+            firstOfThree:null,
+            fansList:null,
+            page:1,
+            pageSize:20,
+            isLastPage:true,
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(){
+        async onLoad(options){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            if(util.isEmpty(options.userId)){
+                tip.error('网络错误');
+            } else {
+                this.userId = options.userId;
+            }
             this.$apply();
         }
 
@@ -80,16 +97,77 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
+            this.getSPresentWallallEvent(this.page,this.pageSize);
         };
 
         // 声明数据watcher（详见后文介绍）
         watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
+        methods = {
+            // 查看vip墙
+            goToVIPWall(e){
+                let wallId = e.currentTarget.dataset.wallid;
+                wx.navigateTo({
+                    url:'/pages/VIP_wall?wallId='+wallId
+                });
+            },
+
+            // 滚动到底部/右边，会触发 scrolltolower 事件
+            scrollToLower(){
+                if(isLastPage){
+                    return;
+                }
+                let page = this.page;
+                let pageSize = this.pageSize + 20;
+                this.showLoading = true;
+                this.getSPresentWallallEvent(page,pageSize);
+            },
+        };
 
         // 声明组件之间的事件处理函数
         events = {};
+
+        // 查询私墙排行榜
+        async getSPresentWallallEvent(mypage,mypageSize){
+            let userId = this.userId;
+            let fansList = this.fansList;
+            if(util.isEmpty(fansList)){
+                fansList = [];
+            }
+            let res = await api.getSPresentWallall({
+                query:{
+                    userId:userId,
+                    page:mypage,
+                    pageSize:mypageSize
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data.PageInfo;
+                let list = data.list;
+                this.isLastPage = data.isLastPage;
+                if(util.isEmpty(list[0])){
+                    this.is_empty = true;
+                } else {
+                    this.is_empty = false;
+                }
+                if(data.isFirstPage){
+                    let firstOfThree = [];
+                    firstOfThree.push(list[1]);
+                    firstOfThree.push(list[0]);
+                    firstOfThree.push(list[2]);
+                    list.splice(0,3);
+                    this.firstOfThreef = firstOfThree;
+                }
+                this.fansList = fansList.concat(list);
+                this.page = mypage;
+                this.pageSize = mypageSize;
+            } else {
+                tip.error('网络错误');
+            }
+            this.showLoading = false;
+            this.$apply();
+        }
     }
 </script>
 
@@ -98,9 +176,57 @@
         background-color: #f0f0f0;
     }
     .fans-hold-list{
+        width: 100%;
 
         .fans-list{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            background-color: #fff;
 
+            .fans-list-each{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: 1rpx solid #ccc;
+
+                .each-left{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    width: 50%;
+
+                    .fans-sort,.fans-name{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: center;
+                        font-size: 24rpx;
+                        color: #666;
+                    }
+                    .fans-profile{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        border-radius: 50%;
+                        overflow: hidden;
+                    }
+                }
+
+                .each-right{
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                    width: 50%;
+
+                    .energy{
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        font-size: 24rpx;
+                        color:#d34e00;
+                    }
+                }
+            }
         }
     }
 </style>

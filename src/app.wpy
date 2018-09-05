@@ -190,6 +190,11 @@
     export default class extends wepy.app {
         config = {
             pages: [
+                'pages/gift_picture',
+                'pages/public_wall_record',
+                'pages/public_wall',
+                'pages/VIP_wall',
+                'pages/fans_hold_list',
                 'pages/friend_gift_wall',
                 'pages/home',
                 'pages/check_logistics',
@@ -200,7 +205,7 @@
                 'pages/address_add',
                 'pages/commit_order',
                 'pages/goods_detail',
-                'pages/gift_picture',
+
                 'pages/history_rank',
                 'pages/address_list',
                 'pages/my_gift',

@@ -1,3 +1,4 @@
+// page-好友礼物墙
 <template>
     <view class="friend-gift-wall">
         <block wx:if="{{!is_empty}}">
@@ -8,7 +9,7 @@
             <!--前三名 end-->
 
             <view style="width:100%;height:{{30*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;box-sizing:border-box;">
-                <view class="fans-list-btn">
+                <view class="fans-list-btn" @tap.stop="goToFansHoldList">
                     <view>粉丝霸榜</view>
                     <text style="margin-left:{{5*px2rpxWidth}}px;" class="iconfont icon-youjiantou"></text>
                 </view>
@@ -198,7 +199,15 @@
             swiperChange(e){
                 // console.log(e);
                 console.log(e.detail);
-            }
+            },
+
+            // 粉丝霸榜
+            goToFansHoldList(){
+                let userId = this.userId;
+                wx.navigateTo({
+                    url:'/pages/fans_hold_list?userId='+userId
+                });
+            },
         };
 
         // 声明组件之间的事件处理函数

@@ -112,6 +112,12 @@ const getRecordTime = (params) => wxRequest(params, host + 'shakeLeg/user/getRec
 const getSPresentWallall = (params) => wxRequest(params, host + 'shakeLeg/user/getSPresentWallall');
 // 查看单个礼物墙
 const getSPresentsWallOne = (params) => wxRequest(params, host + 'shakeLeg/user/getSPresentsWallOne');
+// 查询公共墙周记录
+const getPresentWallallScore = (params) => wxRequest(params, host + 'shakeLeg/user/getPresentWallallScore');
+// 查询收到的礼物墙
+const qSPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/qSPresentsWall');
+// 查询送出的礼物墙
+const qSPresentsWalls = (params) => wxRequest(params, host + 'shakeLeg/user/qSPresentsWalls');
 
 export default {
     host,
@@ -169,4 +175,7 @@ export default {
     getRecordTime,
     getSPresentWallall,
     getSPresentsWallOne,
+    getPresentWallallScore,
+    qSPresentsWall,
+    qSPresentsWalls,
 };

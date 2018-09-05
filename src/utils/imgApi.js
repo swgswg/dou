@@ -164,4 +164,9 @@ module.exports = {
     // 售后背景/按钮
     customer_service:uploadFileUrl + 'customer_service.png',
     customer_service_btn:uploadFileUrl + 'customer_service_btn.png',
+
+    // 礼物墙背景
+    wall_bg:uploadFileUrl + 'wall_bg.png',
+    // 更多
+    more:uploadFileUrl + 'more.png',
 };
