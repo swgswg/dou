@@ -247,9 +247,13 @@
         watch = {
             currentTab(newVal){
                 if(newVal == 0){
-                    this.get_qSPresentsWall(this.receive_page,this.send_pageSize);
+                    // 收到礼物
+                    this.giftList = this.receive_giftList;
+                    // this.get_qSPresentsWall(this.receive_page,this.send_pageSize);
                 } else if(newVal == 1){
-                    this.get_qSPresentsWalls(this.send_page,this.send_pageSize);
+                    // 送出礼物
+                    this.giftList = this.send_giftList;
+                    // this.get_qSPresentsWalls(this.send_page,this.send_pageSize);
                 }
             },
         };

@@ -169,4 +169,9 @@ module.exports = {
     wall_bg:uploadFileUrl + 'wall_bg.png',
     // 更多
     more:uploadFileUrl + 'more.png',
+    // 好友礼物墙 连接/首充/未开启背景
+    lianjie:uploadFileUrl + 'lianjie.png',
+    shouchong:uploadFileUrl + 'shouchong.png',
+    weikaiqi:uploadFileUrl + 'weikaiqi.png',
+
 };

@@ -8,13 +8,13 @@
             <view class="text4" style="width:{{120 * px2rpxWidth}}px;margin-left:{{50 * px2rpxHeight}}px">抖腿时长</view>
             <view class="text5" style="width:{{120 * px2rpxWidth}}px;margin-left:{{50 * px2rpxHeight}}px">抖腿次数</view>
         </view>
-        <view class="friends-rank" style="width:{{702 * px2rpxWidth}}px;height:{{1220 * px2rpxHeight}}px;">
+        <view class="friends-rank" style="width:{{702 * px2rpxWidth}}px;height:{{1100 * px2rpxHeight}}px;">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <ranking :ranking.sync="rank"></ranking>
                 <!--加载更多时动画-->
                 <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
                 <!--暂无数据显示-->
-                <placeholder :show.sync="is_empty" message="暂无消息"></placeholder>
+                <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
             </scroll-view>
         </view>
     </view>
@@ -48,18 +48,18 @@
             userId:null,
             // 排名数据
             rank:[
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
-                { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
+                // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
             ],
             page:1,
             pageSize:20,

@@ -18,6 +18,18 @@ const accomplish = 3;
 const returnGoods = 4;
 const exchangeGoods = 5;
 const cancelOrder = 6;
+
+// 礼物墙大小(px)
+const canvasWidth = 325;
+const canvasHeight = 430;
+
+// 人物形象logo大小(px)
+const logoWidth = 131;
+const logoHeight = 234;
+
+// 满能量才能送礼
+const fullEnergy = 500;
+
 /**
  * 接口
  * @param  {[type]} params [description]
@@ -118,6 +130,9 @@ const getPresentWallallScore = (params) => wxRequest(params, host + 'shakeLeg/us
 const qSPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/qSPresentsWall');
 // 查询送出的礼物墙
 const qSPresentsWalls = (params) => wxRequest(params, host + 'shakeLeg/user/qSPresentsWalls');
+// 查询未完成私墙
+const getSPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/getSPresentsWall');
+
 
 export default {
     host,
@@ -131,6 +146,11 @@ export default {
     returnGoods,
     exchangeGoods,
     cancelOrder,
+    canvasWidth,
+    canvasHeight,
+    logoWidth,
+    logoHeight,
+    fullEnergy,
     myLogin,
     updateSex,
     addRecord,
@@ -178,4 +198,5 @@ export default {
     getPresentWallallScore,
     qSPresentsWall,
     qSPresentsWalls,
+    getSPresentsWall,
 };

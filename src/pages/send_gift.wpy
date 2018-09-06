@@ -1,0 +1,343 @@
+// page-送礼物
+<template>
+    <view class="send-gift" style="background: url({{wall_bg}}) no-repeat 0 0;">
+        <view class="info" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
+            <!--被送礼物的玩家信息 start-->
+            <view class="user-info" style="height:{{84*px2rpxHeight}}px;border-radius:{{42*px2rpxHeight}}px;">
+                <image class="profile" src="{{user_info.photo}}" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;"></image>
+                <view class="name-energy" style="margin-left:{{10*px2rpxWidth}}px;">
+                    <view class="name">{{user_info.name}}</view>
+                    <view class="enenrgy">
+                        <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{5*px2rpxWidth}}px;"></image>
+                        <view class="enenrgy-text">{{user_info.integral}}</view>
+                    </view>
+                </view>
+            </view>
+            <!--被送礼物的玩家信息 end-->
+
+            <!--其他送过礼物玩家的头像 start-->
+            <block wx:if="{{showOtherProfile}}">
+                <view class="other-profile" style="height:{{80*px2rpxHeight}}px;">
+                    <block wx:for="{{otherUserPhone}}" wx:for-item="img" wx:key="{{index}}">
+                        <image class="profile-img" src="{{img.phone}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-right:{{-20*px2rpxWidth}}px"></image>
+                    </block>
+                    <view class="num" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-left:{{20*px2rpxWidth}}px;">{{otherUserNumber}}人</view>
+                </view>
+            </block>
+            <!--其他送过礼物玩家的头像 end-->
+        </view>
+
+        <!--礼物墙 start-->
+        <view class="send-gift-canvas">
+            <giftcanvas
+                :canvasWidth.sync="canvasWidth"
+                :canvasHeight.sync="canvasHeight"
+                :giftList.sync="giftLIst"
+                :ratio.sync="ratio"
+            ></giftcanvas>
+        </view>
+        <!--礼物墙 end-->
+
+        <!--待送的礼物 start-->
+        <view class="send-gift-gifts">
+            <mygift :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight" :fansId.sync="userId" :presentsWallId.sync="giftWallId" :isFullEnergy.sync="isFullEnergy"></mygift>
+        </view>
+        <!--待送的礼物 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
+    import tip from '@/utils/tip';
+    import api from '@/utils/api';
+    import calculate from '@/utils/calculate';
+    import GiftCanvas from '@/components/gift_canvas';
+    import Mygift from '@/components/mygift';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '送礼物'
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            giftcanvas:GiftCanvas,
+            mygift:Mygift
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            fileUrl:imgApi.fileUrl,
+            wall_bg:imgApi.wall_bg,
+            energy:imgApi.energy,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            fansId:null,
+            userId:null,
+            user_info:null,
+            otherUserPhone:null,
+            otherUserNumber:null,
+            // vip私墙/public公共墙
+            wallStatus:null,
+            showOtherProfile:false,
+            logoWidth:api.logoWidth,
+            logoHeight:api.logoHeight,
+            canvasWidth:api.canvasWidth,
+            canvasHeight:api.canvasHeight,
+            ratio:1.06,
+            giftLIst:null,
+            giftWallId:null,
+            // 私墙满500能量才能送礼
+            fullEnergy:api.fullEnergy,
+            // 是否满能量
+            isFullEnergy:true,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        async onLoad(options) {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.fansId = userInfo.id;
+
+            if(util.isEmpty(options.userId)){
+                tip.error('网络错误');
+            } else {
+                this.userId = options.userId;
+            }
+            if(util.isEmpty(options.sendStatus)){
+                tip.error('网络错误');
+            } else {
+                this.wallStatus = options.sendStatus;
+            }
+            this.$apply();
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        async onReady() {
+            let userId = this.userId;
+            let user_info = {};
+            // 获取被送礼玩家信息
+            let res = await api.getOneUserInfo({
+                query:{
+                    userId:userId
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data;
+                user_info.photo = data.photo;
+                user_info.name = data.name;
+                user_info.integral = data.integral;
+                user_info.logo = data.logo;
+            } else {
+                tip.error('网络错误');
+            }
+
+            if(this.wallStatus == 'vip'){
+                // 私墙不显示其他玩家头像
+                this.showOtherProfile = false;
+                // 获取私墙id
+                this.getSPresentsWallEvent();
+            } else if(this.wallStatus == 'public'){
+                // 公共的墙显示玩家头像
+                this.showOtherProfile = true;
+                // 公墙获取其他玩家头像
+                this.getGiveGiftUserPhotoEvent();
+            }
+        };
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {};
+
+        // 声明组件之间的事件处理函数
+        events = {
+            // 添加礼物到礼物墙
+            addGiftToWall(oneGift){
+                let giftList = this.giftList;
+                giftList.push(oneGift);
+                this.giftList = giftList;
+                this.$apply();
+            },
+
+            // 将所有礼物状态改为1(确定后不能移动)
+            updateTypeTo1(){
+                let gift = this.giftList;
+                let len = gift.length;
+                for(let i = 0; i < len; i++){
+                    gift[i].type = 1;
+                }
+                this.giftList = gift;
+                this.$apply();
+            },
+
+            // 私墙能量必须达到一定值才能提交
+            isFullEnergyEvent(){
+                if(this.wallStatus == 'vip'){
+                    let giftList = this.giftList;
+                    let len = giftList.length;
+                    // 礼物墙的总能量
+                    let sumScore = 0;
+                    for(let i = 0; i < len; i++){
+                        sumScore = calculate.calcAdd(parseFloat(sumScore),parseFloat(giftList[i].score));
+                    }
+                    if(sumScore >= this.fullEnergy){
+                        this.isFullEnergy = true;
+                    } else {
+                        this.isFullEnergy = false;
+                    }
+                }
+            }
+        };
+
+        // 获取其他送礼物人的头像(公墙才有)
+        async getGiveGiftUserPhotoEvent(){
+            let wallId = this.giftWallId;
+            let res = await api.getGiveGiftUserPhoto({
+                query:{
+                    presentsWallId:wallId
+                }
+            });
+            if(res.data.state == 1){
+                this.otherUserPhone = res.data.data.slice(0,7);
+                this.otherUserNumber = '';
+            } else {
+                tip.error('网络错误');
+            }
+        };
+        
+        // 获取私墙id
+        async getSPresentsWallEvent(){
+            let userId = this.userId;
+            let fansId = this.fansId;
+            let res = await api.getSPresentsWall({
+                query:{
+                    userId:userId,
+                    fansId:fansId
+                }
+            });
+            if(res.data.state == 1){
+                this.giftWallId = res.data.data.id;
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        }
+
+        // 获取公共墙的礼物
+        async getPresentsWallEvent(){
+            let userId = this.userId;
+            let res = await api.getPresentsWall({
+                query:{
+                    userId:userId
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data;
+                let dataList = data.axle;
+                // 增加一个人物动漫形象
+                let logo = this.user_info.logo;
+                let logoX = this.canvasWidth - this.logoWidth;
+                let logoY = this.canvasHeight - this.logoHeight;
+                giftList.push({id:-1,giftId:-1,wide:131,high:234,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
+                this.logoLocation = {x:logoX,y:logoY};
+                this.giftLIst = dataList;
+            } else {
+                tip.error('网络错误');
+            }
+        }
+
+
+    }
+</script>
+
+<style lang="less">
+    .send-gift{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+
+        .info{
+            display: flex;
+            justify-content:flex-start;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+
+            .user-info{
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+                width: 40%;
+                overflow: hidden;
+                /*border: 1px solid red;*/
+                background-color: rgba(0,0,0,0.4);
+
+                .profile{
+                    border-radius: 50%;
+                    border: 1px solid #fff;
+                }
+                .name-energy{
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 30rpx;
+                    color:#fff;
+
+                    .enenrgy{
+                        display: flex;
+                        justify-content:flex-start;
+                        align-items: center;
+                        color:#fed530;
+                    }
+                }
+            }
+            .other-profile{
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                width: 60%;
+                /*border: 1px solid red;*/
+
+                .profile-img{
+                    border: 1rpx solid #fff;
+                    border-radius: 50%;
+                }
+                .num{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 15rpx;
+                    color: #fff;
+                    border-radius: 50%;
+                    background-color: rgba(0,0,0,0.4);
+                }
+            }
+        }
+
+        .send-gift-canvas{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .send-gift-gifts{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width:100%;
+        }
+    }
+</style>

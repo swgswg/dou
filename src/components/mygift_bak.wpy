@@ -42,7 +42,7 @@
             fileUrl:imgApi.fileUrl,
             px2rpxWidth:0,
             px2rpxHeight:0,
-            // isFullEnergy:true,
+            fullEnergy:1314,
             giftVal:[],
             userId:null,
             myGift:null,
@@ -67,12 +67,17 @@
                 type:Number,
                 default:0,
             },
-            isFullEnergy:{
-                type:Boolean,
-                default:true,
+            // 卡通人物形象所在的坐标
+            // logoLocation:{x:'',y:''}
+            logoLocation:{
+                type:Object,
+                default:null,
             },
-
-
+            // 是否还能赠送个礼物(能量值满不能赠送)
+            isTakeGift:{
+                type:Boolean,
+                default:true
+            },
         };
 
         async onLoad(){
@@ -95,6 +100,9 @@
         methods = {
             // 送礼物
             takeGift(e){
+                if(!this.isTakeGift){
+                    return;
+                }
                 // 获取点击的礼物的index
                 let index = e.currentTarget.dataset.index;
                 // 获取礼物墙已经拥有的礼物
@@ -106,13 +114,13 @@
                 // 随机坐标
                 let w = parseFloat(myGift[index].wide);
                 let h = parseFloat(myGift[index].high);
-                let x = util.rand(0,this.canvasWidth - w);
-                let y = util.rand(0,this.canvasHeight - h);
-                if(x > this.canvasWidth){
-                    x = this.canvasWidth / 2;
+                let x = util.rand(0,this.canvasWidth * this.px2rpxWidth - w);
+                let y = util.rand(0,this.canvasHeight * this.px2rpxHeight - h);
+                if(x > this.canvasWidth * this.px2rpxWidth){
+                    x = this.canvasWidth * this.px2rpxWidth / 2;
                 }
-                if(y > this.canvasHeight){
-                    y = this.canvasHeight / 2
+                if(y > this.canvasHeight * this.px2rpxHeight){
+                    y = this.canvasHeight * this.px2rpxHeight / 2
                 }
                 // console.log(x,y);
                 myGift[index].num = myGift[index].num - 1;
@@ -126,14 +134,18 @@
 
             },
 
-            // 确定送礼物
+            // 确定礼物位置
             async confirmGiftSeat(){
-                this.$emit('isFullEnergyEvent');
-                if(!this.isFullEnergy){
-                    return;
-                }
                 let that = this;
                 let giftVal = this.giftVal;
+                // 0能量不满/1满能量
+                // let status = null;
+                // if(this.isTakeGift){
+                //     status = 0;
+                // } else {
+                //     status = 1;
+                // }
+                // console.log(giftVal);
                 let len = giftVal.length;
                 let giftId = '';
                 let xaxle = '';
@@ -160,11 +172,17 @@
                         icon: 'success',
                         duration: 1000
                     });
+
+                    // 满能量确定生成图片
+                    if(!this.isTakeGift){
+                        console.log('isTakeGift=='+this.isTakeGift);
+                        this.$emit('createImg',that.presentsWallId);
+                    }
+
                     // 将所有的礼物状态改为1
                     this.$emit('updateTypeTo1');
-                } else {
-                    tip.error('网络错误');
                 }
+
             },
 
             // 商城

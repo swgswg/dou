@@ -1,27 +1,27 @@
 // 礼物墙
 <template>
     <view class="gift-canvas flex-center">
-        <movable-area style="width:{{canvasWidth*px2rpxWidth}}px;height:{{(canvasHeight*px2rpxHeight)}}px;background-color: #fff">
+        <movable-area style="width:{{canvasWidth*widthRatio}}px;height:{{(canvasHeight*heightRatio)}}px;background-color:#fff;border-radius:20rpx;border:3rpx solid #ec2c98;">
             <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.giftId}}">
                 <block wx:if="{{gift.type == 1}}">
                     <movable-view
-                            style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"
-                            x="{{gift.xaxle*px2rpxWidth*2}}" y="{{gift.yaxle*px2rpxHeight*2}}"
+                            style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
+                            x="{{gift.xaxle*widthRatio}}" y="{{gift.yaxle*heightRatio}}"
                             direction="all"
                             disabled
                             bindchange="moveGift"
                             data-index="{{index}}">
-                        <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>
+                        <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"></image>
                     </movable-view>
                 </block>
                 <block wx:else>
                     <movable-view
                             style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"
-                            x="{{gift.xaxle*px2rpxWidth*2}}" y="{{gift.yaxle*px2rpxHeight*2}}"
+                            x="{{gift.xaxle*widthRatio}}" y="{{gift.yaxle*heightRatio}}"
                             direction="all"
                             bindchange="moveGift"
                             data-index="{{index}}">
-                        <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"></image>
+                        <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"></image>
                     </movable-view>
                 </block>
             </block>
@@ -41,31 +41,40 @@
             fileUrl:imgApi.fileUrl,
             px2rpxWidth:0,
             px2rpxHeight:0,
+            widthRatio:0,
+            heightRatio:0,
         };
 
         props = {
             canvasWidth:{
                 type:Number,
-                default:650
+                default:325
             },
             canvasHeight:{
                 type:Number,
-                default:860
+                default:430
             },
 
             giftList:{
                 type:Array,
                 default:null,
                 twoWay:true
+            },
+            ratio:{
+                type:Number,
+                default:1
             }
         };
 
-        onLoad(){
+        async onLoad(){
             // 获取尺寸适配
-            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-
+            // 比例系数
+            this.widthRatio = this.px2rpxWidth*2*this.ratio;
+            this.heightRatio = this.px2rpxHeight*2*this.ratio;
+            this.$apply()
         };
 
         methods = {

@@ -25,7 +25,7 @@
                 <block wx:for="{{userPhoto}}" wx:for-item="img" wx:key="{{index}}">
                     <image src="" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
                 </block>
-                <image src="{{more}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
+                <image src="{{more}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;" @tap.stop="goToPublicWallRecord"></image>
             </view>
             <!--人物头像 end-->
         </block>
@@ -69,8 +69,8 @@
             //获得本周的结束日期
             weekEndDate:null,
             is_empty:true,
-            canvasWidth:325,
-            canvasHeight:430,
+            canvasWidth:api.canvasWidth,
+            canvasHeight:api.canvasHeight,
             userId:null,
             logo:null,
             logoWidth:131,
@@ -87,6 +87,7 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
             let userInfo = await wepy.getStorageSync(USER_INFO);
             this.logo = userInfo.logo;
             this.userId = userInfo.id;

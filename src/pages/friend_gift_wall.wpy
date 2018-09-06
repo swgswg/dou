@@ -17,31 +17,72 @@
 
             <!--前三名的礼物墙 start-->
             <swiper class="three-swiper"
-                    current="1" circular="true" previous-margin="{{90*px2rpxWidth}}px" next-margin="{{90*px2rpxWidth}}px"
+                    current="0" circular="true" previous-margin="{{115*px2rpxWidth}}px" next-margin="{{115*px2rpxWidth}}px"
                     bindchange="swiperChange"
-                    style="width:100%;height:{{canvasHeight*threeWallRatio1*2*px2rpxHeight+10}}px;margin-top:{{30*px2rpxHeight}}px;">
-                <block wx:for="{{threeGiftWall}}" wx:for-item="giftdata" wx:key="{{index}}">
-                    <swiper-item class="three-swiper-item" style="position:relative;">
-                        <view class="move-view" style="width:{{canvasWidth*2*px2rpxWidth*threeWallRatio1}}px;height:{{canvasHeight*2*px2rpxHeight*threeWallRatio1}}px;">
-                            <block wx:for="{{giftdata}}" wx:for-item="sub" wx:key="{{index}}">
-                                <view class="move-view-sub" style="width:{{sub.wide*2*px2rpxWidth*threeWallRatio1}}px;height:{{sub.high*2*px2rpxWidth*threeWallRatio1}}px;top:{{sub.xaxle*2*px2rpxHeight*threeWallRatio1}}px;left:{{sub.yaxle*2*px2rpxWidth*threeWallRatio1}}px;">
-                                    <image src="{{fileUrl + sub.url}}" style="width:{{sub.wide*2*px2rpxWidth*threeWallRatio1}}px;height:{{sub.high*2*px2rpxWidth*threeWallRatio1}}px;"></image>
-                                </view>
-                            </block>
+                    style="width:100%;height:{{canvasHeight*2*px2rpxHeight*0.8+20}}px;margin-top:{{30*px2rpxHeight}}px;">
 
-                            <view class="move-view-sub user-info" style="width:{{canvasWidth*threeWallRatio1*2*px2rpxWidth}}px;height:{{120*px2rpxWidth*threeWallRatio1}}px;top:{{(canvasHeight-60)*threeWallRatio1*2*px2rpxHeight}}px;left:0;">
-                                <view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
-                                    <image src="{{}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
-                                </view>
-                                <view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">昵称</view>
-                                <view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">
-                                    <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
-                                    <view>123456789</view>
-                                </view>
+                <!--第一名 start-->
+                <swiper-item class="three-swiper-item" style="position:relative;">
+                    <view class="move-view {{currentSwiper == 0 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_1}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_1}}px;" data-id="{{threeGiftWall_1_id}}" @tap.stop="goToVIPWall">
+
+                        <showgiftwall_1 :giftList.sync="threeGiftWall_1" :ratio.sync="ratio_1"></showgiftwall_1>
+
+                        <view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_1}}px;height:{{120*px2rpxWidth*ratio_1}}px;bottom:0;left:0;">
+                            <view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
+                                <image src="{{fileUrl + firstOfThree[1].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
+                            </view>
+                            <view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[1].name}}</view>
+                            <view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">
+                                <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
+                                <view>{{firstOfThree[1].score}}</view>
                             </view>
                         </view>
-                    </swiper-item>
-                </block>
+                    </view>
+                </swiper-item>
+                <!--第一名 end-->
+
+                <!--第二名 start-->
+                <swiper-item class="three-swiper-item" style="position:relative;">
+                    <view class="move-view {{currentSwiper == 1 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_2}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_2}}px;" data-id="{{threeGiftWall_2_id}}" @tap.stop="goToVIPWall">
+                        <!--礼物墙信息 start-->
+                        <showgiftwall_2 :giftList.sync="threeGiftWall_2" :ratio.sync="ratio_2"></showgiftwall_2>
+                        <!--礼物墙信息 end-->
+
+                        <!--人物信息 start-->
+                        <view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_2}}px;height:{{120*px2rpxWidth*ratio_2}}px;bottom:0;left:0;">
+                            <view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
+                                <image src="{{fileUrl + firstOfThree[0].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
+                            </view>
+                            <view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[0].name}}</view>
+                            <view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">
+                                <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
+                                <view>{{firstOfThree[0].score}}</view>
+                            </view>
+                        </view>
+                        <!--人物信息 end-->
+                    </view>
+                </swiper-item>
+                <!--第二名 end-->
+
+                <!--第三名 start-->
+                <swiper-item class="three-swiper-item" style="position:relative;">
+                    <view class="move-view {{currentSwiper == 2 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_3}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_3}}px;" data-id="{{threeGiftWall_3_id}}" @tap.stop="goToVIPWall">
+                        <showgiftwall_3 :giftList.sync="threeGiftWall_3" :ratio.sync="ratio_3"></showgiftwall_3>
+
+                        <view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_3}}px;height:{{120*px2rpxWidth*ratio_3}}px;bottom:0;left:0;">
+                            <view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
+                                <image src="{{fileUrl + firstOfThree[2].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
+                            </view>
+                            <view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[2].name}}</view>
+                            <view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">
+                                <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
+                                <view>{{firstOfThree[2].score}}</view>
+                            </view>
+                        </view>
+                    </view>
+                </swiper-item>
+                <!--第三名 end-->
+
             </swiper>
             <!--前三名的礼物墙 end-->
         </block>
@@ -50,27 +91,32 @@
         <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
 
         <view class="send-vip-wall-btn" style="margin-top:{{16*px2rpxHeight}}px;">
-            <view class="button button-highlight button-pill button-small" style="background-color:#fed530">送VIP墙</view>
+            <view class="button button-highlight button-pill button-small"
+                  style="background-color:#fed530"
+                  data-status="vip"
+                  @tap.stop="goToSendGift"
+            >送VIP墙</view>
         </view>
 
         <!--历史记录 start-->
         <view style="width:100%;height:{{30*px2rpxHeight}}px;margin-top:{{27*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;box-sizing:border-box;">
             <view class="fans-list-btn">
-                <view>历史记录</view>
-                <text style="margin-left:{{5*px2rpxWidth}}px;" class="iconfont icon-youjiantou"></text>
+                <view class="right" @tap.stop="goToPublicWallRecord">
+                    <view>历史记录</view>
+                    <text style="margin-left:{{5*px2rpxWidth}}px;" class="iconfont icon-youjiantou"></text>
+                </view>
             </view>
         </view>
         <!--历史记录 end-->
 
         <!--公共的礼物墙 start-->
-        <view class="public-gift-wall">
-            <view class="public-gift-wall-center" style="width:{{canvasWidth*2*px2rpxWidth*threeWallRatio1}}px;height:{{canvasHeight*2*px2rpxHeight*threeWallRatio1}}px;">
-                <block wx:for="{{publicWall}}" wx:for-item="pub" wx:key="{{index}}">
-                    <view class="public-gift-wall-center-each" style="top:{{pub.yaxle*2*px2rpxHeight*threeWallRatio1}}px;left:{{pub.xaxle*2*px2rpxWidth*threeWallRatio1}}px;width:{{pub.wide*2*px2rpxWidth*threeWallRatio1}}px;height:{{pub.high*2*px2rpxWidth*threeWallRatio1}}px;">
-                        <image src="{{fileUrl+pub.url}}" style="width:{{pub.wide*2*px2rpxWidth*threeWallRatio1}}px;height:{{pub.high*2*px2rpxWidth*threeWallRatio1}}px;"></image>
-                    </view>
-                </block>
-            </view>
+        <view class="public-gift-wall" style="margin:{{20*px2rpxHeight}}px 0;">
+            <showgiftwall :giftList.sync="publicWall" :ratio.sync="ratio"></showgiftwall>
+            <view class="button button-highlight button-pill button-small"
+                  style="position:absolute;bottom:{{20*px2rpxHeight}}px;right:{{70*px2rpxWidth}}px;z-index:999;background-color:#fed530"
+                  data-status="public"
+                  @tap.stop="goToSendGift"
+            >送礼</view>
         </view>
         <!--公共的礼物墙 end-->
 
@@ -79,8 +125,11 @@
             <block wx:if="{{showCoverLayer}}">
                 <coverlayer>
                     <view class="content" slot="content">
-                        <image src="{{customer_service}}" style="top:0;left:0;width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;"></image>
-
+                        <image src="{{weikaiqi}}" style="top:0;left:0;width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;"></image>
+                        <view class="content-btn" style="bottom:{{50*px2rpxHeight}}px;left:0;width:{{553*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;padding:0 {{70*px2rpxWidth}}px 0 {{50*px2rpxWidth}}px;">
+                            <image src="{{lianjie}}" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="connectEquipment"></image>
+                            <image src="{{shouchong}}" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="shouChong"></image>
+                        </view>
                     </view>
                 </coverlayer>
             </block>
@@ -98,6 +147,7 @@
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import FirstThree from '@/components/first_three';
+    import ShowGiftWall from '@/components/show_gift_wall';
     import Placeholder from "@/components/common/placeholder";
     import CoverLayer from "@/components/common/cover_layer";
 
@@ -110,6 +160,10 @@
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             firstthree:FirstThree,
+            showgiftwall_1:ShowGiftWall,
+            showgiftwall_2:ShowGiftWall,
+            showgiftwall_3:ShowGiftWall,
+            showgiftwall:ShowGiftWall,
             placeholder: Placeholder,
             coverlayer: CoverLayer
         };
@@ -120,22 +174,32 @@
             px2rpxHeight:0,
             fileUrl:imgApi.fileUrl,
             energy:imgApi.energy,
-            customer_service:imgApi.customer_service,
-            userId:null,
+            weikaiqi:imgApi.weikaiqi,
+            shouchong:imgApi.shouchong,
+            lianjie:imgApi.lianjie,
+            userId:null,  // 收礼物人id
+            fansId:null,  // 送礼物人id
             firstOfThree:null,
             is_empty:true,
             // 礼物墙 325*430
-            canvasWidth:325,
-            canvasHeight:430,
-            logoWidth:131,
-            logoHeight:234,
-            threeGiftWall:null,
-            // 当前礼物墙的系数
-            threeWallRatio1:0.8,
-            // 旁边2个礼物墙的系数
-            threeWallRatio2:0.6,
+            canvasWidth:api.canvasWidth,
+            canvasHeight:api.canvasHeight,
+            logoWidth:api.logoWidth,
+            logoHeight:api.logoHeight,
+            threeGiftWall_1:null,
+            threeGiftWall_1_id:null,
+            ratio_1:0.8,
+            threeGiftWall_2:null,
+            threeGiftWall_2_id:null,
+            ratio_2:0.6,
+            threeGiftWall_3:null,
+            threeGiftWall_3_id:null,
+            ratio_3:0.6,
+            currentSwiper:0,
             // 公共墙礼物
             publicWall:null,
+            publicWallId:null,
+            ratio:1,
             showCoverLayer:false,
         };
 
@@ -176,12 +240,18 @@
                 } else {
                     let firstOfThree = [];
                     firstOfThree.push(data[1]);
-                    this.getSPresentsWallOneEvent(data[1].id);
+                    this.threeGiftWall_2_id = data[1].id;
+                    this.getSPresentsWallOneEvent(data[1].id,threeGiftWall_2);
+
                     firstOfThree.push(data[0]);
-                    this.getSPresentsWallOneEvent(data[2].id);
+                    this.threeGiftWall_1_id = data[1].id;
+                    this.getSPresentsWallOneEvent(data[0].id,threeGiftWall_1);
+
                     firstOfThree.push(data[2]);
+                    this.threeGiftWall_3_id = data[1].id;
+                    this.getSPresentsWallOneEvent(data[2].id,threeGiftWall_3);
+
                     this.firstOfThree = firstOfThree;
-                    this.getSPresentsWallOneEvent(data[3].id);
                     this.is_empty = false;
                 }
 
@@ -197,8 +267,23 @@
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             swiperChange(e){
-                // console.log(e);
-                console.log(e.detail);
+                let currnet = e.detail.current;
+                if(currnet == 0){
+                    this.ratio_1 = 0.8;
+                    this.ratio_2 = 0.6;
+                    this.ratio_3 = 0.6;
+
+                } else if(currnet == 1){
+                    this.ratio_1 = 0.6;
+                    this.ratio_2 = 0.8;
+                    this.ratio_3 = 0.6;
+                } else if(currnet == 2){
+                    this.ratio_1 = 0.6;
+                    this.ratio_2 = 0.6;
+                    this.ratio_3 = 0.8;
+                }
+                this.currentSwiper = currnet;
+                this.$apply();
             },
 
             // 粉丝霸榜
@@ -208,31 +293,72 @@
                     url:'/pages/fans_hold_list?userId='+userId
                 });
             },
+
+            // 查看vip墙详情
+            goToVIPWall(e){
+                let VipWallId = e.currentTarget.dataset.id;
+                wx.navigateTo({
+                    url:'/pages/VIP_wall?wallId='+VipWallId
+                })
+            },
+
+            // 公墙历史记录
+            goToPublicWallRecord(){
+                let publicWallId = this.publicWallId;
+                wx.navigateTo({
+                    url:'/pages/public_wall?publicWallId=' + publicWallId
+                });
+            },
+
+            // 送礼
+            goToSendGift(e){
+                let status = e.currentTarget.dataset.status;
+                let userId = this.userId;
+                if(status == 'vip'){
+                    // 判断有没有私墙权限
+                }
+                wx.navigateTo({
+                   url:'/pages/send_gift?sendStatus=' + status+'&userId='+userId
+                });
+            },
+
+            // 连接设备
+            connectEquipment(){
+                wx.navigateTo({
+                    url:'/pages/select_bluetooth'
+                })
+            },
+
+            // 首充礼包
+            shouChong(){
+
+            },
         };
 
         // 声明组件之间的事件处理函数
         events = {};
 
         // 根据presentswallId获取完成私墙
-        async getSPresentsWallOneEvent(mypresentswallId){
+        async getSPresentsWallOneEvent(mypresentswallId,threeGiftWall_x){
             let res = await api.getSPresentsWallOne({
                 query:{
                     presentswallId:mypresentswallId
                 }
             });
             if(res.data.state == 1){
-                let threeGiftWall = this.threeGiftWall;
-                if(util.isEmpty(threeGiftWall)){
-                    threeGiftWall = [];
-                }
+                // let threeGiftWall = this.threeGiftWall;
+                // if(util.isEmpty(threeGiftWall)){
+                //     threeGiftWall = [];
+                // }
                 let dataList = res.data.data.list;
                 // 增加一个人物动漫形象
                 let logo = res.data.data.logo;
                 let logoX = this.canvasWidth - this.logoWidth;
                 let logoY = this.canvasHeight - this.logoHeight;
                 dataList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
-                threeGiftWall.push(dataList);
-                this.threeGiftWall = threeGiftWall;
+                this[threeGiftWall_x] = dataList;
+                // threeGiftWall.push(dataList);
+                // this.threeGiftWall = threeGiftWall;
             } else {
                 tip.error('网络错误');
             }
@@ -255,7 +381,7 @@
                 let logoY = this.canvasHeight - this.logoHeight;
                 publicList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
                 this.publicWall = publicList;
-
+                this.publicWallId = data.id;
             } else {
                 tip.error('网络错误');
             }
@@ -275,9 +401,14 @@
             display: flex;
             justify-content: flex-end;
             align-items: center;
-            font-size: 24rpx;
-            color: #666;
 
+            .right{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 24rpx;
+                color: #666;
+            }
             .icon-youjiantou{
                 font-size: 22rpx;
             }
@@ -286,19 +417,18 @@
         .three-swiper{
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
 
             .three-swiper-item{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                border-radius: 10rpx;
+                /*border-radius: 10rpx;*/
                 overflow: hidden;
 
                 .move-view{
                     position: relative;
                     background-color:#fff;
-                    border:4rpx solid #fed530;
                     border-radius:10px;
 
                     .move-view-sub{
@@ -307,6 +437,11 @@
                         justify-content: center;
                         align-items: center;
                     }
+                }
+
+                .move-view-active{
+                    border-radius:15px;
+                    border:4rpx solid #fed530;
                 }
 
                 .user-info{
@@ -349,26 +484,24 @@
         }
 
         .public-gift-wall{
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-
-            .public-gift-wall-center{
-                position: relative;
-
-                .public-gift-wall-center-each{
-                    position: absolute;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-            }
         }
 
         .cover{
 
             .content{
                 position: relative;
+
+                .content-btn{
+                    position: absolute;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    box-sizing: border-box;
+                }
             }
 
         }

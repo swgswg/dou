@@ -36,6 +36,7 @@
             ratio:{
                 type:Number,
                 default:1,
+                twoWay:true
             },
         };
 
@@ -47,6 +48,14 @@
             this.heightRatio = this.px2rpxHeight*2*this.ratio;
             this.$apply();
         };
+
+        watch = {
+            ratio(newVal){
+                this.widthRatio = this.px2rpxWidth*2*newVal;
+                this.heightRatio = this.px2rpxHeight*2*newVal;
+                this.$apply();
+            }
+        }
     }
 </script>
 

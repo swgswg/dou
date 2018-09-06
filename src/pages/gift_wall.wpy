@@ -10,6 +10,7 @@
                     :canvasWidth.sync="canvasWidth"
                     :canvasHeight.sync="canvasHeight"
                     :giftList.sync="giftList"
+                    :ratio.sync="ratio"
                 ></giftcanvas>
             </view>
             <view>
@@ -62,9 +63,11 @@
             logoWidth:131,
             logoHeight:234,
             // 礼物墙的宽
-            canvasWidth:650,
+            canvasWidth:325,
             // 礼物墙的高
-            canvasHeight:860,
+            canvasHeight:430,
+            // 礼物墙比例系数
+            ratio:1,
             // otherUserInfo:null,
             otherUserId:null,
             otherUserName:'',

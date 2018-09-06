@@ -10,9 +10,9 @@
             <shakestyle :shake.sync="shakeData"></shakestyle>
         </view>
         <view class="centent" style="height:{{500*px2rpxHeight}}px;margin-top:{{73*px2rpxHeight}}px;padding-left:{{30*px2rpxWidth}}px;" @tap.stop="getClickNumber">
-            <image class="content-img-left" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-right:{{37*px2rpxWidth}}px;" src="{{leftImg}}" data-shake="1" @tap.stop="shakeTransform"/>
+            <image class="content-img-left" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-right:{{37*px2rpxWidth}}px;" src="{{leftImg}}" @tap.stop="shakeTransform"/>
             <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrl"></circle>
-            <image class="content-img-right" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-left:{{37*px2rpxWidth}}px;" src="{{rightImg}}" data-shake="0" @tap.stop="shakeTransform"/>
+            <image class="content-img-right" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-left:{{37*px2rpxWidth}}px;" src="{{rightImg}}" @tap.stop="shakeTransform"/>
         </view>
         <block wx:if="{{shakeData == 1}}">
             <view class="shake-number" style="margin-top:{{56*px2rpxHeight}}px">{{shakeLegNumber}}</view>
@@ -186,10 +186,14 @@
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 点击左右图片按钮进行转换
-            shakeTransform(e){
-                // console.log(e);
+            shakeTransform(){
                 // 获取想要抖动样式 左腿右手
-                let shake = e.currentTarget.dataset.shake;
+                let shake = this.shakeData;
+                if(shake == 0){
+                    shake = 1;
+                } else if(shake == 1){
+                    shake = 0;
+                }
                 this.shakeData = shake;
                 this.$apply();
             },

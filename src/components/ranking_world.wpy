@@ -159,7 +159,6 @@
         }
 
         methods = {
-
             // 查看其他人的礼物墙
             seeOtherGiftWall(e){
                 let otherUserId = e.currentTarget.dataset.userid;
@@ -167,7 +166,7 @@
                     return;
                 }
                 wepy.navigateTo({
-                    url: '/pages/gift_wall?userId='+otherUserId
+                    url: '/pages/friend_gift_wall?userId='+otherUserId
                 })
             },
 
