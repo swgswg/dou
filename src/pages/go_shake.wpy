@@ -1,5 +1,5 @@
 <template>
-    <view class="leg-shake" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px">
+    <view class="leg-shake" style="width:{{750*px2rpxWidth}}px;height:{{1100*px2rpxHeight}}px">
         <image class="open-room" style="width:{{89*px2rpxWidth}}px;height:{{82*px2rpxWidth}}px;" src="{{open_room}}" @tap.stop="openRoom"></image>
         
         <!--签到 start-->
@@ -50,7 +50,8 @@
     export default class GoShake extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '抖腿大乐斗'
+            navigationBarTitleText: '抖腿大乐斗',
+            disableScroll: true,
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件

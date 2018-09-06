@@ -75,7 +75,8 @@
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '粉丝排名'
+            navigationBarTitleText: '粉丝排名',
+            disableScroll: true,
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -140,7 +141,6 @@
                 this.getFans(page,pageSize);
                 this.showLoading = false;
             },
-
         };
 
         // 获取用户粉丝

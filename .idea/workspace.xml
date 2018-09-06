@@ -47,41 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="my_friends.wpy" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/my_friends.wpy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="280">
-              <caret line="10" column="84" selection-start-line="10" selection-start-column="84" selection-end-line="10" selection-end-column="84" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="fans_rank.wpy" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/pages/fans_rank.wpy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="154" column="15" lean-forward="true" selection-start-line="154" selection-start-column="15" selection-end-line="154" selection-end-column="15" />
-              <folding>
-                <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#1;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#2;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#3;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#4;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#0;n#block#0;n#scroll-view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#0;n#view#4;n#view#0;n#block#0;n#scroll-view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#4294#4318#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="go_shake.wpy" pinned="false" current-in-tab="false">
+      <file leaf-file-name="go_shake.wpy" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="12" column="160" lean-forward="true" selection-start-line="12" selection-start-column="160" selection-end-line="12" selection-end-column="160" />
+            <state relative-caret-position="224">
+              <caret line="8" column="72" lean-forward="true" selection-start-line="8" selection-start-column="72" selection-end-line="8" selection-end-column="72" />
               <folding>
                 <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#image#0;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -90,7 +60,7 @@
                 <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#view#3;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#2299#2323#0" expanded="true" />
+                <element signature="e#2269#2293#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -110,13 +80,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>vip-wall</find>
-      <find>wall-content</find>
-      <find>wall</find>
-      <find>more</find>
-      <find>getPresentWallallScore</find>
-      <find>qSPresentsWall</find>
-      <find>qSPresentsWalls</find>
       <find>info</find>
       <find>picture-each-content</find>
       <find>picture</find>
@@ -139,6 +102,13 @@
       <find>otherGiftWallId</find>
       <find>giftWallId</find>
       <find>shakeTransform</find>
+      <find>buyNumber</find>
+      <find>getIntegral</find>
+      <find>integral</find>
+      <find>recom-each</find>
+      <find>name-direction</find>
+      <find>goumai</find>
+      <find>recom-buy</find>
       <find>content</find>
     </findStrings>
     <replaceStrings>
@@ -167,9 +137,7 @@
         <option value="$PROJECT_DIR$/src/pages/goods_detail.wpy" />
         <option value="$PROJECT_DIR$/src/utils/weixin.js" />
         <option value="$PROJECT_DIR$/src/components/common/tab.wpy" />
-        <option value="$PROJECT_DIR$/src/components/recom.wpy" />
         <option value="$PROJECT_DIR$/src/pages/commit_order.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/mall.wpy" />
         <option value="$PROJECT_DIR$/src/pages/order.wpy" />
         <option value="$PROJECT_DIR$/src/components/order_item.wpy" />
         <option value="$PROJECT_DIR$/src/pages/order_detail.wpy" />
@@ -184,7 +152,6 @@
         <option value="$PROJECT_DIR$/src/components/first_three.wpy" />
         <option value="$PROJECT_DIR$/src/pages/fans_hold_list.wpy" />
         <option value="$PROJECT_DIR$/src/pages/VIP_wall.wpy" />
-        <option value="$PROJECT_DIR$/src/components/gift_info.wpy" />
         <option value="$PROJECT_DIR$/src/pages/public_wall_record.wpy" />
         <option value="$PROJECT_DIR$/src/pages/gift_picture.wpy" />
         <option value="$PROJECT_DIR$/src/pages/public_sed_gift.wpy" />
@@ -202,9 +169,12 @@
         <option value="$PROJECT_DIR$/src/pages/my_info.wpy" />
         <option value="$PROJECT_DIR$/src/pages/public_wall.wpy" />
         <option value="$PROJECT_DIR$/src/components/ranking.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/go_shake.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/my_friends.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/mall.wpy" />
+        <option value="$PROJECT_DIR$/src/components/gift_info.wpy" />
+        <option value="$PROJECT_DIR$/src/components/recom.wpy" />
         <option value="$PROJECT_DIR$/src/pages/fans_rank.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/my_friends.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/go_shake.wpy" />
       </list>
     </option>
   </component>
@@ -381,12 +351,12 @@
       <workItem from="1535936592164" duration="39439000" />
       <workItem from="1536033338267" duration="8237000" />
       <workItem from="1536109388128" duration="38054000" />
-      <workItem from="1536195301914" duration="32629000" />
+      <workItem from="1536195301914" duration="36779000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1026530000" />
+    <option name="totallyTimeSpent" value="1030680000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -497,21 +467,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="87" column="53" lean-forward="true" selection-start-line="87" selection-start-column="53" selection-end-line="87" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/recom.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="853">
-          <caret line="107" column="49" lean-forward="true" selection-start-line="107" selection-start-column="49" selection-end-line="107" selection-end-column="49" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#block#0;n#view#0;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#!!top" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -721,28 +676,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
           <caret line="3" column="18" lean-forward="true" selection-start-line="3" selection-start-column="18" selection-end-line="3" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/gift_info.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-71">
-          <caret line="175" column="14" selection-start-line="175" selection-start-column="14" selection-end-line="175" selection-end-column="14" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#view#1;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#view#1;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#!!top" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/mall.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-308">
-          <caret line="37" column="50" selection-start-line="37" selection-start-column="42" selection-end-line="37" selection-end-column="50" />
-          <folding>
-            <element signature="e#2369#2393#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1034,13 +967,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/imgApi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="979">
-          <caret line="172" column="11" selection-start-line="172" selection-start-column="4" selection-end-line="172" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/ranking.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="364">
@@ -1054,34 +980,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/gift_info.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="12" column="160" lean-forward="true" selection-start-line="12" selection-start-column="160" selection-end-line="12" selection-end-column="160" />
+        <state relative-caret-position="1945">
+          <caret line="148" column="21" lean-forward="true" selection-start-line="148" selection-start-column="21" selection-end-line="148" selection-end-column="21" />
           <folding>
-            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#3;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#2299#2323#0" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#view#0;n#view#1;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#!!top" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/my_friends.wpy">
+    <entry file="file://$PROJECT_DIR$/src/pages/mall.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="10" column="84" selection-start-line="10" selection-start-column="84" selection-end-line="10" selection-end-column="84" />
+        <state relative-caret-position="-169">
+          <caret line="102" column="23" lean-forward="true" selection-start-line="102" selection-start-column="23" selection-end-line="102" selection-end-column="23" />
+          <folding>
+            <element signature="e#2369#2393#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/recom.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="279">
+          <caret line="42" column="11" lean-forward="true" selection-start-line="42" selection-start-column="11" selection-end-line="42" selection-end-column="11" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#1;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#view#0;n#block#0;n#view#0;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2589#2613#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/fans_rank.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="154" column="15" lean-forward="true" selection-start-line="154" selection-start-column="15" selection-end-line="154" selection-end-column="15" />
+        <state relative-caret-position="420">
+          <caret line="78" column="32" lean-forward="true" selection-start-line="78" selection-start-column="12" selection-end-line="78" selection-end-column="32" />
           <folding>
             <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -1093,6 +1037,40 @@
             <element signature="n#style#0;n#view#0;n#block#0;n#scroll-view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#0;n#view#4;n#view#0;n#block#0;n#scroll-view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="e#4294#4318#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/my_friends.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="36" lean-forward="true" selection-start-line="36" selection-end-line="36" />
+          <folding>
+            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/imgApi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="979">
+          <caret line="172" column="11" selection-start-line="172" selection-start-column="4" selection-end-line="172" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="8" column="72" lean-forward="true" selection-start-line="8" selection-start-column="72" selection-end-line="8" selection-end-column="72" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#3;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2269#2293#0" expanded="true" />
           </folding>
         </state>
       </provider>

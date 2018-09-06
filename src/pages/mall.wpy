@@ -144,12 +144,11 @@
                 });
                 if(res.data.state == 1){
                     that.integral = res.data.data.integral;
-                    that.$apply();
                     userInfo.integral = res.data.data.integral;
                     // 更新缓存
                     wepy.setStorageSync(USER_INFO, userInfo);
                 }
-
+                this.$apply();
             },
         };
 

@@ -139,7 +139,7 @@
                 if(/\d/.test(val) && val > 0){
                     sumIntegral = val * integral;
                     // 判断用户的积分是否足够
-                    if(sumIntegral > this.integral){
+                    if(sumIntegral >= that.integral){
                         wx.showToast({
                             title: '您的积分不足',
                             icon: 'none',
