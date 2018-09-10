@@ -30,7 +30,7 @@
                         <view>{{rank.name}}</view>
                     </view>
                     <view class="ml10 f14 w150" style="width:{{150*px2rpxWidth}}px;">
-                        <view>{{rank.time}}</view>
+                        <view>{{rank.time ? rank.time : 0}}</view>
                     </view>
                     <view class="ml10 f14 w150" style="width:{{150*px2rpxWidth}}px;">
                         <view>{{rank.shakeNum}}</view>
@@ -45,15 +45,15 @@
 <script >
     import wepy from 'wepy';
     import api from '@/utils/api';
+    import imgApi from '@/utils/imgApi';
     import { USER_INFO,PX_TO_RPX } from '@/utils/constant';
 
     export default class Ranking extends wepy.component {
 
         data = {
-            uploadFileUrl:api.uploadFileUrl,
-            fans_no1:api.fans_no1,
-            fans_no2:api.fans_no2,
-            fans_no3:api.fans_no3,
+            fans_no1:imgApi.fans_no1,
+            fans_no2:imgApi.fans_no2,
+            fans_no3:imgApi.fans_no3,
             px2rpxWidth:0,
             px2rpxHeight:0,
             userId:null,
@@ -106,46 +106,25 @@
         align-items: center;
         background-color: #fff;
         width: 100%;
-        /*height: 100%;*/
-        /*border: 1rpx solid red;*/
 
         .ranking-content{
             display: flex;
             justify-content: flex-start;
             align-items: center;
             width: 99%;
-            /*height: 80rpx;*/
-            /*margin-top: 6rpx;*/
-            /*box-shadow: 0 0 10rpx #ccc;*/
             border: 1rpx solid #fbbd46;
 
             .sort{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                /*width: 106rpx;*/
-                /*height: 80rpx;*/
                 font-family: 'Edo SZ';
-                /*border: 1rpx solid red;*/
-                /*image{*/
-                    /*width: 55rpx;*/
-                    /*height: 55rpx;*/
-                    /*!*border: 1rpx solid red;*!*/
-                /*}*/
             }
 
             .profile{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                /*width: 80rpx;*/
-                /*height: 80rpx;*/
-                /*border: 1rpx solid red;*/
-
-                image{
-                    /*width: 60rpx;*/
-                    /*height: 60rpx;*/
-                }
             }
 
             .info{
@@ -153,20 +132,13 @@
                 justify-content: space-around;
                 align-items: center;
                 width: 100%;
-                /*height: 80rpx;*/
-                /*border: 1rpx solid red;*/
 
                 .w100,.w150{
-                    /*width: 100rpx;*/
-                    /*border: 1rpx solid red;*/
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
 
-                .w150{
-                    /*width: 150rpx;*/
-                }
             }
         }
 

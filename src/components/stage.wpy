@@ -20,6 +20,10 @@
                            src="{{no_ready}}">
                     </image>
                 </block>
+                <block wx:if="{{}}">
+                    <view class="num-animate">+{{}}</view>
+                </block>
+
             </view>
         </block>
         <!--当前账号 end-->
@@ -57,7 +61,7 @@
                        style="width:{{176*px2rpxWidth}}px;height:{{69*px2rpxHeight}}px;"
                        src="{{gameUserInfo.score_bg}}">
                 </image>
-                <view class="info-name">{{gameUserInfo.shakeNumber}}</view>
+                <view class="info-name" style="font-size:35rpx;">{{gameUserInfo.shakeNumber}}</view>
             </block>
             <block wx:else>
                 <image class="info-img"
@@ -139,6 +143,12 @@
                 type:Number,
                 default:null,
                 twoWay:true
+            },
+            // 是否在运动
+            isActive:{
+                type:Boolean,
+                default:false,
+                twoWay:true
             }
         };
 
@@ -183,18 +193,10 @@
 
         .big-stage-img{
             position: relative;
-            /*width: 240rpx;*/
-            /*height: 271rpx;*/
-            /*border: 1rpx solid red;*/
 
             .big-profile-img{
                 position: absolute;
-                /*bottom: 34rpx;*/
-                /*left: 55rpx;*/
                 z-index: 10;
-                /*width: 131rpx;*/
-                /*height: 234rpx;*/
-                /*background: rgba(255,255,255,0.5);*/
             }
 
             .big-stage-img{
@@ -202,34 +204,22 @@
                 bottom: 0;
                 left: 0;
                 z-index: 5;
-                /*width: 240rpx;*/
-                /*height: 78rpx;*/
-
             }
 
             .big-ready-img{
                 position: absolute;
-                /*bottom: 40rpx;*/
-                /*left: 150rpx;*/
                 z-index: 10;
-                /*width: 40rpx;*/
-                /*height: 40rpx;*/
             }
+
+
         }
 
         .small-stage-img{
             position: relative;
-            /*width: 200rpx;*/
-            /*height: 271rpx;*/
-            /*border: 1rpx solid red;*/
 
             .small-profile-img{
                 position: absolute;
-                /*bottom: 34rpx;*/
-                /*left: 36rpx;*/
                 z-index: 10;
-                /*width: 131rpx;*/
-                /*height: 234rpx;*/
             }
 
             .small-stage-img{
@@ -237,17 +227,11 @@
                 bottom: 0;
                 left: 0;
                 z-index: 5;
-                /*width: 200rpx;*/
-                /*height: 65rpx;*/
             }
 
             .small-ready-img{
                 position: absolute;
-                /*bottom: 40rpx;*/
-                /*left: 125rpx;*/
                 z-index: 10;
-                /*width: 40rpx;*/
-                /*height: 40rpx;*/
             }
 
         }
@@ -258,16 +242,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            /*width: 176rpx;*/
-            /*height: 69rpx;*/
-            /*margin-top: 20rpx;*/
 
             .info-img{
                 position: absolute;
                 top: 0;
                 left: 0;
-                /*width: 176rpx;*/
-                /*height: 69rpx;*/
             }
 
             .info-name{
@@ -279,12 +258,58 @@
 
             .info-profile{
                 position: absolute;
-                /*top: -23rpx;*/
-                /*left: -23rpx;*/
-                /*width: 46rpx;*/
-                /*height: 46rpx;*/
                 border-radius: 50%;
                 border: 1rpx solid red;
+            }
+        }
+
+        .num-animate{
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 20;
+        }
+
+        /*动画*/
+        .animated {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+        .animated.infinite {
+            animation-iteration-count: infinite;
+        }
+        .bounceInUp {
+            animation-name: bounceInUp;
+        }
+        @keyframes bounceInUp {
+            from,
+            60%,
+            75%,
+            90%,
+            to {
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+            }
+
+            from {
+                opacity: 0;
+                transform: translate3d(0, 100px, 0);
+            }
+
+            60% {
+                opacity: 1;
+                transform: translate3d(0, -20px, 0);
+            }
+
+            75% {
+                transform: translate3d(0, 10px, 0);
+            }
+
+            90% {
+                transform: translate3d(0, -5px, 0);
+            }
+
+            to {
+                transform: translate3d(0, 0, 0);
             }
         }
     }

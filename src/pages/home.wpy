@@ -2,6 +2,7 @@
     <!--<view>-->
         <!--<image style="width:{{winWidth}}px;height:{{winHeight}}px;" src="{{ imgSrc }}" />-->
     <!--</view>-->
+    <view class="tiaoguo" style="width:{{120*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;top:{{20*px2rpxHeight}}px;right:{{20*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;" @tap.stop="goToxxx">跳过</view>
     <swiper autoplay="{{swiper_autoplay}}" interval="2000"  bindanimationfinish="animationFinish" style="width:{{winWidth}}px;height:{{winHeight}}px;">
         <repeat for="{{imgSrc}}" key="index" item="img">
             <swiper-item>
@@ -17,7 +18,7 @@
     // import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
-    import { USER_INFO } from '@/utils/constant';
+    import { USER_INFO, PX_TO_RPX} from '@/utils/constant';
 
     export default class Home extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -29,6 +30,8 @@
         data = {
             winWidth:0,
             winHeight:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             swiper_autoplay:true,
             imgSrc: [
                 imgApi.doutui_jinru1,
@@ -45,6 +48,10 @@
             // console.log(systemInfo);
             this.winWidth = systemInfo.windowWidth;
             this.winHeight = systemInfo.windowHeight;
+
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.$apply();
         };
 
@@ -58,20 +65,15 @@
             // console.log(userInfo);
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
-        components = {};
-
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
-
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
+            // 跳过
+            goToxxx(){
+                wepy.redirectTo({
+                    url: '/pages/not_connected'
+                });
+            },
+
             // 滑块动画结束
             animationFinish(e){
                 let that = this;
@@ -106,5 +108,14 @@
 </script>
 
 <style lang="less">
-
+    .tiaoguo{
+        position: fixed;
+        z-index: 999;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 24rpx;
+        color:#fff;
+        background-color: #666;
+    }
 </style>

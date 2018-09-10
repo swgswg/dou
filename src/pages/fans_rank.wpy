@@ -12,17 +12,17 @@
         <view class="fans-data" style="{{1080*px2rpxHeight}}px">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <block wx:for="{{fansList}}" wx:for-item="fans" wx:key="{{index}}">
-                    <view class="fans-data-each" style="height:{{80*px2rpxHeight}}px;margin-bottom:{{10*px2rpxHeight}}px">
+                    <view class="fans-data-each" style="height:{{80*px2rpxHeight}}px;margin-bottom:{{10*px2rpxHeight}}px" data-userid="{{fans.userId}}" @tap.stop="goToFriendGiftWall">
                         <!--排名 start-->
                         <view class="data-no data-center" style="margin-left:{{10*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
                             <block wx:if="{{fans.rownum == 1}}">
-                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no1.png"></image>
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="{{fans_no1}}"></image>
                             </block>
                             <block wx:elif="{{fans.rownum == 2}}">
-                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no2.png"></image>
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="{{fans_no2}}"></image>
                             </block>
                             <block wx:elif="{{fans.rownum == 3}}">
-                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="/static/images/fans_no3.png"></image>
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="{{fans_no3}}"></image>
                             </block>
                             <block wx:else>
                                 {{fans.rownum}}
@@ -37,7 +37,7 @@
                         <!--头像 end-->
 
                         <!--昵称 start-->
-                        <view class="data-name data-center" style="margin-left:{{25*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">{{fans.name}}</view>
+                        <view class="data-name" style="margin-left:{{25*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">{{fans.name}}</view>
                         <!--昵称 end-->
 
                         <!--vip墙 start-->
@@ -88,6 +88,9 @@
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             fans_data:imgApi.fans_data,
+            fans_no1:imgApi.fans_no1,
+            fans_no2:imgApi.fans_no2,
+            fans_no3:imgApi.fans_no3,
             px2rpxWidth:0,
             px2rpxHeight:0,
             page:1,
@@ -140,6 +143,14 @@
                 let pageSize = this.pageSize;
                 this.getFans(page,pageSize);
                 this.showLoading = false;
+            },
+
+            // 前去朋友礼物墙
+            goToFriendGiftWall(e){
+                let userId = e.currentTarget.dataset.userid;
+                wx.navigateTo({
+                    url:'/pages/friend_gift_wall?userId='+userId
+                });
             },
         };
 
@@ -219,10 +230,20 @@
                 color: #333;
                 border: 2rpx solid #ffe78c;
 
+
                 .data-center{
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                }
+
+                .data-name{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 .gift-data{

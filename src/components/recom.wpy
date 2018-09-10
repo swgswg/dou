@@ -4,7 +4,7 @@
             <block wx:for="{{goods}}" wx:for-item="goods" wx:key="{{index}}">
                 <view class="recom-each" style="width:{{702*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-bottom:{{20*px2rpxHeight}}px">
                     <view class="recom-img" style="width:{{140*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
-                        <imgage src="{{fileUrl + goods.photo}}" style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;"></imgage>
+                        <image src="{{fileUrl + goods.photo}}" style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;"></image>
                     </view>
                     <view class="name-direction" style="width:{{300*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
                         <view class="recom-name" style="width:100%;height:{{50*px2rpxHeight}}px;">{{goods.name}}</view>

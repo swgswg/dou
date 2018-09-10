@@ -2,14 +2,14 @@
 <template>
     <view class="send-gift" style="background: url({{wall_bg}}) no-repeat 0 0;">
         <view class="info" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
-            <!--被送礼物的玩家信息 start-->
+            <!--当前玩家信息 start-->
             <view class="user-info" style="height:{{84*px2rpxHeight}}px;border-radius:{{42*px2rpxHeight}}px;">
-                <image class="profile" src="{{user_info.photo}}" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;"></image>
-                <view class="name-energy" style="margin-left:{{10*px2rpxWidth}}px;">
-                    <view class="name">{{user_info.name}}</view>
+                <image class="profile" src="{{fans_info.photo}}" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;"></image>
+                <view class="name-energy" style="width:{{160*px2rpxWidth}}px;margin-left:{{10*px2rpxWidth}}px;">
+                    <view class="name">{{fans_info.name}}</view>
                     <view class="enenrgy">
                         <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{5*px2rpxWidth}}px;"></image>
-                        <view class="enenrgy-text">{{user_info.integral}}</view>
+                        <view class="enenrgy-text">{{fans_info.integral ? fans_info.integral : 0}}</view>
                     </view>
                 </view>
             </view>
@@ -29,17 +29,24 @@
 
         <!--礼物墙 start-->
         <view class="send-gift-canvas">
-            <giftcanvas
-                :canvasWidth.sync="canvasWidth"
-                :canvasHeight.sync="canvasHeight"
-                :giftList.sync="giftLIst"
+            <!--<giftcanvas-->
+                <!--:canvasWidth.sync="canvasWidth"-->
+                <!--:canvasHeight.sync="canvasHeight"-->
+                <!--:giftList.sync="giftList"-->
+                <!--:ratio.sync="ratio"-->
+            <!--&gt;</giftcanvas>-->
+            <moveview
+                :areaWidth.sync="canvasWidth"
+                :areaHeight.sync="canvasHeight"
+                :giftList.sync="giftList"
                 :ratio.sync="ratio"
-            ></giftcanvas>
+            >
+            </moveview>
         </view>
         <!--礼物墙 end-->
 
         <!--待送的礼物 start-->
-        <view class="send-gift-gifts">
+        <view class="send-gift-gifts" style="margin-top:{{10*px2rpxHeight}}px;">
             <mygift :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight" :fansId.sync="userId" :presentsWallId.sync="giftWallId" :isFullEnergy.sync="isFullEnergy"></mygift>
         </view>
         <!--待送的礼物 end-->
@@ -56,6 +63,7 @@
     import api from '@/utils/api';
     import calculate from '@/utils/calculate';
     import GiftCanvas from '@/components/gift_canvas';
+    import MoveView from '@/components/move_view';
     import Mygift from '@/components/mygift';
 
     export default class MyPage extends wepy.page {
@@ -67,7 +75,8 @@
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             giftcanvas:GiftCanvas,
-            mygift:Mygift
+            moveview:MoveView,
+            mygift:Mygift,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
@@ -78,6 +87,7 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             fansId:null,
+            fans_info:null,
             userId:null,
             user_info:null,
             otherUserPhone:null,
@@ -89,8 +99,8 @@
             logoHeight:api.logoHeight,
             canvasWidth:api.canvasWidth,
             canvasHeight:api.canvasHeight,
-            ratio:1.06,
-            giftLIst:null,
+            ratio:1.05,
+            giftList:null,
             giftWallId:null,
             // 私墙满500能量才能送礼
             fullEnergy:api.fullEnergy,
@@ -100,11 +110,18 @@
 
         // 在Page和Component共用的生命周期函数
         async onLoad(options) {
+            // console.log('send_gift==',options);
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             let userInfo = wepy.getStorageSync(USER_INFO);
+            let fans_info = {};
+            fans_info.id = userInfo.id;
+            fans_info.photo = userInfo.photo;
+            fans_info.name = userInfo.name;
+            fans_info.integral = userInfo.integral;
+            this.fans_info = fans_info;
             this.fansId = userInfo.id;
 
             if(util.isEmpty(options.userId)){
@@ -125,36 +142,22 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        async onReady() {
-            let userId = this.userId;
-            let user_info = {};
-            // 获取被送礼玩家信息
-            let res = await api.getOneUserInfo({
-                query:{
-                    userId:userId
-                }
-            });
-            if(res.data.state == 1){
-                let data = res.data.data;
-                user_info.photo = data.photo;
-                user_info.name = data.name;
-                user_info.integral = data.integral;
-                user_info.logo = data.logo;
-            } else {
-                tip.error('网络错误');
-            }
-
+        onReady() {
             if(this.wallStatus == 'vip'){
                 // 私墙不显示其他玩家头像
                 this.showOtherProfile = false;
                 // 获取私墙id
                 this.getSPresentsWallEvent();
+                this.getOneUserInfoEvent();
             } else if(this.wallStatus == 'public'){
                 // 公共的墙显示玩家头像
                 this.showOtherProfile = true;
                 // 公墙获取其他玩家头像
                 this.getGiveGiftUserPhotoEvent();
+                // 获取公墙
+                this.getPresentsWallEvent();
             }
+
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
@@ -197,6 +200,7 @@
                         this.isFullEnergy = false;
                     }
                 }
+                this.$apply();
             }
         };
 
@@ -210,10 +214,12 @@
             });
             if(res.data.state == 1){
                 this.otherUserPhone = res.data.data.slice(0,7);
-                this.otherUserNumber = '';
+                // 总的送礼人数
+                this.otherUserNumber = 0;
             } else {
                 tip.error('网络错误');
             }
+            this.$apply();
         };
         
         // 获取私墙id
@@ -234,6 +240,31 @@
             this.$apply();
         }
 
+        // 获取被送礼物人的信息
+        async getOneUserInfoEvent(){
+            let userId = this.userId;
+            let res = await api.getOneUserInfo({
+                query:{
+                    userId:userId
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data;
+                let dataList = [];
+                // 增加一个人物动漫形象
+                let logo = data.logo;
+                let logoX = (this.canvasWidth - this.logoWidth - 5)*this.ratio;
+                let logoY = (this.canvasHeight - this.logoHeight - 5)*this.ratio;
+                dataList.push({id:-1,giftId:-1,wide:this.logoWidth,high: this.logoHeight,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
+                this.giftList = dataList;
+                // console.log(this.giftList);
+                this.$apply();
+            } else {
+                tip.error('网络错误');
+            }
+
+        }
+
         // 获取公共墙的礼物
         async getPresentsWallEvent(){
             let userId = this.userId;
@@ -245,16 +276,21 @@
             if(res.data.state == 1){
                 let data = res.data.data;
                 let dataList = data.axle;
+                if(util.isEmpty(dataList)){
+                    dataList = [];
+                }
                 // 增加一个人物动漫形象
-                let logo = this.user_info.logo;
-                let logoX = this.canvasWidth - this.logoWidth;
-                let logoY = this.canvasHeight - this.logoHeight;
-                giftList.push({id:-1,giftId:-1,wide:131,high:234,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
+                let logo = data.logo;
+                let logoX = (this.canvasWidth - this.logoWidth - 5)*this.ratio;
+                let logoY = (this.canvasHeight - this.logoHeight - 5)*this.ratio;
+                dataList.push({id:-1,giftId:-1,wide:this.logoWidth,high: this.logoHeight,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
                 this.logoLocation = {x:logoX,y:logoY};
-                this.giftLIst = dataList;
+                this.giftList = dataList;
+                // console.log(this.giftList);
             } else {
                 tip.error('网络错误');
             }
+            this.$apply();
         }
 
 
@@ -293,8 +329,16 @@
                     flex-direction: column;
                     justify-content: center;
                     align-items: center;
-                    font-size: 30rpx;
+                    font-size: 25rpx;
                     color:#fff;
+                    overflow: hidden;
+
+                    .name,.enenrgy{
+                        width: 100%;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow:ellipsis ;
+                    }
 
                     .enenrgy{
                         display: flex;

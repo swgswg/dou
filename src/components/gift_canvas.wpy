@@ -1,12 +1,12 @@
 // 礼物墙
 <template>
     <view class="gift-canvas flex-center">
-        <movable-area style="width:{{canvasWidth*widthRatio}}px;height:{{(canvasHeight*heightRatio)}}px;background-color:#fff;border-radius:20rpx;border:3rpx solid #ec2c98;">
+        <movable-area style="width:{{canvasWidth*widthRatio}}px;height:{{(canvasHeight*heightRatio)}}px;background-color:#fff;border-radius:10rpx;border:3rpx solid #ec2c98;">
             <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.giftId}}">
                 <block wx:if="{{gift.type == 1}}">
                     <movable-view
                             style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
-                            x="{{gift.xaxle*widthRatio}}" y="{{gift.yaxle*heightRatio}}"
+                            x="{{gift.xaxle*widthRatio}}" y="{{gift.yaxle*widthRatio}}"
                             direction="all"
                             disabled
                             bindchange="moveGift"
@@ -16,8 +16,8 @@
                 </block>
                 <block wx:else>
                     <movable-view
-                            style="width:{{gift.wide*px2rpxWidth*2}}px; height:{{gift.high*px2rpxWidth*2}}px;"
-                            x="{{gift.xaxle*widthRatio}}" y="{{gift.yaxle*heightRatio}}"
+                            style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
+                            x="{{gift.xaxle*widthRatio}}" y="{{gift.yaxle*widthRatio}}"
                             direction="all"
                             bindchange="moveGift"
                             data-index="{{index}}">

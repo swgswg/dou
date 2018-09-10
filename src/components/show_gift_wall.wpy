@@ -69,7 +69,7 @@
         .wall-content{
             position: relative;
             width: 100%;
-            border-radius: 20rpx;
+            border-radius: 10rpx;
             border: 3rpx solid #ec2c98;
             overflow: hidden;
             background-color: #fff;

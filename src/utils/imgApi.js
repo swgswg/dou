@@ -174,4 +174,11 @@ module.exports = {
     shouchong:uploadFileUrl + 'shouchong.png',
     weikaiqi:uploadFileUrl + 'weikaiqi.png',
 
+    // 选择模式
+    model_child:uploadFileUrl + 'model_child.png',
+    model_man:uploadFileUrl + 'model_man.png',
+    model_oldman:uploadFileUrl + 'model_oldman.png',
+    model_woman:uploadFileUrl + 'model_woman.png',
+
+
 };

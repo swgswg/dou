@@ -11,7 +11,7 @@
         <!--当前账号 start-->
         <view class="shang" style="margin-top:{{116*px2rpxHeight}}px">
             <stageshang
-                :gameUserInfo.sync="gameUserInfo_shang" :roomId.sync="roomId"
+                :gameUserInfo.sync="gameUserInfo_shang" :roomId.sync="roomId" :isActive.sync="isActive_shang"
             ></stageshang>
         </view>
         <!--当前账号 end-->
@@ -20,7 +20,7 @@
             <!--左边玩家 start-->
             <view class="xia-left">
                 <stageleft
-                        :gameUserInfo.sync="gameUserInfo_left"
+                        :gameUserInfo.sync="gameUserInfo_left" :roomId.sync="roomId" :isActive.sync="isActive_left"
                 ></stageleft>
             </view>
             <!--左边玩家 end-->
@@ -40,7 +40,7 @@
             <!--右边玩家 start-->
             <view class="xia-right">
                 <stageright
-                        :gameUserInfo.sync="gameUserInfo_right"
+                        :gameUserInfo.sync="gameUserInfo_right" :roomId.sync="roomId" :isActive.sync="isActive_right"
                 ></stageright>
             </view>
             <!--右边玩家 end-->
@@ -80,7 +80,9 @@
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '对拼中'
+            navigationBarTitleText: '对拼中',
+            disableScroll: true,
+            enablePullDownRefresh:false,
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -96,6 +98,7 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
             gaming_background:imgApi.gaming_background,
             logout:imgApi.logout,
             windowWidth:0,
@@ -115,12 +118,16 @@
 
             // 当前账号 stage舞台大小 profile人物形象 isReady是否准备好 headPortrait头像
             gameUserInfo_shang:{isExiet:true,stageSize:'big',logo:imgApi.no_people,stage:imgApi.stage_red,isReady:false,score_bg:imgApi.score_bg_red,shakeNumber:0,headPortrait:''},
+            // 当前玩家是否在玩
+            isActive_shang:false,
 
             // 左边玩家
-            gameUserInfo_left:{isExiet:true,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:false,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
+            gameUserInfo_left:{isExiet:false,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:false,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
+            isActive_left:false,
 
             // 右边玩家
-            gameUserInfo_right:{isExiet:true,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_blue,isReady:true,score_bg:imgApi.score_bg_blue,shakeNumber:0,headPortrait:'a'},
+            gameUserInfo_right:{isExiet:true,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_blue,isReady:true,score_bg:imgApi.score_bg_blue,shakeNumber:0,headPortrait:''},
+            isActive_right:false,
 
             // 抖动方式对应的图片
             leg_shake:imgApi.leg_shake,
@@ -140,7 +147,10 @@
             countdown3:imgApi.countdown3,
 
             // 倒计时是否确定(true不确定/false确定)
-            timeConfirm:true
+            timeConfirm:true,
+
+            // 确定按钮第一个点击有效,重复点击无效
+            flag:true,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -179,7 +189,7 @@
             // 修改当前玩家信息
             let gameUserInfo_shang =  this.gameUserInfo_shang;
             gameUserInfo_shang.isExiet = true;
-            gameUserInfo_shang.logo = imgApi[userInfo.logo];
+            gameUserInfo_shang.logo = this.fileUrl + userInfo.logo;
             gameUserInfo_shang.headPortrait = userInfo.photo;
             this.gameUserInfo_shang = gameUserInfo_shang;
             this.$apply();
@@ -263,6 +273,9 @@
                 if(gameUserInfo_shang.isReady && this.isMaster && ((gameUserInfo_left.isExiet && gameUserInfo_left.isReady) || (gameUserInfo_right.isExiet && gameUserInfo_right.isReady))){
                 // if(gameUserInfo_shang.isReady && gameUserInfo_left.isReady && gameUserInfo_right.isReady && this.isMaster){
 
+                    if(!that.flag){
+                        return;
+                    }
                     // 判断存在的用户是否准备好(存在用户都没有准备好不能开始游戏,只要有一个准备好了就可以开始游戏)
                     if( !((gameUserInfo_left.isExiet && gameUserInfo_left.isReady) && (gameUserInfo_right.isExiet && gameUserInfo_right.isReady)) ){
                         wx.showModal({
@@ -272,16 +285,14 @@
                                 if (res.confirm) {
                                     // 开始游戏
                                     that.startGame();
-
-                                } else if (res.cancel) {
-
+                                    that.flag = false;
                                 }
                             }
                         });
                     } else {
                         // 开始游戏
                         that.startGame();
-
+                        that.flag = false;
                     }
                     return
                 }
@@ -334,23 +345,23 @@
                         content:'您正在游戏中,谨慎退出',
                         success:function(res) {
                             if (res.confirm) {
+                                // 停止计时,
+                                that.$broadcast('stopCountDown');
+                                that.selectTimeIndex = [0,0,0];
                                 that.$apply();
                                 wepy.switchTab({
                                     url: '/pages/go_shake'
                                 });
-                            } else if(res.cancel){
-
                             }
                         }
                     });
                     return;
                 }
+
                 wepy.switchTab({
                     url: '/pages/go_shake'
                 })
             }
-
-
         };
 
         // 获取抖动方式和房间号
@@ -381,7 +392,6 @@
                 });
             // }
         }
-
 
         // 3-2-1倒计时
         countDown(){
@@ -441,7 +451,6 @@
             return true;
         }
 
-
         // 手动抖动不在游戏时间内的抖动,计入缓存中
         changeShakeHandStorage(){
             // 获取缓存中手动抖动的次数
@@ -458,7 +467,6 @@
                 wepy.setStorageSync(SHAKE_HAND_NUMBER,shakeHandNumber);
             }
         }
-
 
         // 开始游戏需要的逻辑
         startGame(){

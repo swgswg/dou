@@ -22,12 +22,13 @@
                             <!--<image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="" data-url="{{}}" data-index="{{index}}" @tap.stop="preview"></image>-->
                         <!--</view>-->
                         <view class="picture-each-content" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px;">
-                            <block wx:if="{{list.slt}}">
-                                <image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.slt}}" ></image>
-                            </block>
-                            <block wx:else>
-                                <image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.logo}}" ></image>
-                            </block>
+                            <!--<block wx:if="{{list.slt}}">-->
+                                <!--<image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.slt}}" ></image>-->
+                            <!--</block>-->
+                            <!--<block wx:else>-->
+                                <!--<image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.logo}}" ></image>-->
+                            <!--</block>-->
+                            <image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.url}}" ></image>
                             <view class="info" style="height:{{50*px2rpxHeight}}px;padding:0 {{10*px2rpxWidth}}px;">
                                 <image src="{{list.photo}}" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;"></image>
                                 <view class="info-right">
@@ -249,11 +250,11 @@
                 if(newVal == 0){
                     // 收到礼物
                     this.giftList = this.receive_giftList;
-                    // this.get_qSPresentsWall(this.receive_page,this.send_pageSize);
+                    this.get_qSPresentsWall(this.receive_page,this.send_pageSize);
                 } else if(newVal == 1){
                     // 送出礼物
                     this.giftList = this.send_giftList;
-                    // this.get_qSPresentsWalls(this.send_page,this.send_pageSize);
+                    this.get_qSPresentsWalls(this.send_page,this.send_pageSize);
                 }
             },
         };
@@ -404,6 +405,7 @@
                         position: absolute;
                         left: 0;
                         bottom: 0;
+                        z-index: 99;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;

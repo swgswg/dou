@@ -8,95 +8,103 @@
             </view>
             <!--前三名 end-->
 
-            <view style="width:100%;height:{{30*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;box-sizing:border-box;">
-                <view class="fans-list-btn" @tap.stop="goToFansHoldList">
-                    <view>粉丝霸榜</view>
-                    <text style="margin-left:{{5*px2rpxWidth}}px;" class="iconfont icon-youjiantou"></text>
-                </view>
-            </view>
+            <!--<view style="width:100%;height:{{30*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;box-sizing:border-box;">-->
+                <!--<view class="fans-list-btn" @tap.stop="goToFansHoldList">-->
+                    <!--<view>粉丝霸榜</view>-->
+                    <!--<text style="margin-left:{{5*px2rpxWidth}}px;" class="iconfont icon-youjiantou"></text>-->
+                <!--</view>-->
+            <!--</view>-->
 
             <!--前三名的礼物墙 start-->
-            <swiper class="three-swiper"
-                    current="0" circular="true" previous-margin="{{115*px2rpxWidth}}px" next-margin="{{115*px2rpxWidth}}px"
-                    bindchange="swiperChange"
-                    style="width:100%;height:{{canvasHeight*2*px2rpxHeight*0.8+20}}px;margin-top:{{30*px2rpxHeight}}px;">
+            <!--<swiper class="three-swiper"-->
+                    <!--current="0" circular="true" previous-margin="{{115*px2rpxWidth}}px" next-margin="{{115*px2rpxWidth}}px"-->
+                    <!--bindchange="swiperChange"-->
+                    <!--style="width:100%;height:{{canvasHeight*2*px2rpxHeight*0.8+20}}px;margin-top:{{30*px2rpxHeight}}px;">-->
 
-                <!--第一名 start-->
-                <swiper-item class="three-swiper-item" style="position:relative;">
-                    <view class="move-view {{currentSwiper == 0 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_1}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_1}}px;" data-id="{{threeGiftWall_1_id}}" @tap.stop="goToVIPWall">
+                <!--&lt;!&ndash;第一名 start&ndash;&gt;-->
+                <!--<swiper-item class="three-swiper-item" style="position:relative;">-->
+                    <!--<view class="move-view {{currentSwiper == 0 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_1}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_1}}px;" data-id="{{threeGiftWall_1_id}}" @tap.stop="goToVIPWall">-->
 
-                        <showgiftwall_1 :giftList.sync="threeGiftWall_1" :ratio.sync="ratio_1"></showgiftwall_1>
+                        <!--<showgiftwall_1 :giftList.sync="threeGiftWall_1" :ratio.sync="ratio_1"></showgiftwall_1>-->
 
-                        <view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_1}}px;height:{{120*px2rpxWidth*ratio_1}}px;bottom:0;left:0;">
-                            <view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
-                                <image src="{{fileUrl + firstOfThree[1].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
-                            </view>
-                            <view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[1].name}}</view>
-                            <view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">
-                                <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
-                                <view>{{firstOfThree[1].score}}</view>
-                            </view>
-                        </view>
-                    </view>
-                </swiper-item>
-                <!--第一名 end-->
+                        <!--<view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_1}}px;height:{{120*px2rpxWidth*ratio_1}}px;bottom:0;left:0;">-->
+                            <!--<view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">-->
+                                <!--<image src="{{fileUrl + firstOfThree[1].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>-->
+                            <!--</view>-->
+                            <!--<view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[1].name}}</view>-->
+                            <!--<view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">-->
+                                <!--<image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>-->
+                                <!--<view>{{firstOfThree[1].score}}</view>-->
+                            <!--</view>-->
+                        <!--</view>-->
+                    <!--</view>-->
+                <!--</swiper-item>-->
+                <!--&lt;!&ndash;第一名 end&ndash;&gt;-->
 
-                <!--第二名 start-->
-                <swiper-item class="three-swiper-item" style="position:relative;">
-                    <view class="move-view {{currentSwiper == 1 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_2}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_2}}px;" data-id="{{threeGiftWall_2_id}}" @tap.stop="goToVIPWall">
-                        <!--礼物墙信息 start-->
-                        <showgiftwall_2 :giftList.sync="threeGiftWall_2" :ratio.sync="ratio_2"></showgiftwall_2>
-                        <!--礼物墙信息 end-->
+                <!--&lt;!&ndash;第二名 start&ndash;&gt;-->
+                <!--<swiper-item class="three-swiper-item" style="position:relative;">-->
+                    <!--<view class="move-view {{currentSwiper == 1 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_2}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_2}}px;" data-id="{{threeGiftWall_2_id}}" @tap.stop="goToVIPWall">-->
+                        <!--&lt;!&ndash;礼物墙信息 start&ndash;&gt;-->
+                        <!--<showgiftwall_2 :giftList.sync="threeGiftWall_2" :ratio.sync="ratio_2"></showgiftwall_2>-->
+                        <!--&lt;!&ndash;礼物墙信息 end&ndash;&gt;-->
 
-                        <!--人物信息 start-->
-                        <view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_2}}px;height:{{120*px2rpxWidth*ratio_2}}px;bottom:0;left:0;">
-                            <view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
-                                <image src="{{fileUrl + firstOfThree[0].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
-                            </view>
-                            <view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[0].name}}</view>
-                            <view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">
-                                <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
-                                <view>{{firstOfThree[0].score}}</view>
-                            </view>
-                        </view>
-                        <!--人物信息 end-->
-                    </view>
-                </swiper-item>
-                <!--第二名 end-->
+                        <!--&lt;!&ndash;人物信息 start&ndash;&gt;-->
+                        <!--<view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_2}}px;height:{{120*px2rpxWidth*ratio_2}}px;bottom:0;left:0;">-->
+                            <!--<view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">-->
+                                <!--<image src="{{fileUrl + firstOfThree[0].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>-->
+                            <!--</view>-->
+                            <!--<view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[0].name}}</view>-->
+                            <!--<view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">-->
+                                <!--<image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>-->
+                                <!--<view>{{firstOfThree[0].score}}</view>-->
+                            <!--</view>-->
+                        <!--</view>-->
+                        <!--&lt;!&ndash;人物信息 end&ndash;&gt;-->
+                    <!--</view>-->
+                <!--</swiper-item>-->
+                <!--&lt;!&ndash;第二名 end&ndash;&gt;-->
 
-                <!--第三名 start-->
-                <swiper-item class="three-swiper-item" style="position:relative;">
-                    <view class="move-view {{currentSwiper == 2 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_3}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_3}}px;" data-id="{{threeGiftWall_3_id}}" @tap.stop="goToVIPWall">
-                        <showgiftwall_3 :giftList.sync="threeGiftWall_3" :ratio.sync="ratio_3"></showgiftwall_3>
+                <!--&lt;!&ndash;第三名 start&ndash;&gt;-->
+                <!--<swiper-item class="three-swiper-item" style="position:relative;">-->
+                    <!--<view class="move-view {{currentSwiper == 2 ? 'move-view-active':''}}" style="width:{{canvasWidth*2*px2rpxWidth*ratio_3}}px;height:{{canvasHeight*2*px2rpxHeight*ratio_3}}px;" data-id="{{threeGiftWall_3_id}}" @tap.stop="goToVIPWall">-->
+                        <!--<showgiftwall_3 :giftList.sync="threeGiftWall_3" :ratio.sync="ratio_3"></showgiftwall_3>-->
 
-                        <view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_3}}px;height:{{120*px2rpxWidth*ratio_3}}px;bottom:0;left:0;">
-                            <view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
-                                <image src="{{fileUrl + firstOfThree[2].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
-                            </view>
-                            <view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[2].name}}</view>
-                            <view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">
-                                <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
-                                <view>{{firstOfThree[2].score}}</view>
-                            </view>
-                        </view>
-                    </view>
-                </swiper-item>
-                <!--第三名 end-->
+                        <!--<view class="move-view-sub user-info" style="width:{{canvasWidth*2*px2rpxWidth*ratio_3}}px;height:{{120*px2rpxWidth*ratio_3}}px;bottom:0;left:0;">-->
+                            <!--<view class="user-profile" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">-->
+                                <!--<image src="{{fileUrl + firstOfThree[2].photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>-->
+                            <!--</view>-->
+                            <!--<view class="user-name" style="margin-left:{{25*px2rpxWidth}}px;">{{firstOfThree[2].name}}</view>-->
+                            <!--<view class="user-score" style="margin-left:{{200*px2rpxWidth}}px;">-->
+                                <!--<image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{10*px2rpxWidth}}px;"></image>-->
+                                <!--<view>{{firstOfThree[2].score}}</view>-->
+                            <!--</view>-->
+                        <!--</view>-->
+                    <!--</view>-->
+                <!--</swiper-item>-->
+                <!--&lt;!&ndash;第三名 end&ndash;&gt;-->
 
-            </swiper>
+            <!--</swiper>-->
             <!--前三名的礼物墙 end-->
         </block>
 
         <!--暂无数据显示-->
         <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
 
-        <view class="send-vip-wall-btn" style="margin-top:{{16*px2rpxHeight}}px;">
-            <view class="button button-highlight button-pill button-small"
-                  style="background-color:#fed530"
-                  data-status="vip"
-                  @tap.stop="goToSendGift"
-            >送VIP墙</view>
+        <!--<view class="send-vip-wall-btn" style="margin-top:{{16*px2rpxHeight}}px;">-->
+            <!--<view class="button button-highlight button-pill button-small"-->
+                  <!--style="background-color:#fed530"-->
+                  <!--data-status="vip"-->
+                  <!--@tap.stop="goToSendGift"-->
+            <!--&gt;送VIP墙</view>-->
+        <!--</view>-->
+
+        <!--中间三个按钮 start-->
+        <view class="three-btn" style="height:{{180*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
+            <view class="btn-1" style="width:{{184*px2rpxWidth}}px;height:{{70*px2rpxHeight}}px;border-radius:{{35*px2rpxHeight}}px;" @tap.stop="goToRecord">好友信息</view>
+            <view class="btn-2" style="width:{{184*px2rpxWidth}}px;height:{{70*px2rpxHeight}}px;border-radius:{{35*px2rpxHeight}}px;" data-status="vip" @tap.stop="goToSendGift">送VIP墙</view>
+            <view class="btn-3" style="width:{{184*px2rpxWidth}}px;height:{{70*px2rpxHeight}}px;border-radius:{{35*px2rpxHeight}}px;" @tap.stop="goToFansHoldList">粉丝霸榜</view>
         </view>
+        <!--中间三个按钮 end-->
 
         <!--历史记录 start-->
         <view style="width:100%;height:{{30*px2rpxHeight}}px;margin-top:{{27*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;box-sizing:border-box;">
@@ -154,15 +162,16 @@
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '首页'
+            navigationBarTitleText: '好友礼物墙',
+            enablePullDownRefresh:false,
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             firstthree:FirstThree,
-            showgiftwall_1:ShowGiftWall,
-            showgiftwall_2:ShowGiftWall,
-            showgiftwall_3:ShowGiftWall,
+            // showgiftwall_1:ShowGiftWall,
+            // showgiftwall_2:ShowGiftWall,
+            // showgiftwall_3:ShowGiftWall,
             showgiftwall:ShowGiftWall,
             placeholder: Placeholder,
             coverlayer: CoverLayer
@@ -186,16 +195,17 @@
             canvasHeight:api.canvasHeight,
             logoWidth:api.logoWidth,
             logoHeight:api.logoHeight,
-            threeGiftWall_1:null,
-            threeGiftWall_1_id:null,
-            ratio_1:0.8,
-            threeGiftWall_2:null,
-            threeGiftWall_2_id:null,
-            ratio_2:0.6,
-            threeGiftWall_3:null,
-            threeGiftWall_3_id:null,
-            ratio_3:0.6,
-            currentSwiper:0,
+
+            // threeGiftWall_1:null,
+            // threeGiftWall_1_id:null,
+            // ratio_1:0.8,
+            // threeGiftWall_2:null,
+            // threeGiftWall_2_id:null,
+            // ratio_2:0.6,
+            // threeGiftWall_3:null,
+            // threeGiftWall_3_id:null,
+            // ratio_3:0.6,
+            // currentSwiper:0,
             // 公共墙礼物
             publicWall:null,
             publicWallId:null,
@@ -224,41 +234,11 @@
 
         // 只在Page中存在的页面生命周期函数
         async onReady() {
-            let that = this;
-            let res = await api.getSPresentWallall({
-                query:{
-                    // userId: that.userId,
-                    userId: 17,
-                    page:1,
-                    pageSize:3
-                }
-            });
-            if(res.data.state == 1){
-                let data = res.data.data.PageInfo.list;
-                if(util.isEmpty(data[0])){
-                    this.is_empty = true;
-                } else {
-                    let firstOfThree = [];
-                    firstOfThree.push(data[1]);
-                    this.threeGiftWall_2_id = data[1].id;
-                    this.getSPresentsWallOneEvent(data[1].id,threeGiftWall_2);
-
-                    firstOfThree.push(data[0]);
-                    this.threeGiftWall_1_id = data[1].id;
-                    this.getSPresentsWallOneEvent(data[0].id,threeGiftWall_1);
-
-                    firstOfThree.push(data[2]);
-                    this.threeGiftWall_3_id = data[1].id;
-                    this.getSPresentsWallOneEvent(data[2].id,threeGiftWall_3);
-
-                    this.firstOfThree = firstOfThree;
-                    this.is_empty = false;
-                }
-
-            } else {
-                tip.error('网络错误');
-            }
-            this.$apply();
+            console.log('friend_gift_wall===',this.userId);
+            // 获取私墙前三名
+            this.getSPresentWallallEvent();
+            // 获取公墙
+            this.getPresentsWallEvent();
         };
 
         // 声明数据watcher（详见后文介绍）
@@ -284,6 +264,14 @@
                 }
                 this.currentSwiper = currnet;
                 this.$apply();
+            },
+
+            // 好友信息
+            goToRecord(){
+                let userId = this.userId;
+                wx.navigateTo({
+                    url:'/pages/record?userId='+userId
+                });
             },
 
             // 粉丝霸榜
@@ -338,6 +326,44 @@
         // 声明组件之间的事件处理函数
         events = {};
 
+        // 获取私墙前三名
+        async getSPresentWallallEvent(){
+            let userId = this.userId;
+            let res = await api.getSPresentWallall({
+                query:{
+                    userId: userId,
+                    page:1,
+                    pageSize:3
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data.PageInfo.list;
+                if(util.isEmpty(data[0])){
+                    this.is_empty = true;
+                } else {
+                    let firstOfThree = [];
+                    firstOfThree.push(data[1]);
+                    // this.threeGiftWall_2_id = data[1].id;
+                    // this.getSPresentsWallOneEvent(data[1].id,threeGiftWall_2);
+
+                    firstOfThree.push(data[0]);
+                    // this.threeGiftWall_1_id = data[1].id;
+                    // this.getSPresentsWallOneEvent(data[0].id,threeGiftWall_1);
+
+                    firstOfThree.push(data[2]);
+                    // this.threeGiftWall_3_id = data[1].id;
+                    // this.getSPresentsWallOneEvent(data[2].id,threeGiftWall_3);
+
+                    this.firstOfThree = firstOfThree;
+                    this.is_empty = false;
+                }
+
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        }
+
         // 根据presentswallId获取完成私墙
         async getSPresentsWallOneEvent(mypresentswallId,threeGiftWall_x){
             let res = await api.getSPresentsWallOne({
@@ -366,20 +392,23 @@
         }
 
         // 根据userId获取公共礼物墙
-        async getPresentsWallEvent(myuserId){
+        async getPresentsWallEvent(){
+            let userId = this.userId;
             let publicList = [];
             let res = await api.getPresentsWall({
                 query:{
-                    userId:myuserId
+                    userId:userId
                 }
             });
             if(res.data.state == 1){
                 let data = res.data.data;
+                console.log(data.axle);
                 publicList = data.axle;
-                let logo = data.userPhoto.photo;
+                let logo = data.logo;
                 let logoX = this.canvasWidth - this.logoWidth;
                 let logoY = this.canvasHeight - this.logoHeight;
                 publicList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
+                // console.log(publicList);
                 this.publicWall = publicList;
                 this.publicWallId = data.id;
             } else {
@@ -414,73 +443,98 @@
             }
         }
 
-        .three-swiper{
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+        /*.three-swiper{*/
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: flex-start;*/
 
-            .three-swiper-item{
+            /*.three-swiper-item{*/
+                /*display: flex;*/
+                /*justify-content: center;*/
+                /*align-items: center;*/
+                /*!*border-radius: 10rpx;*!*/
+                /*overflow: hidden;*/
+
+                /*.move-view{*/
+                    /*position: relative;*/
+                    /*background-color:#fff;*/
+                    /*border-radius:10px;*/
+
+                    /*.move-view-sub{*/
+                        /*position: absolute;*/
+                        /*display: flex;*/
+                        /*justify-content: center;*/
+                        /*align-items: center;*/
+                    /*}*/
+                /*}*/
+
+                /*.move-view-active{*/
+                    /*border-radius:15px;*/
+                    /*border:4rpx solid #fed530;*/
+                /*}*/
+
+                /*.user-info{*/
+                    /*!*position: absolute;*!*/
+                    /*!*bottom: 0;*!*/
+                    /*!*left: 0;*!*/
+                    /*display: flex;*/
+                    /*justify-content: flex-start;*/
+                    /*align-items: center;*/
+                    /*border-bottom-left-radius: 10rpx;*/
+                    /*border-bottom-right-radius: 10rpx;*/
+                    /*background-color: rgba(0,0,0,0.5);*/
+
+                    /*.user-profile{*/
+                        /*border-radius: 50%;*/
+                        /*overflow: hidden;*/
+                    /*}*/
+
+                    /*.user-name{*/
+                        /*font-size: 24rpx;*/
+                        /*color:#fff;*/
+                    /*}*/
+
+                    /*.user-score{*/
+                        /*display: flex;*/
+                        /*justify-content: center;*/
+                        /*align-items: center;*/
+                        /*font-size: 24rpx;*/
+                        /*color: #fed530;*/
+                    /*}*/
+                /*}*/
+            /*}*/
+        /*}*/
+
+        /*.send-vip-wall-btn{*/
+            /*width: 100%;*/
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+        /*}*/
+
+        .three-btn{
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 100%;
+            background-color: #fff;
+
+            .btn-1,.btn-2,.btn-3{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                /*border-radius: 10rpx;*/
-                overflow: hidden;
-
-                .move-view{
-                    position: relative;
-                    background-color:#fff;
-                    border-radius:10px;
-
-                    .move-view-sub{
-                        position: absolute;
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-                }
-
-                .move-view-active{
-                    border-radius:15px;
-                    border:4rpx solid #fed530;
-                }
-
-                .user-info{
-                    /*position: absolute;*/
-                    /*bottom: 0;*/
-                    /*left: 0;*/
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    border-bottom-left-radius: 10rpx;
-                    border-bottom-right-radius: 10rpx;
-                    background-color: rgba(0,0,0,0.5);
-
-                    .user-profile{
-                        border-radius: 50%;
-                        overflow: hidden;
-                    }
-
-                    .user-name{
-                        font-size: 24rpx;
-                        color:#fff;
-                    }
-
-                    .user-score{
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        font-size: 24rpx;
-                        color: #fed530;
-                    }
-                }
+                font-size: 30rpx;
+                color:#fff;
             }
-        }
-
-        .send-vip-wall-btn{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            .btn-1{
+                background-color:#d7e2eb;
+            }
+            .btn-2{
+                background-color:#ffd824;
+            }
+            .btn-3{
+                background-color:#d7a473;
+            }
         }
 
         .public-gift-wall{

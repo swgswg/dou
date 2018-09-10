@@ -3,8 +3,8 @@
         <view class="text1" style="width:{{100*px2rpxWidth}}px">
             <view class="sub-text" style="width:{{80*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;">我的礼物</view>
         </view>
-        <view class="gift-img">
-            <scroll-view scroll-x="true" style="white-space: nowrap;">
+        <view class="gift-img" style="height:{{120*px2rpxHeight}}px;">
+            <scroll-view scroll-x="true" style="white-space:nowrap;">
                 <block wx:for="{{myGift}}" wx:for-item="gift" wx:key="{{index}}">
                     <view class="gift-img-each" style="width:{{100*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="takeGift">
                         <view class="gift-num" style="width:{{35*px2rpxWidth}}px;height:{{35*px2rpxWidth}}px">{{gift.num}}</view>
@@ -27,6 +27,7 @@
     import util from '@/utils/util';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
+    import tip from '@/utils/tip';
     import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import GiftCanvas from '@/components/gift_canvas';
     import EnergyTank from '@/components/energy_tank';
@@ -71,24 +72,27 @@
                 type:Boolean,
                 default:true,
             },
-
-
         };
 
         async onLoad(){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
             let userInfo = wepy.getStorageSync(USER_INFO);
             this.userId = userInfo.id;
 
             // 获取送礼物用户拥有的礼物
-            let activeUserGift = await api.getUserGift({
+            let res = await api.getUserGift({
                 query:{
                     userId:userInfo.id
                 }
             });
-            this.myGifts = activeUserGift.data.data;
+            if(res.data.state == 1){
+                this.myGift = res.data.data;
+            } else {
+                tip.error('网络错误');
+            }
             this.$apply();
         }
 
@@ -195,29 +199,21 @@
         justify-content: flex-start;
         align-items: center;
         width: 100%;
-        /*height: 140rpx;*/
-        /*padding: 0 20rpx;*/
         padding-left: 10rpx;
         padding-right: 20rpx;
         box-sizing: border-box;
-        /*border: 1rpx solid red;*/
+        background-color:rgba(0,0,0,0.5);
 
         .text1{
             display: flex;
             justify-content: center;
             align-items: center;
-            /*text-align: center;*/
-            /*width: 100rpx;*/
-            /*height: 127rpx;*/
-            /*border: 1rpx solid red;*/
 
             .sub-text{
                 display: flex;
                 justify-content: center;
                 align-items: center;
                 text-align: center;
-                /*width: 80rpx;*/
-                /*height: 100rpx;*/
                 font-size: 30rpx;
                 font-weight: bold;
                 color: #ec2c98;
@@ -230,35 +226,23 @@
             justify-content:center;
             align-items: center;
             width: 70%;
-            /*height: 127rpx;*/
-            /*border: 1rpx solid red;*/
 
             .gift-img-each{
                 position: relative;
                 display: inline-block;
                 text-align: center;
-                /*width: 100rpx;*/
-                /*height: 127rpx;*/
                 font-size: 18rpx;
-                /*border-left: 1rpx solid #f68668;*/
 
                 .gift-num{
                     position: absolute;
                     top: 0;
                     right: 0;
-                    /*width: 35rpx;*/
-                    /*height: 35rpx;*/
                     display: flex;
                     justify-content: center;
                     align-items: center;
                     color: #fff;
                     border-radius: 50%;
                     background: linear-gradient(to top right,#ec2c98, #f68668);
-                }
-                image{
-                    /*width: 60rpx;*/
-                    /*height: 56rpx;*/
-                    /*margin-top: 30rpx;*/
                 }
 
                 .gift-name{
@@ -277,23 +261,17 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            /*width: 127rpx;*/
-            /*height: 127rpx;*/
 
 
             .btn-each{
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                /*width: 100rpx;*/
-                /*height: 40rpx;*/
                 font-size: 20rpx;
-                /*border-radius: 20rpx;*/
 
             }
 
             .btn-confirm{
-                /*margin-bottom: 20rpx;*/
                 color: #fff;
                 background: linear-gradient(to top right,#ec2c98, #f68668);
             }

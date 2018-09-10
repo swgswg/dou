@@ -1,0 +1,104 @@
+// page--选择模式
+<template>
+    <view class="select-model">
+        <view class="model-text" style="padding-top:{{20*px2rpxHeight}}px;">根据年龄选择相应模式</view>
+        <view class="model-each">
+            <image src="{{model_oldman}}" class="{{select == 1 ? 'active':''}}" data-select="1" @tap.stop="selectModel" style="width:{{540*px2rpxWidth}}px;height:{{232*px2rpxWidth}}px;margin-top:{{20*px2rpxHeight}}px;"></image>
+            <image src="{{model_child}}"  class="{{select == 2 ? 'active':''}}" data-select="2" @tap.stop="selectModel" style="width:{{540*px2rpxWidth}}px;height:{{232*px2rpxWidth}}px;margin-top:{{20*px2rpxHeight}}px;"></image>
+            <image src="{{model_woman}}"  class="{{select == 3 ? 'active':''}}" data-select="3" @tap.stop="selectModel" style="width:{{540*px2rpxWidth}}px;height:{{232*px2rpxWidth}}px;margin-top:{{20*px2rpxHeight}}px;"></image>
+            <image src="{{model_man}}"    class="{{select == 4 ? 'active':''}}" data-select="4" @tap.stop="selectModel" style="width:{{540*px2rpxWidth}}px;height:{{232*px2rpxWidth}}px;margin-top:{{20*px2rpxHeight}}px;"></image>
+        </view>
+        <view class="model-btn" style="margin-top:{{20*px2rpxHeight}}px;">
+            <view class="button button-highlight button-pill button-large" @tap.stop="comfirm">确认</view>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+
+    export default class MyPage extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '选择模式'
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            model_child:imgApi.model_child,
+            model_man:imgApi.model_man,
+            model_oldman:imgApi.model_oldman,
+            model_woman:imgApi.model_woman,
+            select:0,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
+        methods = {
+            // 选择模式
+            selectModel(e){
+                let select = e.currentTarget.dataset.select;
+                this.select = select;
+            },
+
+            // 确认
+            comfirm(){
+
+            },
+        };
+
+    }
+</script>
+
+<style lang="less">
+    .select-model{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+
+        .model-text,.model-btn{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .model-text{
+            font-size: 25rpx;
+            color: #999;
+        }
+
+        .model-each{
+            display: flex;
+            flex-direction: column;
+            /*justify-content: center;*/
+            align-items: center;
+            width: 100%;
+        }
+
+        .active{
+            border: 2px solid #ec2c98;
+            border-radius: 10rpx;
+        }
+    }
+</style>

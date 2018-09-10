@@ -3,21 +3,27 @@
     <view class="select-time" style="width:{{750*px2rpxWidth}};height:{{120*px2rpxHeight}}px;">
         <picker mode="multiSelector" bindchange="changeTime" value="{{selectTimeIndex}}" range="{{selectTimeArray}}" disabled="{{!timeConfirm}}">
             <view class="mypicker" style="height:{{120*px2rpxHeight}}px;font-size:{{120*px2rpxWidth}}px">
-                <view class="picker-each hour" style="width:{{170*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
+                <view class="picker-each hour {{isHourAnimate ? 'animated infinite bounceInDown': ''}} bounceInDown" style="width:{{200*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
                     <!--当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}-->
                     {{selectTimeArray[0][selectTimeIndex[0]]}}:
                 </view>
-                <view class="picker-each minute" style="width:{{170*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
+                <view class="picker-each minute {{isMinuteAnimate ? 'animated infinite bounceInDown': ''}} bounceInDown" style="width:{{200*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
                     {{selectTimeArray[1][selectTimeIndex[1]]}}:
                 </view>
-                <view class="picker-each second" style="width:{{170*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
+                <view class="picker-each second {{isSecondAnimate ? 'animated infinite bounceInDown': ''}}" style="width:{{180*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
                     {{selectTimeArray[2][selectTimeIndex[2]]}}
                 </view>
             </view>
         </picker>
-        <view class="confirm-btn">
-            <image wx:if="{{timeConfirm}}" style="width:{{98*px2rpxWidth}}px;height:{{98*px2rpxHeight}}px;" @tap.stop="confirmSelectTime" src="{{confirm_btn}}"></image>
-        </view>
+        <block wx:if="{{timeConfirm}}">
+            <view class="confirm-btn">
+                <image wx:if="{{timeConfirm}}"
+                       style="width:{{98*px2rpxWidth}}px;height:{{98*px2rpxHeight}}px;"
+                       @tap.stop="confirmSelectTime"
+                       src="{{confirm_btn}}">
+                </image>
+            </view>
+        </block>
     </view>
 </template>
 
@@ -35,8 +41,12 @@
             confirm_btn:imgApi.confirm_btn,
             // 选择时间的数据
             selectTimeArray:[],
+            isHourAnimate:false,
+            isMinuteAnimate:false,
+            isSecondAnimate:false,
             // 选择时间的下标
             // selectTimeIndex:[0,0,0],
+            clear_set:null,
 
         };
 
@@ -110,8 +120,7 @@
         // 倒计时
         countDown(otherFun){
             let that = this;
-            let clear_set = null;
-            clear_set = setInterval(function() {
+            this.clear_set = setInterval(function() {
                 let selectTimeIndex = that.selectTimeIndex;
                 selectTimeIndex[2]--;
                 if(selectTimeIndex[2] <= 0){
@@ -132,15 +141,45 @@
                     selectTimeIndex[0] = 0;
                     selectTimeIndex[1] = 0;
                     selectTimeIndex[2] = 0;
-                    clearInterval(clear_set);
+                    clearInterval(that.clear_set);
                     that.countdownOver = true;
                     that.timeConfirm = true;
                     otherFun();
                 }
                 that.$apply();
-            },1000)
+            },1000);
 
         };
+
+        events = {
+            //停止倒计时
+            stopCountDown(){
+                clearInterval(this.clear_set);
+            },
+        };
+
+
+        watch = {
+            selectTimeIndex(newValue,oldValue){
+                console.log(newValue,oldValue);
+                // if(newValue[2] != oldValue[2]){
+                //     this.isSecondAnimate = true;
+                // } else {
+                //     this.isSecondAnimate = false;
+                // }
+                // if(newValue[1] != oldValue[1]){
+                //    this.isMinuteAnimate = true;
+                // } else {
+                //     this.isMinuteAnimate = false;
+                // }
+                // if(newValue[0] != oldValue[0]){
+                //     this.isHourAnimate = true;
+                // } else {
+                //     this.isHourAnimate = false;
+                // }
+                // this.$apply();
+            }
+        }
 
     }
 </script>
@@ -148,47 +187,65 @@
 <style lang="less">
     .select-time{
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
         align-items: center;
-        /*width: 99%;*/
-        /*height: 120rpx;*/
-        /*border: 1rpx solid red;*/
 
         .mypicker{
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-between;
             align-items: center;
             width: 100%;
-            /*height: 100rpx;*/
-            /*font-size: 120rpx;*/
             /*font-family: 'Edo SZ';*/
             color: #ec2f96;
-            /*border: 1rpx solid red;*/
+            /*border: 1px solid red;*/
 
             .picker-each{
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
-                /*width: 170rpx;*/
-                /*height: 110rpx;*/
-                /*border: 1rpx solid red;*/
             }
 
-            .minute,.second{
-                /*margin-left: 22rpx;*/
-            }
         }
 
         .confirm-btn{
             display: flex;
             justify-content: center;
             align-items: center;
+        }
 
-            image{
-                /*width: 98rpx;*/
-                /*height: 98rpx;*/
+        /*动画效果*/
+        .animated {
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+        .animated.infinite {
+            animation-iteration-count: infinite;
+        }
+        .bounceInDown {
+            animation-name: bounceInDown;
+        }
+
+        @keyframes bounceInDown {
+            from,
+            50%,
+            to {
+                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
             }
 
+            0% {
+                opacity: 0;
+                transform: translate3d(0, -50px, 0);
+            }
+
+            50% {
+                opacity: 1;
+                transform: translate3d(0, 0px, 0);
+            }
+            to {
+                transform: translate3d(0, 0, 0);
+            }
         }
+
+
     }
 </style>

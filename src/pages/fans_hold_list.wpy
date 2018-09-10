@@ -125,9 +125,6 @@
             },
         };
 
-        // 声明组件之间的事件处理函数
-        events = {};
-
         // 查询私墙排行榜
         async getSPresentWallallEvent(mypage,mypageSize){
             let userId = this.userId;
@@ -157,7 +154,7 @@
                     firstOfThree.push(list[0]);
                     firstOfThree.push(list[2]);
                     list.splice(0,3);
-                    this.firstOfThreef = firstOfThree;
+                    this.firstOfThree = firstOfThree;
                 }
                 this.fansList = fansList.concat(list);
                 this.page = mypage;

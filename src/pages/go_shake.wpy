@@ -15,10 +15,10 @@
             <image class="content-img-right" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-left:{{37*px2rpxWidth}}px;" src="{{rightImg}}" @tap.stop="shakeTransform"/>
         </view>
         <block wx:if="{{shakeData == 1}}">
-            <view class="shake-number" style="margin-top:{{56*px2rpxHeight}}px">{{shakeLegNumber}}</view>
+            <view class="shake-number" style="margin-top:{{120*px2rpxHeight}}px">{{shakeLegNumber}}</view>
         </block>
         <block wx:if="{{shakeData == 0}}">
-            <view class="shake-number">{{shakeHandNumber}}</view>
+            <view class="shake-number" style="margin-top:{{120*px2rpxHeight}}px">{{shakeHandNumber}}</view>
         </block>
         <!--<view class="shake-time" style="margin-top:{{100*px2rpxHeight}}px">持续时长：{{shakeTime}}</view>-->
         <view class="cover-layer" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;" wx:if="{{isShowCoverLayer}}">
@@ -52,6 +52,7 @@
         config = {
             navigationBarTitleText: '抖腿大乐斗',
             disableScroll: true,
+            enablePullDownRefresh:false,
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件

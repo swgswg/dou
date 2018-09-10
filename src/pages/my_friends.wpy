@@ -22,8 +22,10 @@
 
 <script>
     import wepy from 'wepy';
-    import api from '@/utils/api';
     import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
+    import api from '@/utils/api';
+    import tip from '@/utils/tip';
+    import util from '@/utils/util';
     import Ranking from '@/components/ranking';
     import BottomLoadMore from "../components/common/bottomLoadMore";
     import Placeholder from "../components/common/placeholder";
@@ -62,6 +64,7 @@
                 // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
                 // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
             ],
+            isLastPage:false,
             page:1,
             pageSize:20,
             // rank:null,
@@ -89,32 +92,57 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
-
+            this.getFriendEvent(this.page,this.pageSize);
         };
-
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
+                if(this.isLastPage){
+                    return;
+                }
                 this.showLoading = true;
+                let page = this.page;
+                let pageSize = this.pageSize + 20;
+                this.getFriendEvent(page,pageSize);
             },
         };
 
         // 好友总排行榜
-        async getFriends(){
-            // let res = await api.getFriend({
-            //     // query:
-            // });
+        async getFriendEvent(mypage,mypageSize){
+            let userId = this.userId;
+            let res = await api.getFriend({
+                query:{
+                    userId:userId,
+                    type:0,
+                    status:1,
+                    page:mypage,
+                    pageSize:mypageSize,
+                }
+            });
+            if(res.data.state == 1){
+                let data = res.data.data.PageInfo;
+                if(util.isEmpty(data.list)){
+                    this.is_empty = true;
+                } else {
+                    this.is_empty = false;
+                }
+                this.rank = data.list;
+                this.isLastPage = data.isLastPage;
+                this.page = mypage;
+                this.pageSize = mypageSize;
+            } else {
+                tip.error('网络错误');
+            }
+            this.showLoading = false;
+            this.$apply();
         };
     }
 </script>
 
 <style lang="less">
     .my_friends{
-
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -126,11 +154,7 @@
             align-items: center;
             font-size: 28rpx;
             background: linear-gradient(to top right,#ec2c98, #f68668);
-
         }
 
-        .friends-rank{
-            border: 1rpx solid red;
-        }
     }
 </style>

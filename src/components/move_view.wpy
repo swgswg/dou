@@ -1,0 +1,121 @@
+<template>
+    <view class="move-area" style="width:{{areaWidth*widthRatio}}px;height:{{areaHeight*heightRatio}}px;">
+
+        <block wx:for="{{giftList}}" wx:for-item="list" wx:key="{{index}}">
+
+            <view class="move-view"
+                  data-disabled="{{list.type}}"
+                  data-index="{{index}}"
+                  data-viewwidth="{{list.wide*widthRatio}}"
+                  data-viewheight="{{list.high*widthRatio}}"
+                  @touchmove.stop="moveView"
+                  style="width:{{list.wide*widthRatio}}px;height:{{list.high*widthRatio}}px;top:{{list.yaxle*heightRatio}}px;left:{{list.xaxle*widthRatio}}px;">
+                <image src="{{fileUrl + list.url}}" style="width:{{list.wide*widthRatio}}px;height:{{list.high*widthRatio}}px;"> </image>
+            </view>
+
+        </block>
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
+    import { PX_TO_RPX } from '@/utils/constant';
+
+    export default class MoveView extends wepy.component {
+
+        data = {
+            fileUrl:imgApi.fileUrl,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            widthRatio:0,
+            heightRatio:0,
+        };
+
+        props = {
+            areaWidth:{
+                type:Number,
+                default:325,
+            },
+            areaHeight:{
+                type:Number,
+                default:430,
+            },
+            giftList:{
+                type:Array,
+                default:null,
+                twoWay:true
+            },
+            ratio:{
+                type:Number,
+                default:1
+            }
+        };
+
+        async onLoad(){
+            // 获取尺寸适配
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            // 比例系数
+            this.widthRatio = this.px2rpxWidth*2*this.ratio;
+            this.heightRatio = this.px2rpxHeight*2*this.ratio;
+            this.$apply()
+        };
+
+        methods = {
+            moveView(e){
+                console.log(e);
+                let disabled = e.currentTarget.dataset.disabled;
+                if(disabled == 1){
+                    return;
+                }
+                let index = e.currentTarget.dataset.index;
+                let viewWidth = e.currentTarget.dataset.viewwidth;
+                let viewHeight = e.currentTarget.dataset.viewheight;
+                let x = e.touches[0].pageX;
+                let y = e.touches[0].pageY;
+                let maxX = parseInt(this.areaWidth) - parseInt(viewWidth);
+                let maxY = parseInt(this.areaHeight) - parseInt(viewHeight);
+                if(x <= 0){
+                    x = 0;
+                }
+                if(x >= maxX){
+                    x = maxX;
+                }
+                if(y <= 0){
+                    y = 0;
+                }
+                if(y >= maxY){
+                    y = maxY;
+                }
+                let giftList = this.giftList;
+                giftList[index].xaxle = x;
+                giftList[index].yaxle = y;
+                this.giftList = giftList;
+                this.$apply();
+            },
+
+        };
+
+    }
+</script>
+
+<style lang="less">
+    .move-area{
+        position: relative;
+        background-color: #fff;
+        border-radius: 10px;
+        border: 1px solid #ec2c98;
+
+        .move-view{
+            position: absolute;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
+</style>

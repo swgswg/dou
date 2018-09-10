@@ -13,13 +13,13 @@
         </view>
         <!--时间/能量 end-->
 
-        <block wx:if="{{!is_empty}}">
-            <!--礼物墙 start-->
-            <view class="wall" @tap.stop="goToPublicWallRecord">
-                <showgiftwall :giftList.sync="giftList" :ratio.sync="ratio"></showgiftwall>
-            </view>
-            <!--礼物墙 end-->
+        <!--礼物墙 start-->
+        <view class="wall" @tap.stop="goToPublicWallRecord">
+            <showgiftwall :giftList.sync="giftList" :ratio.sync="ratio"></showgiftwall>
+        </view>
+        <!--礼物墙 end-->
 
+        <block wx:if="{{!is_empty}}">
             <!--人物头像 start-->
             <view class="profile">
                 <block wx:for="{{userPhoto}}" wx:for-item="img" wx:key="{{index}}">
@@ -29,9 +29,12 @@
             </view>
             <!--人物头像 end-->
         </block>
-
+        <block wx:else>
+            <view class="flex-center" style="margin-top:{{50*px2rpxHeight}}px;">暂无好友赠送</view>
+        </block>
         <!--暂无数据显示-->
-        <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
+        <!--<placeholder :show.sync="is_empty" message="暂无数据"></placeholder>-->
+
     </view>
 </template>
 
@@ -68,13 +71,13 @@
             weekStartDate:null,
             //获得本周的结束日期
             weekEndDate:null,
-            is_empty:true,
+            is_empty:false,
             canvasWidth:api.canvasWidth,
             canvasHeight:api.canvasHeight,
             userId:null,
             logo:null,
-            logoWidth:131,
-            logoHeight:234,
+            logoWidth:api.logoWidth,
+            logoHeight:api.logoHeight,
             giftList:null,
             ratio:1.1,
             userPhoto:null,
@@ -83,7 +86,7 @@
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(options){
+        async onLoad(){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
@@ -113,16 +116,16 @@
                     this.is_empty = true;
                 } else {
                     this.is_empty = false;
-                    this.userPhoto = data.userPhoto;
-                    this.score = data.score;
-                    this.publicWallId = data.id;
-                    let giftList = data.axle;
-                    let logo = this.logo;
-                    let logoX = this.canvasWidth - this.logoWidth;
-                    let logoY = this.canvasHeight - this.logoHeight;
-                    giftList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
-                    this.giftList = giftList;
                 }
+                this.userPhoto = data.userPhoto;
+                this.score = data.score;
+                this.publicWallId = data.id;
+                let giftList = data.axle;
+                let logo = this.logo;
+                let logoX = this.canvasWidth - this.logoWidth;
+                let logoY = this.canvasHeight - this.logoHeight;
+                giftList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
+                this.giftList = giftList;
             } else {
                 tip.error('网络错误');
             }
@@ -147,14 +150,15 @@
         getWeekTime(){
             let now = new Date(); //当前日期
             let nowDayOfWeek = now.getDay(); //今天本周的第几天
-            let nowYear = now.getYear(); //当前年
+            let nowYear = now.getFullYear(); //当前年
             let nowMonth = now.getMonth(); //当前月
             let nowDay = now.getDate(); //当前日
             //获得本周的开始日期
-            let weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
+            let weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek+1);
+            console.log(weekStartDate);
             this.weekStartDate =util.formatDate(weekStartDate, 'MM-DD');
             //获得本周的结束日期
-            let weekEndDate = new Date(nowYear, nowMonth, nowDay + (6 - nowDayOfWeek));
+            let weekEndDate = new Date(nowYear, nowMonth, nowDay + (7 - nowDayOfWeek));
             this.weekEndDate = util.formatDate(weekEndDate, 'MM-DD');
             this.$apply();
         };

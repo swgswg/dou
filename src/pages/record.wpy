@@ -16,6 +16,8 @@
 <script>
     import wepy from 'wepy';
     import {PX_TO_RPX } from '@/utils/constant';
+    import tip from '@/utils/tip';
+    import api from '@/utils/api';
     import Info from '@/components/info';
     import Record from '@/components/record';
     import BestRecord from '@/components/best_record';
@@ -23,7 +25,8 @@
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '历史记录'
+            navigationBarTitleText: '我的记录',
+            disableScroll: true,
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -52,9 +55,8 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             this.userId = options.userId;
-            this.userName = options.userName;
-            this.photo = options.photo;
-
+            // this.userName = options.userName;
+            // this.photo = options.photo;
             this.$apply();
         }
 
@@ -63,17 +65,26 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        async onReady() {
+        onReady() {
+            this.getOneUserInfoEvent();
         };
 
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
-
-        // 声明组件之间的事件处理函数
-        events = {};
+        // 根据userId获取用户信息
+        async getOneUserInfoEvent(){
+            let userId = this.userId;
+            let res = await api.getOneUserInfo({
+                query:{
+                    userId:userId
+                }
+            });
+            if(res.data.state == 1){
+                this.userName = res.data.data.name;
+                this.photo = res.data.data.photo;
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        }
     }
 </script>
 

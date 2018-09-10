@@ -1,7 +1,7 @@
 <style lang="less">
     @import "static/css/font.less";
     @import "static/css/button.less";
-    @import "static/css/font_Edo/stylesheet";
+    @import "static/css/font_Edo.less";
 
     page{
         letter-spacing:2rpx;
@@ -190,6 +190,7 @@
     export default class extends wepy.app {
         config = {
             pages: [
+                'pages/select_model',
                 'pages/home',
                 'pages/friend_gift_wall',
                 'pages/send_gift',

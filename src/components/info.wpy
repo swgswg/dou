@@ -1,7 +1,7 @@
 <template>
     <view class="info">
-        <view class="info-each">
-            <view class="info-content" style="height:{{140*px2rpxHeight}}px">
+        <view class="info-each" >
+            <view class="info-content" style="height:{{140*px2rpxHeight}}px;">
                 <!--<view class="content" @tap.stop="goToMyShakeInfo">-->
                 <view class="content">
                     <image class="profile" style="width:{{90*px2rpxHeight}}px;height:{{90*px2rpxHeight}}px;" src="{{photo}}"></image>
@@ -22,7 +22,7 @@
 <script>
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
-    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
+    import {PX_TO_RPX} from '@/utils/constant';
 
     export default class Info extends wepy.component {
 
@@ -30,6 +30,8 @@
             right:imgApi.right,
             px2rpxWidth:0,
             px2rpxHeight:0,
+            userName:null,
+            photo:null,
         };
 
         props = {
@@ -69,6 +71,8 @@
                 });
             }
         };
+
+
     }
 </script>
 
