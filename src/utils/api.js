@@ -132,6 +132,8 @@ const qSPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/qSPre
 const qSPresentsWalls = (params) => wxRequest(params, host + 'shakeLeg/user/qSPresentsWalls');
 // 查询未完成私墙
 const getSPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/getSPresentsWall');
+// 修改游戏模式
+const UpdatePattern = (params) => wxRequest(params, host + 'shakeLeg/user/UpdatePattern');
 
 
 export default {
@@ -199,4 +201,5 @@ export default {
     qSPresentsWall,
     qSPresentsWalls,
     getSPresentsWall,
+    UpdatePattern,
 };

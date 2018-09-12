@@ -109,6 +109,7 @@
         background-color: #fff;
         border-radius: 10px;
         border: 1px solid #ec2c98;
+        overflow: hidden;
 
         .move-view{
             position: absolute;

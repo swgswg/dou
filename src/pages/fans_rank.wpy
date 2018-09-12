@@ -148,6 +148,7 @@
             // 前去朋友礼物墙
             goToFriendGiftWall(e){
                 let userId = e.currentTarget.dataset.userid;
+
                 wx.navigateTo({
                     url:'/pages/friend_gift_wall?userId='+userId
                 });

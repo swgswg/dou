@@ -133,6 +133,7 @@
             <block wx:if="{{showCoverLayer}}">
                 <coverlayer>
                     <view class="content" slot="content">
+                        <view class="close" style="width:{{35*px2rpxWidth}}px;height:{{35*px2rpxWidth}}px;" @tap.stop="closeCoverLayer"><text class="iconfont icon-close" style="margin-top:{{5*px2rpxWidth}}px;"></text></view>
                         <image src="{{weikaiqi}}" style="top:0;left:0;width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;"></image>
                         <view class="content-btn" style="bottom:{{50*px2rpxHeight}}px;left:0;width:{{553*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;padding:0 {{70*px2rpxWidth}}px 0 {{50*px2rpxWidth}}px;">
                             <image src="{{lianjie}}" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="connectEquipment"></image>
@@ -234,7 +235,7 @@
 
         // 只在Page中存在的页面生命周期函数
         async onReady() {
-            console.log('friend_gift_wall===',this.userId);
+            // console.log('friend_gift_wall===',this.userId);
             // 获取私墙前三名
             this.getSPresentWallallEvent();
             // 获取公墙
@@ -321,6 +322,11 @@
             shouChong(){
 
             },
+
+            // 关闭遮盖层
+            closeCoverLayer(){
+                this.showCoverLayer = false;
+            },
         };
 
         // 声明组件之间的事件处理函数
@@ -400,6 +406,7 @@
                     userId:userId
                 }
             });
+            console.log(res);
             if(res.data.state == 1){
                 let data = res.data.data;
                 console.log(data.axle);
@@ -548,6 +555,21 @@
 
             .content{
                 position: relative;
+
+                .close{
+                    position: absolute;
+                    top:0;
+                    right:0;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    border-radius: 50%;
+                    border: 1px solid #999;
+
+                    .icon-close{
+                       color:#999;
+                    }
+                }
 
                 .content-btn{
                     position: absolute;

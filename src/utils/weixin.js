@@ -5,12 +5,11 @@ const uploadAliyun = require('@/utils/weixinFileToaliyun/uploadAliyun.js');
 import api from '@/utils/api';
 
 module.exports = {
+
     /**
-     * 接口
-     * @param  {[type]} params [description]
-     * @return {[type]}        [description]
+     *  多图片保存至手机相册
+     * @param urls 多图片地址
      */
-    // 多图片保存至手机相册
     downloadSaveFiles: function(urls) {
         let len = urls.length;
         // 获取保存至手机相册的权限
@@ -59,7 +58,11 @@ module.exports = {
         });
     },
 
-    // 上传图片到阿里云
+    /**
+     *  上传图片到阿里云
+     * @param filePath 图片路径
+     * @param sufun  上传成功执行的方法
+     */
     uploadFiveToAliyunOOS: function(filePath, sufun) {
         // console.log(filePath);
         let ext = filePath.slice(filePath.lastIndexOf('.') + 1);
@@ -81,7 +84,9 @@ module.exports = {
 
     },
 
-    // webSocket
+    /**
+     * webSocket
+     */
     weixinWebSocket(){
 
         let socketOpen = false;
@@ -128,8 +133,12 @@ module.exports = {
 
     },
 
-    // 付款
-    weixinPay(suFun,errFun){
+    /**
+     *  付款
+     * @param suFun 成功执行的方法
+     * @param errFun 失败执行的方法
+     */
+    weixinPay:function(suFun,errFun){
         wx.requestPayment({
             'timeStamp': '',
             'nonceStr': '',
@@ -149,6 +158,71 @@ module.exports = {
                 errFun();
             }
         })
+    },
+
+    /***
+     * 按照显示图片的宽等比例缩放得到显示图片的高
+     * @params originalWidth  原始图片的宽
+     * @params originalHeight 原始图片的高
+     * @params imageWidth     显示图片的宽，如果不传就使用屏幕的宽
+     * 返回图片的宽高对象
+     ***/
+    imageZoomHeightUtil: function(originalWidth,originalHeight,imageWidth){
+        let imageSize = {};
+        if(imageWidth){
+            imageSize.imageWidth = imageWidth;
+            imageSize.imageHeight = (imageWidth * originalHeight) / originalWidth;
+        }else{
+            //如果没有传imageWidth,使用屏幕的宽
+            wx.getSystemInfo({
+                success: function (res) {
+                    imageWidth = res.windowWidth;
+                    imageSize.imageWidth = imageWidth;
+                    imageSize.imageHeight = (imageWidth * originalHeight) / originalWidth;
+                }
+            });
+        }
+        return imageSize;
+    },
+
+    /***
+     * 按照显示图片的高等比例缩放得到显示图片的宽
+     * @params originalWidth  原始图片的宽
+     * @params originalHeight 原始图片的高
+     * @params imageHeight    显示图片的高，如果不传就使用屏幕的高
+     * 返回图片的宽高对象
+     ***/
+    imageZoomWidthUtil: function(originalWidth,originalHeight,imageHeight){
+        let imageSize = {};
+        if(imageHeight){
+            imageSize.imageWidth = (imageHeight *originalWidth) / originalHeight;
+            imageSize.imageHeight = imageHeight;
+        }else{
+            //如果没有传imageHeight,使用屏幕的高
+            wx.getSystemInfo({
+                success: function (res) {
+                    imageHeight = res.windowHeight;
+                    imageSize.imageWidth = (imageHeight *originalWidth) / originalHeight;
+                    imageSize.imageHeight = imageHeight;
+                }
+            });
+        }
+        return imageSize;
+
+        // <image bindload="imageLoad" style="width:{{imageWidth}}px;;height:{{imageHeight}}px;" src="../pro.png"/>
+        // data:{
+        //     imageWidth:0,
+        //     imageHeight:0
+        // },
+        // imageLoad: function (e) {
+        //     //获取图片的原始宽度和高度
+        //     let originalWidth = e.detail.width;
+        //     let originalHeight = e.detail.height;
+        //     //let imageSize = Util.imageZoomHeightUtil(originalWidth,originalHeight);
+        //     //let imageSize = Util.imageZoomHeightUtil(originalWidth,originalHeight,375);
+        //     let imageSize = Util.imageZoomWidthUtil(originalWidth,originalHeight,145);
+        //     this.setData({imageWidth:imageSize.imageWidth,imageHeight:imageSize.imageHeight});
+        // }
     },
 
 

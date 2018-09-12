@@ -179,6 +179,6 @@ module.exports = {
     model_man:uploadFileUrl + 'model_man.png',
     model_oldman:uploadFileUrl + 'model_oldman.png',
     model_woman:uploadFileUrl + 'model_woman.png',
-
+    model_dui:uploadFileUrl + 'model_dui.png',
 
 };

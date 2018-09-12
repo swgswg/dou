@@ -1,22 +1,21 @@
 <template>
     <view class="select-sex">
-        <view class="sex">请选择您的性别</view>
+        <view class="sex" style="margin-top:{{50*px2rpxHeight}}px;">请选择您的性别</view>
 
-        <view class="sex-img">
-            <image src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>
-            <image src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>
+        <view class="sex-img" style="margin-top:{{100*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
+            <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>
+            <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>
         </view>
 
-        <view class="sex-profile">
+        <view class="sex-profile" style="margin-top:{{50*px2rpxHeight}}px;">
             <block wx:for="{{profile}}" wx:for-item="profileImg" wx:key="{{index}}">
-                <view class="profile-each {{currentProfile == index ? 'active':''}}">
-                <image src="{{profileImg}}" data-index="{{index}}" @tap.stop="selectProfile"></image>
-                <!--<image src="{{uploadFileUrl + '/static/images/' + profile}}" data-index="{{index}}" @tap.stop="selectProfile"></image>-->
-            </view>
+                <view class="profile-each {{currentProfile == index ? 'active':''}}" style="width:{{335*px2rpxWidth}}px;height:{{600*px2rpxHeight}}px;">
+                    <image src="{{profileImg}}" style="width:{{305*px2rpxWidth}}px;height:{{520*px2rpxWidth}}px;" data-index="{{index}}" @tap.stop="selectProfile"></image>
+                </view>
             </block>
         </view>
 
-        <view class="sex-btn" wx:if="{{currentSex == '0' || currentSex == '1'}}">
+        <view class="sex-btn" style="margin-top:{{50*px2rpxHeight}}px;" wx:if="{{currentSex == '0' || currentSex == '1'}}">
             <button class="button button-highlight button-pill button-large" open-type="getUserInfo" bindgetuserinfo="getUserInfo">确认</button>
         </view>
 
@@ -28,7 +27,7 @@
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import tip from '@/utils/tip';
-    import {USER_INFO} from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -41,6 +40,8 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             // 男女性别图标
             man_active: imgApi.man_active,
             man_inactive: imgApi.man_inactive,
@@ -58,22 +59,12 @@
         };
 
         // 在Page和Component共用的生命周期函数
-        onLoad() {
+        async onLoad() {
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
         };
-
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
-        onReady() {
-        };
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
-
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
@@ -101,7 +92,7 @@
                     this.logo = 'woman'+(index+1)+'.png';
                 }
                 this.$apply();
-                console.log(this.logo);
+                // console.log(this.logo);
             },
 
             // 获取用户授权信息
@@ -135,7 +126,7 @@
                     if(rlt.data.state == 1){
                         // 获取信息成功
                         wepy.redirectTo({
-                            url: '/pages/not_connected'
+                            url: '/pages/select_model'
                         });
                     }
                 } else {
@@ -146,8 +137,6 @@
             },
         };
 
-        // 声明组件之间的事件处理函数
-        events = {};
     }
 </script>
 
@@ -158,22 +147,13 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 50rpx;
         }
 
         .sex-img{
             display: flex;
             justify-content: space-around;
             align-items: center;
-            margin-top: 100rpx;
-            padding: 0 30rpx;
             box-sizing: border-box;
-
-            image{
-                width: 150rpx;
-                height: 150rpx;
-            }
-
         }
 
         .sex-profile{
@@ -181,35 +161,15 @@
             justify-content: space-around;
             align-items: center;
             width: 100%;
-            /*height: 455rpx;*/
-            margin-top: 50rpx;
 
             .profile-each{
                 display: flex;
                 justify-content:center;
                 align-items: center;
-                width: 335rpx;
-                height: 600rpx;
-                /*padding: 36rpx auto;*/
-                /*box-sizing: brder-box;*/
-                /*border: 1rpx solid red;*/
-
-                image{
-                    width: 250rpx;
-                    height: 446.5rpx;
-                }
-
             }
-
             .active{
-                /*border: 4rpx solid blue;*/
-                /*box-shadow: 0 0 13rpx #80a1ee;*/
-
-                image{
-                    width: 335rpx;
-                    height: 600rpx;
-                }
-
+                border-radius: 10px;
+                box-shadow: 0 0 10px #f68668;
             }
         }
 
@@ -217,7 +177,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 50rpx;
         }
     }
 

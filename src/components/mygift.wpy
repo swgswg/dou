@@ -43,6 +43,8 @@
             fileUrl:imgApi.fileUrl,
             px2rpxWidth:0,
             px2rpxHeight:0,
+            canvasWidth:api.canvasWidth,
+            canvasHeight:api.canvasHeight,
             // isFullEnergy:true,
             giftVal:[],
             userId:null,
@@ -59,15 +61,15 @@
                 default:null,
             },
             // 礼物墙的宽
-            canvasWidth:{
-                type:Number,
-                default:0,
-            },
-            // 礼物墙的高
-            canvasHeight:{
-                type:Number,
-                default:0,
-            },
+            // canvasWidth:{
+            //     type:Number,
+            //     default:0,
+            // },
+            // // 礼物墙的高
+            // canvasHeight:{
+            //     type:Number,
+            //     default:0,
+            // },
             isFullEnergy:{
                 type:Boolean,
                 default:true,
