@@ -47,7 +47,7 @@
 
         <!--待送的礼物 start-->
         <view class="send-gift-gifts" style="margin-top:{{10*px2rpxHeight}}px;">
-            <mygift :canvasWidth.sync="canvasWidth" :canvasHeight.sync="canvasHeight" :fansId.sync="userId" :presentsWallId.sync="giftWallId" :isFullEnergy.sync="isFullEnergy"></mygift>
+            <mygift :fansId.sync="userId" :presentsWallId.sync="giftWallId" :isFullEnergy.sync="isFullEnergy" :vipOrPublic.sync="wallStatus"></mygift>
         </view>
         <!--待送的礼物 end-->
 
@@ -198,6 +198,7 @@
                         this.isFullEnergy = true;
                     } else {
                         this.isFullEnergy = false;
+                        tip.alert('能量低于500');
                     }
                 }
                 this.$apply();
@@ -217,7 +218,7 @@
                 // 总的送礼人数
                 this.otherUserNumber = 0;
             } else {
-                tip.error('网络错误');
+                tip.error('网络错误, 请稍后再试');
             }
             this.$apply();
         };
@@ -286,6 +287,7 @@
                 dataList.push({id:-1,giftId:-1,wide:this.logoWidth,high: this.logoHeight,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
                 this.logoLocation = {x:logoX,y:logoY};
                 this.giftList = dataList;
+                this.giftWallId = data.id;
                 // console.log(this.giftList);
             } else {
                 tip.error('网络错误');

@@ -134,7 +134,8 @@ const qSPresentsWalls = (params) => wxRequest(params, host + 'shakeLeg/user/qSPr
 const getSPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/getSPresentsWall');
 // 修改游戏模式
 const UpdatePattern = (params) => wxRequest(params, host + 'shakeLeg/user/UpdatePattern');
-
+// 查询未送出礼物数
+const getSpNum = (params) => wxRequest(params, host + 'shakeLeg/user/getSpNum');
 
 export default {
     host,
@@ -202,4 +203,5 @@ export default {
     qSPresentsWalls,
     getSPresentsWall,
     UpdatePattern,
+    getSpNum,
 };

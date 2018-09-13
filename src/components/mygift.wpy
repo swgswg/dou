@@ -74,6 +74,10 @@
                 type:Boolean,
                 default:true,
             },
+            vipOrPublic:{
+                type:String,
+                default:null,
+            }
         };
 
         async onLoad(){
@@ -129,7 +133,6 @@
                 // 把添加到礼物墙的礼物添加临时变量
                 this.addGiftToVal(oneGift);
                 this.myGift = myGift;
-
             },
 
             // 确定送礼物
@@ -139,6 +142,12 @@
                     return;
                 }
                 let that = this;
+                let status = null;
+                if(this.vipOrPublic == 'vip'){
+                    status = 2;
+                } else if(this.vipOrPublic == 'public'){
+                    status = 0;
+                }
                 let giftVal = this.giftVal;
                 let len = giftVal.length;
                 let giftId = '';
@@ -157,15 +166,11 @@
                         giftId:giftId,
                         xaxle:xaxle,
                         yaxle:yaxle,
-                        // status:status
+                        status:status
                     }
                 });
                 if(res.data.state == 1){
-                    wx.showToast({
-                        title: '赠送成功',
-                        icon: 'success',
-                        duration: 1000
-                    });
+                    tip.longtoast('请去下载抖腿APP完成后续操作');
                     // 将所有的礼物状态改为1
                     this.$emit('updateTypeTo1');
                 } else {

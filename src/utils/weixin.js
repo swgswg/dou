@@ -87,7 +87,7 @@ module.exports = {
     /**
      * webSocket
      */
-    weixinWebSocket(){
+    weixinWebSocket(message){
 
         let socketOpen = false;
         let socketMsgQueue = [];
@@ -130,6 +130,21 @@ module.exports = {
             //     newsList:list
             // })
         });
+
+    },
+
+    weixinCloseWebSocket(){
+        wx.closeSocket({
+            success: function(){
+                console.log("关闭成功...")
+            },
+            fail: function(){
+                console.log("关闭失败...")
+            }
+        });
+        wx.onSocketClose(function(res) {
+            console.log("WebSocket连接已关闭")
+        })
 
     },
 

@@ -150,7 +150,7 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX } from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
     import util from '@/utils/util';
     import tip from '@/utils/tip';
     import api from '@/utils/api';
@@ -212,6 +212,8 @@
             publicWallId:null,
             ratio:1,
             showCoverLayer:false,
+            // 判断有没有未送出的私墙
+            hasSendVipWall:null,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -219,6 +221,9 @@
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.fansId = userInfo.id;
 
             if(util.isEmpty(options.userId)){
                 tip.error('网络错误');
@@ -240,6 +245,9 @@
             this.getSPresentWallallEvent();
             // 获取公墙
             this.getPresentsWallEvent();
+
+            // 判断能不能送礼物墙
+            this.getSpNumEvent();
         };
 
         // 声明数据watcher（详见后文介绍）
@@ -305,9 +313,14 @@
                 let userId = this.userId;
                 if(status == 'vip'){
                     // 判断有没有私墙权限
+                    console.log(this.hasSendVipWall);
+                    if(this.hasSendVipWall != 0){
+                        tip.longtoast('您有未完成的礼物墙');
+                        return;
+                    }
                 }
                 wx.navigateTo({
-                   url:'/pages/send_gift?sendStatus=' + status+'&userId='+userId
+                   url:'/pages/send_gift?sendStatus=' + status + '&userId=' + userId
                 });
             },
 
@@ -406,10 +419,10 @@
                     userId:userId
                 }
             });
-            console.log(res);
+            // console.log(res);
             if(res.data.state == 1){
                 let data = res.data.data;
-                console.log(data.axle);
+                // console.log(data.axle);
                 publicList = data.axle;
                 let logo = data.logo;
                 let logoX = this.canvasWidth - this.logoWidth;
@@ -422,6 +435,22 @@
                 tip.error('网络错误');
             }
             this.$apply();
+        }
+
+        // 判断送私墙之前有没有未完成的私墙
+        async getSpNumEvent(){
+            let fansId = this.fansId;
+            let res = await api.getSpNum({
+                query:{
+                    id:fansId
+                }
+            });
+            if(res.data.state == 1){
+                this.hasSendVipWall = res.data.data.type;
+                this.$apply();
+            } else {
+                tip.error('网络错误');
+            }
         }
 
     }
