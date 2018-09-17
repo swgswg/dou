@@ -3,10 +3,11 @@ import { wxRequest } from '@/utils/wxRequest';
 // 域名
 const host = 'http://39.107.70.80:8080/';
 // const host = 'http://192.168.1.153:8080/';
+
 // webScocket
 const wshost = 'ws://192.168.3.52:8080/MicroPlatform/websocket/';
+
 // 上传文件/解析图片 地址
-// const uploadFileUrl = 'http://jiaoyuvideo.oss-cn-beijing.aliyuncs.com/';
 const uploadFileUrl = 'http://doutui.oss-cn-beijing.aliyuncs.com/';
 
 // 订单状态 全部'' 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）6(订单取消)
@@ -136,6 +137,12 @@ const getSPresentsWall = (params) => wxRequest(params, host + 'shakeLeg/user/get
 const UpdatePattern = (params) => wxRequest(params, host + 'shakeLeg/user/UpdatePattern');
 // 查询未送出礼物数
 const getSpNum = (params) => wxRequest(params, host + 'shakeLeg/user/getSpNum');
+// 上传文件
+const UploadFiles = (params) => wxRequest(params, host + 'shakeLeg/user/UploadFiles');
+// 用户信息数据
+const getOneUserData = (params) => wxRequest(params, host + 'shakeLeg/user/getUserData');
+//  小程序微信支付
+const wxPay = (params) => wxRequest(params, host + 'shakeLeg/user/wxPay');
 
 export default {
     host,
@@ -204,4 +211,7 @@ export default {
     getSPresentsWall,
     UpdatePattern,
     getSpNum,
+    UploadFiles,
+    getOneUserData,
+    wxPay,
 };

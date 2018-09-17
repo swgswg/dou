@@ -4,30 +4,31 @@
         <view class="text2" style="margin-top:{{20*px2rpxHeight}}px;">TAKE ME HAND</view>
         <view class="record" style="margin-top:{{20*px2rpxHeight}}px;">
             <view>时长：{{record.time}}</view>
-            <view class="ml10">次数：{{record.shakeNum}}</view>
+            <!--<view class="ml10">次数：{{record.shakeNum}}</view>-->
             <view class="ml10">总排名：{{record.rownum}}</view>
         </view>
-        <!--<view class="img">-->
-            <!--<view class="flower">-->
-                <!--<image src="/static/images/flower.png"></image>-->
-                <!--&lt;!&ndash;<image src="{{uploadFileUrl + ''}}"></image>&ndash;&gt;-->
-                <!--<view>520</view>-->
-            <!--</view>-->
-            <!--<view class="bomb">-->
-                <!--<image src="/static/images/bomb.png"></image>-->
-                <!--&lt;!&ndash;<image src="{{uploadFileUrl + ''}}"></image>&ndash;&gt;-->
-                <!--<view>5520</view>-->
-            <!--</view>-->
-        <!--</view>-->
-        <!--<image class="code" wx:if="{{isShow}}" src="/static/images/my_code.png"></image>-->
-        <!--<image class="code" wx:if="{{isShow}}" src="{{uploadFileUrl + ''}}"></image>-->
+        <view class="img" style="margin-top:{{35*px2rpxHeight}}px;padding:0 {{50*px2rpxWidth}}px">
+            <view class="img-each">
+                <image src="{{hand_record}}" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
+                <view>{{record.sShakeNum}}</view>
+            </view>
+            <view class="img-each">
+                <image src="{{leg_record}}" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
+                <view>{{record.jShakeNum}}</view>
+            </view>
+            <view class="img-each">
+                <image src="{{shake_code}}" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
+                <view>{{record.integral}}</view>
+            </view>
+        </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import api from '@/utils/api'
-    import tip from '@/utils/tip'
+    import api from '@/utils/api';
+    import tip from '@/utils/tip';
+    import imgApi from '@/utils/imgApi';
     import {PX_TO_RPX } from '@/utils/constant';
 
     export default class BestRecord extends wepy.component {
@@ -36,6 +37,9 @@
             px2rpxHeight:0,
             uploadFileUrl:api.uploadFileUrl,
             record:null,
+            hand_record:imgApi.hand_record,
+            leg_record:imgApi.leg_record,
+            shake_code:imgApi.shake_code,
         };
 
         props  = {
@@ -53,28 +57,22 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-
             this.getBestRecord();
-
             this.$apply();
         }
 
-        methods = {
-
-        };
-
-        // 获取最佳成绩(抖腿/世界)
+        // 获取用户信息数据
         async getBestRecord(){
             let that = this;
-            let res = await api.myWorldRankings({
+            let res = await api.getOneUserData({
                 query:{
                     userId: that.userId,
-                    type:0,
-                    status:1
                 }
             });
             if(res.data.state == 1){
-                this.record = res.data.data;
+                let record = res.data.data;
+                record.time = record.time.replace(' ','小时');
+                this.record = record;
                 this.$apply();
             } else {
                 tip.error('网路错误');
@@ -88,7 +86,6 @@
     .best-record{
         position: relative;
         width: 100%;
-        /*padding: 20rpx;*/
         box-sizing: border-box;
         border-radius: 10rpx;
         background-color: #fff;
@@ -106,7 +103,6 @@
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            /*margin-top: 20rpx;*/
             font-size: 48rpx;
             font-family: 'Edo SZ';
             color: #ec2c98;
@@ -118,46 +114,25 @@
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            /*margin-top: 20rpx;*/
             font-size: 30rpx;
             color: #737373;
         }
 
-        /*.img{*/
-            /*display: flex;*/
-            /*justify-content: space-around;*/
-            /*align-items: center;*/
-            /*width: 100%;*/
-            /*margin-top: 35rpx;*/
-            /*padding: 0 80rpx;*/
-            /*box-sizing: border-box;*/
-            /*font-size: 40rpx;*/
-            /*color: #aaa;*/
+        .img{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 30rpx;
+            color: #999;
 
-            /*.flower{*/
+            .img-each{
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+        }
 
-                /*image{*/
-                    /*width: 80rpx;*/
-                    /*height: 80rpx;*/
-                /*}*/
-            /*}*/
-
-            /*.bomb{*/
-
-                /*image{*/
-                    /*width: 80rpx;*/
-                    /*height: 80rpx;*/
-                /*}*/
-            /*}*/
-        /*}*/
-
-        /*.code{*/
-            /*position: absolute;*/
-            /*top: 50rpx;*/
-            /*right: 0;*/
-            /*width: 155rpx;*/
-            /*height: 155rpx;*/
-        /*}*/
-        
     }
 </style>

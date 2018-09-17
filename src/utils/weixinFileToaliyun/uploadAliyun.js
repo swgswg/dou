@@ -27,7 +27,7 @@ const uploadFile = function (filePath, successCB, errorCB) {
     // 生成随机数
     let rand = utils.rand(1111,9999);
 	// 拼接文件名
-    const fileNmae = now + rand + filePath.slice(filePath.lastIndexOf('.'));
+    const fileName = now + rand + filePath.slice(filePath.lastIndexOf('.'));
     // 阿里云OOS地址
     const aliyunServerURL = env.aliyunServerURL;
     const dir = env.dir;
@@ -44,7 +44,7 @@ const uploadFile = function (filePath, successCB, errorCB) {
             'accept': 'application/json'
         },
         formData: {
-            'key': dir + fileNmae,
+            'key': dir + fileName,
             'OSSAccessKeyId': accessid,
             'policy': policyBase64,
             'Signature': signature,
@@ -56,7 +56,7 @@ const uploadFile = function (filePath, successCB, errorCB) {
                 return;
             }
             console.log('上传成功', res);
-            successCB(fileNmae);
+            successCB(fileName);
         },
         fail: function (err) {
             err.wxaddinfo = aliyunServerURL;

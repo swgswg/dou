@@ -81,7 +81,48 @@ module.exports = {
         } else {
             tip.error('网络错误');
         }
+    },
 
+    /**
+     * 上传图片到服务器
+     * @param successFun
+     */
+    uploadFileToHost(successFun){
+        wx.chooseImage({
+            count: 1,
+            sizeType: ['original', 'compressed'],
+            sourceType: ['album', 'camera'],
+            success(res) {
+                const filePaths = res.tempFilePaths[0];
+                let ext = filePaths.slice(filePaths.lastIndexOf('.') + 1);
+                let extArr = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'tiff'];
+                if (extArr.indexOf(ext) != -1) {
+                    tip.loading();
+                    // 上传文件
+                    wx.uploadFile({
+                        url: api.UploadFiles,
+                        filePath: filePaths,
+                        method:'POST',
+                        header: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                        name: 'file',
+                        formData: {
+                            'user': 'test'
+                        },
+                        success(res) {
+                            console.log(res);
+                            // 获取服务器返回的图片名称
+                            let data = res.data;
+                            successFun(data);
+                        }
+                    });
+                    tip.loaded();
+                } else {
+                    tip.error('上传的不是图片');
+                }
+            }
+        });
     },
 
     /**
@@ -149,30 +190,55 @@ module.exports = {
     },
 
     /**
-     *  付款
-     * @param suFun 成功执行的方法
-     * @param errFun 失败执行的方法
+     * 微信支付
+     * @param money     订单的金额
+     * @param orderUUID 订单orderUUID
+     * @param openid    用户的openid
+     * @param body      显示的信息
+     * @param suFun     成功执行的方法
+     * @param errFun    失败执行的方法
+     * @returns {Promise<void>}
      */
-    weixinPay:function(suFun,errFun){
-        wx.requestPayment({
-            'timeStamp': '',
-            'nonceStr': '',
-            'package': '',
-            'signType': 'MD5',
-            'paySign': '',
-            'success':function(res){
-                suFun(res)
-            },
-            'fail':function(res){
-                wx.showToast({
-                    title: '支付失败',
-                    image: "../static/images/error.png",
-                    mask: true,
-                    duration: 500
-                });
-                errFun();
+    async weixinPay(money,orderUUID,openid,body,suFun,errFun){
+        let res = await api.wxPay({
+            query:{
+                money:money,
+                orderUUID:orderUUID,
+                openid:openid,
+                body:body,
             }
-        })
+        });
+        if(res.data.state == 1){
+            let data = res.data.data;
+            wx.requestPayment({
+                'timeStamp': data.timeStamp,
+                'nonceStr': data.nonceStr,
+                'package': data.package,
+                'signType': data.signType,
+                'paySign': data.paySign,
+                'success':function(res){
+                    suFun(res);
+                },
+                'fail':function(res){
+                    console.log('支付失败');
+                    console.log(res);
+                    wx.showToast({
+                        title: '支付失败',
+                        image: "../static/images/error.png",
+                        mask: true,
+                        duration: 1000
+                    });
+                    errFun();
+                }
+            })
+        } else {
+            wx.showToast({
+                title: '支付失败',
+                image: "../static/images/error.png",
+                mask: true,
+                duration: 1000
+            });
+        }
     },
 
     /***

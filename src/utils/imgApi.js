@@ -4,7 +4,6 @@ import api from '@/utils/api';
 const uploadFileUrl = api.uploadFileUrl;
 /**
  * 图片api
- * @type {{}}
  */
 module.exports = {
     fileUrl:uploadFileUrl,
@@ -180,5 +179,9 @@ module.exports = {
     model_oldman:uploadFileUrl + 'model_oldman.png',
     model_woman:uploadFileUrl + 'model_woman.png',
     model_dui:uploadFileUrl + 'model_dui.png',
+
+    // 我的记录
+    hand_record:uploadFileUrl + 'hand_record.png',
+    leg_record:uploadFileUrl + 'leg_record.png',
 
 };

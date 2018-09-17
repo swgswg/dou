@@ -64,6 +64,11 @@
     import EmptyAddress from '@/components/empty_address';
     import AddressList from '@/components/address_list';
 
+    let userId = null;
+    let goodsId = null;
+    let orderId = null;
+    let openid = null;
+
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
@@ -81,14 +86,12 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             fileUrl:imgApi.fileUrl,
-            userId:null,
             // 是否有默认地址
             hasAddress:false,
             address:null,
             // 是否允许编辑地址
             isAllowEditAddress:false,
             selectOrAdd:'选择',
-            goodsId:null,
             goodsInfo:null,
             goodsNum:null,
             // 总金额
@@ -96,7 +99,7 @@
             // 总积分
             goodsIntegrals:null,
             btnText:'提交订单',
-            orderId:null,
+
         };
 
         // 在Page和Component共用的生命周期函数
@@ -106,13 +109,13 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             let userInfo = wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
-
+            userId = userInfo.id;
+            openid = userInfo.weChat;
             // console.log(options);
             if(util.isEmpty(options.goodsId)){
                 tip.error('网络错误');
             } else {
-                this.goodsId = options.goodsId;
+                goodsId = options.goodsId;
             }
             if(util.isEmpty(options.goodsNum)){
                 tip.error('网络错误');
@@ -132,7 +135,7 @@
             // 获取商品信息
             let result = await api.getGoodsDetails({
                 query:{
-                    goodsId: that.goodsId
+                    goodsId: goodsId
                 }
             });
             if(result.data.state == 1){
@@ -148,7 +151,7 @@
             // 获取默认地址
             let res = await api.getMoRen({
                 query:{
-                    userId:that.userId,
+                    userId:userId,
                 }
             });
             if(res.data.state == 1){
@@ -173,8 +176,8 @@
                 if(this.btnText == '提交订单'){
                     let res = await api.addOrders({
                         query:{
-                            goodsId:that.goodsId,
-                            userId:that.userId,
+                            goodsId:goodsId,
+                            userId:userId,
                             num:that.goodsNum,
                             status:0,
                             consignee:that.address[0].consignee,
@@ -185,15 +188,15 @@
                         }
                     });
                     if(res.data.state == 1){
-                        this.orderId = res.data.data;
-                        this.pay(res.data.data);
+                        orderId = res.data.data;
+                        this.pay(orderId);
                         this.$apply();
                     } else {
                         tip.error('网络错误');
 
                     }
                 } else if(this.btnText == '继续支付'){
-                    this.pay(that.orderId);
+                    this.pay(orderId);
                 }
                 this.$apply();
             }
@@ -202,7 +205,8 @@
         // 付钱
         pay(myorderId){
             let that = this;
-            weixin.weixinPay((res)=>{
+            let money = this.goodsTotal;
+            weixin.weixinPay(money,myorderId,openid,'抖腿商城',(res)=>{
                 that.updateOrdersStatusFun(myorderId);
             },()=>{
                 that.btnText = '继续支付';

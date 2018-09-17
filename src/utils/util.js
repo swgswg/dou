@@ -266,9 +266,9 @@ function getPrevPageUrl() {
  * @param endTime
  */
 function mytimer(endTime, that) {
-    var EndTime = new Date(endTime);
-    var clear_set = null;
-    console.log(EndTime);
+    let EndTime = new Date(endTime);
+    let clear_set = null;
+    // console.log(EndTime);
     clear_set = setInterval(function () {
         let NowTime = new Date();
         let t = EndTime.getTime() - NowTime.getTime();
@@ -362,14 +362,12 @@ function isEmpty(data) {
     if (data === "" || data === 0 || data === "0" || data === null || data === false || typeof data === 'undefined') {
         return true;
     }
-
     if (typeof data == 'object') {
         for (let key in data) {
             return false;
         }
         return true;
     }
-
     return false;
 }
 

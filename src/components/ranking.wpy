@@ -134,6 +134,7 @@
                 width: 100%;
 
                 .w100,.w150{
+                    text-align: center;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;

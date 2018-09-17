@@ -210,7 +210,7 @@
             // 公共墙礼物
             publicWall:null,
             publicWallId:null,
-            ratio:1,
+            ratio:1.1,
             showCoverLayer:false,
             // 判断有没有未送出的私墙
             hasSendVipWall:null,
@@ -303,7 +303,7 @@
             goToPublicWallRecord(){
                 let publicWallId = this.publicWallId;
                 wx.navigateTo({
-                    url:'/pages/public_wall?publicWallId=' + publicWallId
+                    url:'/pages/public_wall_record?publicWallId=' + publicWallId
                 });
             },
 
@@ -357,7 +357,7 @@
             });
             if(res.data.state == 1){
                 let data = res.data.data.PageInfo.list;
-                if(util.isEmpty(data[0])){
+                if(util.isEmpty(data)){
                     this.is_empty = true;
                 } else {
                     let firstOfThree = [];
