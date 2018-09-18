@@ -38,13 +38,16 @@
             <!--合计 start-->
             <view class="heji" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
                 <view>合计</view>
-                <view style="color:#f03e3e">¥{{goodsTotal}}<text style="font-size:20rpx">({{goodsIntegrals}}积分)</text></view>
+                <view style="color:#f03e3e">¥{{goodsTotal}}<text style="font-size:20rpx" wx:if="{{goodsInfo.type != 0}}">({{goodsIntegrals}}积分)</text></view>
             </view>
             <!--合计 end-->
 
             <!--提交订单 start-->
             <view class="commit" style="height:{{98*px2rpxHeight}}px;">
-                <veiw class="heji" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">合计：<text style="color:#f03e3e;">¥{{goodsTotal}}</text><text style="font-size:20rpx;color:#f03e3e;">({{goodsIntegrals}}积分)</text></veiw>
+                <veiw class="heji" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">
+                    合计：<text style="color:#f03e3e;">¥{{goodsTotal}}</text>
+                        <text style="font-size:20rpx;color:#f03e3e;" wx:if="{{goodsInfo.type != 0}}">({{goodsIntegrals}}积分)</text>
+                </veiw>
                 <view class="btn" style="width:{{231*px2rpxWidth}}px;" @tap.stop="commitOrder">{{btnText}}</view>
             </view>
             <!--提交订单 end-->
@@ -111,7 +114,6 @@
             let userInfo = wepy.getStorageSync(USER_INFO);
             userId = userInfo.id;
             openid = userInfo.weChat;
-            // console.log(options);
             if(util.isEmpty(options.goodsId)){
                 tip.error('网络错误');
             } else {
@@ -140,6 +142,7 @@
             });
             if(result.data.state == 1){
                 that.goodsInfo = result.data.data;
+                console.log(result.data.data);
             } else {
                 tip.error('网络错误');
             }
@@ -147,7 +150,9 @@
             // 合计
             this.goodsTotal = calculate.calcMul(parseFloat(this.goodsInfo.money),parseInt(this.goodsNum));
             // 总积分
-            this.goodsIntegrals = calculate.calcMul(parseFloat(this.goodsInfo.integral),parseInt(this.goodsNum));
+            if(this.goodsInfo.type != 0){
+                this.goodsIntegrals = calculate.calcMul(parseFloat(this.goodsInfo.integral),parseInt(this.goodsNum));
+            }
             // 获取默认地址
             let res = await api.getMoRen({
                 query:{
@@ -173,22 +178,27 @@
             // 提交订单
             async commitOrder(){
                 let that = this;
-                if(!hasAddress){
+                if(!this.hasAddress){
                     tip.alert('请添加地址');
+                    return;
+                }
+                let data = {
+                    goodsId:goodsId,
+                    userId:userId,
+                    num:that.goodsNum,
+                    status:0,
+                    consignee:that.address[0].consignee,
+                    mobile:that.address[0].mobile,
+                    site:that.address[0].site,
+                    integral:that.goodsIntegrals,
+                    moneys:that.goodsTotal,
+                };
+                if(this.goodsInfo.type == 0){
+                    data.integral = 0;
                 }
                 if(this.btnText == '提交订单'){
                     let res = await api.addOrders({
-                        query:{
-                            goodsId:goodsId,
-                            userId:userId,
-                            num:that.goodsNum,
-                            status:0,
-                            consignee:that.address[0].consignee,
-                            mobile:that.address[0].mobile,
-                            site:that.address[0].site,
-                            integral:that.goodsIntegrals,
-                            moneys:that.goodsTotal,
-                        }
+                        query:data
                     });
                     if(res.data.state == 1){
                         orderId = res.data.data;

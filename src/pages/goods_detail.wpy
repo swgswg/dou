@@ -25,7 +25,7 @@
                     ><text class="iconfont icon-share"></text></button>
                 </view>
             </view>
-            <view class="money" style="height:{{80*px2rpxHeight}}px;padding-bottom:{{20*px2rpxHeight}}px;">¥{{goodsInfo.money}}<text style="font-size:20rpx">({{goodsInfo.integral}}积分)</text></view>
+            <view class="money" style="height:{{80*px2rpxHeight}}px;padding-bottom:{{20*px2rpxHeight}}px;">¥{{goodsInfo.money}}<text style="font-size:20rpx" wx:if="{{goodsInfo.type !=0 }}">({{goodsInfo.integral}}积分)</text></view>
             <view class="expenses" style="padding:{{20*px2rpxHeight}}px 0;">运费:免运费</view>
         </view>
         <!--商品信息 end-->
@@ -112,6 +112,8 @@
     import calculate from '@/utils/calculate';
     import ChangeNumber from '@/components/common/change_number';
 
+    let userId = null;
+    let goodsId = null;
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
@@ -128,8 +130,8 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             fileUrl:imgApi.fileUrl,
-            userId:null,
-            goodsId:null,
+            // userId:null,
+            // goodsId:null,
             goodsInfo:null,
             // 轮播图图片
             // goodsImgUrls:[],
@@ -154,9 +156,8 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
-
-            this.goodsId = options.goodsId;
+            userId = userInfo.id;
+            goodsId = options.goodsId;
             this.$apply();
         }
 
@@ -170,15 +171,13 @@
             // 获取商品信息
             let res = await api.getGoodsDetails({
                 query:{
-                    goodsId: that.goodsId
+                    goodsId: goodsId
                 }
             });
             if(res.data.state == 1){
                 let goodsInfo = res.data.data;
                 goodsInfo.photo1 =  JSON.parse(goodsInfo.photo1);
                 goodsInfo.photo3 =  JSON.parse(goodsInfo.photo3);
-                // goodsInfo.photo1 = goodsInfo.photo1.split(',');
-                // goodsInfo.photo3 = goodsInfo.photo3.split(',');
                 that.goodsInfo = goodsInfo;
                 that.isEnoughIntegral(1);
             } else {
@@ -201,21 +200,24 @@
         methods = {
             // 购买
             buyOneGoods(){
+                wx.pageScrollTo({
+                    scrollTop:0
+                });
                 if(this.btnText == '下一步'){
-                    wx.pageScrollTo({
-                        scrollTop: 0,
-                        duration: 300
-                    });
+                    // wx.pageScrollTo({
+                    //     scrollTop: 0,
+                    //     duration: 300
+                    // });
                     let num = this.num;
                     if(!util.checkReg(6,num)){
                         tip.error('请输入正确数量');
                         return;
                     }
+
                     if(!this.enoughIntegral){
                         tip.longtoast('您的积分不够,不能购买');
                         return;
                     }
-                    let goodsId = this.goodsId;
                     wepy.navigateTo({
                         url:'/pages/commit_order?goodsId=' + goodsId + '&goodsNum=' + num
                     });
@@ -236,13 +238,17 @@
 
         // 判断用户积分是否满足
         async isEnoughIntegral(num){
-            let that = this;
+            if(this.goodsInfo.type == 0){
+                // 没有积分
+                this.enoughIntegral = true;
+                return;
+            }
             let integral = this.goodsInfo.integral;
             let integrals = calculate.calcMul(integral,num);
             // 查询用户可用积分
             let res = await api.getIntegral({
                 query:{
-                    userId:that.userId
+                    userId: userId
                 }
             });
             if(res.data.state == 1){

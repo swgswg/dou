@@ -383,7 +383,7 @@
             let userInfo = wepy.getStorageSync(USER_INFO);
             // 获取背景音乐链接
             if(userInfo.voice == 1){
-                weixin.backgroundMusic(musicTitle,musicSrc);
+                weixin.backgroundMusic();
             }
         }
 

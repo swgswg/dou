@@ -143,6 +143,8 @@ const UploadFiles = (params) => wxRequest(params, host + 'shakeLeg/user/UploadFi
 const getOneUserData = (params) => wxRequest(params, host + 'shakeLeg/user/getUserData');
 //  小程序微信支付
 const wxPay = (params) => wxRequest(params, host + 'shakeLeg/user/wxPay');
+// 查询背景音乐列表
+const getMusic = (params) => wxRequest(params, host + 'shakeLeg/user/getMusic');
 
 export default {
     host,
@@ -214,4 +216,5 @@ export default {
     UploadFiles,
     getOneUserData,
     wxPay,
+    getMusic,
 };

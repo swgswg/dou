@@ -309,7 +309,14 @@ module.exports = {
     /**
      * 后台播放音乐
      */
-    backgroundMusic: function(musicTitle,musicSrc){
+    async backgroundMusic(){
+        let musicTitle = null;
+        let musicSrc = null;
+        let res = await api.getMusic();
+        if(res.data.state == 1) {
+            musicTitle = res.data.data[0].title;
+            musicSrc = api.uploadFileUrl + res.data.data[0].url;
+        }
         const backgroundAudioManager = wx.getBackgroundAudioManager();
         backgroundAudioManager.title = musicTitle;
         backgroundAudioManager.src = musicSrc;
