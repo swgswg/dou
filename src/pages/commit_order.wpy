@@ -173,6 +173,9 @@
             // 提交订单
             async commitOrder(){
                 let that = this;
+                if(!hasAddress){
+                    tip.alert('请添加地址');
+                }
                 if(this.btnText == '提交订单'){
                     let res = await api.addOrders({
                         query:{
@@ -235,7 +238,9 @@
         changeAddr(addr){
             this.address = [addr];
             this.hasAddress = true;
-        }
+            this.$apply();
+        };
+
     }
 </script>
 
