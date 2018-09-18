@@ -6,9 +6,9 @@
         </view>
 
         <!--振动-->
-        <view class="mb10">
-            <vibranceset :setImg.sync="setVibranceImg" :setName.sync="setVibranceName" :activeDot.sync="vibranceActiveDot"></vibranceset>
-        </view>
+        <!--<view class="mb10">-->
+            <!--<vibranceset :setImg.sync="setVibranceImg" :setName.sync="setVibranceName" :activeDot.sync="vibranceActiveDot"></vibranceset>-->
+        <!--</view>-->
     </view>
 </template>
 
@@ -16,8 +16,11 @@
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
+    import weixin from '@/utils/weixin';
     import {USER_INFO} from '@/utils/constant';
     import Set from '@/components/set';
+
+    let userInfo = null;
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -30,21 +33,21 @@
             // 声音
             soundset:Set,
             // 振动
-            vibranceset:Set,
+            // vibranceset:Set,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
-            userInfo:null,
+            // userInfo:null,
             // 声音
             setSoundImg:imgApi.set_sound,
             setSoundName:'声音',
             soundActiveDot:0,
 
             // 振动
-            setVibranceImg:imgApi.set_vibrance,
-            setVibranceName:'振动',
-            vibranceActiveDot:0,
+            // setVibranceImg:imgApi.set_vibrance,
+            // setVibranceName:'振动',
+            // vibranceActiveDot:0,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -60,60 +63,46 @@
         // 只在Page中存在的页面生命周期函数
         onReady() {
             // 获取设置信息
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            // console.log(userInfo);
-            this.userInfo = userInfo;
+            userInfo = wepy.getStorageSync(USER_INFO);
             this.soundActiveDot = parseInt(userInfo.voice);
-            this.vibranceActiveDot = parseInt(userInfo.shake);
+            // this.vibranceActiveDot = parseInt(userInfo.shake);
             this.$apply();
         };
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
 
         // 声明数据watcher（详见后文介绍）
         watch = {
             // 声音设置
             async soundActiveDot(newValue){
-                let that = this;
                 console.log(newValue);
-                await api.updateSet({
+                let res = await api.updateSet({
                     query:{
-                        userId:that.userInfo.id,
+                        userId:userInfo.id,
                         voice:newValue
                     }
                 });
+                if(res.data.state == 1){
+                    // 同步更新缓存
+                    weixin.updateStorage('voice',newValue);
+                    if(newValue == 0){
+                        // 停止背景音乐
+                        weixin.stopMusic();
+                    } else if(newValue == 1){
+                        weixin.backgroundMusic();
+                    }
+                }
             },
             // 振动设置
-            async vibranceActiveDot(newValue){
-                let that = this;
-                console.log(newValue);
-                await api.updateSet({
-                    query:{
-                        userId:that.userInfo.id,
-                        shake:newValue
-                    }
-                });
-            }
+            // async vibranceActiveDot(newValue){
+            //     let that = this;
+            //     console.log(newValue);
+            //     await api.updateSet({
+            //         query:{
+            //             userId:that.userInfo.id,
+            //             shake:newValue
+            //         }
+            //     });
+            // }
         };
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {};
-
-        // 声明组件之间的事件处理函数
-        events = {};
-
-        // 修改设置
-        // async updateSet(myshake,myvoice){
-        //     let user_id = this.userInfo.id;
-        //     let res = await api.updateSet({
-        //         query:{
-        //             userId:user_id,
-        //             shake:myshake,
-        //             voice:myvoice
-        //         }
-        //     });
-        // }
     }
 </script>
 

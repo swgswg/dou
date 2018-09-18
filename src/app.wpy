@@ -188,6 +188,8 @@
     import util from '@/utils/util';
     import weixin from '@/utils/weixin';
 
+    let user_info = null;
+
     export default class extends wepy.app {
         config = {
             pages: [
@@ -284,8 +286,9 @@
                         code: res.code,
                     }
                 });
-                // console.log(rlt);
                 wepy.setStorageSync(USER_INFO, rlt.data.data);
+                user_info = rlt.data.data;
+                console.log(user_info);
             }
 
             // 获取屏幕尺寸适配比例
@@ -303,13 +306,13 @@
             },1000);
 
             // 播放背景音乐
-            this.isPlayBackgroundMusic();
+            this.backgroundMusicEvent();
         }
 
         // 把上次的手动记录存入数据库(个人记录不需要房间号)
         async addHandRecord(){
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            console.log(userInfo);
+            // let userInfo = wepy.getStorageSync(USER_INFO);
+            // console.log(userInfo);
 
             let prevShakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
             console.log('prevShakeHandTime' + '===' +prevShakeHandTime);
@@ -326,7 +329,8 @@
 
                 let res = await api.addRecord({
                     query:{
-                        userId:userInfo.id,
+                        // userId:that.userInfo.id,
+                        userId: user_info.id,
                         time:prevShakeHandTime,
                         shakeNum:prevShakeHandNumber,
                         type:0,  // 0自己,1好友
@@ -343,7 +347,7 @@
         /* 此接口等设备接入(连接蓝牙成功时使用) */
         // 把上次的脚动记录存入数据库(个人记录不需要房间号)
         // async addLegRecord(){
-        //     let userInfo = wepy.getStorageSync(USER_INFO);
+        //     // let userInfo = wepy.getStorageSync(USER_INFO);
         //     let prevShakeLegTime = wepy.getStorageSync(SHAKE_LEG_TIME);
         //     let prevShakeLegNumber = wepy.getStorageSync(SHAKE_LEG_NUMBER);
         //     if(!util.isEmpty(prevShakeLegTime)){
@@ -355,7 +359,8 @@
         //
         //         let res = await api.addRecord({
         //             query:{
-        //                 userId:userInfo.id,
+        //                 // userId:that.userInfo.id,
+        //                 userId: user_info.id,
         //                 time:prevShakeLegTime,
         //                 shakeNum:prevShakeLegNumber,
         //                 type:0, // 0自己,1好友
@@ -378,12 +383,12 @@
             wepy.setStorageSync(PX_TO_RPX, {px2rpxWidth:systemInfo.windowWidth / 750,px2rpxHeight:systemInfo.screenHeight / 1334});
         }
 
-        // 是否开启播放背景音乐
-        isPlayBackgroundMusic(){
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            // 获取背景音乐链接
-            if(userInfo.voice == 1){
+        // 背景音乐
+        backgroundMusicEvent(){
+            if(user_info.voice == 1){
                 weixin.backgroundMusic();
+            } else {
+                weixin.stopMusic();
             }
         }
 

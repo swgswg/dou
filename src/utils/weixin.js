@@ -1,8 +1,13 @@
 // const utils = require('@/utils/util.js');
+import wepy from 'wepy';
 const tip = require('@/utils/tip.js');
 const env = require('@/utils/weixinFileToaliyun/env.js');
 const uploadAliyun = require('@/utils/weixinFileToaliyun/uploadAliyun.js');
 import api from '@/utils/api';
+import {USER_INFO} from '@/utils/constant';
+
+// 创建内部 audio 上下文 InnerAudioContext 对象
+const innerAudioContext = wx.createInnerAudioContext();
 
 module.exports = {
 
@@ -310,16 +315,37 @@ module.exports = {
      * 后台播放音乐
      */
     async backgroundMusic(){
+        let res = await api.getMusic();
+        if(res.data.state != 1) {
+           return;
+        }
         let musicTitle = null;
         let musicSrc = null;
-        let res = await api.getMusic();
-        if(res.data.state == 1) {
-            musicTitle = res.data.data[0].title;
-            musicSrc = api.uploadFileUrl + res.data.data[0].url;
-        }
-        const backgroundAudioManager = wx.getBackgroundAudioManager();
-        backgroundAudioManager.title = musicTitle;
-        backgroundAudioManager.src = musicSrc;
+        musicTitle = res.data.data[0].title;
+        musicSrc = api.uploadFileUrl + res.data.data[0].url;
+
+        innerAudioContext.autoplay = true;
+        innerAudioContext.loop = true;
+        innerAudioContext.obeyMuteSwitch = true;
+        innerAudioContext.src = musicSrc;
+        innerAudioContext.play();
     },
+
+    // 停止播放音乐
+    stopMusic(){
+        innerAudioContext.stop();
+        // innerAudioContext.destroy();
+    },
+
+    // 更新缓存
+    async updateStorage(mykey,myvalue){
+        let userInfo = wepy.getStorageSync(USER_INFO);
+        for(let k in userInfo){
+            if(k == mykey){
+                userInfo[k] = myvalue;
+            }
+        }
+        wepy.setStorageSync(USER_INFO, userInfo);
+    }
 
 };

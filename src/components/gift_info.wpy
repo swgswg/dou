@@ -41,8 +41,14 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import util from '@/utils/util';
+    import tip from '@/utils/tip';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
+
+    let userInfo = null;
+    let page = 1;
+    let pageSize = 20;
+    let isLastPage = false;
 
     export default class GiftInfo extends wepy.component {
 
@@ -57,15 +63,10 @@
             fileUrl:imgApi.fileUrl,
             energy: imgApi.energy,
             shake_code: imgApi.shake_code,
-            page:1,
-            pageSize:20,
-            // 是否是最后一页
-            isLastPage:true,
-            userInfo:null,
             // 礼物信息
             giftInfo:[],
             // 购买的礼物
-            buyGift:{},// {id:,number:,},
+            // buyGift:{},// {id:,number:,},
             //是否显示 底部loading
             showLoading: false,
             // 数据是否为空
@@ -87,8 +88,8 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             // 获取用户信息
-            let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.userInfo = userInfo;
+            userInfo = await wepy.getStorageSync(USER_INFO);
+            // this.userInfo = userInfo;
             this.$apply();
 
             //获取礼物
@@ -98,13 +99,10 @@
         methods = {
             //滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
-                if(this.isLastPage){
+                if(isLastPage){
                     return;
                 }
                 this.showLoading = true;
-                let page = this.page + 1;
-                this.page = page;
-                let pageSize = this.pageSize;
                 this.getGift(page,pageSize);
             },
 
@@ -150,7 +148,7 @@
                     // 积分兑换
                     let res = await api.convertGift({
                         query:{
-                            userId: that.userInfo.id,
+                            userId: userInfo.id,
                             giftId:id,
                             num: val,
                             integral:sumIntegral
@@ -185,35 +183,38 @@
                     pageSize:mypageSize,
                 }
             });
-            // console.log(res);
-            // 获取礼物信息
-            let giftInfo = this.giftInfo;
-            if(util.isEmpty(giftInfo)){
-                // 如果礼物信息为空
-                giftInfo = [];
-            }
-            let gift = res.data.data.PageInfo.list;
-            let len = gift.length;
-            for(let i = 0; i < len; i++){
-                gift[i].val = '';
-                giftInfo.push(gift[i]);
-            }
-            this.giftInfo = giftInfo;
-            // 是否是最后一页
-            this.isLastPage = res.data.data.PageInfo.isLastPage;
-            this.showLoading = false;
-            if(len < 1){
-                this.is_empty = true;
+            if(res.data.state == 1){
+                // 获取礼物信息
+                let giftInfo = this.giftInfo;
+                if(util.isEmpty(giftInfo)){
+                    // 如果礼物信息为空
+                    giftInfo = [];
+                }
+                let gift = res.data.data.PageInfo.list;
+                let len = gift.length;
+                for(let i = 0; i < len; i++){
+                    gift[i].val = '';
+                    // giftInfo.push(gift[i]);
+                }
+                this.giftInfo = giftInfo.concat(gift);
+                // 是否是最后一页
+                isLastPage = res.data.data.PageInfo.isLastPage;
+                page = mypage + 1;
+                pageSize = mypageSize;
+                if(len < 1){
+                    this.is_empty = true;
+                } else {
+                    this.is_empty = false;
+                }
             } else {
-                this.is_empty = false;
+                tip.error('网络错误');
             }
+            this.showLoading = false;
             this.$apply();
         };
 
         // 获取抖腿币,更新个人信息
         async getIntegral(){
-            let that = this;
-            let userInfo = that.userInfo;
             let res = await api.getIntegral({
                 query:{
                     userId: userInfo.id
@@ -221,12 +222,11 @@
             });
             if(res.data.state == 1){
                 let integral = res.data.data.integral;
-                that.integral = integral;
+                this.integral = integral;
                 userInfo.integral = integral;
-                that.userInfo = userInfo;
-                that.$apply();
+                this.$apply();
                 // 更新缓存
-                wepy.setStorageSync(USER_INFO, userInfo);
+                weixin.updateStorage('integral', integral);
             }
         };
 

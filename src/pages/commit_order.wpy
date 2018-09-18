@@ -142,7 +142,7 @@
             });
             if(result.data.state == 1){
                 that.goodsInfo = result.data.data;
-                console.log(result.data.data);
+                // console.log(result.data.data);
             } else {
                 tip.error('网络错误');
             }
@@ -220,7 +220,11 @@
             let that = this;
             let money = this.goodsTotal;
             weixin.weixinPay(money,myorderId,openid,'抖腿商城',(res)=>{
-                that.updateOrdersStatusFun(myorderId);
+                tip.toast('支付成功');
+                wepy.switchTab({
+                    url:'/pages/my_info'
+                });
+                // that.updateOrdersStatusFun(myorderId);
             },()=>{
                 that.btnText = '继续支付';
             });
