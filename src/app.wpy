@@ -186,6 +186,7 @@
     import { USER_INFO, SHAKE_HAND_TIME,SHAKE_HAND_NUMBER,PX_TO_RPX,SHAKE_LEG_TIME,SHAKE_LEG_NUMBER } from '@/utils/constant';
     import api from '@/utils/api';
     import util from '@/utils/util';
+    import weixin from '@/utils/weixin';
 
     export default class extends wepy.app {
         config = {
@@ -261,7 +262,8 @@
                         "selectedIconPath": "static/images/tabbar/myinfo_active.png"
                     }
                 ]
-            }
+            },
+            'requiredBackgroundModes': true
         };
 
         globalData = {
@@ -299,6 +301,9 @@
                 wepy.setStorageSync(SHAKE_HAND_TIME, shakeTime);
                 // console.log(shakeTime);
             },1000);
+
+            // 播放背景音乐
+            this.isPlayBackgroundMusic();
         }
 
         // 把上次的手动记录存入数据库(个人记录不需要房间号)
@@ -371,6 +376,14 @@
             // console.log(systemInfo);
             // console.log(systemInfo.windowHeight / 1110);
             wepy.setStorageSync(PX_TO_RPX, {px2rpxWidth:systemInfo.windowWidth / 750,px2rpxHeight:systemInfo.screenHeight / 1334});
+        }
+
+        // 是否开启播放背景音乐
+        isPlayBackgroundMusic(){
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            if(userInfo.voice == 1){
+                weixin.backgroundMusic();
+            }
         }
 
     }
