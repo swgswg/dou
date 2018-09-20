@@ -315,7 +315,9 @@ module.exports = {
      * 后台播放音乐
      */
     async backgroundMusic(){
-        let res = await api.getMusic();
+        let res = await api.getMusic({
+            query:{}
+        });
         if(res.data.state != 1) {
            return;
         }
@@ -337,7 +339,7 @@ module.exports = {
         // innerAudioContext.destroy();
     },
 
-    // 更新缓存
+    // 更新用户缓存
     async updateStorage(mykey,myvalue){
         let userInfo = wepy.getStorageSync(USER_INFO);
         for(let k in userInfo){
@@ -346,6 +348,34 @@ module.exports = {
             }
         }
         wepy.setStorageSync(USER_INFO, userInfo);
-    }
+    },
+
+    // 把上次的脚动记录存入数据库(个人记录不需要房间号)
+    async addLegRecord(num){
+        let userInfo = wepy.getStorageSync(USER_INFO);
+        // let prevShakeLegTime = wepy.getStorageSync(SHAKE_LEG_TIME);
+        let prevShakeLegNumber = num;
+        if(!util.isEmpty(prevShakeLegTime)){
+            prevShakeLegTime = util.secondToDHMS(prevShakeLegTime);
+
+            if(util.isEmpty(prevShakeLegNumber)){
+                prevShakeLegNumber = 0;
+            }
+
+            let res = await api.addRecord({
+                query:{
+                    userId: userInfo.id,
+                    time: prevShakeLegTime,
+                    shakeNum: prevShakeLegNumber,
+                    type:0, // 0自己,1好友
+                    status: 1,// 0手动,1脚动
+                }
+            });
+            if(res.data.state == 1){
+                wepy.setStorageSync(SHAKE_LEG_TIME, 0);
+                wepy.setStorageSync(SHAKE_LEG_NUMBER, 0);
+            }
+        }
+    },
 
 };

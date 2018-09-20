@@ -265,7 +265,7 @@
                     }
                 ]
             },
-            'requiredBackgroundModes': true
+            // 'requiredBackgroundModes': true
         };
 
         globalData = {

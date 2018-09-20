@@ -42,9 +42,9 @@
                                     </image>
                                 </block>
                             </view>
-                            <view class="first-three-name" style="width:{{180*px2rpxWidth}}px;">{{first_three.NAME}}</view>
+                            <view class="first-three-name" style="width:{{180*px2rpxWidth}}px;">{{first_three.name}}</view>
                             <view class="first-three-time" style="width:{{180*px2rpxWidth}}px;margin-top:{{5*px2rpxHeight}}px;">{{first_three.time}}</view>
-                            <view class="first-three-number" style="margin-top:{{10*px2rpxHeight}}px;">{{first_three.first_three}}</view>
+                            <view class="first-three-number" style="margin-top:{{10*px2rpxHeight}}px;">{{first_three.shakeNum}}</view>
                         </view>
                     </block>
                 </view>

@@ -55,14 +55,8 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             this.userId = options.userId;
-            // this.userName = options.userName;
-            // this.photo = options.photo;
             this.$apply();
         }
-
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
 
         // 只在Page中存在的页面生命周期函数
         onReady() {

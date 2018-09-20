@@ -16,11 +16,11 @@
         </view>
         <!--当前账号 end-->
 
-        <view class="xia" style="margin-top:{{10*px2rpxHeight}}px;padding: 0 {{100*px2rpxHeight}}px">
+        <view class="xia" style="margin-top:{{10*px2rpxHeight}}px;padding:0 {{100*px2rpxHeight}}px">
             <!--左边玩家 start-->
             <view class="xia-left">
                 <stageleft
-                        :gameUserInfo.sync="gameUserInfo_left" :roomId.sync="roomId" :isActive.sync="isActive_left"
+                    :gameUserInfo.sync="gameUserInfo_left" :roomId.sync="roomId" :isActive.sync="isActive_left"
                 ></stageleft>
             </view>
             <!--左边玩家 end-->
@@ -40,7 +40,7 @@
             <!--右边玩家 start-->
             <view class="xia-right">
                 <stageright
-                        :gameUserInfo.sync="gameUserInfo_right" :roomId.sync="roomId" :isActive.sync="isActive_right"
+                    :gameUserInfo.sync="gameUserInfo_right" :roomId.sync="roomId" :isActive.sync="isActive_right"
                 ></stageright>
             </view>
             <!--右边玩家 end-->
@@ -117,16 +117,16 @@
             isCountdown:false,
 
             // 当前账号 stage舞台大小 profile人物形象 isReady是否准备好 headPortrait头像
-            gameUserInfo_shang:{isExiet:true,stageSize:'big',logo:imgApi.no_people,stage:imgApi.stage_red,isReady:false,score_bg:imgApi.score_bg_red,shakeNumber:0,headPortrait:''},
+            gameUserInfo_shang:{userId:'',isExiet:true,stageSize:'big',logo:imgApi.no_people,stage:imgApi.stage_red,isReady:false,score_bg:imgApi.score_bg_red,shakeNumber:0,headPortrait:''},
             // 当前玩家是否在玩
             isActive_shang:false,
 
             // 左边玩家
-            gameUserInfo_left:{isExiet:false,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:false,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
+            gameUserInfo_left:{userId:'',isExiet:false,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_brown,isReady:false,score_bg:imgApi.score_bg_brown,shakeNumber:0,headPortrait:''},
             isActive_left:false,
 
             // 右边玩家
-            gameUserInfo_right:{isExiet:true,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_blue,isReady:true,score_bg:imgApi.score_bg_blue,shakeNumber:0,headPortrait:''},
+            gameUserInfo_right:{userId:'',isExiet:true,stageSize:'small',logo:imgApi.no_people,stage:imgApi.stage_blue,isReady:false,score_bg:imgApi.score_bg_blue,shakeNumber:0,headPortrait:''},
             isActive_right:false,
 
             // 抖动方式对应的图片
@@ -487,6 +487,11 @@
             that.countdownOver = false;
         }
 
+        // 给玩家分配位置(当前玩家在最上面)
+        allotSeat(){
+
+        }
+
     }
 </script>
 
@@ -497,32 +502,23 @@
         .gaming{
             position: relative;
             z-index: 0;
-            /*width: 100%;*/
-            /*height: 100%;*/
 
             .bgimg{
                 position: fixed;
                 top: 0;
                 left: 0;
                 z-index: -10;
-                /*width: 750rpx;*/
-                /*height: 1334rpx;*/
             }
 
             .logout{
                 position: fixed;
-                /*top: 20rpx;*/
-                /*right: 24rpx;*/
                 z-index: 5;
-                /*width: 84rpx;*/
-                /*height: 84rpx;*/
             }
 
             .shang{
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
-                /*margin-top: 116rpx;*/
             }
 
             .xia{
@@ -530,16 +526,12 @@
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
-                /*margin-top: 10rpx;*/
-                /*padding: 0 100rpx;*/
                 box-sizing: border-box;
 
                 .xia-circle{
                     display: flex;
                     justify-content: center;
                     align-items: center;
-                    /*width: 293rpx;*/
-                    /*height: 293rpx;*/
 
                     .circle-each{
                         display: flex;
@@ -548,27 +540,6 @@
                         border: 1rpx solid #fff;
                         border-radius: 50%;
                     }
-
-                    .xia-circle1{
-                        /*width: 293rpx;*/
-                        /*height: 293rpx;*/
-
-                        .xia-circle2{
-                            /*width: 247rpx;*/
-                            /*height: 247rpx;*/
-
-                            .xia-circle3{
-                                /*width: 200rpx;*/
-                                /*height: 200rpx;*/
-
-                                image{
-                                    /*width: 153rpx;*/
-                                    /*height: 153rpx;*/
-                                }
-                            }
-                        }
-                    }
-
                 }
             }
 
@@ -577,21 +548,11 @@
                 justify-content: center;
                 align-items: center;
                 width: 100%;
-                /*height: 132rpx;*/
-                /*margin-top: 40rpx;*/
-
-                image{
-                    /*width: 313rpx;*/
-                    /*height: 132rpx;*/
-                }
             }
 
             .timer{
                 width: 100%;
-                /*height: 120rpx;*/
-                /*margin-top: 10rpx;*/
                 text-align: center;
-                /*padding-left: 50rpx;*/
                 box-sizing: border-box;
             }
 
@@ -603,14 +564,7 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                /*width: 750rpx;*/
-                /*height: 1334rpx;*/
                 background: rgba(0,0,0,0.7);
-
-                image{
-                    /*width: 464rpx;*/
-                    /*height: 480rpx;*/
-                }
             }
         }
     }

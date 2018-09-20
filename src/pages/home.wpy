@@ -14,11 +14,11 @@
 
 <script>
     import wepy from 'wepy';
-    // import { SYSTEM_INFO } from '@/utils/constant';
-    // import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
     import { USER_INFO, PX_TO_RPX} from '@/utils/constant';
+
+    let userInfo = null;
 
     export default class Home extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -45,7 +45,6 @@
         onLoad() {
             // 获取系统信息
             let systemInfo = wepy.getSystemInfoSync();
-            // console.log(systemInfo);
             this.winWidth = systemInfo.windowWidth;
             this.winHeight = systemInfo.windowHeight;
 
@@ -56,38 +55,38 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
         onReady() {
-            // let userInfo = wepy.getStorageSync(USER_INFO);
-            // console.log(userInfo);
+            userInfo = wepy.getStorageSync(USER_INFO);
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 跳过
             goToxxx(){
-                wepy.redirectTo({
-                    url: '/pages/not_connected'
-                });
+                if(util.isEmpty(userInfo.logo)){
+                    // 用户信息不全
+                    wepy.redirectTo({
+                        url: '/pages/select_sex'
+                    });
+                } else {
+                    // 用户信息完整
+                    wepy.redirectTo({
+                        url: '/pages/not_connected'
+                    });
+                }
             },
 
             // 滑块动画结束
             animationFinish(e){
                 let that = this;
-                // console.log(e);
                 // 获取结束时的滑块索引
                 let current = e.detail.current;
                 // 最后一个滑块结束时同时结束动画,跳转到首页
                 if(current >= 3){
                     that.swiper_autoplay = false;
                     setTimeout(function() {
-                        // 获取这个用户信息
-                        let userInfo = wepy.getStorageSync(USER_INFO);
-                        // console.log(userInfo);用户信息不全
                         if(util.isEmpty(userInfo.logo)){
+                            // 用户信息不全
                             wepy.redirectTo({
                                 url: '/pages/select_sex'
                             });
@@ -102,8 +101,6 @@
             },
         };
 
-        // 声明组件之间的事件处理函数
-        events = {};
     }
 </script>
 

@@ -1,7 +1,8 @@
 import { wxRequest } from '@/utils/wxRequest';
 
 // 域名
-const host = 'http://39.107.70.80:8080/';
+const host = 'http://www.dt.pub/';
+// const host = 'http://39.107.70.80:8080/';
 // const host = 'http://192.168.1.153:8080/';
 
 // webScocket

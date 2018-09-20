@@ -20,9 +20,9 @@
                            src="{{no_ready}}">
                     </image>
                 </block>
-                <block wx:if="{{}}">
-                    <view class="num-animate">+{{}}</view>
-                </block>
+                <!--<block wx:if="{{}}">-->
+                    <!--<view class="num-animate">+{{}}</view>-->
+                <!--</block>-->
 
             </view>
         </block>

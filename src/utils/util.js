@@ -340,13 +340,13 @@ function secondToDHMS(sec) {
     let minute = Math.floor(second / 60);
     second = second % 60;
     if(day > 0){
-        return day + ' ' + hour + ':' + minute +':' +second;
+        return day + '天' + hour + '时' + minute +'分' +second;
     }
     if(hour > 0){
-        return hour + ':' + minute + ':' + second;
+        return hour + '时' + minute + '分' + second;
     }
     if(minute > 0){
-        return minute + ':' + second;
+        return minute + '分' + second;
     }
     if(second > 0){
         return second;
@@ -411,6 +411,37 @@ function randomWord(randomFlag, min, max) {
     // 生成43位随机串：randomWord(false, 43)
 }
 
+/**
+ * ArrayBuffer转16进度字符串
+ * @param buffer
+ * @returns {string}
+ */
+function ab2hex(buffer) {
+    let hexArr = Array.prototype.map.call(
+        new Uint8Array(buffer),
+        function (bit) {
+            return ('00' + bit.toString(16)).slice(-2);
+        }
+    );
+    return hexArr.join('');
+}
+
+/**
+ * 16进制字符串转ArrayBuffer
+ */
+function hex2ab(str) {
+    if (!str) {
+        return new ArrayBuffer(0);
+    }
+    let typedArray = new Uint8Array(str.match(/[\da-f]{2}/gi).map(function (h) {
+        return parseInt(h, 16)
+    }));
+    let buffer1 = typedArray.buffer;
+    console.log(buffer1);
+    return buffer1;
+}
+
+
 module.exports = {
     format: format,
     formatSmartTime: formatSmartTime,
@@ -430,4 +461,6 @@ module.exports = {
     arrDelete: arrDelete,
     randomWord: randomWord,
     timeStamp: timeStamp,
+    ab2hex,
+    hex2ab,
 }
