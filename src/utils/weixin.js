@@ -1,13 +1,19 @@
 // const utils = require('@/utils/util.js');
 import wepy from 'wepy';
 const tip = require('@/utils/tip.js');
+const util = require('@/utils/util.js');
 const env = require('@/utils/weixinFileToaliyun/env.js');
 const uploadAliyun = require('@/utils/weixinFileToaliyun/uploadAliyun.js');
 import api from '@/utils/api';
-import {USER_INFO} from '@/utils/constant';
+import {USER_INFO,SHAKE_LEG_TIME} from '@/utils/constant';
 
 // 创建内部 audio 上下文 InnerAudioContext 对象
-const innerAudioContext = wx.createInnerAudioContext();
+// const innerAudioContext = wx.createInnerAudioContext();
+const backgroundAudioManager = wx.getBackgroundAudioManager();
+
+// 蓝牙通讯
+const zeroClearingHex   = 'FE08010000000000000108'; // 清零
+const noZeroClearingHex = 'FE08010000000000000007'; // 不清零
 
 module.exports = {
 
@@ -315,28 +321,61 @@ module.exports = {
      * 后台播放音乐
      */
     async backgroundMusic(){
+        let that = this;
         let res = await api.getMusic({
             query:{}
         });
         if(res.data.state != 1) {
            return;
         }
-        let musicTitle = null;
-        let musicSrc = null;
-        musicTitle = res.data.data[0].title;
-        musicSrc = api.uploadFileUrl + res.data.data[0].url;
+        let music = res.data.data;
+        let len = music.length;
+        let i = 0;
+        let musicTitle = music[i].title;
+        let musicSrc = api.uploadFileUrl +  music[i].url;
 
-        innerAudioContext.autoplay = true;
-        innerAudioContext.loop = true;
-        innerAudioContext.obeyMuteSwitch = true;
-        innerAudioContext.src = musicSrc;
-        innerAudioContext.play();
+        // innerAudioContext.autoplay = true;
+        // innerAudioContext.loop = true;
+        // innerAudioContext.obeyMuteSwitch = true;
+        // innerAudioContext.src = musicSrc;
+        // innerAudioContext.play();
+
+        // that.playMusic();
+        that.playMusic(musicTitle,musicSrc);
+        console.log('播放音乐');
+        backgroundAudioManager.onEnded(function (){
+            console.log('循环播放',i);
+            i++;
+            musicTitle = music[i].title;
+            musicSrc = api.uploadFileUrl +  music[i].url;
+            that.playMusic(musicTitle,musicSrc);
+            if(i >= len){
+                i = -1;
+            }
+        });
+
+        backgroundAudioManager.onError(function(res){
+            console.log(res);
+        })
+    },
+
+    // 播放音乐
+    playMusic(musicTitle,musicSrc){
+        console.log('播放音乐');
+        console.log('musicTitle',musicTitle);
+        console.log('musicSrc',musicSrc);
+        backgroundAudioManager.title = musicTitle;
+        // 设置了 src 之后会自动播放
+        backgroundAudioManager.src = musicSrc;
+        backgroundAudioManager.play();
+
     },
 
     // 停止播放音乐
     stopMusic(){
-        innerAudioContext.stop();
+        // innerAudioContext.stop();
         // innerAudioContext.destroy();
+        backgroundAudioManager.stop();
     },
 
     // 更新用户缓存
@@ -353,7 +392,7 @@ module.exports = {
     // 把上次的脚动记录存入数据库(个人记录不需要房间号)
     async addLegRecord(num){
         let userInfo = wepy.getStorageSync(USER_INFO);
-        // let prevShakeLegTime = wepy.getStorageSync(SHAKE_LEG_TIME);
+        let prevShakeLegTime = wepy.getStorageSync(SHAKE_LEG_TIME);
         let prevShakeLegNumber = num;
         if(!util.isEmpty(prevShakeLegTime)){
             prevShakeLegTime = util.secondToDHMS(prevShakeLegTime);
@@ -378,4 +417,114 @@ module.exports = {
         }
     },
 
+    // 启用低功耗蓝牙设备特征值变化时的 notify 功能，订阅特征值
+    notifyValueChange(connectingDeviceId,services_UUID,characteristic_UUID,sunFun){
+        let that = this;
+        wx.notifyBLECharacteristicValueChange({
+            deviceId:connectingDeviceId,
+            serviceId:services_UUID,
+            characteristicId:characteristic_UUID,
+            state:true,
+            success(res){
+                console.log('启用低功耗蓝牙设备特征值变化时的 notify 功能，订阅特征值: 成功---');
+                console.log(res);
+
+                setTimeout(function () {
+                    that.writeValue(connectingDeviceId,services_UUID,characteristic_UUID,zeroClearingHex);
+                },1000);
+
+                that.onValueChange(sunFun);
+            },
+            fail(res){
+                console.log('启用低功耗蓝牙设备特征值变化时的 notify 功能，订阅特征值: 失败---');
+                console.log(res);
+            },
+        });
+    },
+
+    // 监听低功耗蓝牙设备的特征值变化
+    // 必须先启用 notifyBLECharacteristicValueChange 接口才能接收到设备推送的 notification。
+    onValueChange(sunFun){
+        let that = this;
+        wx.onBLECharacteristicValueChange(function(res){
+            console.log('监听低功耗蓝牙设备的特征值变化');
+            console.log(res);
+            console.log(util.ab2hex(res.value));
+            // 获取设备返回的数据
+            let hex = util.ab2hex(res.value);
+            // 获取总次数
+            let num = util.hexSlice(hex);
+            if(hex.length > 22){
+                console.log('清零数据',num);
+                // fe080100010000 d400 00dc fe08010001000000000008
+                // 上次的抖腿数存入数据库
+                that.addLegRecord(num);
+                num = 0;
+            }
+            // that.shakeLegNum = num;
+            // setTimeout(function() {
+                sunFun(num);
+            // },1000);
+        });
+
+    },
+
+
+    // 向低功耗蓝牙设备特征值中写入二进制数据 建议每次写入不超过20字节
+    writeValue(deviceId,services_UUID,characteristic_UUID,value){
+        let that = this;
+        that.writeToBluetoothValue(deviceId,services_UUID,characteristic_UUID,value);
+    },
+
+    // 蓝牙写数据
+    writeToBluetoothValue(deviceId,services_UUID,characteristic_UUID,buffer){
+        let value = util.hex2ab(buffer);
+        wx.writeBLECharacteristicValue({
+            deviceId:deviceId,
+            serviceId:services_UUID,
+            characteristicId:characteristic_UUID,
+            value:value,
+            success(res){
+                console.log('向低功耗蓝牙设备特征值中写入二进制数据: 成功---');
+                console.log(res);
+            },
+            fail(res){
+                console.log('向低功耗蓝牙设备特征值中写入二进制数据: 失败---');
+                console.log(res);
+            }
+        })
+    },
+
+    // 读取低功耗蓝牙设备的特征值的二进制数据值
+    // 接口读取到的信息需要在 onBLECharacteristicValueChange 方法注册的回调中获取
+    readValue(){
+        // let connectingDeviceId = this.data.connectingDeviceId;
+        // let services_UUID = this.data.services_UUID;
+        // let characteristic_UUID = this.data.characteristic_UUID;
+        wx.readBLECharacteristicValue({
+            deviceId:connectingDeviceId,
+            serviceId:services_UUID,
+            characteristicId:characteristic_UUID,
+            success(res){
+                console.log('读取低功耗蓝牙设备的特征值的二进制数据值: 成功---');
+                console.log(res);
+            },
+            fail(res){
+                console.log('读取低功耗蓝牙设备的特征值的二进制数据值: 失败---');
+                console.log(res);
+            }
+        });
+    },
+
+    // 关闭蓝牙模块
+    closeBluetooth(){
+        wx.closeBluetoothAdapter({
+            success(){
+                tip.toast('关闭成功');
+            },
+            fail(){
+                tip.error('关闭失败');
+            }
+        });
+    },
 };

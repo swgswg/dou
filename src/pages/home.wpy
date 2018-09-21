@@ -71,7 +71,7 @@
                 } else {
                     // 用户信息完整
                     wepy.redirectTo({
-                        url: '/pages/not_connected'
+                        url: '/pages/connect_bluetooth'
                     });
                 }
             },
@@ -93,7 +93,7 @@
                         } else {
                             // 用户信息完整
                             wepy.redirectTo({
-                                url: '/pages/not_connected'
+                                url: '/pages/connect_bluetooth'
                             });
                         }
                     },1000);

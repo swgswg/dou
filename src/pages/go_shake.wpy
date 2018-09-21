@@ -1,6 +1,6 @@
 <template>
     <view class="leg-shake" style="width:{{750*px2rpxWidth}}px;height:{{1100*px2rpxHeight}}px">
-        <image class="open-room" style="width:{{89*px2rpxWidth}}px;height:{{82*px2rpxWidth}}px;" src="{{open_room}}" @tap.stop="openRoom"></image>
+        <!--<image class="open-room" style="width:{{89*px2rpxWidth}}px;height:{{82*px2rpxWidth}}px;" src="{{open_room}}" @tap.stop="openRoom"></image>-->
         
         <!--签到 start-->
         <view class="sign" style="width:{{80*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="goSignIn">签到</view>
@@ -37,15 +37,19 @@
 
 <script>
     import wepy from 'wepy';
-    import {SHAKE_HAND_TIME, SHAKE_HAND_NUMBER, USER_INFO, PX_TO_RPX, SHAKE_LEG_TIME, SHAKE_LEG_NUMBER} from '@/utils/constant';
+    import {SHAKE_HAND_TIME, SHAKE_HAND_NUMBER, USER_INFO, PX_TO_RPX, SHAKE_LEG_TIME, SHAKE_LEG_NUMBER,BLUETOOTH} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import util from '@/utils/util';
     import tip from '@/utils/tip';
+    import weixin from '@/utils/weixin';
     import ShakeStyle from '@/components/shake_style';
     import Circle from '@/components/circle';
     import ScoreEnough from '@/components/score_enough';
     import SignIn from '@/components/sign_in';
+
+    // 是否执行onShow方法内容
+    let implementOnShowEvent = true;
 
     export default class GoShake extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -143,7 +147,31 @@
 
         // 只在Page中存在的页面生命周期函数
         onShow() {
+            let that = this;
+            let bluetooth = wepy.getStorageSync(BLUETOOTH);
+            console.log(bluetooth);
+            if(util.isEmpty(bluetooth)){
+                wx.showModal({
+                    title:'温馨提示',
+                    content:'您的蓝牙还没有连接,点击确定前去连接',
+                    success:function(res) {
+                        if (res.confirm) {
+                            wx.navigateTo({
+                                url:'/pages/select_bluetooth'
+                            });
+                        }
+                    },
+                });
+            } else {
+                if(implementOnShowEvent){
+                    weixin.notifyValueChange(bluetooth.connectingDeviceId,bluetooth.services_UUID,bluetooth.characteristic_UUID,(num)=>{
+                        that.shakeLegNumber = num;
+                        that.$apply();
+                        implementOnShowEvent = false;
+                    });
+                }
 
+            }
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -224,13 +252,13 @@
             },
 
             // 开设房间
-            openRoom(){
-
-                let that = this;
-                wepy.navigateTo({
-                    url: '/pages/loading?game='+that.shakeData,
-                });
-            },
+            // openRoom(){
+            //
+            //     let that = this;
+            //     wepy.navigateTo({
+            //         url: '/pages/loading?game='+that.shakeData,
+            //     });
+            // },
 
             // 签到
             async goSignIn(){
@@ -272,6 +300,21 @@
                 // 腿抖
                 this.imgSrcData = imgApi.leg_shake;
                 this.shakeData = 1;
+                // 检测蓝牙连接
+                let bluetooth = wepy.getStorageSync(BLUETOOTH);
+                if(util.isEmpty(bluetooth)){
+                    wx.showModal({
+                        title:'温馨提示',
+                        content:'您的蓝牙还没有连接,点击确定前去连接',
+                        success:function(res) {
+                            if (res.confirm) {
+                                wx.navigateTo({
+                                    url:'/pages/select_bluetooth'
+                                });
+                            }
+                        },
+                    });
+                }
                 this.$apply();
 
             } else if (shake == 0){
@@ -334,6 +377,25 @@
             this.showSignIn = false;
             this.$apply();
         }
+
+        // 监听低功耗蓝牙设备的特征值变化
+        // 必须先启用 notifyBLECharacteristicValueChange 接口才能接收到设备推送的 notification。
+        // onValueChange(){
+        //     let that = this;
+        //     wx.onBLECharacteristicValueChange(function(res){
+        //         console.log('监听低功耗蓝牙设备的特征值变化');
+        //         console.log(res);
+        //         console.log(util.ab2hex(res.value));
+        //         // 获取设备返回的数据
+        //         let hex = util.ab2hex(res.value);
+        //         // 获取总次数
+        //         let num = util.hexSlice(hex);
+        //         that.shakeLegNumber = num;
+        //     });
+        //     this.$apply();
+        // };
+
+
 
     }
 </script>

@@ -8,7 +8,7 @@
             <navigator class="text2-btn" style="width:{{560*px2rpxWidth}}px;height:{{90*px2rpxHeight}}px;border-radius:{{45*px2rpxHeight}}px;" open-type="switchTab" url="/pages/go_shake">手动抖动</navigator>
         </view>
         <view class="text3" style="margin-top:{{56*px2rpxHeight}}px;">
-            <navigator class="text3-btn" style="width:{{560*px2rpxWidth}}px;height:{{90*px2rpxHeight}}px;border-radius:{{45*px2rpxHeight}}px;" open-type="redirect" url="/pages/select_bluetooth">进入蓝牙设置</navigator>
+            <navigator class="text3-btn" style="width:{{560*px2rpxWidth}}px;height:{{90*px2rpxHeight}}px;border-radius:{{45*px2rpxHeight}}px;" open-type="navigate" url="/pages/select_bluetooth">进入蓝牙设置</navigator>
         </view>
     </view>
 </template>
