@@ -48,6 +48,7 @@ const addRecord = (params) => wxRequest(params, host + 'shakeLeg/user/addRecord'
 const getOneUserInfo = (params) => wxRequest(params, host + 'shakeLeg/user/getUsers');
 // 好友总排行榜
 const getFriend = (params) => wxRequest(params, host + 'shakeLeg/user/getFriend');
+const getFriendP = (params) => wxRequest(params, host + 'shakeLeg/user/getFriendp');
 // 世界总排行榜
 const worldRankings = (params) => wxRequest(params, host + 'shakeLeg/user/worldRankings');
 //世界总排名个人名次
@@ -146,6 +147,10 @@ const getOneUserData = (params) => wxRequest(params, host + 'shakeLeg/user/getUs
 const wxPay = (params) => wxRequest(params, host + 'shakeLeg/user/wxPay');
 // 查询背景音乐列表
 const getMusic = (params) => wxRequest(params, host + 'shakeLeg/user/getMusic');
+// 获取手机验证码
+const getSms = (params) => wxRequest(params, host + 'shakeLeg/user/getSms');
+// 绑定手机号
+const updateMobile = (params) => wxRequest(params, host + 'shakeLeg/user/updateMobile');
 
 export default {
     host,
@@ -169,6 +174,7 @@ export default {
     addRecord,
     getOneUserInfo,
     getFriend,
+    getFriendP,
     worldRankings,
     myWorldRankings,
     getUserGift,
@@ -218,4 +224,6 @@ export default {
     getOneUserData,
     wxPay,
     getMusic,
+    getSms,
+    updateMobile,
 };

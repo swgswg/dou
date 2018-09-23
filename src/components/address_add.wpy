@@ -22,7 +22,7 @@
 
             <view class="each" style="height:{{90*px2rpxHeight}}px;">
                 <view class="each-title">详细地址</view>
-                <input class="each-input" value="{{street?street:''}}" style="width:{{490*px2rpxWidth}}px;" type="number" placeholder="如街道、小区门牌号等" bindinput="inputStreet"/>
+                <input class="each-input" value="{{street?street:''}}" style="width:{{490*px2rpxWidth}}px;" type="text" placeholder="如街道、小区门牌号等" bindinput="inputStreet"/>
             </view>
 
             <view class="set-default" style="height:{{90*px2rpxHeight}}px;">

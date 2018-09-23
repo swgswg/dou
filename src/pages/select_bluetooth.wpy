@@ -1,16 +1,16 @@
 <template>
     <view class="select-bluetooth">
-        <view class="head">
+        <view class="head" style="margin-top:{{27*px2rpxHeight}}px;">
             <view class="head-content">
                 <view class="head-text">蓝牙</view>
                 <myswitch :activeDot.sync="activeDotData"></myswitch>
             </view>
         </view>
-        <view class="show-connect" wx:if="{{connected}}">
+        <view class="show-connect" style="height:{{90*px2rpxHeight}}" wx:if="{{connected}}">
             <view class="show-connect-text">{{connectName}}</view>
             <view>已连接</view>
         </view>
-        <view class="select-text">选择设备</view>
+        <view class="select-text" style="height:{{75*px2rpxHeight}}px;">选择设备</view>
         <view class="bluetooth-list">
             <block wx:for="{{bluetoothData}}" wx:for-item="bt" wx:key="{{bt.deviceId}}">
                 <view class="bluetooth-list-content" data-deviceId="{{bt.deviceId}}" data-connectname="{{bt.name}}" @tap.stop="connecting">
@@ -29,7 +29,7 @@
     import weixin from '@/utils/weixin';
     import MySwitch from  '@/components/common/my_switch';
     import BluetoothList from  '@/components/bluetooth_list';
-    import { BLUETOOTH } from '@/utils/constant';
+    import { PX_TO_RPX,BLUETOOTH } from '@/utils/constant';
 
     // const zeroClearingHex   = 'FE08010000000000000108'; // 清零
     // const noZeroClearingHex = 'FE08010000000000000007'; // 不清零
@@ -41,7 +41,7 @@
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '设备名称'
+            navigationBarTitleText: '蓝牙设置'
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -52,6 +52,8 @@
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
             activeDotData:0,
             bluetoothData:[],
             // deviceList:[],
@@ -60,40 +62,27 @@
             shakeLegNum:0,
         };
 
-        // 在Page和Component共用的生命周期函数
-        onLoad() {
-
-        };
-
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-
-        };
-
-        // 只在Page中存在的页面生命周期函数
-         async onReady() {
-            // 获取蓝牙列表
-
-
-        };
-
-        // 声明页面所引用的Mixin实例
-        mixins = [];
-
-        // 声明计算属性（详见后文介绍）
-        computed = {};
+        // 获取屏幕尺寸适配
+        async onLoad(){
+            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
 
         // 声明数据watcher（详见后文介绍）
         watch = {
             activeDotData(newvalue){
-                if(newvalue){
+                if(newvalue == 1){
                     this.searchEvent();
                 } else {
-                    tip.alert('蓝牙已关闭');
+                    // tip.alert('蓝牙已关闭');
                     // 停止搜寻附近的蓝牙外围设备
                     this.stopDiscovery();
                     // 断开与低功耗蓝牙设备的连接
                     this.closeConnection();
+                    // 关闭蓝牙模块
+                    weixin.closeBluetooth();
                 }
             }
         };
@@ -121,19 +110,17 @@
             // 停止搜寻附近的蓝牙外围设备
             that.stopDiscovery();
 
-            // 获取本机蓝牙适配器状态
-            if(that.getBluetoothState()){
-                return;
-            }
-
             // 监听蓝牙适配器状态变化事件
             that.onBluetoothStateChange();
 
+            // 获取本机蓝牙适配器状态
+            that.getBluetoothState();
+
             // 开始搜寻附近的蓝牙外围设备
-            that.startDiscovery();
+            // that.startDiscovery();
 
             // 监听寻找到新设备
-            that.onFoundBluetooth();
+            // that.onFoundBluetooth();
         };
 
         // 连接设备
@@ -157,15 +144,17 @@
                 success(e){
                     if (e.errMsg == 'openBluetoothAdapter:ok'){
                         that.activeDotData = 1;
+                        that.$apply();
+                        // 获取本机蓝牙适配器状态
                         that.getBluetoothState();
                     }
                 },
                 fail(){
                     that.activeDotData = 0;
+                    that.$apply();
                     tip.longtoast('请检查手机蓝牙是否开启');
                 },
             });
-            this.$apply();
         };
 
         // 获取本机蓝牙适配器状态
@@ -173,20 +162,24 @@
             let that = this;
             wx.getBluetoothAdapterState({
                 success(){
-                    return true;
+                    // 开始搜寻附近的蓝牙外围设备
+                    that.startDiscovery();
                 },
                 fail(){
                     that.activeDotData = 0;
-                    tip.error('蓝牙不可用');
-                    return false;
+                    that.$apply();
+                    // tip.error('蓝牙不可用');
                 }
             });
-            this.$apply();
+
         };
 
         // 监听蓝牙适配器状态变化事件
         onBluetoothStateChange(){
             wx.onBluetoothAdapterStateChange(function(res){
+                if(!res.available){
+                    tip.alert('蓝牙不可用');
+                }
                 console.log('监听蓝牙适配器状态变化');
             });
         };
@@ -197,9 +190,13 @@
             wx.startBluetoothDevicesDiscovery({
                 success (res) {
                     // tip.loading('正在搜索...');
+                    // 监听寻找到新设备的事件
+                    that.onFoundBluetooth();
                 },
                 fail(){
-                    tip.error('搜索失败');
+                    that.activeDotData = 0;
+                    that.$apply();
+                    // tip.error('搜索失败');
                 }
             })
         };
@@ -246,18 +243,18 @@
         };
 
         // 获取在蓝牙模块生效期间所有已发现的蓝牙设备，包括已经和本机处于连接状态的设备
-        getDevices(){
-            let that = this;
-            wx.getBluetoothDevices({
-                success: function (res) {
-                    console.log('获取在蓝牙模块生效期间所有已发现的蓝牙设备，包括已经和本机处于连接状态的设备');
-                    console.log(res);
-                    that.setData({
-                        deviceList:res.devices
-                    });
-                }
-            })
-        };
+        // getDevices(){
+        //     let that = this;
+        //     wx.getBluetoothDevices({
+        //         success: function (res) {
+        //             console.log('获取在蓝牙模块生效期间所有已发现的蓝牙设备，包括已经和本机处于连接状态的设备');
+        //             console.log(res);
+        //             // that.setData({
+        //             //     deviceList:res.devices
+        //             // });
+        //         }
+        //     })
+        // };
 
         // 停止搜寻附近的蓝牙外围设备
         stopDiscovery(){
@@ -267,7 +264,7 @@
                     console.log(res);
                 },
                 fail(){
-                    tip.error('停止搜索失败');
+                    // tip.error('停止搜索失败');
                 },
             });
         };
@@ -498,7 +495,6 @@
         //     });
         // };
 
-
     }
 </script>
 
@@ -514,7 +510,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            margin-top: 27rpx;
+            /*margin-top: 27rpx;*/
             padding: 0rpx 28rpx 0rpx 30rpx;
             box-sizing: border-box;
             background-color: #fff;
@@ -535,12 +531,11 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            height: 90rpx;
+            /*height: 90rpx;*/
             padding: 0rpx 28rpx 0rpx 30rpx;
             box-sizing: border-box;
             box-shadow: 3rpx 7rpx 10rpx #ccc;
             font-size: 30rpx;
-            font-family: NotoSansHans Regular;
             color: #000;
             opacity: 0.7;
             background-color: #fff;
@@ -551,7 +546,7 @@
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            height: 75rpx;
+            /*height: 75rpx;*/
             padding-left: 30rpx;
             box-sizing: border-box;
             font-size: 30rpx;

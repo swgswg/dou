@@ -1,10 +1,9 @@
-// const utils = require('@/utils/util.js');
 import wepy from 'wepy';
-const tip = require('@/utils/tip.js');
 const util = require('@/utils/util.js');
 const env = require('@/utils/weixinFileToaliyun/env.js');
 const uploadAliyun = require('@/utils/weixinFileToaliyun/uploadAliyun.js');
 import api from '@/utils/api';
+import tip from '@/utils/tip';
 import {USER_INFO,SHAKE_LEG_TIME} from '@/utils/constant';
 
 // 创建内部 audio 上下文 InnerAudioContext 对象
@@ -185,6 +184,7 @@ module.exports = {
 
     },
 
+    // 关闭webSocket
     weixinCloseWebSocket(){
         wx.closeSocket({
             success: function(){
@@ -428,12 +428,10 @@ module.exports = {
             success(res){
                 console.log('启用低功耗蓝牙设备特征值变化时的 notify 功能，订阅特征值: 成功---');
                 console.log(res);
-
+                that.onValueChange(sunFun);
                 setTimeout(function () {
                     that.writeValue(connectingDeviceId,services_UUID,characteristic_UUID,zeroClearingHex);
                 },1000);
-
-                that.onValueChange(sunFun);
             },
             fail(res){
                 console.log('启用低功耗蓝牙设备特征值变化时的 notify 功能，订阅特征值: 失败---');
@@ -469,7 +467,6 @@ module.exports = {
 
     },
 
-
     // 向低功耗蓝牙设备特征值中写入二进制数据 建议每次写入不超过20字节
     writeValue(deviceId,services_UUID,characteristic_UUID,value){
         let that = this;
@@ -498,9 +495,6 @@ module.exports = {
     // 读取低功耗蓝牙设备的特征值的二进制数据值
     // 接口读取到的信息需要在 onBLECharacteristicValueChange 方法注册的回调中获取
     readValue(){
-        // let connectingDeviceId = this.data.connectingDeviceId;
-        // let services_UUID = this.data.services_UUID;
-        // let characteristic_UUID = this.data.characteristic_UUID;
         wx.readBLECharacteristicValue({
             deviceId:connectingDeviceId,
             serviceId:services_UUID,
@@ -520,10 +514,10 @@ module.exports = {
     closeBluetooth(){
         wx.closeBluetoothAdapter({
             success(){
-                tip.toast('关闭成功');
+                tip.toast('蓝牙关闭');
             },
             fail(){
-                tip.error('关闭失败');
+                // tip.error('关闭失败');
             }
         });
     },

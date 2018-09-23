@@ -47,15 +47,11 @@
 <style lang="less">
     .my-switch{
         position: relative;
-        /*width: 90rpx;*/
-        /*height: 46rpx;*/
 
         .kuang{
             position: absolute;
             top:0;
             left: 0;
-            /*width: 90rpx;*/
-            /*height: 42rpx;*/
             border: 4rpx solid #fff;
             border-radius: 10rpx;
         }
@@ -70,8 +66,6 @@
         .yuan{
             position: absolute;
             top: -2rpx;
-            /*width: 53rpx;*/
-            /*height: 53rpx;*/
             border-radius: 50%;
         }
         .inactive{

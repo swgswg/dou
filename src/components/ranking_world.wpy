@@ -1,7 +1,7 @@
 // 历史排名--世界
 <template>
     <view class="ranking-world">
-        <view class="ranking-empty" style="height:{{774*px2rpxHeight}}px;">
+        <view class="ranking-empty" style="height:{{760*px2rpxHeight}}px;">
             <block wx:if="{{!is_empty}}">
                 <!--前三名 start-->
                 <view class="first-three">
@@ -51,7 +51,7 @@
                 <!--前三名 end-->
 
                 <!--其余排名 start-->
-                <view class="remain" style="height:{{450*px2rpxHeight}}px">
+                <view class="remain" style="height:{{480*px2rpxHeight}}px">
                     <scroll-view scroll-y bindscrolltolower="scrollToLower" >
                         <ranking :ranking.sync="worldRanking"></ranking>
                         <!--加载更多时动画-->
@@ -67,7 +67,7 @@
         </view>
         <!--自己排名-->
         <block wx:if="{{myWorldRanking}}">
-            <view class="self-ranking" style="height:{{97*px2rpxHeight}}px;">
+            <view class="self-ranking" style="height:{{90*px2rpxHeight}}px;">
                 <view class="sort" style="width:{{90*px2rpxWidth}}px;height:{{97*px2rpxWidth}}px;">{{myWorldRanking.rownum}}</view>
                 <image class="img" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{myWorldRanking.photo}}"></image>
                 <view class="w100" style="width:{{100*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.name}}</view>

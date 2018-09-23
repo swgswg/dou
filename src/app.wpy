@@ -194,6 +194,7 @@
         config = {
             pages: [
                 'pages/home',
+                'pages/mobile_verify',
                 'pages/select_model',
                 'pages/friend_gift_wall',
                 'pages/send_gift',
@@ -309,7 +310,7 @@
             wepy.setStorageSync(BLUETOOTH, {});
 
             // 播放背景音乐
-            this.backgroundMusicEvent();
+            // this.backgroundMusicEvent();
         }
 
         // 把上次的手动记录存入数据库(个人记录不需要房间号)

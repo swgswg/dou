@@ -3,11 +3,11 @@
     <view class="ranking">
         <block wx:for="{{ranking}}" wx:key="{{index}}" wx:for-item="rank">
             <view class="ranking-content"
-                  style="height:{{80*px2rpxHeight}}px;margin-top:{{6*px2rpxHeight}}px;"
+                  style="height:{{80*px2rpxWidth}}px;margin-top:{{6*px2rpxHeight}}px;"
                   data-userid="{{rank.userId}}"
                   @tap.stop="showOtherGiftWall">
 
-                <view class="sort" style="width:{{106*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
+                <view class="sort" style="width:{{106*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;">
 
                     <block wx:if="{{rank.rownum == 1}}">
                         <image src="{{fans_no1}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
@@ -22,8 +22,8 @@
                         {{rank.rownum}}
                     </block>
                 </view>
-                <view class="profile" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
-                    <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;" src="{{rank.photo}}" />
+                <view class="profile" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;">
+                    <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{rank.photo}}" />
                 </view>
                 <view class="info" style="height:{{80*px2rpxHeight}}px;">
                     <view class="f14 w100" style="width:{{100*px2rpxWidth}}px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">

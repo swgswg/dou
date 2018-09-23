@@ -1,5 +1,5 @@
 <template>
-    <view class="my-gift" style="width:{{windowWidth}}px;">
+    <view class="my-gift" style="width:{{windowWidth}}px;margin-bottom:{{20*px2rpxHeight}}px;">
         <block wx:if="{{is_empty}}">
             <!--暂无数据显示-->
             <placeholder :show.sync="is_empty" message="您还没有礼物"></placeholder>

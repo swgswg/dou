@@ -6,7 +6,7 @@ const uploadFileUrl = api.uploadFileUrl;
  * 图片api
  */
 module.exports = {
-    fileUrl:uploadFileUrl,
+    fileUrl: uploadFileUrl,
     // 进入图片
     doutui_jinru1: uploadFileUrl + 'doutui_jinru1.png',
     doutui_jinru2: uploadFileUrl + 'doutui_jinru2.png',
@@ -20,10 +20,10 @@ module.exports = {
     woman_inactive: uploadFileUrl + 'woman_inactive.png',
 
     // 卡通人物形象
-    man1:uploadFileUrl + 'man1.png',
-    man2:uploadFileUrl + 'man2.png',
-    woman1:uploadFileUrl + 'woman1.png',
-    woman2:uploadFileUrl + 'woman2.png',
+    man1: uploadFileUrl + 'man1.png',
+    man2: uploadFileUrl + 'man2.png',
+    woman1: uploadFileUrl + 'woman1.png',
+    woman2: uploadFileUrl + 'woman2.png',
 
     // 蓝牙
     bluetooth_inactive: uploadFileUrl + 'bluetooth_inactive.png',
@@ -46,9 +46,9 @@ module.exports = {
     // 抖腿/手动
     leg_shake: uploadFileUrl + 'leg_shake.png',
     hand_shake: uploadFileUrl + 'hand_shake.png',
-    score_enough:uploadFileUrl + 'score_enough.png',
-    double_integral:uploadFileUrl + 'double_integral.png',
-    instant_exchange:uploadFileUrl + 'instant_exchange.png',
+    score_enough: uploadFileUrl + 'score_enough.png',
+    double_integral: uploadFileUrl + 'double_integral.png',
+    instant_exchange: uploadFileUrl + 'instant_exchange.png',
     // 开设房间
     open_room: uploadFileUrl + 'open_room.png',
 
@@ -58,9 +58,9 @@ module.exports = {
     friend_active: uploadFileUrl + 'friend_active.png',
     friend_inactive: uploadFileUrl + 'friend_inactive.png',
     // 世界排名1/2/3
-    history_no1:uploadFileUrl + 'history_no1.png',
-    history_no2:uploadFileUrl + 'history_no2.png',
-    history_no3:uploadFileUrl + 'history_no3.png',
+    history_no1: uploadFileUrl + 'history_no1.png',
+    history_no2: uploadFileUrl + 'history_no2.png',
+    history_no3: uploadFileUrl + 'history_no3.png',
 
     // 好友排名1/2/3
     ranking_no1: uploadFileUrl + 'ranking_no1.png',
@@ -119,12 +119,12 @@ module.exports = {
     fans: uploadFileUrl + 'fans.png',
     gift: uploadFileUrl + 'gift.png',
     set: uploadFileUrl + 'set.png',
-    friend:uploadFileUrl + 'friend.png',
-    order:uploadFileUrl + 'order.png',
-    addr:uploadFileUrl + 'addr.png',
-    gift_wall:uploadFileUrl + 'gift_wall.png',
-    vip_active:uploadFileUrl + 'vip_active.png',
-    vip_inactive:uploadFileUrl + 'vip_inactive.png',
+    friend: uploadFileUrl + 'friend.png',
+    order: uploadFileUrl + 'order.png',
+    addr: uploadFileUrl + 'addr.png',
+    gift_wall: uploadFileUrl + 'gift_wall.png',
+    vip_active: uploadFileUrl + 'vip_active.png',
+    vip_inactive: uploadFileUrl + 'vip_inactive.png',
 
     // 个人信息背景
     myinfo_bg: uploadFileUrl + 'myinfo_bg.png',
@@ -136,52 +136,57 @@ module.exports = {
     no_image: uploadFileUrl + 'no_image.png',
 
     // 商城产品
-    mall_product:uploadFileUrl + 'mall_product.png',
+    mall_product: uploadFileUrl + 'mall_product.png',
     // 精选推荐
     // mall_recommendation:uploadFileUrl + 'mall_recommendation.png',
     // 推荐/礼物
-    mall_gift_active:uploadFileUrl + 'mall_gift_active.png',
+    mall_gift_active: uploadFileUrl + 'mall_gift_active.png',
     mall_gift_inactive: uploadFileUrl + 'mall_gift_inactive.png',
     mall_tuijian_active: uploadFileUrl + 'mall_tuijian_active.png',
     mall_tuijian_inactive: uploadFileUrl + 'mall_tuijian_inactive.png',
 
     // 能量
-    energy:uploadFileUrl + 'energy.png',
+    energy: uploadFileUrl + 'energy.png',
     // 抖腿币
-    shake_code:uploadFileUrl + 'shake_code.png',
+    shake_code: uploadFileUrl + 'shake_code.png',
 
     // 空地址背景
-    empty_address_bg:uploadFileUrl + 'empty_address_bg.png',
+    empty_address_bg: uploadFileUrl + 'empty_address_bg.png',
 
     // 签到背景/按钮/金币/对号/签到7天
-    sign_in_bg:uploadFileUrl + 'sign_in_bg.png',
-    sign_in_btn:uploadFileUrl + 'sign_in_btn.png',
-    sign_in_code:uploadFileUrl + 'sign_in_code.png',
-    sign_in_dui:uploadFileUrl + 'sign_in_dui.png',
-    sign_in_7day:uploadFileUrl + 'sign_in_7day.png',
+    sign_in_bg: uploadFileUrl + 'sign_in_bg.png',
+    sign_in_btn: uploadFileUrl + 'sign_in_btn.png',
+    sign_in_code: uploadFileUrl + 'sign_in_code.png',
+    sign_in_dui: uploadFileUrl + 'sign_in_dui.png',
+    sign_in_7day: uploadFileUrl + 'sign_in_7day.png',
 
     // 售后背景/按钮
-    customer_service:uploadFileUrl + 'customer_service.png',
-    customer_service_btn:uploadFileUrl + 'customer_service_btn.png',
+    customer_service: uploadFileUrl + 'customer_service.png',
+    customer_service_btn: uploadFileUrl + 'customer_service_btn.png',
 
     // 礼物墙背景
-    wall_bg:uploadFileUrl + 'wall_bg.png',
+    wall_bg: uploadFileUrl + 'wall_bg.png',
     // 更多
-    more:uploadFileUrl + 'more.png',
+    more: uploadFileUrl + 'more.png',
     // 好友礼物墙 连接/首充/未开启背景
-    lianjie:uploadFileUrl + 'lianjie.png',
-    shouchong:uploadFileUrl + 'shouchong.png',
-    weikaiqi:uploadFileUrl + 'weikaiqi.png',
+    lianjie: uploadFileUrl + 'lianjie.png',
+    shouchong: uploadFileUrl + 'shouchong.png',
+    weikaiqi: uploadFileUrl + 'weikaiqi.png',
 
     // 选择模式
-    model_child:uploadFileUrl + 'model_child.png',
-    model_man:uploadFileUrl + 'model_man.png',
-    model_oldman:uploadFileUrl + 'model_oldman.png',
-    model_woman:uploadFileUrl + 'model_woman.png',
-    model_dui:uploadFileUrl + 'model_dui.png',
+    model_child: uploadFileUrl + 'model_child.png',
+    model_man: uploadFileUrl + 'model_man.png',
+    model_oldman: uploadFileUrl + 'model_oldman.png',
+    model_woman: uploadFileUrl + 'model_woman.png',
+    model_dui: uploadFileUrl + 'model_dui.png',
 
     // 我的记录
-    hand_record:uploadFileUrl + 'hand_record.png',
-    leg_record:uploadFileUrl + 'leg_record.png',
+    hand_record: uploadFileUrl + 'hand_record.png',
+    leg_record: uploadFileUrl + 'leg_record.png',
 
+    // 绑定手机号
+    login_bg: uploadFileUrl + 'login_bg.png',
+    login_phone: uploadFileUrl + 'login_phone.png',
+    login_user: uploadFileUrl + 'login_user.png',
+    login_verfication: uploadFileUrl + 'login_verfication.png'
 };

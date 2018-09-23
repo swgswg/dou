@@ -63,17 +63,18 @@
         methods = {
             // 跳过
             goToxxx(){
-                if(util.isEmpty(userInfo.logo)){
-                    // 用户信息不全
-                    wepy.redirectTo({
-                        url: '/pages/select_sex'
-                    });
-                } else {
-                    // 用户信息完整
-                    wepy.redirectTo({
-                        url: '/pages/connect_bluetooth'
-                    });
-                }
+                this.isLogo();
+                // if(util.isEmpty(userInfo.logo)){
+                //     // 用户信息不全
+                //     this.$redirect({
+                //         url: '/pages/mobile_verify'
+                //     });
+                // } else {
+                //     // 用户信息完整
+                //     this.$redirect({
+                //         url: '/pages/connect_bluetooth'
+                //     });
+                // }
             },
 
             // 滑块动画结束
@@ -85,21 +86,26 @@
                 if(current >= 3){
                     that.swiper_autoplay = false;
                     setTimeout(function() {
-                        if(util.isEmpty(userInfo.logo)){
-                            // 用户信息不全
-                            wepy.redirectTo({
-                                url: '/pages/select_sex'
-                            });
-                        } else {
-                            // 用户信息完整
-                            wepy.redirectTo({
-                                url: '/pages/connect_bluetooth'
-                            });
-                        }
+                        that.isLogo();
                     },1000);
                 }
             },
         };
+
+        // 判断用户信息是否完全
+        isLogo(){
+            if(util.isEmpty(userInfo.logo)){
+                // 用户信息不全
+                this.$redirect({
+                    url: '/pages/mobile_verify'
+                });
+            } else {
+                // 用户信息完整
+                this.$redirect({
+                    url: '/pages/connect_bluetooth'
+                });
+            }
+        }
 
     }
 </script>

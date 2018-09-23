@@ -1,7 +1,7 @@
 // 历史排名--好友
 <template>
     <view class="ranking-firend">
-        <view class="rank-data" style="height:{{800*px2rpxHeight}}px;">
+        <view class="rank-data" style="height:{{770*px2rpxHeight}}px;">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <ranking :ranking.sync="friendRanking"></ranking>
                 <!--加载更多时动画-->
@@ -12,7 +12,7 @@
         </view>
 
         <view class="change-page" style="height:{{70*px2rpxHeight}}px">
-            <view class="prev-page" style="width:{{160*px2rpxWidth}}px" data-change="prev" @tap.stop="changePage">
+            <view class="prev-page" style="width:{{160*px2rpxWidth}}px;" data-change="prev" @tap.stop="changePage">
                 <image style="width:{{55*px2rpxWidth}}px;height:{{37*px2rpxWidth}}px;" src="{{prev_page}}"></image>
                 <view>上一页</view>
             </view>
@@ -146,7 +146,7 @@
         // 好友排行榜
         async getFriendRanking(mypage,mypageSize,mytype,mystatus){
             let that = this;
-            let res = await api.getFriend({
+            let res = await api.getFriendP({
                 query:{
                     userId:that.userId,
                     page:mypage,

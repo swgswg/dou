@@ -13,10 +13,10 @@
 
             <view class="world-firend">
                 <view>
-                    <image class="world-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxHeight}}px;" src="{{currentWorldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFried"></image>
+                    <image class="world-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{currentWorldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFried"></image>
                 </view>
                 <view>
-                    <image class="friend-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxHeight}}px;" src="{{currentWorldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFried"></image>
+                    <image class="friend-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{currentWorldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFried"></image>
                 </view>
             </view>
 
@@ -50,7 +50,7 @@
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '历史排名',
+            navigationBarTitleText: '脉抖排行榜',
             enablePullDownRefresh:false,
             disableScroll: true,
         };
