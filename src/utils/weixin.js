@@ -4,7 +4,7 @@ const env = require('@/utils/weixinFileToaliyun/env.js');
 const uploadAliyun = require('@/utils/weixinFileToaliyun/uploadAliyun.js');
 import api from '@/utils/api';
 import tip from '@/utils/tip';
-import {USER_INFO,SHAKE_LEG_TIME} from '@/utils/constant';
+import {USER_INFO,SHAKE_LEG_TIME,SHAKE_LEG_NUMBER} from '@/utils/constant';
 
 // 创建内部 audio 上下文 InnerAudioContext 对象
 // const innerAudioContext = wx.createInnerAudioContext();

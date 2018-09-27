@@ -107,8 +107,10 @@
 
             inputCode(e){
                 code = e.detail.value;
+
             },
 
+            // 获取验证码
             async getCode(){
                 let that = this;
                 if(!this.getCodeBtn){
@@ -117,7 +119,7 @@
                 if(util.checkReg(1,mobile)){
                     let res = await api.getSms({
                         query:{
-                            mobile:code
+                            mobile:mobile
                         }
                     });
                     if(res.data.state == 1){
@@ -156,7 +158,7 @@
                 let res = await api.updateMobile({
                     query:{
                         mobile:mobile,
-                        code:code,
+                        smsCode:code,
                         weChat:weChat,
                     }
                 });
@@ -165,7 +167,7 @@
                         url: '/pages/select_sex'
                     });
                 } else {
-                    tip.error('网络错误');
+                    tip.error(res.data.message);
                 }
             },
 

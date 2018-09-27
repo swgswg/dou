@@ -282,8 +282,10 @@
                     that.connected = true;
                     that.connectName = connectName;
                     connectingDeviceId = deviceId;
+                    // 获取services
                     that.getServices(deviceId);
-
+                    // 连接成功,停止搜寻附近的蓝牙外围设备
+                    that.stopDiscovery();
 
                 },
                 fail(res){

@@ -150,6 +150,9 @@
                 }
                 let giftVal = this.giftVal;
                 let len = giftVal.length;
+                if(len < 1){
+                    tip.alert('您还没有送礼');
+                }
                 let giftId = '';
                 let xaxle = '';
                 let yaxle = '';

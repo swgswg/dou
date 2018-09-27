@@ -34,6 +34,7 @@
             px2rpxHeight:0,
             swiper_autoplay:true,
             imgSrc: [
+                imgApi.doutui_jinru5,
                 imgApi.doutui_jinru1,
                 imgApi.doutui_jinru2,
                 imgApi.doutui_jinru3,

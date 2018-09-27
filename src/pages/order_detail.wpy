@@ -40,12 +40,12 @@
             <!--<block wx:for="{{2}}" wx:for-item="goods" wx:key="{{index}}">-->
                 <view class="goods-info" style="height:{{200*px2rpxHeight}}px;padding:{{24*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
                     <view class="info-left">
-                        <image src="{{order.photo}}" style="width:{{138*px2rpxWidth}}px;height:{{138*px2rpxWidth}}px;"></image>
+                        <image src="{{fileUrl + order.photo}}" style="width:{{138*px2rpxWidth}}px;height:{{138*px2rpxWidth}}px;"></image>
                     </view>
                     <view class="info-right" style="margin-left:{{18*px2rpxWidth}}px;">
                         <view class="goods-name">{{order.goodsName}}</view>
                         <view class="goods-num" style="margin-top:{{16*px2rpxHeight}}px;">x{{order.num}}</view>
-                        <view class="goods-price" style="margin-top:{{30*px2rpxHeight}}px;"><text style="font-size:20rpx;">{{order.integral}}积分+</text>¥{{order.money}}</view>
+                        <view class="goods-price" style="margin-top:{{10*px2rpxHeight}}px;"><text style="font-size:20rpx;" wx:if="{{order.integral}}">{{order.integral}}积分+</text>¥{{order.money}}</view>
                     </view>
                 </view>
             <!--</block>-->
@@ -55,9 +55,9 @@
         <!--订单信息 start-->
         <view class="order-info" style="height:{{301*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
             <view>订单编号： {{order.order_uuid}}</view>
-            <view class="order-time" style="margin-top:{{25*px2rpxHeight}}px;padding-bottom:{{25*px2rpxHeight}}px;">下单时间： 2018-08-14 12:12:12</view>
+            <view class="order-time" style="margin-top:{{25*px2rpxHeight}}px;padding-bottom:{{25*px2rpxHeight}}px;">下单时间： {{order.createTime}}</view>
             <view style="margin-top:{{25*px2rpxHeight}}px">支付方式： 微信支付</view>
-            <view style="margin-top:{{25*px2rpxHeight}}px">支付时间： 2018-08-14 12:12:12</view>
+            <!--<view style="margin-top:{{25*px2rpxHeight}}px">支付时间： 2018-08-14 12:12:12</view>-->
         </view>
         <!--订单信息 end-->
 
@@ -163,6 +163,7 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
             customer_service:imgApi.customer_service,
             customer_service_btn:imgApi.customer_service_btn,
             orderId:null,

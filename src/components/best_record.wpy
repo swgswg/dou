@@ -71,7 +71,7 @@
             });
             if(res.data.state == 1){
                 let record = res.data.data;
-                record.time = record.time.replace(' ','小时');
+                // record.time = record.time.replace(' ','小时');
                 this.record = record;
                 this.$apply();
             } else {

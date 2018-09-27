@@ -8,6 +8,7 @@ const uploadFileUrl = api.uploadFileUrl;
 module.exports = {
     fileUrl: uploadFileUrl,
     // 进入图片
+    doutui_jinru5: uploadFileUrl + 'doutui_jinru5.png',
     doutui_jinru1: uploadFileUrl + 'doutui_jinru1.png',
     doutui_jinru2: uploadFileUrl + 'doutui_jinru2.png',
     doutui_jinru3: uploadFileUrl + 'doutui_jinru3.png',

@@ -1,21 +1,41 @@
 <template>
     <view class="select-sex">
-        <view class="sex" style="margin-top:{{50*px2rpxHeight}}px;">请选择您的性别</view>
+        <view class="sex" style="top:{{50*px2rpxHeight}}px;">请选择您的性别</view>
 
-        <view class="sex-img" style="margin-top:{{100*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
-            <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>
-            <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>
-        </view>
+        <!--<view class="sex-img" style="margin-top:{{100*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">-->
+            <!--<image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>-->
+            <!--<image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>-->
+        <!--</view>-->
 
-        <view class="sex-profile" style="margin-top:{{50*px2rpxHeight}}px;">
-            <block wx:for="{{profile}}" wx:for-item="profileImg" wx:key="{{index}}">
-                <view class="profile-each {{currentProfile == index ? 'active':''}}" style="width:{{335*px2rpxWidth}}px;height:{{600*px2rpxHeight}}px;">
-                    <image src="{{profileImg}}" style="width:{{305*px2rpxWidth}}px;height:{{520*px2rpxWidth}}px;" data-index="{{index}}" @tap.stop="selectProfile"></image>
+        <!--<view class="sex-profile" style="margin-top:{{50*px2rpxHeight}}px;">-->
+            <!--<block wx:for="{{profile}}" wx:for-item="profileImg" wx:key="{{index}}">-->
+                <!--&lt;!&ndash;<view class="profile-each {{currentProfile == index ? 'active':''}}" style="width:{{335*px2rpxWidth}}px;height:{{600*px2rpxHeight}}px;">&ndash;&gt;-->
+                <!--<view class="profile-each" style="width:{{335*px2rpxWidth}}px;height:{{600*px2rpxHeight}}px;">-->
+                    <!--<image src="{{profileImg}}" style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="{{index}}" @tap.stop="selectProfile"></image>-->
+                <!--</view>-->
+            <!--</block>-->
+        <!--</view>-->
+
+        <view class="content">
+            <view class="left {{currentProfile == 0 ? 'content_bgcolor':''}}" style="height:{{1205*px2rpxHeight}}px;padding:{{100*px2rpxHeight}}px 0;">
+                <view class="sex-btn-each">
+                    <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>
                 </view>
-            </block>
+                <view class="sex-img-each">
+                    <image src="{{profile[0]}}" style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="0" @tap.stop="selectProfile"></image>
+                </view>
+            </view>
+            <view class="right {{currentProfile == 1 ? 'content_bgcolor':''}}" style="height:{{1205*px2rpxHeight}}px;padding:{{100*px2rpxHeight}}px 0;">
+                <view class="sex-btn-each">
+                    <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>
+                </view>
+                <view class="sex-img-each">
+                    <image src="{{profile[1]}}" style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="1" @tap.stop="selectProfile"></image>
+                </view>
+            </view>
         </view>
 
-        <view class="sex-btn" style="margin-top:{{50*px2rpxHeight}}px;" wx:if="{{currentSex == '0' || currentSex == '1'}}">
+        <view class="sex-btn" style="bottom:{{50*px2rpxHeight}}px;" wx:if="{{currentSex == '0' || currentSex == '1'}}">
             <button class="button button-highlight button-pill button-large" open-type="getUserInfo" bindgetuserinfo="getUserInfo">确认</button>
         </view>
 
@@ -72,7 +92,6 @@
             selectSex(e){
                 let sex = e.currentTarget.dataset.sex;
                 this.currentSex = sex;
-                // console.log(typeof (this.currentSex)+'==='+this.currentSex);
                 if(sex == 0){
                     this.profile = [ imgApi.man1, imgApi.man2 ];
                 } else if(sex == 1){
@@ -142,8 +161,14 @@
 
 <style lang="less">
     .select-sex{
+        position: relative;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
 
         .sex{
+            position: absolute;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -174,9 +199,41 @@
         }
 
         .sex-btn{
+            position: absolute;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .content{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+
+            .left,.right{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+                width: 50%;
+                box-sizing: border-box;
+
+                .sex-btn-each{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .sex-img-each{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
+        }
+
+        .content_bgcolor{
+            background-color: #f3e560;
         }
     }
 
