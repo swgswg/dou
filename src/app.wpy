@@ -194,8 +194,8 @@
         config = {
             pages: [
                 'pages/home',
-                'pages/select_model',
                 'pages/select_sex',
+                'pages/select_model',
                 'pages/mobile_verify',
                 'pages/friend_gift_wall',
                 'pages/send_gift',
@@ -303,6 +303,7 @@
             setInterval(function() {
                 shakeTime++;
                 wepy.setStorageSync(SHAKE_HAND_TIME, shakeTime);
+                wepy.setStorageSync(SHAKE_LEG_TIME, shakeTime);
                 // console.log(shakeTime);
             },1000);
 
@@ -382,9 +383,14 @@
         // px2rpx(尺寸适配比例) rpx = px * (目标设备宽 px 值 / 750)
         px2rpx(){
             let systemInfo = wepy.getSystemInfoSync();
-            // console.log(systemInfo);
+            console.log(systemInfo);
             // console.log(systemInfo.windowHeight / 1110);
-            wepy.setStorageSync(PX_TO_RPX, {px2rpxWidth:systemInfo.windowWidth / 750,px2rpxHeight:systemInfo.screenHeight / 1334});
+            wepy.setStorageSync(PX_TO_RPX, {
+                px2rpxWidth:systemInfo.windowWidth / 750,
+                px2rpxHeight:systemInfo.screenHeight / 1334,
+                originalWidth:systemInfo.windowWidth,
+                originalHeight:systemInfo.windowHeight,
+            });
         }
 
         // 背景音乐

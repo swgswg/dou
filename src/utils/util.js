@@ -339,16 +339,16 @@ function secondToDHMS(sec) {
     let minute = Math.floor(second / 60);
     second = second % 60;
     if(day > 0){
-        return day + '天' + hour + '时' + minute +'分' +second;
+        return day + '天' + hour + '时' + minute +'分' +second+'秒';
     }
     if(hour > 0){
-        return hour + '时' + minute + '分' + second;
+        return hour + '时' + minute + '分' + second+'秒';
     }
     if(minute > 0){
-        return minute + '分' + second;
+        return minute + '分' + second+'秒';
     }
     if(second > 0){
-        return second;
+        return second+'秒';
     }
 }
 

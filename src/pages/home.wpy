@@ -103,6 +103,7 @@
             } else {
                 // 用户信息完整
                 this.$redirect({
+                    // url: '/pages/select_model'
                     url: '/pages/connect_bluetooth'
                 });
             }

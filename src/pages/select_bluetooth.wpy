@@ -341,11 +341,11 @@
         };
 
         // 获取蓝牙设备某个服务中所有特征值(characteristic) 为了该特征值UUID支持的操作类型
-        getCharacteristics(deviceId,services_UUID){
+        getCharacteristics(deviceId,servicesId){
             let that = this;
             wx.getBLEDeviceCharacteristics({
                 deviceId:deviceId,
-                serviceId:services_UUID,
+                serviceId:servicesId,
                 success(res){
                     console.log('获取蓝牙设备characteristic');
                     console.log(res);
@@ -359,10 +359,12 @@
                             let write = characteristics[k].properties.write;
                             console.log(indicate,notify,read,write);
                             if(indicate && notify && read && write){
-                                connectingDeviceId = res.deviceId;
+                                // connectingDeviceId = res.deviceId;
+                                connectingDeviceId = deviceId;
                                 // console.log('connectingDeviceId');
                                 // console.log(connectingDeviceId);
-                                services_UUID = res.serviceId;
+                                // services_UUID = res.serviceId;
+                                services_UUID = servicesId;
                                 // console.log('services_UUID');
                                 // console.log(services_UUID);
                                 characteristic_UUID = characteristics[k].uuid;

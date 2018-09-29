@@ -174,7 +174,7 @@ module.exports = {
         wx.onSocketMessage(function(res){
             // var list = [];
             // list = _this.data.newsList;
-            var  _data = JSON.parse(res.data);
+            // var  _data = JSON.parse(res.data);
             // list.push(_data);
             // console.log(list);
             // _this.setData({
@@ -389,6 +389,21 @@ module.exports = {
         wepy.setStorageSync(USER_INFO, userInfo);
     },
 
+    // 从服务器更新个人缓存
+    async updateUserInfo(){
+        let userInfo = wepy.getStorageSync(USER_INFO);
+        // 获取个人信息
+        let OneUserInfo = await api.getOneUserInfo({
+            query:{
+                userId:userInfo.id
+            }
+        });
+        if(OneUserInfo.data.state == 1){
+            // 更新缓存
+            wepy.setStorageSync(USER_INFO, OneUserInfo.data.data);
+        }
+    },
+
     // 把上次的脚动记录存入数据库(个人记录不需要房间号)
     async addLegRecord(num){
         let userInfo = wepy.getStorageSync(USER_INFO);
@@ -450,6 +465,7 @@ module.exports = {
             console.log(util.ab2hex(res.value));
             // 获取设备返回的数据
             let hex = util.ab2hex(res.value);
+            console.log(hex);
             // 获取总次数
             let num = util.hexSlice(hex);
             if(hex.length > 22){
