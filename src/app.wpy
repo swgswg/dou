@@ -2,6 +2,7 @@
     @import "static/css/font.less";
     @import "static/css/button.less";
     @import "static/css/font_Edo.less";
+    @import "static/css/animate.less";
 
     page{
         letter-spacing:2rpx;
@@ -383,7 +384,7 @@
         // px2rpx(尺寸适配比例) rpx = px * (目标设备宽 px 值 / 750)
         px2rpx(){
             let systemInfo = wepy.getSystemInfoSync();
-            console.log(systemInfo);
+            // console.log(systemInfo);
             // console.log(systemInfo.windowHeight / 1110);
             wepy.setStorageSync(PX_TO_RPX, {
                 px2rpxWidth:systemInfo.windowWidth / 750,

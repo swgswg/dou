@@ -15,10 +15,14 @@
             <image class="content-img-right" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-left:{{37*px2rpxWidth}}px;" src="{{rightImg}}" @tap.stop="shakeTransform"/>
         </view>
         <block wx:if="{{shakeData == 1}}">
-            <view class="shake-number" style="margin-top:{{120*px2rpxHeight}}px">{{shakeLegNumber}}</view>
+            <view class="shake-number " style="margin-top:{{120*px2rpxHeight}}px">
+                <view class="{{animate}}">{{shakeLegNumber}}</view>
+            </view>
         </block>
         <block wx:if="{{shakeData == 0}}">
-            <view class="shake-number" style="margin-top:{{120*px2rpxHeight}}px">{{shakeHandNumber}}</view>
+            <view class="shake-number" style="margin-top:{{120*px2rpxHeight}}px">
+                <view class="{{animate}}">{{shakeHandNumber}}</view>
+            </view>
         </block>
         <!--<view class="shake-time" style="margin-top:{{100*px2rpxHeight}}px">持续时长：{{shakeTime}}</view>-->
         <view class="cover-layer" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;" wx:if="{{isShowCoverLayer}}">
@@ -117,6 +121,8 @@
             legNumEnough129: 129,
             // 签到数据
             signDayData:null,
+            // 动画
+            animate:'',
         };
 
         // 在Page和Component共用的生命周期函数
@@ -290,6 +296,12 @@
                 // console.log(newValue)
                 this.shakeChange(newValue);
             },
+            shakeHandNumber(){
+                this.animated();
+            },
+            shakeLegNumber(){
+                this.animated();
+            },
         };
 
         events = {
@@ -372,6 +384,16 @@
             }
         };
 
+        // 动画
+        animated(){
+            let that = this;
+            this.animate = 'animated zoomIn';
+            setTimeout(function() {
+                that.animate = '';
+                that.$apply();
+            },500);
+        };
+
         // 隐藏遮盖层里的所有控件
         hideAllShowModel(){
             // 是否显示遮盖层
@@ -382,25 +404,6 @@
             this.showSignIn = false;
             this.$apply();
         }
-
-        // 监听低功耗蓝牙设备的特征值变化
-        // 必须先启用 notifyBLECharacteristicValueChange 接口才能接收到设备推送的 notification。
-        // onValueChange(){
-        //     let that = this;
-        //     wx.onBLECharacteristicValueChange(function(res){
-        //         console.log('监听低功耗蓝牙设备的特征值变化');
-        //         console.log(res);
-        //         console.log(util.ab2hex(res.value));
-        //         // 获取设备返回的数据
-        //         let hex = util.ab2hex(res.value);
-        //         // 获取总次数
-        //         let num = util.hexSlice(hex);
-        //         that.shakeLegNumber = num;
-        //     });
-        //     this.$apply();
-        // };
-
-
 
     }
 </script>
@@ -414,7 +417,6 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        /*align-items: center;*/
         width: 100%;
         height: 100%;
 
@@ -423,8 +425,6 @@
             position: absolute;
             top: 50rpx;
             right: 24rpx;
-            /*width: 89rpx;*/
-            /*height: 82rpx;*/
         }
         
         /* 签到 */
@@ -440,34 +440,13 @@
             border: 1rpx solid #fff;
             border-radius: 10rpx;
         }
-        
-        .leg-hand{
-            /*margin-top: 32rpx;*/
-        }
 
         .centent{
             display: flex;
             justify-content: flex-start;
             align-items: center;
             width: 100%;
-            /*height: 500rpx;*/
-            /*margin-top: 73rpx;*/
-            /*padding-left: 30rpx;*/
             box-sizing: border-box;
-            /*border: 1rpx solid blue;*/
-
-            .content-img-left,.content-img-right{
-                /*width: 58rpx;*/
-                /*height: 101rpx;*/
-                /*border: 1rpx solid blue;*/
-            }
-
-            .content-img-left{
-                /*margin-right: 37rpx;*/
-            }
-            .content-img-right{
-                /*margin-left: 37rpx;*/
-            }
         }
 
         .shake-number{
@@ -475,8 +454,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            /*margin-top: 56rpx;*/
-            font-size: 149rpx;
+            font-size: 160rpx;
             font-family: 'Edo SZ';
             font-weight: normal;
             font-style: normal;
@@ -488,9 +466,7 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            /*margin-top: 100rpx;*/
             font-size: 36rpx;
-            font-family: AdobeHeitiStd Regular;
             color: #fff;
         }
 

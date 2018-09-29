@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="163dff39-3b00-4120-a5ee-4f30053abe5a" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.wepycache" beforeDir="false" afterPath="$PROJECT_DIR$/.wepycache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/go_shake.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/go_shake.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/select_bluetooth.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/select_bluetooth.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/select_model.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/select_model.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/static/css/button.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/static/css/button.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/util.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/util.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/weixin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/weixin.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -31,14 +24,22 @@
       <file leaf-file-name="app.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="524">
-              <caret line="305" column="63" selection-start-line="305" selection-start-column="63" selection-end-line="305" selection-end-column="63" />
+            <state relative-caret-position="140">
+              <caret line="5" selection-start-line="5" selection-end-line="5" />
               <folding>
-                <element signature="n#style#0;n#!!top" />
                 <element signature="e#2549#2573#0" expanded="true" />
                 <element signature="e#2947#5882#0" />
                 <element signature="e#4719#5824#0" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="animate.less" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/static/css/animate.less">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="672">
+              <caret line="24" column="32" lean-forward="true" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -64,7 +65,7 @@
       <file leaf-file-name="weixin.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/weixin.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
+            <state relative-caret-position="-1695">
               <caret line="409" column="65" selection-start-line="409" selection-start-column="51" selection-end-line="409" selection-end-column="65" />
               <folding>
                 <element signature="e#200#230#0" expanded="true" />
@@ -79,33 +80,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="go_shake.wpy" pinned="false" current-in-tab="false">
+      <file leaf-file-name="go_shake.wpy" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="247">
-              <caret line="165" column="39" selection-start-line="165" selection-start-column="19" selection-end-line="165" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="util.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/utils/util.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="461">
-              <caret line="350" column="26" lean-forward="true" selection-start-line="350" selection-start-column="26" selection-end-line="350" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="select_bluetooth.wpy" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/select_bluetooth.wpy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="367" column="64" selection-start-line="367" selection-start-column="64" selection-end-line="367" selection-end-column="64" />
+            <state relative-caret-position="355">
+              <caret line="303" selection-start-line="303" selection-end-line="303" />
               <folding>
-                <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#0;n#block#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#10708#12100#0" />
+                <element signature="e#12160#13128#0" />
+                <element signature="e#13180#13405#0" />
               </folding>
             </state>
           </provider>
@@ -125,8 +110,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>isAllowEditAddress</find>
-      <find>selectOrAdd</find>
       <find>orderId</find>
       <find>hasAddress</find>
       <find>userId</find>
@@ -155,6 +138,8 @@
       <find>selectProfile</find>
       <find>sex-btn</find>
       <find>content</find>
+      <find>shakeLegNumber</find>
+      <find>shake-number</find>
     </findStrings>
     <replaceStrings>
       <replace>rpx</replace>
@@ -170,7 +155,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/mygift.wpy" />
         <option value="$PROJECT_DIR$/src/utils/weixinFileToaliyun/uploadAliyun.js" />
         <option value="$PROJECT_DIR$/src/components/best_record.wpy" />
         <option value="$PROJECT_DIR$/src/pages/friend_gift_wall.wpy" />
@@ -210,17 +194,18 @@
         <option value="$PROJECT_DIR$/src/pages/select_sex.wpy" />
         <option value="$PROJECT_DIR$/src/components/order_item.wpy" />
         <option value="$PROJECT_DIR$/src/pages/order_detail.wpy" />
-        <option value="$PROJECT_DIR$/src/static/css/button.less" />
         <option value="$PROJECT_DIR$/src/pages/select_model.wpy" />
         <option value="$PROJECT_DIR$/src/pages/select_bluetooth.wpy" />
         <option value="$PROJECT_DIR$/src/pages/home.wpy" />
         <option value="$PROJECT_DIR$/src/pages/home.wpy" />
         <option value="$PROJECT_DIR$/src/utils/weixin.js" />
         <option value="$PROJECT_DIR$/src/utils/weixin.js" />
-        <option value="$PROJECT_DIR$/src/pages/go_shake.wpy" />
-        <option value="$PROJECT_DIR$/src/app.wpy" />
-        <option value="$PROJECT_DIR$/src/app.wpy" />
         <option value="$PROJECT_DIR$/src/utils/util.js" />
+        <option value="$PROJECT_DIR$/src/app.wpy" />
+        <option value="$PROJECT_DIR$/src/app.wpy" />
+        <option value="$PROJECT_DIR$/src/static/css/button.less" />
+        <option value="$PROJECT_DIR$/src/static/css/animate.less" />
+        <option value="$PROJECT_DIR$/src/pages/go_shake.wpy" />
       </list>
     </option>
   </component>
@@ -282,6 +267,13 @@
               <item name="doutui" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="static" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="doutui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="doutui" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="css" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="doutui" type="b2602c69:ProjectViewProjectNode" />
@@ -406,12 +398,12 @@
       <workItem from="1537857122164" duration="609000" />
       <workItem from="1538012322745" duration="14902000" />
       <workItem from="1538096263711" duration="9020000" />
-      <workItem from="1538185712673" duration="3251000" />
+      <workItem from="1538185712673" duration="9447000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1289192000" />
+    <option name="totallyTimeSpent" value="1295388000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -430,11 +422,11 @@
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32897604" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="12" side_tool="true" weight="0.32061067" />
-      <window_info anchor="bottom" id="Version Control" order="11" weight="0.3293348" />
+      <window_info anchor="bottom" id="Version Control" order="11" weight="0.32824427" />
       <window_info id="npm" order="2" sideWeight="0.503268" side_tool="true" weight="0.1369863" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" sideWeight="0.50401604" side_tool="true" weight="0.1369863" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.19738276" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.2780807" />
       <window_info anchor="bottom" id="Favorites" order="6" sideWeight="0.50108933" side_tool="true" weight="0.13725491" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="TypeScript" order="10" />
@@ -483,6 +475,17 @@
               <option name="RECENTLY_FILTERED_BRANCH_GROUPS">
                 <collection />
               </option>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="master" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
               <option name="COLUMN_ORDER">
                 <list>
                   <option value="0" />
@@ -513,36 +516,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/utils/imgApi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="8" column="11" selection-start-line="8" selection-start-column="4" selection-end-line="8" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="616">
-          <caret line="22" lean-forward="true" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/weixin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="2" column="57" lean-forward="true" selection-start-line="2" selection-start-column="57" selection-end-line="2" selection-end-column="57" />
-          <folding>
-            <element signature="e#200#230#0" expanded="true" />
-            <element signature="e#745#2720#0" />
-            <element signature="e#2868#3508#0" />
-            <element signature="e#3600#4959#0" />
-            <element signature="e#10690#11793#0" />
-            <element signature="e#11842#12131#0" />
-            <element signature="e#12163#12286#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/address_list.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-980">
@@ -811,13 +784,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/static/css/button.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-26712">
-          <caret line="594" column="35" selection-start-line="594" selection-start-column="35" selection-end-line="594" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/gift.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="140">
@@ -860,9 +826,32 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/home.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="989">
+          <caret line="106" column="51" selection-start-line="106" selection-start-column="51" selection-end-line="106" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="797">
+          <caret line="350" column="26" lean-forward="true" selection-start-line="350" selection-start-column="26" selection-end-line="350" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/static/css/font.less">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/static/css/font_Edo.less">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/static/css/button.less">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/select_bluetooth.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
+        <state relative-caret-position="1255">
           <caret line="367" column="64" selection-start-line="367" selection-start-column="64" selection-end-line="367" selection-end-column="64" />
           <folding>
             <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -874,7 +863,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/weixin.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
+        <state relative-caret-position="-1695">
           <caret line="409" column="65" selection-start-line="409" selection-start-column="51" selection-end-line="409" selection-end-column="65" />
           <folding>
             <element signature="e#200#230#0" expanded="true" />
@@ -888,19 +877,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/home.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="989">
-          <caret line="106" column="51" selection-start-line="106" selection-start-column="51" selection-end-line="106" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/app.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="305" column="63" selection-start-line="305" selection-start-column="63" selection-end-line="305" selection-end-column="63" />
+        <state relative-caret-position="140">
+          <caret line="5" selection-start-line="5" selection-end-line="5" />
           <folding>
-            <element signature="n#style#0;n#!!top" />
             <element signature="e#2549#2573#0" expanded="true" />
             <element signature="e#2947#5882#0" />
             <element signature="e#4719#5824#0" />
@@ -908,17 +889,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
+    <entry file="file://$PROJECT_DIR$/src/static/css/animate.less">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="247">
-          <caret line="165" column="39" selection-start-line="165" selection-start-column="19" selection-end-line="165" selection-end-column="39" />
+        <state relative-caret-position="672">
+          <caret line="24" column="32" lean-forward="true" selection-start-line="24" selection-start-column="32" selection-end-line="24" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/util.js">
+    <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="461">
-          <caret line="350" column="26" lean-forward="true" selection-start-line="350" selection-start-column="26" selection-end-line="350" selection-end-column="26" />
+        <state relative-caret-position="355">
+          <caret line="303" selection-start-line="303" selection-end-line="303" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#10708#12100#0" />
+            <element signature="e#12160#13128#0" />
+            <element signature="e#13180#13405#0" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -1,0 +1,31 @@
+@charset "UTF-8";
+
+.animated {
+  animation-duration: 1s;
+  animation-fill-mode: both;
+}
+
+.animated.infinite {
+  animation-iteration-count: infinite;
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale3d(2, 2, 2);
+  }
+
+  100% {
+    opacity: 0.1;
+    transform: scale3d(4, 4, 4);
+  }
+}
+
+.zoomIn {
+  animation-name: zoomIn;
+}
