@@ -136,52 +136,57 @@ module.exports = {
     },
 
     /**
-     * webSocket
+     * 建立webSocket连接
      */
-    weixinWebSocket(message){
-
-        let socketOpen = false;
-        let socketMsgQueue = [];
-
-        //建立连接
+    weixinConnectSocket(){
         wx.connectSocket({
-            url: api.wshost +_this.data.openid+"/"+options.to,
+            url: api.wshost +userId,
         });
+    },
 
+    /**
+     * webSocket发送数据
+     * @param userId  发送人id
+     * @param message 发送消息
+     */
+    weixinsendSocketMessage(userId,message){
+
+        // let socketOpen = false;
+        // let socketMsgQueue = [];
         //连接成功
         wx.onSocketOpen(function () {
             console.log('连接成功');
-            socketOpen = true;
-            for (var i = 0; i < socketMsgQueue.length; i++){
-                // sendSocketMessage(socketMsgQueue[i]);
-                if (socketOpen) {
-                    // 发送webSocket信息
-                    wx.sendSocketMessage({
-                        data:socketMsgQueue[i]
-                    })
-                } else {
-                    socketMsgQueue.push(socketMsgQueue[i]);
-                }
-            }
-            socketMsgQueue = [];
-        });
+            // socketOpen = true;
+            // for (let i = 0; i < socketMsgQueue.length; i++){
+            //     // sendSocketMessage(socketMsgQueue[i]);
+            //     if (socketOpen) {
+            //         // 发送webSocket信息
+            //         wx.sendSocketMessage({
+            //             data:socketMsgQueue[i]
+            //         })
+            //     } else {
+            //         socketMsgQueue.push(socketMsgQueue[i]);
+            //     }
+            // }
+            // socketMsgQueue = [];
 
+            wx.sendSocketMessage({
+                data:message
+            });
+        });
         wx.onSocketError(function(res){
-            console.log('WebSocket连接打开失败，请检查！')
+            console.log(res);
+            console.log('WebSocket连接打开失败，请检查！');
         });
+    },
 
-        // 接收webSocket信息
+    /**
+     * 接收webSocket信息
+     */
+    weixinOnSocketMessage(){
         wx.onSocketMessage(function(res){
-            // var list = [];
-            // list = _this.data.newsList;
-            // var  _data = JSON.parse(res.data);
-            // list.push(_data);
-            // console.log(list);
-            // _this.setData({
-            //     newsList:list
-            // })
+            let data = JSON.parse(res.data);
         });
-
     },
 
     // 关闭webSocket
@@ -467,7 +472,7 @@ module.exports = {
             let hex = util.ab2hex(res.value);
             console.log(hex);
             // 获取总次数
-            let num = util.hexSlice(hex);
+            let num = that.hexSlice(hex);
             if(hex.length > 22){
                 console.log('清零数据',num);
                 // fe080100010000 d400 00dc fe08010001000000000008
@@ -475,7 +480,6 @@ module.exports = {
                 that.addLegRecord(num);
                 num = 0;
             }
-            // that.shakeLegNum = num;
             // setTimeout(function() {
                 sunFun(num);
             // },1000);
@@ -536,5 +540,18 @@ module.exports = {
                 // tip.error('关闭失败');
             }
         });
+    },
+
+    /**
+     * 16进制字符串取需要的字节(fe 08 01 00 01 01 01 7a0b 008f)
+     * @param hex
+     * @returns {number}
+     */
+    hexSlice(hex) {
+        // 取k8位
+        let k8 = hex.slice(14,16);
+        //取k9位
+        let k9 = hex.slice(16,18);
+        return parseInt(k9+k8,16);
     },
 };

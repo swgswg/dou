@@ -1,11 +1,13 @@
 <template>
     <view class="swiper-tab">
-        <view wx:for="{{tabList}}" wx:key="index" class="swiper-tab-list {{currentTab==index ? 'active' : ''}}"
-              style="padding:{{20*px2rpxHeight}}px {{10*px2rpxWidth}}px;"
-              data-current="{{index}}" bindtap="swichNav">
-            {{item.name ? item.name : item}}
-            <view class=" {{item.dotNum>=100 ? 'dotbig':'dot'}}" wx:if="{{item.dotNum>0}}">{{item.dotNum}}</view>
-        </view>
+        <block wx:for="{{tabList}}" wx:key="{{index}}">
+            <view  class="swiper-tab-list {{currentTabValue == item.value ? 'active' : ''}}"
+                  style="padding:{{20*px2rpxHeight}}px {{10*px2rpxWidth}}px;"
+                  data-current="{{item.value}}" bindtap="swichNav">
+                {{item.name ? item.name : item}}
+                <view class=" {{item.dotNum>=100 ? 'dotbig':'dot'}}" wx:if="{{item.dotNum>0}}">{{item.dotNum}}</view>
+            </view>
+        </block>
     </view>
 </template>
 
@@ -21,7 +23,7 @@
         };
 
         props = {
-            currentTab: {
+            currentTabValue: {
                 default: 0,
                 twoWay:true
             },
@@ -42,14 +44,14 @@
              * 点击tab切换
              */
             swichNav(e) {
-                let that = this;
-                if (this.data.currentTab == e.target.dataset.current) {
+                let current = e.currentTarget.dataset.current;
+                if (this.currentTab == current) {
                     return false;
                 } else {
-                    that.currentTab = e.target.dataset.current;
-                    that.$apply();
+                    this.currentTab = current;
+                    this.$apply();
                 }
-                this.$emit("CurrentTabChange", that.currentTab)
+                this.$emit("CurrentTabChange", this.current)
             },
 
             /**

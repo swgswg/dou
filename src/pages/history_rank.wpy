@@ -2,35 +2,35 @@
     <view class="history-rank">
 
         <view class="rank-style" style="margin-top:{{10*px2rpxHeight}}px">
-            <rankingstyle :rankingStyle.sync="rankingStyle" :status.sync="currentStatus"></rankingstyle>
+            <rankingstyle :rankingStyle.sync="rankingStyle" :currentTabValue.sync="legOrHand"></rankingstyle>
         </view>
 
         <view class="tab" style="height:{{100*px2rpxHeight}}px;margin-top:{{-10*px2rpxHeight}}px">
-            <rankingbutton :tab.sync="tabData" :currentRanking.sync="currentRanking"></rankingbutton>
+            <rankingbutton :tab.sync="tabData" :currentTabValue.sync="weekOrAll"></rankingbutton>
         </view>
 
         <view class="rank">
 
             <view class="world-firend">
                 <view>
-                    <image class="world-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{currentWorldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFried"></image>
+                    <image class="world-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{worldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFriedEvent"></image>
                 </view>
                 <view>
-                    <image class="friend-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{currentWorldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFried"></image>
+                    <image class="friend-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{worldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFriedEvent"></image>
                 </view>
             </view>
 
-            <block wx:if="{{currentWorldOrFriend == 'world'}}">
+            <block wx:if="{{worldOrFriend == 'world'}}">
                 <!--世界 start-->
                 <view style="margin-top:{{-35*px2rpxHeight}}px">
-                    <rankingworld :first_three.sync="firstThreeData" :worldRanking.sync="worldRankingData" :weekOrAll.sync="weekOrAll" :status.sync="currentStatus"></rankingworld>
+                    <rankingworld :weekOrAll.sync="weekOrAll" :legOrHand.sync="legOrHand"></rankingworld>
                 </view>
                 <!--世界 end-->
             </block>
-            <block wx:elif="{{currentWorldOrFriend == 'friend'}}">
+            <block wx:elif="{{worldOrFriend == 'friend'}}">
                 <!--好友 start-->
                 <view style="margin-top:{{-35*px2rpxHeight}}px">
-                    <rankingfriend :friendRanking.sync="friendRankingData" :friendRankingPage.sync="friendRankingPage" :weekOrAll.sync="weekOrAll" :status.sync="currentStatus"></rankingfriend>
+                    <rankingfriend :weekOrAll.sync="weekOrAll" :legOrHand.sync="legOrHand"></rankingfriend>
                 </view>
                 <!--好友 end-->
             </block>
@@ -72,24 +72,20 @@
             friend_active:imgApi.friend_active,
             friend_inactive:imgApi.friend_inactive,
             // 排行类型
-            rankingStyle:[{name:'设备榜',status:'1'},{name:'手动榜',status:'0'}],
+            rankingStyle:[
+                {name:'设备榜',value:1},
+                {name:'手动榜',value:0}
+            ],
             // 0手/1脚
-            currentStatus:'1',
-            tabData:['本周排行','总排行'],
-            // 当前排行类型week/all
-            currentRanking: 'week',
-            // 当前是世界还是好友(默认世界)
-            currentWorldOrFriend: 'friend',
-            // 当前排行类型1(week)/0(all)
-            weekOrAll:'',
-            // 前3名
-            firstThreeData:[],
-            // 世界排名数据
-            worldRankingData:[],
-            // 好友排名数据
-            friendRankingData:[],
-            // 好友排名数据当前页数(默认1)
-            // friendRankingPage:1,
+            legOrHand:1,
+            tabData:[
+                {name:'本周排行',value:1},
+                {name:'总排行',value:0}
+            ],
+            // 1(week)/0(all)
+            weekOrAll:1,
+            // 世界/好友
+            worldOrFriend: 'friend',
             //是否有数据
             is_empty: false,
             //是否显示 底部loading
@@ -105,90 +101,55 @@
         };
 
         // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
         onReady() {
-            // 获取数据 周+好友+设备
-            this.getData('friend',1,1);
+            this.worldOrFriend = 'world';
+            // 获取数据 好友
+            this.getData(this.worldOrFriend);
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 选择世界还是好友排名
-            worldOrFried(e){
-                let currentWorldOrFriend = e.currentTarget.dataset.type;
-                // console.log(currentWorldOrFriend);
-                if(this.currentWorldOrFriend == currentWorldOrFriend){
+            worldOrFriedEvent(e){
+                let worldOrFriend = e.currentTarget.dataset.type;
+                if(this.worldOrFriend == worldOrFriend){
                     // 如果点击的是当前已经选择的,就不执行任何操作
                     return;
                 } else {
-                    let mytype = '';
-                    // console.log(this.currentRanking);
-                    if(this.currentRanking == 'week'){
-                        // 周排行
-                        mytype = 1;
-                    } else if(this.currentRanking == 'all'){
-                        // 总排行
-                        mytype = 0;
-                    }
                     //改变当前数据
-                    this.getData(currentWorldOrFriend,mytype,this.currentStatus);
-                    this.currentWorldOrFriend = currentWorldOrFriend;
+                    this.getData(worldOrFriend);
+                    this.worldOrFriend = worldOrFriend;
                     this.$apply();
                 }
             },
         };
 
         watch = {
-            currentRanking(newValue){
-                // console.log(newValue,oldValue);
-                let currentWorldOrFriend = this.currentWorldOrFriend;
-                let mytype = '';
-                // console.log(currentWorldOrFriend);
-                if(newValue == 'week'){
-                    mytype = 1;
-                } else if(newValue == 'all'){
-                    mytype = 0;
-                }
-                //改变当前数据
-                this.getData(currentWorldOrFriend,mytype,this.currentStatus);
-                // 改变子组件值
-                this.weekOrAll = mytype;
+            legOrHand(newValue){
+                this.legOrHand = newValue;
                 this.$apply();
+                this.getData(this.worldOrFriend);
             },
 
-            currentStatus(newValue){
-                let mytype = '';
-                if(this.currentRanking == 'week'){
-                    // 周排行
-                    mytype = 1;
-                } else if(this.currentRanking == 'all'){
-                    // 总排行
-                    mytype = 0;
-                }
-                this.getData(this.currentWorldOrFriend,mytype,newValue);
-                this.currentStatus = newValue;
+            // 周还是总
+            weekOrAll(newValue){
+                this.weekOrAll = newValue;
                 this.$apply();
+                this.getData(this.worldOrFriend);
             }
         };
 
-        getData(currentWorldOrFriend,mytype,mystatus){
-            if(currentWorldOrFriend == 'world'){
+        getData(myworldOrFriend){
+            if(myworldOrFriend == 'world'){
                 // 世界排行
-                this.$invoke('rankingworld', 'getWorldRanking', 1,8,mytype,mystatus);
+                this.$invoke('rankingworld', 'getWorldRanking');
                 this.$apply();
-            } else if(currentWorldOrFriend == 'friend'){
+            } else if(myworldOrFriend == 'friend'){
                 // 好友排行
-                this.$invoke('rankingfriend', 'getFriendRanking', 1,8,mytype,mystatus);
+                this.$invoke('rankingfriend', 'getFriendRanking');
                 this.$apply();
             }
         };
 
-
-        // 声明组件之间的事件处理函数
-        events = {};
     }
 </script>
 

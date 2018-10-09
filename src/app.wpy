@@ -25,12 +25,30 @@
         line-height: 0;
     }
 
+    .flex-start{
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .flex-end{
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
+
     .flex-between{
         display: flex;
         justify-content: space-between;
         align-items: center;
         width: 100%;
         line-height: 0;
+    }
+
+    .flex-around{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
     }
 
     .f10 {
@@ -155,6 +173,7 @@
 
     .pb10 {
         padding-bottom: 20rpx;
+        box-sizing: border-box;
     }
 
     .pt15 {
@@ -174,6 +193,7 @@
         height: 100%;
     }
 
+    /*隐藏滚动条*/
     ::-webkit-scrollbar{
         width: 0;
         height:0;

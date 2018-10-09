@@ -1,8 +1,13 @@
 <template>
     <view class="ranking-button" style="height:{{80*px2rpxHeight}}px;padding: 0 {{98*px2rpxWidth}}px;">
         <view class="content">
-            <block wx:for="{{tab}}" wx:key="{{index}}"  wx:for-item="tab">
-                <view class="btn {{currentTab == index ? 'active' : ''}}" style="width:{{200*px2rpxWidth}}px;" data-current="{{index}}" @tap.stop="getRanking">{{tab}}</view>
+            <block wx:for="{{tab}}" wx:for-item="tab" wx:key="{{index}}">
+                <view class="btn {{currentTabValue == tab.value ? 'active' : ''}}"
+                      style="width:{{200*px2rpxWidth}}px;"
+                      data-current="{{tab.value}}"
+                      @tap.stop="switchTab">
+                    {{tab.name}}
+                </view>
             </block>
         </view>
     </view>
@@ -17,7 +22,6 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            currentTab:0,
         };
 
         props = {
@@ -26,13 +30,11 @@
                 default:null,
                 twoWay: true,
             },
-            currentRanking: {
+            currentTabValue: {
                 type:String,
-                default: 'week',
+                default: 0,
                 twoWay: true,
             },
-
-
         };
 
         async onLoad(){
@@ -43,27 +45,17 @@
         };
 
         methods = {
-            getRanking(e){
+            switchTab(e){
                 let that = this;
                 let current = e.currentTarget.dataset.current;
-                if (this.data.currentTab == current) {
-                    return false;
+                if (this.currentTabValue == current) {
+                    return;
                 } else {
-                    that.currentTab = current;
-                    if(current == 0){
-                        that.currentRanking = 'week';
-                    } else if(current == 1){
-                        that.currentRanking = 'all';
-                    }
-                    // console.log(current);
-                    // console.log(that.currentRanking);
+                    this.currentTabValue = current;
                     that.$apply();
                 }
-                this.$emit("currentTab", that.currentTab)
             }
         }
-
-
 
     }
 

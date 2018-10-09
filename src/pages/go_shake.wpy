@@ -25,17 +25,34 @@
             </view>
         </block>
         <!--<view class="shake-time" style="margin-top:{{100*px2rpxHeight}}px">持续时长：{{shakeTime}}</view>-->
-        <view class="cover-layer" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;" wx:if="{{isShowCoverLayer}}">
 
-            <block wx:if="{{showScoreEnough}}">
-                <scoreenough :nowScore.sync="nowScore" :exchangeGiftName="exchangeGiftName" :exchangeGiftUrl.sync="exchangeGiftUrl" :shareUserId.sync="shareUserId" :shareGiftId.sync="shareGiftId" :sharePage.sync="sharePage"></scoreenough>
-            </block>
+        <!--遮盖层 start-->
+        <!--<view class="cover-layer" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;" wx:if="{{showCoverLayer}}">-->
 
-            <block wx:if="{{showSignIn}}">
-                <signin :signDayData.sync="signDayData"></signin>
-            </block>
+            <!--<block wx:if="{{showScoreEnough}}">-->
+                <!--<scoreenough :nowScore.sync="nowScore" :exchangeGiftName="exchangeGiftName" :exchangeGiftUrl.sync="exchangeGiftUrl" :shareUserId.sync="shareUserId" :shareGiftId.sync="shareGiftId" :sharePage.sync="sharePage"></scoreenough>-->
+            <!--</block>-->
 
+            <!--<block wx:if="{{showSignIn}}">-->
+                <!--<signin :signDayData.sync="signDayData"></signin>-->
+            <!--</block>-->
+
+        <!--</view>-->
+        <view wx:if="{{showCoverLayer}}">
+            <coverlayer>
+                <view slot="content">
+                    <block wx:if="{{showScoreEnough}}">
+                        <scoreenough :nowScore.sync="nowScore" :exchangeGiftName="exchangeGiftName" :exchangeGiftUrl.sync="exchangeGiftUrl" :shareUserId.sync="shareUserId" :shareGiftId.sync="shareGiftId" :sharePage.sync="sharePage"></scoreenough>
+                    </block>
+
+                    <block wx:if="{{showSignIn}}">
+                        <signin :signDayData.sync="signDayData"></signin>
+                    </block>
+                </view>
+            </coverlayer>
         </view>
+        <!--遮盖层 end-->
+
     </view>
 </template>
 
@@ -50,6 +67,7 @@
     import ShakeStyle from '@/components/shake_style';
     import Circle from '@/components/circle';
     import ScoreEnough from '@/components/score_enough';
+    import CoverLayer from '@/components/common/cover_layer';
     import SignIn from '@/components/sign_in';
 
     // 是否执行onShow方法内容
@@ -68,6 +86,7 @@
             shakestyle:ShakeStyle,
             circle:Circle,
             scoreenough:ScoreEnough,
+            coverlayer:CoverLayer,
             signin:SignIn
         };
 
@@ -96,7 +115,7 @@
             shakeLegTotal:0,
             shakeHandTotal:0,
             // 是否显示遮盖层
-            isShowCoverLayer:false,
+            showCoverLayer:false,
             // 显示积分达到
             showScoreEnough:false,
             // 显示签到
@@ -170,10 +189,14 @@
                 });
             } else {
                 if(implementOnShowEvent){
-                    weixin.notifyValueChange(bluetooth.connectingDeviceId,bluetooth.services_UUID,bluetooth.characteristic_UUID,(num)=>{
-                        that.shakeLegNumber = num;
-                        that.$apply();
-                        implementOnShowEvent = false;
+                    weixin.notifyValueChange(
+                        bluetooth.connectingDeviceId,
+                        bluetooth.services_UUID,
+                        bluetooth.characteristic_UUID,
+                        (num)=>{
+                            that.shakeLegNumber = num;
+                            that.$apply();
+                            implementOnShowEvent = false;
                     });
                 }
 
@@ -274,7 +297,7 @@
             // 签到
             async goSignIn(){
                 // 显示遮盖层
-                this.isShowCoverLayer = true;
+                this.showCoverLayer = true;
                 // 显示签到
                 this.showSignIn = true;
                 // 获取签到设定的礼物
@@ -292,7 +315,7 @@
         };
 
         watch = {
-            shakeData(newValue,oldValue){
+            shakeData(newValue){
                 // console.log(newValue)
                 this.shakeChange(newValue);
             },
@@ -309,6 +332,16 @@
             cancelCoverLayer(){
                this.hideAllShowModel();
             },
+
+            // 取消所有遮盖层内容
+            cancelShow(){
+                // 是否显示遮盖层
+                this.showCoverLayer = false;
+                // 显示积分达到
+                this.showScoreEnough = false;
+                // 显示签到
+                this.showSignIn = false;
+            }
         };
 
         // 抖动方式改变
@@ -362,7 +395,7 @@
             });
             console.log(res);
             if(res.data.state == 1){
-                this.isShowCoverLayer = true;
+                this.showCoverLayer = true;
                 this.showScoreEnough = true;
                 this.nowScore = myscore;
                 this.exchangeGiftName = res.data.data.name;
@@ -395,15 +428,15 @@
         };
 
         // 隐藏遮盖层里的所有控件
-        hideAllShowModel(){
-            // 是否显示遮盖层
-            this.isShowCoverLayer = false;
-            // 显示积分达到
-            this.showScoreEnough = false;
-            // 显示签到
-            this.showSignIn = false;
-            this.$apply();
-        }
+        // hideAllShowModel(){
+        //     // 是否显示遮盖层
+        //     this.showCoverLayer = false;
+        //     // 显示积分达到
+        //     this.showScoreEnough = false;
+        //     // 显示签到
+        //     this.showSignIn = false;
+        //     this.$apply();
+        // }
 
     }
 </script>
@@ -471,16 +504,16 @@
         }
 
         /*遮盖层*/
-        .cover-layer{
-            position: absolute;
-            top:0;
-            left: 0;
-            z-index: 9999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: rgba(0,0,0,0.5);
-        }
+        /*.cover-layer{*/
+            /*position: absolute;*/
+            /*top:0;*/
+            /*left: 0;*/
+            /*z-index: 9999;*/
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            /*background: rgba(0,0,0,0.5);*/
+        /*}*/
     }
 
 </style>

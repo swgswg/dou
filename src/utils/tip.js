@@ -50,22 +50,20 @@ export default class Tips {
         });
     }
 
-    static toast(title, onHide, icon = "success") {
-        setTimeout(() => {
+    static toast(title, icon = "success") {
+        // setTimeout(() => {
             wx.showToast({
                 title: title,
                 icon: icon,
                 mask: true,
                 duration: 1000
             });
-        }, 300);
+        // }, 300);
 
         // 隐藏结束回调
-        if (onHide) {
-            setTimeout(() => {
-                onHide();
-            }, 1000);
-        }
+        setTimeout(() => {
+            wx.hideToast();
+        }, 1000);
     }
 
     /**

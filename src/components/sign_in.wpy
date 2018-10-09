@@ -1,9 +1,9 @@
 // 签到
 <template>
     <view class="sign-in" style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;">
-        <view class="sign-in-cancel" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelSignIn">
-            <text class="iconfont icon-close" style="margin-top:{{5*px2rpxWidth}}px;"></text>
-        </view>
+        <!--<view class="sign-in-cancel" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelSignIn">-->
+            <!--<text class="iconfont icon-close" style="margin-top:{{5*px2rpxWidth}}px;"></text>-->
+        <!--</view>-->
         <image class="img-bg" src="{{sign_in_bg}}" style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;"></image>
 
         <view class="sign-in-content" style="margin-top:{{224*px2rpxHeight}}px;">

@@ -114,10 +114,11 @@
         <!--遮盖层 start-->
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
-                <view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
-                    <view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">
-                        <text class="iconfont icon-close"></text>
-                    </view>
+                <!--<view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">-->
+                <view class="shouhou" slot="content" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
+                    <!--<view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">-->
+                        <!--<text class="iconfont icon-close"></text>-->
+                    <!--</view>-->
                     <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
                     <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
                         <view class="each">
@@ -180,7 +181,7 @@
             // 显示遮盖层
             showCoverLayer:false,
             // 显示售后
-            showAfterSale:false,
+            // showAfterSale:false,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -273,13 +274,18 @@
         };
 
         // 声明组件之间的事件处理函数
-        events = {};
-
-        // 取消所有遮盖层内容
-        cancelShow(){
-            this.showCoverLayer = false;
-            this.showAfterSale = false;
+        events = {
+            // 取消所有遮盖层内容
+            cancelShow(){
+                this.showCoverLayer = false;
+                // this.showAfterSale = false;
+            }
         };
+
+        // cancelShow(){
+        //     this.showCoverLayer = false;
+        //     this.showAfterSale = false;
+        // };
 
         // 刷新数据
         async refresh(){

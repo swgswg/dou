@@ -60,8 +60,11 @@ module.exports = {
     friend_inactive: uploadFileUrl + 'friend_inactive.png',
     // 世界排名1/2/3
     history_no1: uploadFileUrl + 'history_no1.png',
+    history_no1jpg: uploadFileUrl + 'history_no1.jpg',
     history_no2: uploadFileUrl + 'history_no2.png',
+    history_no2jpg: uploadFileUrl + 'history_no2.jpg',
     history_no3: uploadFileUrl + 'history_no3.png',
+    history_no3jpg: uploadFileUrl + 'history_no3.jpg',
 
     // 好友排名1/2/3
     ranking_no1: uploadFileUrl + 'ranking_no1.png',

@@ -1,13 +1,14 @@
 // 商品详情
 <template>
-    <view class="goods-detail">
+    <view class="goods-detail" style="">
 
         <!--轮播图 start-->
         <view class="goods-detail-swiper">
             <swiper indicator-dots="true" autoplay="true" interval="2000" circular="true" style="width:100%;">
                 <block wx:for="{{goodsInfo.photo1}}" wx:for-item="img" wx:key="{{index}}">
                     <swiper-item>
-                        <image src="{{fileUrl + img}}" class="slide-image" style="width:{{750*px2rpxWidth}}px;height:{{500*px2rpxWidth}}px;"/>
+                        <image src="{{fileUrl + img}}" class="slide-image"
+                               style="width:{{750*px2rpxWidth}}px;height:{{500*px2rpxWidth}}px;"/>
                     </swiper-item>
                 </block>
             </swiper>
@@ -22,33 +23,38 @@
                     <button plain="true" open-type="share"
                             class="flex-center"
                             style="width:{{62*px2rpxWidth}}px;height:{{64*px2rpxHeight}}px;"
-                    ><text class="iconfont icon-share"></text></button>
+                    >
+                        <text class="iconfont icon-share"></text>
+                    </button>
                 </view>
             </view>
-            <view class="money" style="height:{{80*px2rpxHeight}}px;padding-bottom:{{20*px2rpxHeight}}px;">¥{{goodsInfo.money}}<text style="font-size:20rpx" wx:if="{{goodsInfo.type !=0 }}">({{goodsInfo.integral}}积分)</text></view>
+            <view class="money" style="height:{{80*px2rpxHeight}}px;padding-bottom:{{20*px2rpxHeight}}px;">
+                ¥{{goodsInfo.money}}
+                <text style="font-size:20rpx" wx:if="{{goodsInfo.type !=0 }}">({{goodsInfo.integral}}积分)</text>
+            </view>
             <view class="expenses" style="padding:{{20*px2rpxHeight}}px 0;">运费:免运费</view>
         </view>
         <!--商品信息 end-->
 
         <!--收货地址 start-->
         <!--<view class="take-delivery" style="height:{{120*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px">-->
-            <!--<block wx:if="{{haveDefaultAddress}}">-->
-                <!--<view class="have-addr">-->
-                    <!--<view class="people" >-->
-                        <!--<view class="name">收货人：姓名</view>-->
-                        <!--<view class="tel">12345678910</view>-->
-                    <!--</view>-->
-                    <!--<view class="addr" style="margin-top:{{10*px2rpxHeight}}px">详细地址详细地址详细地址详细地址详细地址详细地址详细地址</view>-->
-                <!--</view>-->
-            <!--</block>-->
-            <!--<block wx:else>-->
-                <!--<view class="no-addr" >-->
-                    <!--<view class="new-build">-->
-                        <!--<view class="flex-center" style="width:{{160*px2rpxWidth}}px;height:100%;">新建收货地址</view>-->
-                        <!--<view class="youjiantou" style="width:{{30*px2rpxWidth}}px;"><text class="iconfont icon-youjiantou"></text></view>-->
-                    <!--</view>-->
-                <!--</view>-->
-            <!--</block>-->
+        <!--<block wx:if="{{haveDefaultAddress}}">-->
+        <!--<view class="have-addr">-->
+        <!--<view class="people" >-->
+        <!--<view class="name">收货人：姓名</view>-->
+        <!--<view class="tel">12345678910</view>-->
+        <!--</view>-->
+        <!--<view class="addr" style="margin-top:{{10*px2rpxHeight}}px">详细地址详细地址详细地址详细地址详细地址详细地址详细地址</view>-->
+        <!--</view>-->
+        <!--</block>-->
+        <!--<block wx:else>-->
+        <!--<view class="no-addr" >-->
+        <!--<view class="new-build">-->
+        <!--<view class="flex-center" style="width:{{160*px2rpxWidth}}px;height:100%;">新建收货地址</view>-->
+        <!--<view class="youjiantou" style="width:{{30*px2rpxWidth}}px;"><text class="iconfont icon-youjiantou"></text></view>-->
+        <!--</view>-->
+        <!--</view>-->
+        <!--</block>-->
         <!--</view>-->
         <!--收货地址 end-->
 
@@ -58,7 +64,8 @@
             <block wx:for="{{goodsInfo.photo3}}" wx:for-item="img" wx:key="{{index}}">
                 <view class="detail-img">
                     <view class="img flex-center">
-                        <image src="{{fileUrl + img}}" style="width:{{750*px2rpxWidth}}px;height:{{500*px2rpxWidth}}px;"></image>
+                        <image src="{{fileUrl + img}}"
+                               style="width:{{750*px2rpxWidth}}px;height:{{500*px2rpxWidth}}px;"></image>
                     </view>
                 </view>
             </block>
@@ -66,36 +73,73 @@
         <!--商品详情图 end-->
 
         <!--购买 start-->
-        <view class="btn" style="top:{{1110*px2rpxHeight}}px;left:0;height:{{98*px2rpxHeight}}px;" @tap.stop="buyOneGoods">{{btnText}}</view>
+        <view class="btn" style="top:{{1110*px2rpxHeight}}px;left:0;height:{{98*px2rpxHeight}}px;"
+              @tap.stop="buyOneGoods">{{btnText}}
+        </view>
         <!--购买 end-->
 
         <!--遮盖层 start-->
         <block wx:if="{{isShowCoverLayout}}">
-            <view class="cover-layout" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;">
-                <view class="cover-layout-content" style="height:{{338*px2rpxHeight}}px;margin-top:{{771*px2rpxHeight}}px;">
-                    <view class="info" style="height:{{179*px2rpxHeight}}px;">
-                        <view class="info-img" style="width:{{106*px2rpxWidth}}px;padding-top:{{22*px2rpxHeight}}px;">
-                            <image src="{{fileUrl + goodsInfo.photo}}" style="width:{{106*px2rpxWidth}}px;height:{{106*px2rpxWidth}}px;"></image>
-                        </view>
-                        <view class="name-price" style="width:{{500*px2rpxWidth}}px;padding: {{26*px2rpxHeight}}px 0 0 {{26*px2rpxHeight}}px">
-                            <view class="name">{{goodsInfo.name}}</view>
-                            <view class="price" style="margin-top:{{15*px2rpxHeight}}px;">¥{{goodsInfo.money}}</view>
-                        </view>
-                        <view class="quxiao" style="width:{{40*px2rpxWidth}}px;padding-top:{{24*px2rpxHeight}}px;margin-left:{{48*px2rpxWidth}}px;">
-                            <view class="yuan" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelCoverLayout">
-                                <text class="iconfont icon-close" style="margin-top:{{5*px2rpxHeight}}px"></text>
+            <!--<view class="cover-layout" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;">-->
+            <!--<view class="cover-layout-content" style="height:{{338*px2rpxHeight}}px;margin-top:{{771*px2rpxHeight}}px;">-->
+            <!--<view class="info" style="height:{{179*px2rpxHeight}}px;">-->
+            <!--<view class="info-img" style="width:{{106*px2rpxWidth}}px;padding-top:{{22*px2rpxHeight}}px;">-->
+            <!--<image src="{{fileUrl + goodsInfo.photo}}" style="width:{{106*px2rpxWidth}}px;height:{{106*px2rpxWidth}}px;"></image>-->
+            <!--</view>-->
+            <!--<view class="name-price" style="width:{{500*px2rpxWidth}}px;padding: {{26*px2rpxHeight}}px 0 0 {{26*px2rpxHeight}}px">-->
+            <!--<view class="name">{{goodsInfo.name}}</view>-->
+            <!--<view class="price" style="margin-top:{{15*px2rpxHeight}}px;">¥{{goodsInfo.money}}</view>-->
+            <!--</view>-->
+            <!--<view class="quxiao" style="width:{{40*px2rpxWidth}}px;padding-top:{{24*px2rpxHeight}}px;margin-left:{{48*px2rpxWidth}}px;">-->
+            <!--<view class="yuan" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelCoverLayout">-->
+            <!--<text class="iconfont icon-close" style="margin-top:{{5*px2rpxHeight}}px"></text>-->
+            <!--</view>-->
+            <!--</view>-->
+            <!--</view>-->
+            <!--<view class="buy-number" style="padding-top:{{30*px2rpxHeight}}px;">-->
+            <!--<view>购买数量</view>-->
+            <!--<view style="width:{{200*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;">-->
+            <!--<changenumber :num.sync="num"></changenumber>-->
+            <!--</view>-->
+            <!--&lt;!&ndash;<view style="width:{{200*px2rpxWidth}}px;"></view>&ndash;&gt;-->
+            <!--</view>-->
+            <!--</view>-->
+            <!--</view>-->
+            <coverlayer>
+                <view slot="content" style="width: 100%;">
+                    <view class="cover-layout-content"
+                          style="height:{{338*px2rpxHeight}}px;margin-top:{{771*px2rpxHeight}}px;">
+                        <view class="info" style="height:{{179*px2rpxHeight}}px;">
+                            <view class="info-img"
+                                  style="width:{{106*px2rpxWidth}}px;padding-top:{{22*px2rpxHeight}}px;">
+                                <image src="{{fileUrl + goodsInfo.photo}}"
+                                       style="width:{{106*px2rpxWidth}}px;height:{{106*px2rpxWidth}}px;"></image>
                             </view>
+                            <view class="name-price"
+                                  style="width:{{500*px2rpxWidth}}px;padding: {{26*px2rpxHeight}}px 0 0 {{26*px2rpxHeight}}px">
+                                <view class="name">{{goodsInfo.name}}</view>
+                                <view class="price" style="margin-top:{{15*px2rpxHeight}}px;">¥{{goodsInfo.money}}
+                                </view>
+                            </view>
+                            <!--<view class="quxiao"-->
+                                  <!--style="width:{{40*px2rpxWidth}}px;padding-top:{{24*px2rpxHeight}}px;margin-left:{{48*px2rpxWidth}}px;">-->
+                                <!--<view class="yuan" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;"-->
+                                      <!--@tap.stop="cancelCoverLayout">-->
+                                    <!--<text class="iconfont icon-close" style="margin-top:{{5*px2rpxHeight}}px"></text>-->
+                                <!--</view>-->
+                            <!--</view>-->
                         </view>
-                    </view>
-                    <view class="buy-number" style="padding-top:{{30*px2rpxHeight}}px;">
-                        <view>购买数量</view>
-                        <view style="width:{{200*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;">
-                            <changenumber :num.sync="num"></changenumber>
+                        <view class="buy-number" style="padding-top:{{30*px2rpxHeight}}px;">
+                            <view>购买数量</view>
+                            <view style="width:{{200*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;">
+                                <changenumber :num.sync="num"></changenumber>
+                            </view>
+                            <!--<view style="width:{{200*px2rpxWidth}}px;"></view>-->
                         </view>
-                        <!--<view style="width:{{200*px2rpxWidth}}px;"></view>-->
                     </view>
                 </view>
-            </view>
+
+            </coverlayer>
         </block>
         <!--遮盖层 end-->
 
@@ -104,13 +148,14 @@
 
 <script>
     import wepy from 'wepy';
-    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
+    import { USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import util from '@/utils/util';
     import tip from '@/utils/tip';
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import calculate from '@/utils/calculate';
     import ChangeNumber from '@/components/common/change_number';
+    import CoverLayer from '@/components/common/cover_layer';
 
     let userId = null;
     let goodsId = null;
@@ -122,35 +167,36 @@
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
-            changenumber:ChangeNumber,
+            changenumber: ChangeNumber,
+            coverlayer: CoverLayer
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
-            px2rpxWidth:0,
-            px2rpxHeight:0,
-            fileUrl:imgApi.fileUrl,
+            px2rpxWidth: 0,
+            px2rpxHeight: 0,
+            fileUrl: imgApi.fileUrl,
             // userId:null,
             // goodsId:null,
-            goodsInfo:null,
+            goodsInfo: null,
             // 轮播图图片
             // goodsImgUrls:[],
             // 是否有默认地址
-            haveDefaultAddress:false,
+            haveDefaultAddress: false,
             // 商品详情图
             // goodsDetailImg:[],
             // 按钮显示文字
-            btnText:'购买',
+            btnText: '购买',
             // 是否显示遮盖层
-            isShowCoverLayout:false,
+            isShowCoverLayout: false,
             // 购买数量
-            num:1,
+            num: 1,
             // 积分是否足够
-            enoughIntegral:true,
+            enoughIntegral: true
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(options){
+        async onLoad(options) {
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
@@ -170,14 +216,14 @@
             let that = this;
             // 获取商品信息
             let res = await api.getGoodsDetails({
-                query:{
+                query: {
                     goodsId: goodsId
                 }
             });
-            if(res.data.state == 1){
+            if (res.data.state == 1) {
                 let goodsInfo = res.data.data;
-                goodsInfo.photo1 =  JSON.parse(goodsInfo.photo1);
-                goodsInfo.photo3 =  JSON.parse(goodsInfo.photo3);
+                goodsInfo.photo1 = JSON.parse(goodsInfo.photo1);
+                goodsInfo.photo3 = JSON.parse(goodsInfo.photo3);
                 that.goodsInfo = goodsInfo;
                 that.isEnoughIntegral(1);
             } else {
@@ -191,7 +237,7 @@
 
         // 声明数据watcher（详见后文介绍）
         watch = {
-            num(newValue){
+            num(newValue) {
                 this.isEnoughIntegral(newValue);
             }
         };
@@ -199,27 +245,24 @@
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 购买
-            buyOneGoods(){
+            buyOneGoods() {
                 wx.pageScrollTo({
-                    scrollTop:0
+                    scrollTop: 0,
+                    duration: 200
                 });
-                if(this.btnText == '下一步'){
-                    // wx.pageScrollTo({
-                    //     scrollTop: 0,
-                    //     duration: 300
-                    // });
+                if (this.btnText == '下一步') {
                     let num = this.num;
-                    if(!util.checkReg(6,num)){
+                    if (!util.checkReg(6, num)) {
                         tip.error('请输入正确数量');
                         return;
                     }
 
-                    if(!this.enoughIntegral){
+                    if (!this.enoughIntegral) {
                         tip.longtoast('您的积分不够,不能购买');
                         return;
                     }
                     wepy.navigateTo({
-                        url:'/pages/commit_order?goodsId=' + goodsId + '&goodsNum=' + num
+                        url: '/pages/commit_order?goodsId=' + goodsId + '&goodsNum=' + num
                     });
                 }
                 this.isShowCoverLayout = true;
@@ -227,39 +270,45 @@
             },
 
             // 取消购买
-            cancelCoverLayout(){
-                this.isShowCoverLayout = false;
-                this.btnText = '购买';
-            },
+            // cancelCoverLayout() {
+            //     this.isShowCoverLayout = false;
+            //     this.btnText = '购买';
+            // }
         };
 
         // 声明组件之间的事件处理函数
-        events = {};
+        events = {
+            // 取消购买
+            cancelShow() {
+                this.isShowCoverLayout = false;
+                this.btnText = '购买';
+            }
+        };
 
         // 判断用户积分是否满足
-        async isEnoughIntegral(num){
-            if(this.goodsInfo.type == 0){
+        async isEnoughIntegral(num) {
+            if (this.goodsInfo.type == 0) {
                 // 没有积分
                 this.enoughIntegral = true;
                 return;
             }
             let integral = this.goodsInfo.integral;
-            let integrals = calculate.calcMul(integral,num);
+            let integrals = calculate.calcMul(integral, num);
             // 查询用户可用积分
             let res = await api.getIntegral({
-                query:{
+                query: {
                     userId: userId
                 }
             });
-            if(res.data.state == 1){
-                if(integrals > res.data.data.integral){
+            if (res.data.state == 1) {
+                if (integrals > res.data.data.integral) {
                     this.enoughIntegral = false;
                     tip.alert('您的积分不足');
-                } else if(integrals <= res.data.data.integral){
+                } else if (integrals <= res.data.data.integral) {
                     this.enoughIntegral = true;
                 }
             } else {
-                tip.error('网络错误')
+                tip.error('网络错误');
             }
             this.$apply();
         };
@@ -267,16 +316,16 @@
 </script>
 
 <style lang="less">
-    page{
+    page {
         background-color: #f0f0f0;
     }
 
-    .goods-detail{
+    .goods-detail {
         position: relative;
         display: flex;
         flex-direction: column;
 
-        .goods-detail-swiper{
+        .goods-detail-swiper {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -285,30 +334,30 @@
 
         }
 
-        .goods-info{
+        .goods-info {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             width: 100%;
-            padding:0rpx 30rpx;
+            padding: 0 30rpx;
             box-sizing: border-box;
             background-color: #fff;
 
-            .goods-name{
+            .goods-name {
                 display: flex;
-                justify-content:space-between;
+                justify-content: space-between;
                 align-items: center;
                 width: 100%;
                 font-size: 32rpx;
-                color:#333;
+                color: #333;
 
-                .share{
+                .share {
 
-                    button{
+                    button {
                         border: 0px solid #fff;
 
-                        .icon-share{
+                        .icon-share {
                             font-size: 40rpx;
                             color: #f08300;
                         }
@@ -316,7 +365,7 @@
                 }
             }
 
-            .money{
+            .money {
                 display: flex;
                 justify-content: flex-start;
                 align-items: flex-end;
@@ -327,7 +376,7 @@
                 border-bottom: 1rpx solid #ccc;
             }
 
-            .expenses{
+            .expenses {
                 display: flex;
                 justify-content: flex-start;
                 align-items: center;
@@ -339,7 +388,7 @@
 
         }
 
-        .take-delivery{
+        .take-delivery {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -348,7 +397,7 @@
             box-sizing: border-box;
             background-color: #fff;
 
-            .have-addr,.no-addr{
+            .have-addr, .no-addr {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -357,13 +406,13 @@
                 height: 100%;
                 font-size: 24rpx;
 
-                .people{
+                .people {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
                     width: 100%;
                 }
-                .addr{
+                .addr {
                     display: flex;
                     justify-content: flex-start;
                     align-items: center;
@@ -372,21 +421,21 @@
 
             }
 
-            .no-addr{
-                .new-build{
+            .no-addr {
+                .new-build {
                     display: flex;
                     justify-content: flex-end;
                     align-items: center;
                     width: 100%;
                     height: 100%;
 
-                    .youjiantou{
+                    .youjiantou {
                         display: flex;
                         justify-content: center;
                         align-items: center;
                         height: 100%;
 
-                        .icon-youjiantou{
+                        .icon-youjiantou {
                             font-size: 22rpx;
                         }
                     }
@@ -394,7 +443,7 @@
             }
         }
 
-        .detail{
+        .detail {
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -402,7 +451,7 @@
             width: 100%;
             background-color: #fff;
 
-            .detail-text{
+            .detail-text {
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -410,7 +459,7 @@
                 font-size: 30rpx;
                 color: #333;
             }
-            .detail-img{
+            .detail-img {
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -419,9 +468,9 @@
             }
         }
 
-        .btn{
+        .btn {
             position: fixed;
-            z-index: 10;
+            z-index: 99999;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -432,66 +481,67 @@
         }
 
         /*遮盖层*/
-        .cover-layout{
-            position: absolute;
-            top:0;
-            left: 0;
-            z-index: 9999;
-            background: rgba(0,0,0,0.5);
+        /*.cover-layout {*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*z-index: 9999;*/
+            /*background: rgba(0, 0, 0, 0.5);*/
+            /*width: 100%;*/
 
-            .cover-layout-content{
+            .cover-layout-content {
                 display: flex;
                 flex-direction: column;
                 /*justify-content: center;*/
                 /*align-items: center;*/
-                width: 100%;
+                /*width: 100%;*/
                 padding: 0 30rpx;
                 box-sizing: border-box;
                 background-color: #fff;
 
-                .info{
+                .info {
                     display: flex;
                     justify-content: flex-start;
                     align-items: flex-start;
                     width: 100%;
                     border-bottom: 1rpx solid #aaa;
 
-                    .info-img{
+                    .info-img {
                         display: flex;
                         justify-content: flex-start;
                         align-items: center;
                         box-sizing: border-box;
                     }
-                    .name-price{
+                    .name-price {
                         display: flex;
                         flex-direction: column;
                         justify-content: flex-start;
                         /*align-items: center;*/
                         box-sizing: border-box;
 
-                        .name{
+                        .name {
                             font-size: 32rpx;
                             color: #333;
                         }
-                        .price{
+                        .price {
                             font-size: 40rpx;
                             color: #f03e3e;
                         }
                     }
 
-                    .quxiao{
+                    .quxiao {
                         display: flex;
-                        justify-content:center;
+                        justify-content: center;
                         align-items: flex-start;
 
-                        .yuan{
+                        .yuan {
                             display: flex;
-                            justify-content:center;
+                            justify-content: center;
                             align-items: center;
                             border-radius: 50%;
                             border: 1rpx solid #ccc;
 
-                            .icon-close{
+                            .icon-close {
                                 font-size: 40rpx;
                                 color: #aaa;
                             }
@@ -500,7 +550,7 @@
                     }
                 }
 
-                .buy-number{
+                .buy-number {
                     display: flex;
                     justify-content: space-between;
                     align-items: center;
@@ -510,6 +560,6 @@
                     color: #333;
                 }
             }
-        }
+        /*}*/
     }
 </style>

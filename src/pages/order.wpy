@@ -21,10 +21,11 @@
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
                 <!-- 申请售后 start-->
-                <view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
-                    <view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">
-                        <text class="iconfont icon-close"></text>
-                    </view>
+                <!--<view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">-->
+                <view class="shouhou" slot="content" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
+                    <!--<view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">-->
+                        <!--<text class="iconfont icon-close"></text>-->
+                    <!--</view>-->
                     <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
                     <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
                         <view class="each">
@@ -200,6 +201,12 @@
             refreshOrderList(){
                 this.getOrdersData(this.page,this.pageSize,this.status);
             },
+
+            // 取消所有遮盖层内容
+            cancelShow(){
+                this.showCoverLayer = false;
+                // this.showAfterSale = false;
+            }
         };
 
         // 获取订单数据
@@ -230,10 +237,10 @@
         };
 
         // 取消所有遮盖层内容
-        cancelShow(){
-            this.showCoverLayer = false;
-            this.showAfterSale = false;
-        }
+        // cancelShow(){
+        //     this.showCoverLayer = false;
+        //     this.showAfterSale = false;
+        // }
     }
 </script>
 

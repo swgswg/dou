@@ -2,32 +2,29 @@
 <template>
     <view class="ranking-style">
         <view class="content">
-            <block wx:for="{{rankingStyle}}" wx:for-item="style" wx:key="{{index}}">
+            <block wx:for="{{rankingStyle}}" wx:for-item="sty" wx:key="{{index}}">
                 <block wx:if="{{index == 0}}">
-                    <view class="ranking-style-each {{current == index?'active':'inactive'}}"
+                    <view class="ranking-style-each {{currentTabValue == sty.value ? 'active':'inactive'}}"
                           style="width:{{123*px2rpxWidth}}px;height:{{52*px2rpxHeight}}px;border-radius:{{52*px2rpxHeight/2}}px 0 0 {{52*px2rpxHeight/2}}px;"
-                          data-current="{{index}}"
-                          data-status="{{style.status}}"
-                          @tap.stop="dotRankingStyle"
-                    >{{style.name}}
+                          data-current="{{sty.value}}"
+                          @tap.stop="switchTab"
+                    >{{sty.name}}
                     </view>
                 </block>
                 <block wx:elif="{{index == last_index}}">
-                    <view class="ranking-style-each {{current == index?'active':'inactive'}}"
+                    <view class="ranking-style-each {{currentTabValue == sty.value ? 'active':'inactive'}}"
                           style="width:{{123*px2rpxWidth}}px;height:{{52*px2rpxHeight}}px;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius:0 {{52*px2rpxHeight/2}}px {{52*px2rpxHeight/2}}px 0;"
-                          data-current="{{index}}"
-                          data-status="{{style.status}}"
-                          @tap.stop="dotRankingStyle"
-                    >{{style.name}}
+                          data-current="{{sty.value}}"
+                          @tap.stop="switchTab"
+                    >{{sty.name}}
                     </view>
                 </block>
                 <block wx:else>
-                    <view class="ranking-style-each {{current == index?'active':'inactive'}}"
+                    <view class="ranking-style-each {{currentTabValue == sty.value ? 'active':'inactive'}}"
                           style="width:{{123*px2rpxWidth}}px;height:{{52*px2rpxHeight}}px;"
-                          data-current="{{index}}"
-                          data-status="{{style.status}}"
+                          data-current="{{sty.value}}"
                           @tap.stop="dotRankingStyle"
-                    >{{style.name}}
+                    >{{sty.name}}
                     </view>
                 </block>
             </block>
@@ -40,24 +37,23 @@
     import {PX_TO_RPX } from '@/utils/constant';
 
     export default class RankingStyle extends wepy.component {
-        props = {
-            rankingStyle:{
-                type:Array,
-                // default:['设备榜','手动榜']
-            },
-            status:{
-                type:String,
-                default:1,// 0手/1脚
-                twoWay:true
-            }
-        };
-
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
             // 数据的最后一个下标
             last_index:1,
-            current:0,
+        };
+
+        props = {
+            rankingStyle:{
+                type:Array,
+            },
+            currentTabValue:{
+                type:Number,
+                // 0手/1脚
+                default:1,
+                twoWay:true
+            }
         };
 
         async onLoad(){
@@ -67,16 +63,16 @@
             this.$apply();
 
             this.last_index = this.rankingStyle.length - 1;
-            console.log(this.last_index);
         };
 
         methods = {
             // 获取当前的样式
-            dotRankingStyle(e){
+            switchTab(e){
                 let current = e.currentTarget.dataset.current;
-                let status = e.currentTarget.dataset.status;
-                this.current = current;
-                this.status = status;
+                if(this.currentTabValue == current){
+                    return;
+                }
+                this.currentTabValue = current;
                 this.$apply();
             },
         };

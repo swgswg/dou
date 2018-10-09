@@ -42,8 +42,48 @@
                                     </image>
                                 </block>
                             </view>
+
+                            <!--第二名 start-->
+                            <!--<block wx:if="{{first_three.rownum == 2}}">-->
+                                <!--<view class="profile" style="width:{{117*px2rpxWidth}}px;height:{{131*px2rpxWidth}}px;background-image:url({{history_no2jpg}});">-->
+                                    <!--<image class="photo"-->
+                                           <!--style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"-->
+                                           <!--src="{{first_three.photo}}"-->
+                                           <!--data-userid="{{first_three.userId}}"-->
+                                           <!--@tap.stop="seeOtherGiftWall">-->
+                                    <!--</image>-->
+                                <!--</view>-->
+                            <!--</block>-->
+                            <!--第二名 end-->
+
+                            <!--第一名 start-->
+                            <!--<block wx:if="{{first_three.rownum == 1}}">-->
+                                <!--<view class="profile" style="width:{{96*px2rpxWidth}}px;height:{{140*px2rpxWidth}}px;background-image:url({{history_no1jpg}});">-->
+                                    <!--<image class="photo"-->
+                                           <!--style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"-->
+                                           <!--src="{{first_three.photo}}"-->
+                                           <!--data-userid="{{first_three.userId}}"-->
+                                           <!--@tap.stop="seeOtherGiftWall">-->
+                                    <!--</image>-->
+                                <!--</view>-->
+                            <!--</block>-->
+                            <!--第一名 end-->
+
+                            <!--第三名 star-->
+                            <!--<block wx:if="{{first_three.rownum == 3}}">-->
+                                <!--<view class="profile" style="width:{{117*px2rpxWidth}}px;height:{{131*px2rpxWidth}}px;background-image:url({{history_no3jpg}});">-->
+                                    <!--<image class="photo"-->
+                                           <!--style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"-->
+                                           <!--src="{{first_three.photo}}"-->
+                                           <!--data-userid="{{first_three.userId}}"-->
+                                           <!--@tap.stop="seeOtherGiftWall">-->
+                                    <!--</image>-->
+                                <!--</view>-->
+                            <!--</block>-->
+                            <!--第三名 end-->
+
                             <view class="first-three-name" style="width:{{180*px2rpxWidth}}px;">{{first_three.name}}</view>
-                            <view class="first-three-time" style="width:{{180*px2rpxWidth}}px;margin-top:{{5*px2rpxHeight}}px;">{{first_three.time}}</view>
+                            <!--<view class="first-three-time" style="width:{{180*px2rpxWidth}}px;margin-top:{{5*px2rpxHeight}}px;">{{first_three.time}}</view>-->
                             <view class="first-three-number" style="margin-top:{{10*px2rpxHeight}}px;">{{first_three.shakeNum}}</view>
                         </view>
                     </block>
@@ -83,12 +123,17 @@
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
+    import tip from '@/utils/tip';
     import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import Ranking from '@/components/ranking';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
 
-
+    let page = 1;
+    let pageSize = 6;
+    let isFirstPage = false;
+    let isLastPage = false;
+    let userId = null;
     export default class RankingWorld extends wepy.component {
 
         components = {
@@ -101,47 +146,32 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             history_no1:imgApi.history_no1,
+            history_no1jpg:imgApi.history_no1jpg,
             history_no2:imgApi.history_no2,
+            history_no2jpg:imgApi.history_no2jpg,
             history_no3:imgApi.history_no3,
+            history_no3jpg:imgApi.history_no3jpg,
+            first_three:null,
+            worldRanking:null,
+            myWorldRanking:null,
             //是否没有数据
             is_empty: false,
             //是否显示 底部loading
             showLoading: false,
-            page:1,
-            pageSize:6,
-            userId:null,
+            // userId:null,
         };
 
         props = {
-            // 前三名数据
-            first_three:{
-                type:Object,
-                default:null,
-                twoWay:true
-            },
-            // 剩下数据
-            worldRanking:{
-                type:Object,
-                default:null,
-                twoWay:true
-            },
-            // 个人世界排行数据
-            myWorldRanking:{
-                type:Object,
-                default:null,
-                twoWay:true
-            },
-
             // 设备榜/手动榜
-            status:{
-                type:String,
+            legOrHand:{
+                type:Number,
                 // 1脚,0手
-                default:'1',
+                default:1,
                 twoWay:true
             },
             // 周/总排行
             weekOrAll:{
-                type:String,
+                type:Number,
                 // 1周,0总
                 default:1,
                 twoWay:true
@@ -154,7 +184,7 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             let userInfo = wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
+            userId = userInfo.id;
             this.$apply();
         }
 
@@ -172,14 +202,14 @@
 
             // 滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
-                // console.log(weekOrAll);
-                this.showLoading = true;
-                let page = this.page;
-                let pageSize = this.pageSize + 1;
-                this.pageSize = pageSize;
+                if(isLastPage){
+                    tip.toast('这是最后一页了','none');
+                    return;
+                }
+                pageSize += 10;
                 let weekOrAll = this.weekOrAll;
                 let status = this.status;
-                this.getWorldRanking(page,pageSize,weekOrAll,status);
+                this.getWorldRankings(weekOrAll,status);
                 this.$apply();
             },
 
@@ -187,17 +217,24 @@
         };
 
         // 世界排行榜
-        async getWorldRanking(mypage,mypageSize,mytype,mystatus){
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            let user_id = userInfo.id;
+        async getWorldRanking(){
+            // 世界个人数据
+            this.getMyWorldRankings();
 
-            // 个人数据
+            // 世界排行数据
+            this.getWorldRankings();
+        }
+
+
+        // 查看世界个人排行
+        async getMyWorldRankings(){
+            let that = this;
             let myWorldRanking = null;
             let myres= await api.myWorldRankings({
                 query:{
-                    userId:user_id,
-                    type:mytype,
-                    status:mystatus
+                    userId:userId,
+                    type:that.weekOrAll,
+                    status:that.legOrHand
                 }
             });
             if(util.isEmpty(myres.data.data.name)){
@@ -208,22 +245,27 @@
             }
             this.myWorldRanking = myWorldRanking;
             this.$apply();
+        }
 
-            // 排行数据
+        // 世界排行数据
+        async getWorldRankings(){
+            let that = this;
+            this.showLoading = true;
             let res = await api.worldRankings({
                 query:{
-                    page:mypage,
-                    pageSize:mypageSize,
-                    type:mytype, //周排行榜为1,总排行榜为空
-                    status:mystatus,// 0手,1脚
+                    page:page,
+                    pageSize:pageSize,
+                    type:that.weekOrAll,    //周排行榜为1,总排行榜为空
+                    status:that.legOrHand,// 0手,1脚
                 }
             });
             if(res.data.state == 1){
+                isFirstPage = res.data.data.PageInfo.isFirstPage;
+                isLastPage = res.data.data.PageInfo.isLastPage;
                 let worldRankingData = res.data.data.PageInfo.list;
                 if(worldRankingData.length < 1){
                     // 没有数据
                     this.is_empty = true;
-                    this.showLoading = false;
                     this.$apply();
                     return;
                 }
@@ -233,25 +275,18 @@
                 first_three.push(worldRankingData[1]);
                 first_three.push(worldRankingData[0]);
                 first_three.push(worldRankingData[2]);
-                // console.log(first_three);
                 // 删除原数据的前三名
-                worldRankingData.splice(0,1);
-                worldRankingData.splice(0,1);
-                worldRankingData.splice(0,1);
-
+                worldRankingData.splice(0,3);
                 this.first_three = first_three;
                 this.worldRanking = worldRankingData;
                 this.$apply();
             } else {
                 this.is_empty = true;
-                this.showLoading = false;
                 this.$apply();
             }
-
-
+            this.showLoading = false;
+            this.$apply();
         }
-
-
 
     }
 </script>
@@ -259,7 +294,6 @@
 <style lang="less">
     .ranking-world{
         width: 100%;
-        /*height: 100%;*/
         padding-top: 10rpx;
         padding-left: 10rpx;
         padding-right: 10rpx;
@@ -286,27 +320,21 @@
             justify-content: space-around;
             align-items: center;
             width: 100%;
-            /*padding-top: 10rpx;*/
             font-size: 28rpx;
             box-sizing: border-box;
             background-color: #fff;
-            /*border: 1rpx solid blue;*/
 
             .first-three-each{
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
                 align-items: center;
-                /*width: 100%;*/
 
                 .first-three-img{
                     position: relative;
                     display: flex;
                     justify-content: center;
                     align-items: flex-end;
-                    /*width: 124rpx;*/
-                    /*height: 154rpx;*/
-                    /*border: 1rpx solid red;*/
 
                     /*第一名*/
                     .first-three-img1{
@@ -355,6 +383,19 @@
                         /*height: 84rpx;*/
                     }
                 }
+
+                .profile{
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    background-repeat: no-repeat;
+                    background-size: 100% 100%;
+
+                    .photo{
+                        border-radius: 50%;
+                    }
+                }
+
                 .first-three-name,.first-three-time,.first-three-number{
                     /*display: flex;*/
                     /*justify-content: center;*/
@@ -402,12 +443,6 @@
                 justify-content: center;
                 align-items: center;
                 /*width: 80rpx;*/
-                /*border: 1rpx solid red;*/
-            }
-
-            image{
-                /*width: 60rpx;*/
-                /*height: 60rpx;*/
                 /*border: 1rpx solid red;*/
             }
 

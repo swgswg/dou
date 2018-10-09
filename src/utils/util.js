@@ -436,21 +436,8 @@ function hex2ab(str) {
         return parseInt(h, 16)
     }));
     let buffer1 = typedArray.buffer;
-    console.log(buffer1);
+    // console.log(buffer1);
     return buffer1;
-}
-
-/**
- * 16进制字符串取需要的字节(fe 08 01 00 01 01 01 7a0b 008f)
- * @param hex
- * @returns {number}
- */
-function hexSlice(hex) {
-    // 取k8位
-    let k8 = hex.slice(14,16);
-    //取k9位
-    let k9 = hex.slice(16,18);
-    return parseInt(k9+k8,16);
 }
 
 module.exports = {
@@ -472,7 +459,6 @@ module.exports = {
     arrDelete: arrDelete,
     randomWord: randomWord,
     timeStamp: timeStamp,
-    ab2hex,
-    hex2ab,
-    hexSlice,
-}
+    ab2hex:ab2hex,
+    hex2ab:hex2ab,
+};

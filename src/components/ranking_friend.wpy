@@ -29,9 +29,16 @@
     import api from '@/utils/api';
     import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import tip from '@/utils/tip';
     import Ranking from '@/components/ranking';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
+
+    let page = 1;
+    let pageSize = 8;
+    let isFirstPage = false;
+    let isLastPage = false;
+    let userId = null;
 
     export default class RankingFriend extends wepy.component {
 
@@ -46,43 +53,24 @@
             px2rpxHeight:0,
             prev_page:imgApi.prev_page,
             next_page:imgApi.next_page,
-            userId:null,
+            friendRanking:null,
             // 数据是否为空
             is_empty: true,
             //是否显示 底部loading
             showLoading: false,
-            // 当前页数
-            friendRankingPage:1,
-            // 每页数量
-            friendRankingPageSize:8,
-            // 是不是第一页
-            // isFirstPage:false,
-            // 是不是最后一页
-            isLastPage:false,
-
         };
 
         props = {
-            friendRanking:{
-                type:Object,
-                default:null,
-                twoWay:true
-            },
-
-            // friendRankingPage:{
-            //     type:Number,
-            //     default:1
-            // },
             // 设备榜/手动榜
-            status:{
-                type:String,
+            legOrHand:{
+                type:Number,
                 // 1脚,0手
-                default:'1',
+                default:1,
                 twoWay:true
             },
             // 周/总排行
             weekOrAll:{
-                type:String,
+                type:Number,
                 // 1周,0总
                 default:1,
                 twoWay:true
@@ -96,89 +84,75 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             let userInfo = wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
+            userId = userInfo.id;
             this.$apply();
         }
 
         methods = {
             // 上一页/下一页
             changePage(e){
-
                 let change = e.currentTarget.dataset.change;
-                let page = 0;
                 if(change == 'prev'){
                     // 上一页
-                    page = this.friendRankingPage;
                     if(page <= 1){
-                         page == 1;
-                        wx.showToast({
-                            title: '这是第一页了',
-                            icon: 'none',
-                            duration: 1000
-                        });
+                        page = 1;
+                        tip.toast('这是第一页了','none');
                          return;
                     } else {
-                        page = page - 1;
+                        page--;
                     }
                 } else if(change == 'next'){
                     // 下一页
-                    page = this.friendRankingPage;
-                    // 判断是不是最后一页
-                    if(this.isLastPage){
-                        page = page;
-                        wx.showToast({
-                            title: '这是最后一页了',
-                            icon: 'none',
-                            duration: 1000
-                        });
+                    if(isLastPage){
+                        // 判断是不是最后一页
+                        tip.toast('这是最后一页了','none');
                         return;
                     } else {
-                        page = page + 1;
+                        page++;
                     }
                 }
-                this.getFriendRanking(page,this.friendRankingPageSize,this.weekOrAll,this.status);
-                this.friendRankingPage = page;
+                this.getFriendRanking();
                 this.$apply();
             },
 
         };
 
         // 好友排行榜
-        async getFriendRanking(mypage,mypageSize,mytype,mystatus){
+        async getFriendRanking(){
             let that = this;
+            this.showLoading = true;
             let res = await api.getFriendP({
                 query:{
-                    userId:that.userId,
-                    page:mypage,
-                    pageSize:mypageSize,
-                    type:mytype,
-                    status:mystatus
+                    userId:userId,
+                    page:page,
+                    pageSize:pageSize,
+                    type:that.weekOrAll,
+                    status:that.legOrHand
                 }
             });
             if(res.data.state == 1){
                 let friendRankngData = res.data.data.PageInfo.list;
                 this.friendRanking = friendRankngData;
-                // console.log(friendRankngData);
                 if(friendRankngData.length < 1){
                     // 没有数据
                     this.is_empty = true;
-                    this.showLoading = false;
                     this.$apply();
                     return;
                 }
                 // 是不是第一页
-                // this.isFirstPage = res.data.data.PageInfo.isFirstPage;
+                isFirstPage = res.data.data.PageInfo.isFirstPage;
                 // 是不是最后一页
-                this.isLastPage = res.data.data.PageInfo.isLastPage;
+                isLastPage = res.data.data.PageInfo.isLastPage;
                 this.is_empty = false;
                 this.$apply();
 
             } else {
                 // 请求错误
                 this.is_empty = true;
-                this.showLoading = false;
                 this.$apply();
             }
+            this.showLoading = false;
+            this.$apply();
         }
 
     }
