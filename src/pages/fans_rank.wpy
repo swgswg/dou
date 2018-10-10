@@ -1,20 +1,23 @@
 <template>
     <view class="fans-rank">
 
-        <view class="fans-title" style="height:{{60*px2rpxHeight}}px">
-            <view class="title-center" style="margin-left:{{10*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">排名</view>
-            <view class="title-center" style="margin-left:{{25*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">头像</view>
-            <view class="title-center" style="margin-left:{{25*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">用户名</view>
-            <view class="title-center" style="margin-left:{{40*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">VIP墙</view>
-            <view class="title-center" style="margin-left:{{50*px2rpxWidth}}px;width:{{200*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">礼物值</view>
+        <view class="fans-title" style="height:{{80*px2rpxHeight}}px">
+            <view class="title-center" style="width:{{80*px2rpxWidth}}px; ">排名</view>
+            <view class="title-center" style="width:{{80*px2rpxWidth}}px; ">头像</view>
+            <view class="title-center" style="width:{{150*px2rpxWidth}}px;">用户名</view>
+            <view class="title-center" style="width:{{100*px2rpxWidth}}px;">VIP墙</view>
+            <view class="title-center" style="width:{{200*px2rpxWidth}}px;">礼物值</view>
         </view>
 
         <view class="fans-data" style="{{1080*px2rpxHeight}}px">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <block wx:for="{{fansList}}" wx:for-item="fans" wx:key="{{index}}">
-                    <view class="fans-data-each" style="height:{{80*px2rpxHeight}}px;margin-bottom:{{10*px2rpxHeight}}px" data-userid="{{fans.userId}}" @tap.stop="goToFriendGiftWall">
+                    <view class="fans-data-each"
+                          style="height:{{80*px2rpxHeight}}px;margin-bottom:{{10*px2rpxHeight}}px;"
+                          data-userid="{{fans.userId}}" @tap.stop="goToFriendGiftWall">
+
                         <!--排名 start-->
-                        <view class="data-no data-center" style="margin-left:{{10*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
+                        <view class="data-no data-center" style="width:{{80*px2rpxWidth}}px;">
                             <block wx:if="{{fans.rownum == 1}}">
                                 <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="{{fans_no1}}"></image>
                             </block>
@@ -31,23 +34,23 @@
                         <!--排名 end-->
 
                         <!--头像 start-->
-                        <view class="data-profile data-center" style="margin-left:{{25*px2rpxWidth}}px;width:{{80*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;">
+                        <view class="data-profile data-center" style="width:{{80*px2rpxWidth}}px;">
                             <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;" src="{{fans.photo}}"></image>
                         </view>
                         <!--头像 end-->
 
-                        <!--昵称 start-->
-                        <view class="data-name" style="margin-left:{{25*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">{{fans.name}}</view>
-                        <!--昵称 end-->
+                        <!--用户名 start-->
+                        <view class="data-name" style="width:{{150*px2rpxWidth}}px;">{{fans.name}}</view>
+                        <!--用户名 end-->
 
                         <!--vip墙 start-->
-                        <view class="vip-qiang data-center" style="margin-left:{{40*px2rpxWidth}}px;width:{{100*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">
+                        <view class="vip-qiang data-center" style="width:{{100*px2rpxWidth}}px;">
                             <image style="width:{{25*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"></image>
                         </view>
                         <!--vip墙 end-->
 
                         <!--礼物值 start-->
-                        <view class="gift-data" style="margin-left:{{50*px2rpxWidth}}px;width:{{200*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;">
+                        <view class="gift-data" style="width:{{200*px2rpxWidth}}px;">
                             <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" class="gift-img" src="{{fans_data}}"></image>
                             <view class="data-center" style="margin-left:{{8*px2rpxWidth}}px;">{{fans.score}}</view>
                         </view>
@@ -197,14 +200,12 @@
 
         .fans-title{
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-around;
             align-items: center;
             width: 100%;
-            /*height: 80rpx;*/
             font-size: 28rpx;
             color: #333;
             background: linear-gradient(to top right,#ec2c98, #f68668);
-            /*border: 1rpx solid red;*/
 
             .title-center{
                 display: flex;
@@ -219,17 +220,15 @@
             justify-content: center;
             align-items: center;
             width: 100%;
-            /*height: 1080rpx;*/
-            /*border: 1rpx solid red;*/
 
             .fans-data-each{
                 display: flex;
-                justify-content: space-between;
+                justify-content: space-around;
                 align-items: center;
                 width: 100%;
                 font-size: 28rpx;
                 color: #333;
-                border: 2rpx solid #ffe78c;
+                border: 1px solid #ffe78c;
 
 
                 .data-center{
@@ -240,7 +239,7 @@
 
                 .data-name{
                     display: flex;
-                    justify-content: flex-start;
+                    justify-content: center;
                     align-items: center;
                     white-space: nowrap;
                     overflow: hidden;

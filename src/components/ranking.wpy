@@ -7,7 +7,7 @@
                   data-userid="{{rank.userId}}"
                   @tap.stop="showOtherGiftWall">
 
-                <view class="sort" style="width:{{106*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;">
+                <view class="sort" style="width:{{80*px2rpxWidth}}px;">
 
                     <block wx:if="{{rank.rownum == 1}}">
                         <image src="{{fans_no1}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
@@ -22,19 +22,17 @@
                         {{rank.rownum}}
                     </block>
                 </view>
-                <view class="profile" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;">
+                <view class="profile" style="width:{{80*px2rpxWidth}}px;">
                     <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{rank.photo}}" />
                 </view>
-                <view class="info" style="height:{{80*px2rpxHeight}}px;">
-                    <view class="f14 w100" style="width:{{100*px2rpxWidth}}px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-                        <view>{{rank.name}}</view>
-                    </view>
-                    <view class="ml10 f14 w150" style="width:{{150*px2rpxWidth}}px;">
-                        <view>{{rank.time ? rank.time : 0}}</view>
-                    </view>
-                    <view class="ml10 f14 w150" style="width:{{150*px2rpxWidth}}px;">
-                        <view>{{rank.shakeNum}}</view>
-                    </view>
+                <view class="name" style="width:{{150*px2rpxWidth}}px;">
+                    {{rank.name}}
+                </view>
+                <view class="time" style="width:{{180*px2rpxWidth}}px;">
+                    {{rank.time ? rank.time : 0}}
+                </view>
+                <view class="num" style="width:{{180*px2rpxWidth}}px;">
+                    {{rank.shakeNum}}
                 </view>
             </view>
         </block>
@@ -48,6 +46,8 @@
     import imgApi from '@/utils/imgApi';
     import { USER_INFO,PX_TO_RPX } from '@/utils/constant';
 
+    let userId = null;
+
     export default class Ranking extends wepy.component {
 
         data = {
@@ -56,7 +56,6 @@
             fans_no3:imgApi.fans_no3,
             px2rpxWidth:0,
             px2rpxHeight:0,
-            userId:null,
         };
 
         props  = {
@@ -74,8 +73,7 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
-            let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
+            userId = wepy.getStorageSync(USER_INFO).id;
             this.$apply();
         }
 
@@ -84,7 +82,7 @@
             // 查看用户的礼物墙
             showOtherGiftWall(e){
                 let otherUserId = e.currentTarget.dataset.userid;
-                if(otherUserId == this.userId){
+                if(otherUserId == userId){
                     return;
                 }
                 wepy.navigateTo({
@@ -109,9 +107,9 @@
 
         .ranking-content{
             display: flex;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
-            width: 99%;
+            width: 100%;
             border: 1rpx solid #fbbd46;
 
             .sort{
@@ -121,26 +119,12 @@
                 font-family: 'Edo SZ';
             }
 
-            .profile{
+            .profile,.name,.time,.num{
                 display: flex;
                 justify-content: center;
                 align-items: center;
             }
 
-            .info{
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                width: 100%;
-
-                .w100,.w150{
-                    text-align: center;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-
-            }
         }
 
     }

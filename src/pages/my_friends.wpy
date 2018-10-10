@@ -1,14 +1,14 @@
 // 我的好友
 <template>
-    <view class="my_friends">
-        <view class="friends-header" style="width:{{702 * px2rpxWidth}}px;height:{{80 * px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px">
-            <view class="text1" style="width:{{60 * px2rpxWidth}}px;margin-left:{{22 * px2rpxHeight}}px">排名</view>
-            <view class="text2" style="width:{{60 * px2rpxWidth}}px;margin-left:{{30 * px2rpxHeight}}px">头像</view>
-            <view class="text3" style="width:{{90 * px2rpxWidth}}px;margin-left:{{30 * px2rpxHeight}}px">用户名</view>
-            <view class="text4" style="width:{{120 * px2rpxWidth}}px;margin-left:{{50 * px2rpxHeight}}px">抖腿时长</view>
-            <view class="text5" style="width:{{120 * px2rpxWidth}}px;margin-left:{{50 * px2rpxHeight}}px">抖腿次数</view>
+    <view class="my-friends">
+        <view class="friends-header" style="height:{{80*px2rpxHeight}}px;">
+            <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">排名</view>
+            <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">头像</view>
+            <view class="flex-center" style="width:{{150*px2rpxWidth}}px;">用户名</view>
+            <view class="flex-center" style="width:{{180*px2rpxWidth}}px;">抖腿时长</view>
+            <view class="flex-center" style="width:{{180*px2rpxWidth}}px;">抖腿次数</view>
         </view>
-        <view class="friends-rank" style="width:{{702 * px2rpxWidth}}px;height:{{1100 * px2rpxHeight}}px;">
+        <view class="friends-rank" style="height:{{1100 * px2rpxHeight}}px;">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <ranking :ranking.sync="rank"></ranking>
                 <!--加载更多时动画-->
@@ -30,6 +30,11 @@
     import BottomLoadMore from "../components/common/bottomLoadMore";
     import Placeholder from "../components/common/placeholder";
 
+    let page = 1;
+    let pageSize = 20;
+    let isLastPage = 20;
+    let userId = null;
+
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
@@ -48,7 +53,7 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            userId:null,
+            // userId:null,
             // 排名数据
             rank:[
                 // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
@@ -64,9 +69,9 @@
                 // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
                 // { name:'aaaaa',photo:'',rownum:0,shakeNum:0,time:'12:50',userId:0,},
             ],
-            isLastPage:false,
-            page:1,
-            pageSize:20,
+            // isLastPage:false,
+            // page:1,
+            // pageSize:20,
             // rank:null,
             //是否显示 底部loading
             showLoading: false,
@@ -82,56 +87,52 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             let userInfo = wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
+            userId = userInfo.id;
             this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
         onReady() {
-            this.getFriendEvent(this.page,this.pageSize);
+            this.getFriendEvent(page,pageSize);
         };
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
-                if(this.isLastPage){
+                if(isLastPage){
+                    tip.toast('这是最后一页了','none');
                     return;
                 }
-                this.showLoading = true;
-                let page = this.page;
-                let pageSize = this.pageSize + 20;
-                this.getFriendEvent(page,pageSize);
+                page++;
+                this.getFriendEvent();
             },
         };
 
         // 好友总排行榜
-        async getFriendEvent(mypage,mypageSize){
-            let userId = this.userId;
+        async getFriendEvent(){
+            this.showLoading = true;
             let res = await api.getFriend({
                 query:{
                     userId:userId,
                     type:0,
                     status:1,
-                    page:mypage,
-                    pageSize:mypageSize,
+                    page:page,
+                    pageSize:pageSize,
                 }
             });
             if(res.data.state == 1){
+                let rank = this.rank;
                 let data = res.data.data.PageInfo;
-                if(util.isEmpty(data.list)){
+                rank = rank.concat(data.list);
+                if(rank.length < 1){
                     this.is_empty = true;
                 } else {
                     this.is_empty = false;
                 }
-                this.rank = data.list;
-                this.isLastPage = data.isLastPage;
-                this.page = mypage;
-                this.pageSize = mypageSize;
+                this.rank = rank;
+                this.$apply();
+                isLastPage = data.isLastPage;
             } else {
                 tip.error('网络错误');
             }
@@ -142,19 +143,37 @@
 </script>
 
 <style lang="less">
-    .my_friends{
+    .my-friends{
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        width: 100%;
+        padding: 30rpx 24rpx 0rpx 24rpx;
+        box-sizing: border-box;
 
         .friends-header{
             display: flex;
-            justify-content: flex-start;
+            justify-content: space-around;
             align-items: center;
+            width: 100%;
             font-size: 28rpx;
             background: linear-gradient(to top right,#ec2c98, #f68668);
+
+            .flex-center{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100%;
+            }
         }
+
+        .friends-rank{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
 
     }
 </style>

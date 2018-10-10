@@ -1,6 +1,6 @@
 <template>
-    <view class="my-info">
-        <image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px" src="{{myinfo_bg}}"></image>
+    <view class="my-info" style="background-image: url({{myinfo_bg}})">
+        <!--<image class="info-bg" style="width:{{windowWidth}}px;height:{{windowHeight}}px;" src="{{myinfo_bg}}"></image>-->
         <info :userId.sync="userId" :userName.sync="userName" :photo.sync="photo" :showRight.sync="showRight"></info>
         <!--<block wx:if="{{isShowGift}}">-->
             <!--<view class="flex-between;position:relative;" style="margin-top:{{20*px2rpxHeight}}px">-->
@@ -79,11 +79,11 @@
                 {img:imgApi.set, title:'设置',skip:'/pages/set'},
             ],
             // 是否显示当前礼物墙
-            isShowGift:false,
+            // isShowGift:false,
             // 礼物墙的宽
-            canvasWidth:650,
+            // canvasWidth:650,
             // 礼物墙的高
-            canvasHeight:860,
+            // canvasHeight:860,
             // 礼物
             giftList:[
                 {id:1,giftId:1,width:50,height:50,xaxle:0,yaxle:0,presentsWallId:1,status:1},
@@ -92,27 +92,23 @@
                 {id:1,giftId:1,width:50,height:50,xaxle:100,yaxle:100,presentsWallId:1,status:1},
             ],
             // 能量槽宽
-            energyTankWidth:30,
+            // energyTankWidth:30,
             // 能量槽高
-            energyTankHeight:860,
+            // energyTankHeight:860,
             // 能量值
-            nowEnergy:100,
+            // nowEnergy:100,
             // 满能量
-            fullEnergy:1314,
+            // fullEnergy:1314,
 
         };
 
         // 在Page和Component共用的生命周期函数
         onLoad() {
-            // 获取设备的窗口宽高(适应背景)
-            let systemInfo = wepy.getSystemInfoSync();
-            // console.log(systemInfo);
-            this.windowWidth = systemInfo.windowWidth;
-            this.windowHeight = systemInfo.windowHeight;
-
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.windowWidth = px2rpx.originalWidth;
+            this.windowHeight = px2rpx.originalHeight;
             this.$apply();
         };
 
@@ -141,22 +137,21 @@
             }
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 显示当前用户的礼物墙
-            async showCurrentGiftWall(){
-                this.isShowGift = !this.isShowGift;
-                let userInfo = wepy.getStorageSync(USER_INFO);
-                let user_id = userInfo.id;
-                let getPresentsWall = await api.getPresentsWalls({
-                    query:{
-                        userId:user_id,
-                    }
-                });
-                this.giftList = getPresentsWall.data.data;
-                this.$invoke('energytank','energyToHeight',500);
-                this.$apply();
-            },
+            // async showCurrentGiftWall(){
+            //     this.isShowGift = !this.isShowGift;
+            //     let userInfo = wepy.getStorageSync(USER_INFO);
+            //     let user_id = userInfo.id;
+            //     let getPresentsWall = await api.getPresentsWalls({
+            //         query:{
+            //             userId:user_id,
+            //         }
+            //     });
+            //     this.giftList = getPresentsWall.data.data;
+            //     this.$invoke('energytank','energyToHeight',500);
+            //     this.$apply();
+            // },
         };
 
     }
@@ -164,8 +159,6 @@
 
 <style lang="less">
     page{
-        /*background: rgba(0,0,0,0.2);*/
-        /*opacity: 0.1;*/
 
         .info-bg{
             position: fixed;
@@ -177,9 +170,10 @@
 
     .my-info{
         width: 100%;
-        padding: 30rpx;
-        padding-bottom: 0;
+        padding: 30rpx 30rpx 50rpx;
         box-sizing: border-box;
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
 
         .show-gift{
             width: 100%;
@@ -189,11 +183,6 @@
             align-items: center;
             margin-top: 27rpx;
             /*border: 1rpx solid red;*/
-
-            image{
-                /*width: 90rpx;*/
-                /*height: 45rpx;*/
-            }
         }
     }
 </style>
