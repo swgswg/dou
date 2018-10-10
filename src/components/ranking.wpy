@@ -1,13 +1,15 @@
 // 排名模块
 <template>
-    <view class="ranking">
+    <view class="flex flex-column-center w-percent100 ranking">
+
         <block wx:for="{{ranking}}" wx:key="{{index}}" wx:for-item="rank">
-            <view class="ranking-content"
+
+            <view class="flex flex-center f28 w-percent100 ranking-content"
                   style="height:{{80*px2rpxWidth}}px;margin-top:{{6*px2rpxHeight}}px;"
                   data-userid="{{rank.userId}}"
                   @tap.stop="showOtherGiftWall">
 
-                <view class="sort" style="width:{{80*px2rpxWidth}}px;">
+                <view class="flex flex-center f-family-edo" style="width:{{80*px2rpxWidth}}px;">
 
                     <block wx:if="{{rank.rownum == 1}}">
                         <image src="{{fans_no1}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
@@ -22,27 +24,28 @@
                         {{rank.rownum}}
                     </block>
                 </view>
-                <view class="profile" style="width:{{80*px2rpxWidth}}px;">
+                <view class="flex flex-center" style="width:{{80*px2rpxWidth}}px;">
                     <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{rank.photo}}" />
                 </view>
-                <view class="name" style="width:{{150*px2rpxWidth}}px;">
+                <view class="flex flex-center" style="width:{{150*px2rpxWidth}}px;">
                     {{rank.name}}
                 </view>
-                <view class="time" style="width:{{180*px2rpxWidth}}px;">
+                <view class="flex flex-center" style="width:{{180*px2rpxWidth}}px;">
                     {{rank.time ? rank.time : 0}}
                 </view>
-                <view class="num" style="width:{{180*px2rpxWidth}}px;">
+                <view class="flex flex-center" style="width:{{180*px2rpxWidth}}px;">
                     {{rank.shakeNum}}
                 </view>
             </view>
+
         </block>
+
     </view>
 
 </template>
 
 <script >
     import wepy from 'wepy';
-    import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import { USER_INFO,PX_TO_RPX } from '@/utils/constant';
 
@@ -98,33 +101,10 @@
 
 <style lang="less">
     .ranking{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         background-color: #fff;
-        width: 100%;
 
         .ranking-content{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
             border: 1rpx solid #fbbd46;
-
-            .sort{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-family: 'Edo SZ';
-            }
-
-            .profile,.name,.time,.num{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
         }
 
     }

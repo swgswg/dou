@@ -1,8 +1,9 @@
 // 遮盖层
 <template>
-    <view class="cover-layer" catchtouchmove="move" style="width:{{originalWidth}}px;height:{{originalHeight}}px;">
+    <view class="flex flex-center cover-layer" catchtouchmove="move" style="width:{{originalWidth}}px;height:{{originalHeight}}px;">
+
         <!--取消按钮 start-->
-        <view class="cover-layer-close"
+        <view class="flex flex-center br-percent50 cover-layer-close"
               style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;"
               @tap.stop="closeCoverLayer">
             <text class="iconfont icon-close" style="margin-top:{{5*px2rpxWidth}}px;"></text>
@@ -54,9 +55,6 @@
         top:0;
         left: 0;
         z-index: 9999;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         background: rgba(0,0,0,0.6);
 
         .cover-layer-close{
@@ -64,11 +62,8 @@
             top: 10px;
             right: 10px;
             z-index: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             border: 1px solid #aaa;
-            border-radius: 50%;
+            /*border-radius: 50%;*/
 
             .icon-close{
                 font-size: 30rpx;

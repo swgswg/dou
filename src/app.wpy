@@ -8,88 +8,101 @@
         letter-spacing:2rpx;
     }
 
-    .container {
-        height: 100%;
+    .flex{
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: space-between;
-        box-sizing: border-box;
-    }
-
-    .flex-center{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        line-height: 0;
     }
 
     .flex-start{
-        display: flex;
         justify-content: flex-start;
         align-items: center;
     }
 
+    .flex-center{
+        justify-content: center;
+        align-items: center;
+    }
+
     .flex-end{
-        display: flex;
         justify-content: flex-end;
         align-items: center;
     }
 
-    .flex-between{
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        width: 100%;
-        line-height: 0;
-    }
-
     .flex-around{
-        display: flex;
         justify-content: space-around;
         align-items: center;
     }
 
-    .f10 {
-        font-size: 20rpx;
+    .flex-between{
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .f12 {
-        font-size: 24rpx;
+    .flex-column{
+        flex-direction: column;
     }
 
-    .f14 {
-        font-size: 28rpx;
+    .flex-column-center{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
 
-    .f15 {
-        font-size: 30rpx;
+    .w-percent100{
+        width: 100%;
     }
 
-    .f16 {
-        font-size: 32rpx;
+    .h-percent100{
+        height: 100%;
     }
 
-    .f18 {
-        font-size: 36rpx;
+    .br5{
+        border-radius: 5rpx;
+    }
+
+    .br10{
+        border-radius: 10rpx;
+    }
+
+    .br-percent50{
+        border-radius: 50%;
+    }
+
+    .f18{
+        font-size: 18rpx;
     }
 
     .f20 {
-        font-size: 40rpx;
+        font-size: 20rpx;
     }
 
-    .f24 {
-        font-size: 48rpx;
+    .f22 {
+        font-size: 22rpx;
     }
 
-    .f28 {
-        font-size: 56rpx;
+    .f24{
+        font-size: 24rpx;
     }
 
-    .f36 {
-        font-size: 72rpx;
+    .f26{
+        font-size: 25rpx;
     }
+
+    .f28{
+        font-size: 28rpx;
+    }
+
+    .f30{
+        font-size: 30rpx;
+    }
+
+    .f34 {
+        font-size: 34rpx;
+    }
+
+    .f-family-edo{
+        font-family: 'Edo SZ';
+    }
+
     .mt5 {
         margin-top: 5px;
     }

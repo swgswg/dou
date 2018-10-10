@@ -1,14 +1,18 @@
 // 我的好友
 <template>
-    <view class="my-friends">
-        <view class="friends-header" style="height:{{80*px2rpxHeight}}px;">
-            <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">排名</view>
-            <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">头像</view>
-            <view class="flex-center" style="width:{{150*px2rpxWidth}}px;">用户名</view>
-            <view class="flex-center" style="width:{{180*px2rpxWidth}}px;">抖腿时长</view>
-            <view class="flex-center" style="width:{{180*px2rpxWidth}}px;">抖腿次数</view>
+    <view class="flex flex-column-center w-percent100 my-friends">
+        <view class="flex flex-around w-percent100 f28 friends-header"
+              style="height:{{80*px2rpxHeight}}px;">
+
+            <view class="flex flex-center h-percent100" style="width:{{80*px2rpxWidth}}px;">排名</view>
+            <view class="flex flex-center h-percent100" style="width:{{80*px2rpxWidth}}px;">头像</view>
+            <view class="flex flex-center h-percent100" style="width:{{150*px2rpxWidth}}px;">用户名</view>
+            <view class="flex flex-center h-percent100" style="width:{{180*px2rpxWidth}}px;">抖腿时长</view>
+            <view class="flex flex-center h-percent100" style="width:{{180*px2rpxWidth}}px;">抖腿次数</view>
         </view>
-        <view class="friends-rank" style="height:{{1100 * px2rpxHeight}}px;">
+        <view class="flex flex-center w-percent100"
+              style="height:{{1100*px2rpxHeight}}px;">
+
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <ranking :ranking.sync="rank"></ranking>
                 <!--加载更多时动画-->
@@ -144,36 +148,11 @@
 
 <style lang="less">
     .my-friends{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
         padding: 30rpx 24rpx 0rpx 24rpx;
         box-sizing: border-box;
 
         .friends-header{
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-            font-size: 28rpx;
             background: linear-gradient(to top right,#ec2c98, #f68668);
-
-            .flex-center{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                height: 100%;
-            }
         }
-
-        .friends-rank{
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-        }
-
-
     }
 </style>

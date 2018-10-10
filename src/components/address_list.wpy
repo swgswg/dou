@@ -1,19 +1,19 @@
 <template>
-    <view class="address-list">
-        <view class="address-list-content">
+    <view class="flex flex-center w-percent100 address-list">
+        <view class="flex flex-column w-percent100 address-list-content">
             <block wx:for="{{addressList}}" wx:for-item="addr" wx:key="{{index}}">
-                <view class="address-each"
+                <view class="flex flex-column-center w-percent100 address-each"
                       style="height:{{160*px2rpxHeight}}px;padding:{{20*px2rpxHeight}}px {{40*px2rpxWidth}}px;"
                       data-index="{{index}}"
-                      @tap.stop="selectAddrToOtherPage"
-                >
-                    <view class="name-tel">
-                        <view class="name">{{addr.consignee}}</view>
-                        <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">{{addr.mobile}}</view>
+                      @tap.stop="selectAddrToOtherPage">
+
+                    <view class="flex flex-start w-percent100 name-tel">
+                        <view class="f30 name">{{addr.consignee}}</view>
+                        <view class="f24 tel" style="margin-left:{{20*px2rpxWidth}}px;">{{addr.mobile}}</view>
                     </view>
-                    <view class="addr" style="height:{{90*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
-                        <view class="default-text" style="width:{{130*px2rpxWidth}}px;" wx:if="{{addr.status == 1}}">[默认地址]</view>
-                        <view class="default" style="width:{{430*px2rpxWidth}}px;">{{addr.site}}</view>
+                    <view class="flex flex-between w-percent100 addr" style="height:{{90*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
+                        <view class="f24 default-text" style="width:{{130*px2rpxWidth}}px;" wx:if="{{addr.status == 1}}">[默认地址]</view>
+                        <view class="f24 default" style="width:{{430*px2rpxWidth}}px;">{{addr.site}}</view>
 
                         <!--编辑 start-->
                         <block wx:if="{{isAllowEdit}}">
@@ -106,65 +106,30 @@
 
 <style lang="less">
     .address-list{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
 
-        .address-list-content{
-            display: flex;
-            flex-direction: column;
-            /*justify-content: center;*/
-            /*align-items: center;*/
-            width: 100%;
+        .address-each{
+            box-sizing: border-box;
+            border-bottom: 2rpx solid #ccc;
 
-            .address-each{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                width: 100%;
-                box-sizing: border-box;
-                border-bottom: 2rpx solid #ccc;
-
-                .name-tel{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    width: 100%;
-
-                    .name{
-                        font-size: 30rpx;
-                        color: #000;
-                    }
-                    .tel{
-                        font-size: 24rpx;
-                        color: #aaa;
-                    }
-                }
-
-                .addr{
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                    width: 100%;
-
-                    .default-text{
-                        font-size: 24rpx;
-                        color: #ff0101;
-                    }
-
-                    .default{
-                        font-size: 24rpx;
-                        color: #000;
-                    }
-                    .icon-write{
-                        font-size: 40rpx;
-                    }
-                }
-
+            .name{
+                color: #000;
             }
-        }
+            .tel{
+                color: #aaa;
+            }
 
+            .default-text{
+                color: #ff0101;
+            }
+
+            .default{
+                color: #000;
+            }
+            .icon-write{
+                font-size: 40rpx;
+            }
+
+        }
 
     }
 </style>

@@ -1,19 +1,19 @@
 <template>
-    <view class="change-number">
-        <view class="change-number-content" style="width:{{200*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;">
-            <view class="reduce"
+    <view class="flex flex-center change-number">
+        <view class="flex flex-center change-number-content" style="width:{{200*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;">
+            <view class="flex flex-center br5 reduce"
                   style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"
                   @tap.stop="jian"
             >
                 <text class="iconfont icon-move" style="margin-top:{{5*px2rpxHeight}}px"></text>
             </view>
-            <view class="input" style="width:{{83*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin:0 {{15*px2rpxWidth}}px">
+            <view class="flex flex-center f24 br5 input" style="width:{{83*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin:0 {{15*px2rpxWidth}}px">
                 <input style="width:{{83*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"
                        type="number"
                        value="{{num}}"
                        bindinput="changNum" />
             </view>
-            <view class="add"
+            <view class="flex flex-center br5 add"
                   style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"
                   @tap.stop="jia"
             >
@@ -85,32 +85,19 @@
 
 <style lang="less">
     .change-number{
-        display: flex;
-        justify-content: center;
-        align-items: center;
 
         .change-number-content{
-            display: flex;
-            justify-content: center;
-            align-items: center;
 
             .reduce,.add{
-                display: flex;
-                justify-content: center;
-                align-items: center;
                 font-size: 50rpx;
                 color: #f03e3e;
                 border: 1rpx solid red;
-                border-radius: 5rpx;
+                /*border-radius: 5rpx;*/
             }
 
             .input{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 25rpx;
                 border: 1rpx solid red;
-                border-radius: 5rpx;
+                /*border-radius: 5rpx;*/
 
                 input{
                     text-align: center;

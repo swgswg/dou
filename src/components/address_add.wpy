@@ -1,7 +1,7 @@
 <template>
-    <view class="address-add">
-        <view class="address-add-content">
-            <view class="each" style="height:{{90*px2rpxHeight}}px;">
+    <view class="flex flex-center w-percent100 address-add">
+        <view class="flex flex-column w-percent100 address-add-content">
+            <view class="flex flex-start each" style="height:{{90*px2rpxHeight}}px;">
                 <view class="each-title">收货人</view>
                 <input class="each-input" value="{{consignee? consignee:''}}" style="width:{{490*px2rpxWidth}}px;" type="text" placeholder="姓名" bindinput="inputConsignee" />
             </view>
@@ -22,10 +22,10 @@
 
             <view class="each" style="height:{{90*px2rpxHeight}}px;">
                 <view class="each-title">详细地址</view>
-                <input class="each-input" value="{{street?street:''}}" style="width:{{490*px2rpxWidth}}px;" type="text" placeholder="如街道、小区门牌号等" bindinput="inputStreet"/>
+                <input class=" each-input" value="{{street?street:''}}" style="width:{{490*px2rpxWidth}}px;" type="text" placeholder="如街道、小区门牌号等" bindinput="inputStreet"/>
             </view>
 
-            <view class="set-default" style="height:{{90*px2rpxHeight}}px;">
+            <view class="flex flex-between w-percent100 set-default" style="height:{{90*px2rpxHeight}}px;">
                 <view style="font-size: 30rpx;color: #000;">设为默认</view>
                 <myswitch :activeDot.sync="status"></myswitch>
             </view>
@@ -188,23 +188,13 @@
 
 <style lang="less">
     .address-add{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
 
         .address-add-content{
-            display: flex;
-            flex-direction: column;
-            width: 100%;
             padding: 0 30rpx;
             box-sizing: border-box;
 
             .each{
                 position: relative;
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
                 width: 100%;
                 border-bottom: 1rpx solid #bbb;
 
@@ -226,10 +216,6 @@
             }
 
             .set-default{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
                 padding-right: 10rpx;
                 box-sizing: border-box;
             }

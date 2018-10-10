@@ -69,38 +69,38 @@
 <style lang="less">
     .dot {
         position: absolute;
-        display: flex;
-        width: 37rpx;
-        height: 35rpx;
-        line-height: 40rpx;
-        text-align: center;
-        align-items: center; /*垂直居中*/
-        justify-content: center; /*水平居中*/
-        background: #e52424;
-        border-radius: 100px;
-        color: #fff;
-        z-index: 999;
-        font-size: 20rpx;
         top: 0;
         right: -10rpx;
+        z-index: 999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 37rpx;
+        height: 35rpx;
+        font-size: 20rpx;
+        color: #fff;
+        line-height: 40rpx;
+        text-align: center;
+        background: #e52424;
+        border-radius: 100px;
     }
 
     .dotbig {
         position: absolute;
+        top: 0;
+        right: -10rpx;
+        z-index: 999;
         display: flex;
         width: 50rpx;
         height: 35rpx;
+        font-size: 20rpx;
+        color: #fff;
         line-height: 40rpx;
         text-align: center;
         align-items: center; /*垂直居中*/
         justify-content: center; /*水平居中*/
         background: #e52424;
         border-radius: 100px;
-        color: #fff;
-        z-index: 999;
-        font-size: 20rpx;
-        top: 0;
-        right: -10rpx;
     }
 
     .swiper-tab {
