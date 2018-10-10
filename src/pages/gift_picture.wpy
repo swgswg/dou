@@ -223,8 +223,7 @@
 
             // 滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
-                this.showLoading = true;
-                if(currentTab == 0){
+                if(this.currentTab == 0){
                     // 收到礼物
                     if(this.receive_isLastPage){
                         return;
@@ -232,7 +231,7 @@
                     let page = this.receive_page+1;
                     let pageSize = this.send_pageSize;
                     this.get_qSPresentsWall(page,pageSize);
-                } else if(currentTab == 1){
+                } else if(this.currentTab == 1){
                     // 送出礼物
                     if(this.send_isLastPage){
                         return;
@@ -261,6 +260,7 @@
 
         // 查询收到的礼物墙
         async get_qSPresentsWall(mypage,mypageSize){
+            this.showLoading = true;
             let userId = this.userId;
             let receive_giftList = this.receive_giftList;
             let receive_currentPage = this.receive_currentPage;
@@ -294,11 +294,13 @@
             } else {
                 tip.error('网络错误');
             }
+            this.showLoading = false;
             this.$apply();
         };
 
         // 查询送出的礼物墙
         async get_qSPresentsWalls(mypage,mypageSize){
+            this.showLoading = true;
             let userId = this.userId;
             let send_giftList = this.send_giftList;
             let send_currentPage = this.send_currentPage;
@@ -332,6 +334,7 @@
             } else {
                 tip.error('网络错误');
             }
+            this.showLoading = false;
             this.$apply();
         };
     }

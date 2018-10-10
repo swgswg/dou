@@ -31,8 +31,6 @@
                 twoWay: true,
             },
             currentTabValue: {
-                type:String,
-                default: 0,
                 twoWay: true,
             },
         };

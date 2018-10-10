@@ -158,22 +158,17 @@
             is_empty: false,
             //是否显示 底部loading
             showLoading: false,
-            // userId:null,
         };
 
         props = {
             // 设备榜/手动榜
             legOrHand:{
-                type:Number,
                 // 1脚,0手
-                default:1,
                 twoWay:true
             },
             // 周/总排行
             weekOrAll:{
-                type:Number,
                 // 1周,0总
-                default:1,
                 twoWay:true
             },
         };
@@ -214,6 +209,20 @@
             },
 
 
+        };
+
+        watch = {
+            weekOrAll(newValue){
+                this.weekOrAll = newValue;
+                this.$apply();
+                this.getWorldRanking();
+            },
+
+            legOrHand(newValue){
+                this.legOrHand = newValue;
+                this.$apply();
+                this.getWorldRanking();
+            },
         };
 
         // 世界排行榜

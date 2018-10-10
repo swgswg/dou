@@ -15,10 +15,10 @@
                                 <view class="price">
                                     <view><text style="font-size:22rpx" wx:if="{{order.integral}}">{{order.integral}}积分+</text>¥{{order.money}}</view>
                                     <view style="font-size:20rpx">
-                                        <block wx:if="{{order.status == 0}}">待付款</block>
-                                        <block wx:if="{{order.status == 1}}">待发货</block>
-                                        <block wx:if="{{order.status == 2}}">已发货</block>
-                                        <block wx:if="{{order.status == 3}}">交易完成</block>
+                                        <block wx:if="{{order.status === unpaid}}">待付款</block>
+                                        <block wx:if="{{order.status === notDelivered}}">待发货</block>
+                                        <block wx:if="{{order.status === notReceived}}">已发货</block>
+                                        <block wx:if="{{order.status === accomplish}}">交易完成</block>
                                     </view>
                                 </view>
                             </view>
@@ -41,7 +41,15 @@
                     <!--0未付款 start-->
                     <block wx:if="{{order.status == unpaid}}">
                         <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="cancellationOfOrder">取消订单</view>
-                        <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="goPay">付款</view>
+                        <view class="status-btn status-btn2"
+                              style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"
+                              data-orderid="{{order.id}}"
+                              data-orderuuid="{{order.order_uuid}}"
+                              data-moneys="{{order.moneys}}"
+                              data-goodsname="{{order.goodsName}}"
+                              @tap.stop="goPay">
+                            付款
+                        </view>
                     </block>
                     <!--0未付款 end-->
 
@@ -107,6 +115,7 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
             // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）6(取消订单)
             all:api.all,
             unpaid:api.unpaid,
@@ -117,7 +126,6 @@
             exchangeGoods:api.exchangeGoods,
             cancelOrder:api.cancelOrder,
             deleteOrder:api.deleteOrder,
-            fileUrl:imgApi.fileUrl,
         };
 
         props = {
@@ -131,6 +139,8 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+
+
             this.$apply();
         };
 
@@ -153,7 +163,13 @@
             goPay(e){
                 let that = this;
                 let orderId = e.currentTarget.dataset.orderid;
-                weixin.weixinPay(function() {
+                let order_uuid = e.currentTarget.dataset.orderuuid;
+                let moneys = e.currentTarget.dataset.moneys;
+                let openid = wepy.getStorageSync(USER_INFO).weChat;
+                let body = e.currentTarget.dataset.goodsname;
+                weixin.weixinPay(moneys,order_uuid,openid,body,function(res) {
+                    console.log('付款成功');
+                    console.log(res);
                     that.editOrdersStatus(orderId,that.accomplish,'付款成功');
                 },function() {
 

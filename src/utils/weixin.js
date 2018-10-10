@@ -97,7 +97,7 @@ module.exports = {
      * 上传图片到服务器
      * @param successFun
      */
-    uploadFileToHost(successFun){
+    uploadFileToHost(suFun){
         wx.chooseImage({
             count: 1,
             sizeType: ['original', 'compressed'],
@@ -124,7 +124,7 @@ module.exports = {
                             console.log(res);
                             // 获取服务器返回的图片名称
                             let data = res.data;
-                            successFun(data);
+                            suFun(data);
                         }
                     });
                     tip.loaded();
@@ -238,22 +238,12 @@ module.exports = {
                 'fail':function(res){
                     console.log('支付失败');
                     console.log(res);
-                    wx.showToast({
-                        title: '支付失败',
-                        image: "../static/images/error.png",
-                        mask: true,
-                        duration: 1000
-                    });
+                    tip.error('支付失败');
                     errFun();
                 }
-            })
-        } else {
-            wx.showToast({
-                title: '支付失败',
-                image: "../static/images/error.png",
-                mask: true,
-                duration: 1000
             });
+        } else {
+            tip.error('支付失败');
         }
     },
 

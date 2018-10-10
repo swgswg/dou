@@ -63,16 +63,12 @@
         props = {
             // 设备榜/手动榜
             legOrHand:{
-                type:Number,
                 // 1脚,0手
-                default:1,
                 twoWay:true
             },
             // 周/总排行
             weekOrAll:{
-                type:Number,
                 // 1周,0总
-                default:1,
                 twoWay:true
             },
 
@@ -115,6 +111,20 @@
                 this.$apply();
             },
 
+        };
+
+        watch = {
+            weekOrAll(newValue){
+                this.weekOrAll = newValue;
+                this.$apply();
+                this.getFriendRanking();
+            },
+
+            legOrHand(newValue){
+                this.legOrHand = newValue;
+                this.$apply();
+                this.getFriendRanking();
+            },
         };
 
         // 好友排行榜

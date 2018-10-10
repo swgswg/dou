@@ -2,7 +2,7 @@
     <view class="order">
         <!--tab模块-->
         <view class="swiper-tab-pd">
-            <tab :tabList.sync="tabList" :currentTab.sync="currentTab"></tab>
+            <tab :tabList.sync="tabList" :currentTabValue.sync="currentTabValue"></tab>
         </view>
 
         <!--订单列表 start-->
@@ -57,6 +57,19 @@
     import Placeholder from "@/components/common/placeholder";
     import CoverLayer from '@/components/common/cover_layer';
 
+    // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
+    let all = api.all;
+    let unpaid = api.unpaid;
+    let notDelivered = api.notDelivered;
+    let notReceived = api.notReceived;
+    let accomplish = api.accomplish;
+    let returnGoods = api.returnGoods;
+    let exchangeGoods = api.exchangeGoods;
+
+    let page = 1;
+    let pageSize = 20;
+    let isLastPage = false;
+    let userId = null;
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
@@ -76,23 +89,17 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            userId:null,
-            page:1,
-            pageSize:20,
-            isLastPage:false,
-            tabList: ["全部", "待支付","待发货", "待收货", "已完成"],
-            currentTab:0,
-            status:'',
-            // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
-            all:api.all,
-            unpaid:api.unpaid,
-            notDelivered:api.notDelivered,
-            notReceived:api.notReceived,
-            accomplish:api.accomplish,
-            returnGoods:api.returnGoods,
-            exchangeGoods:api.exchangeGoods,
+            tabList: [
+                {name:"全部", value: all},
+                {name:"待支付", value: unpaid},
+                {name:"待发货", value: notDelivered},
+                {name:"待收货", value: notReceived},
+                {name:"已完成", value: accomplish}
+            ],
+            // 当前状态默认为 全部
+            currentTabValue: api.all,
             // 订单列表
-            orderList:null,
+            orderList:[],
             showLoading:false,
             is_empty:true,
             // 显示遮盖层
@@ -109,18 +116,17 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-
-            let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
             this.$apply();
         };
 
         // 只在Page中存在的页面生命周期函数
         onShow() {
             let userInfo = wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
+            userId = userInfo.id;
+            this.orderList = [];
+            this.$apply();
             // 获取数据
-            this.getOrdersData(1,20,this.status);
+            this.getOrdersData(page,page*pageSize);
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -128,25 +134,21 @@
 
         };
 
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
-                if(this.isLastPage){
+                if(isLastPage){
+                    tip.toast('这是最后一页了','none');
                     return;
                 }
-                this.showLoading = true;
-                this.pageSize = this.pageSize + 20;
-                this.getOrdersData(this.page,this.pageSize,this.status);
+                page += 1;
+                this.getOrdersData(page,pageSize);
             },
 
             // 取消遮盖层
-            cancelCoverLayer(){
-                this.cancelShow();
-            },
+            // cancelCoverLayer(){
+            //     this.cancelShow();
+            // },
 
             // 复制微信号
             copyWeixinhao(){
@@ -154,43 +156,25 @@
                 wx.setClipboardData({
                     data: 'data',
                     success: function(res) {
-                        wx.showToast({
-                            title:'复制成功',
-                            icon:'success',
-                            duration: 1000
-                        });
+                        tip.toast('复制成功');
                     }
                 })
             }
         };
 
+        watch = {
+            currentTabValue(newValue){
+                page = 1;
+                pageSize = 20;
+                this.orderList = [];
+                this.currentTabValue = newValue;
+                this.$apply();
+                this.getOrdersData(page,pageSize);
+            },
+        };
+
         // 声明组件之间的事件处理函数
         events = {
-            CurrentTabChange(cur) {
-                this.currentTab = cur;
-                console.log("cur",cur);
-                if (cur == 0) {
-                    this.status = "";
-                    this.getOrdersData(this.page,this.pageSize,this.status);
-                } else if (cur == 1) {
-                    this.status = this.unpaid;
-                    this.getOrdersData(this.page,this.pageSize,this.status);
-                } else if (cur == 2) {
-                    this.status = this.notDelivered;
-                    this.getOrdersData(this.page,this.pageSize,this.status);
-                    // that.receiveFlg = 2;
-                } else if (cur == 3) {
-                    this.status = this.notReceived;
-                    this.getOrdersData(this.page,this.pageSize,this.status);
-                    // that.receiveFlg = 4;
-                } else if (cur == 4){
-                    this.status = this.accomplish;
-                    this.getOrdersData(this.page,this.pageSize,this.status);
-                }
-                console.log('status',this.status);
-                this.$apply();
-            },
-
             // 申请售后
             apply_after_sale(){
                 this.showCoverLayer = true;
@@ -199,7 +183,9 @@
 
             // 刷新数据
             refreshOrderList(){
-                this.getOrdersData(this.page,this.pageSize,this.status);
+                this.orderList = [];
+                this.$apply();
+                this.getOrdersData(1,page*pageSize);
             },
 
             // 取消所有遮盖层内容
@@ -210,22 +196,23 @@
         };
 
         // 获取订单数据
-        async getOrdersData(mypage,mypageSize,mystatus){
-            let that = this;
-            this.showLoading = false;
+        async getOrdersData(mypage,mypageSize){
+            this.showLoading = true;
+            let mystatus = this.currentTabValue;
             let res = await api.getOrders({
                 query:{
-                    userId: that.userId,
-                    page:mypage,
-                    pageSize:mypageSize,
-                    status:mystatus
+                    userId: userId,
+                    page: mypage,
+                    pageSize: mypageSize,
+                    status: mystatus
                 }
             });
             if(res.data.state == 1){
                 let data = res.data.data.PageInfo;
-                this.orderList = data.list;
-                this.isLastPage = data.isLastPage;
-                if(data.list.length < 1){
+                isLastPage = data.isLastPage;
+                let orderList = data.list;
+                this.orderList = this.orderList.concat(orderList);
+                if(this.orderList .length < 1){
                     this.is_empty = true;
                 } else {
                     this.is_empty = false;
@@ -233,6 +220,7 @@
             } else {
                 tip.error('网络错误');
             }
+            this.showLoading = false;
             this.$apply();
         };
 

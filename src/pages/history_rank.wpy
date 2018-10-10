@@ -77,7 +77,7 @@
                 {name:'手动榜',value:0}
             ],
             // 0手/1脚
-            legOrHand:1,
+            legOrHand:0,
             tabData:[
                 {name:'本周排行',value:1},
                 {name:'总排行',value:0}
@@ -103,6 +103,9 @@
         // 只在Page中存在的页面生命周期函数
         onReady() {
             this.worldOrFriend = 'world';
+            this.legOrHand = 0;
+            this.weekOrAll = 1;
+            this.$apply();
             // 获取数据 好友
             this.getData(this.worldOrFriend);
         };
@@ -121,21 +124,6 @@
                     this.$apply();
                 }
             },
-        };
-
-        watch = {
-            legOrHand(newValue){
-                this.legOrHand = newValue;
-                this.$apply();
-                this.getData(this.worldOrFriend);
-            },
-
-            // 周还是总
-            weekOrAll(newValue){
-                this.weekOrAll = newValue;
-                this.$apply();
-                this.getData(this.worldOrFriend);
-            }
         };
 
         getData(myworldOrFriend){
