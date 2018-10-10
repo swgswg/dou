@@ -172,35 +172,45 @@
 
         // 只在Page中存在的页面生命周期函数
         onShow() {
-            let that = this;
-            let bluetooth = wepy.getStorageSync(BLUETOOTH);
-            console.log(bluetooth);
-            if(util.isEmpty(bluetooth)){
-                wx.showModal({
-                    title:'温馨提示',
-                    content:'您的蓝牙还没有连接,点击确定前去连接',
-                    success:function(res) {
-                        if (res.confirm) {
-                            wx.navigateTo({
-                                url:'/pages/select_bluetooth'
-                            });
-                        }
-                    },
-                });
-            } else {
-                if(implementOnShowEvent){
-                    weixin.notifyValueChange(
-                        bluetooth.connectingDeviceId,
-                        bluetooth.services_UUID,
-                        bluetooth.characteristic_UUID,
-                        (num)=>{
-                            that.shakeLegNumber = num;
-                            that.$apply();
-                            implementOnShowEvent = false;
-                    });
-                }
+            // let that = this;
+            // wx.getBluetoothAdapterState({
+            //     success(){
+            //         that.checkBluetooth();
+            //     },
+            //     fail(){
+            //         tip.error('蓝牙不可用');
+            //     }
+            // });
 
-            }
+            // let bluetooth = wepy.getStorageSync(BLUETOOTH);
+            // console.log(bluetooth);
+            // if(util.isEmpty(bluetooth)){
+            //     wx.showModal({
+            //         title:'温馨提示',
+            //         content:'您的蓝牙还没有连接,点击确定前去连接',
+            //         success:function(res) {
+            //             if (res.confirm) {
+            //                 wx.navigateTo({
+            //                     url:'/pages/select_bluetooth'
+            //                 });
+            //             }
+            //         },
+            //     });
+            // } else {
+            //     if(implementOnShowEvent){
+            //         weixin.notifyValueChange(
+            //             bluetooth.connectingDeviceId,
+            //             bluetooth.services_UUID,
+            //             bluetooth.characteristic_UUID,
+            //             (num)=>{
+            //                 that.shakeLegNumber = num;
+            //                 that.$apply();
+            //                 implementOnShowEvent = false;
+            //         });
+            //     }
+            // }
+
+            this.checkBluetoothOpen();
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -351,20 +361,21 @@
                 this.imgSrcData = imgApi.leg_shake;
                 this.shakeData = 1;
                 // 检测蓝牙连接
-                let bluetooth = wepy.getStorageSync(BLUETOOTH);
-                if(util.isEmpty(bluetooth)){
-                    wx.showModal({
-                        title:'温馨提示',
-                        content:'您的蓝牙还没有连接,点击确定前去连接',
-                        success:function(res) {
-                            if (res.confirm) {
-                                wx.navigateTo({
-                                    url:'/pages/select_bluetooth'
-                                });
-                            }
-                        },
-                    });
-                }
+                // let bluetooth = wepy.getStorageSync(BLUETOOTH);
+                // if(util.isEmpty(bluetooth)){
+                //     wx.showModal({
+                //         title:'温馨提示',
+                //         content:'您的蓝牙还没有连接,点击确定前去连接',
+                //         success:function(res) {
+                //             if (res.confirm) {
+                //                 wx.navigateTo({
+                //                     url:'/pages/select_bluetooth'
+                //                 });
+                //             }
+                //         },
+                //     });
+                // }
+                this.checkBluetoothOpen();
                 this.$apply();
 
             } else if (shake == 0){
@@ -414,6 +425,62 @@
 
             } else {
                 tip.error('网络错误');
+            }
+        };
+
+        // 检测蓝牙是否开启
+        checkBluetoothOpen(){
+            let that = this;
+            wx.getBluetoothAdapterState({
+                success(){
+                    that.checkBluetooth();
+                },
+                fail(){
+                    wx.showModal({
+                        title:'温馨提示',
+                        content:'您的蓝牙不可用,点击确定前去连接',
+                        success:function(res) {
+                            if (res.confirm) {
+                                wx.navigateTo({
+                                    url:'/pages/select_bluetooth'
+                                });
+                            }
+                        },
+                    });
+                }
+            });
+        };
+
+        // 检测蓝牙之前是否成功连接过
+        checkBluetooth(){
+            let that = this;
+            let bluetooth = wepy.getStorageSync(BLUETOOTH);
+            console.log(bluetooth);
+            if(util.isEmpty(bluetooth)){
+                wx.showModal({
+                    title:'温馨提示',
+                    content:'您的蓝牙还没有连接,点击确定前去连接',
+                    success:function(res) {
+                        if (res.confirm) {
+                            wx.navigateTo({
+                                url:'/pages/select_bluetooth'
+                            });
+                        }
+                    },
+                });
+            } else {
+                if(implementOnShowEvent){
+                    weixin.notifyValueChange(
+                        bluetooth.connectingDeviceId,
+                        bluetooth.services_UUID,
+                        bluetooth.characteristic_UUID,
+                        (num)=>{
+                            that.shakeLegNumber = num;
+                            that.$apply();
+                            implementOnShowEvent = false;
+                        }
+                    );
+                }
             }
         };
 

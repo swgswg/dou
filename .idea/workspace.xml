@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="163dff39-3b00-4120-a5ee-4f30053abe5a" name="Default" comment="优化历史排名,优化订单">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/common/tab.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/common/tab.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/order_item.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/order_item.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ranking_button.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_button.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ranking_friend.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_friend.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ranking_world.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_world.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/gift_picture.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/gift_picture.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/history_rank.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/history_rank.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/order.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/order.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/weixin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/weixin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/go_shake.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/go_shake.wpy" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -40,8 +31,8 @@
       <file leaf-file-name="api.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="22" selection-start-line="22" selection-end-line="22" />
+            <state relative-caret-position="84">
+              <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -58,8 +49,8 @@
       <file leaf-file-name="weixin.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/weixin.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="277">
-              <caret line="217" column="62" lean-forward="true" selection-start-line="217" selection-start-column="62" selection-end-line="217" selection-end-column="62" />
+            <state relative-caret-position="502">
+              <caret line="427" column="6" selection-start-line="427" selection-start-column="6" selection-end-line="427" selection-end-column="6" />
               <folding>
                 <element signature="e#200#230#0" expanded="true" />
                 <element signature="e#745#2720#0" />
@@ -69,6 +60,7 @@
                 <element signature="e#5245#6156#0" />
                 <element signature="e#6223#6329#0" />
                 <element signature="e#6377#6686#0" />
+                <element signature="e#7004#8252#0" />
                 <element signature="e#8517#9097#0" />
                 <element signature="e#9362#10709#0" />
                 <element signature="e#10769#11872#0" />
@@ -88,11 +80,42 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="history_rank.wpy" pinned="false" current-in-tab="true">
+      <file leaf-file-name="select_bluetooth.wpy" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pages/select_bluetooth.wpy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="499">
+              <caret line="172" column="15" lean-forward="true" selection-start-line="162" selection-start-column="12" selection-end-line="172" selection-end-column="15" />
+              <folding>
+                <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="go_shake.wpy" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="280">
+              <caret line="31" column="54" lean-forward="true" selection-start-line="31" selection-start-column="54" selection-end-line="31" selection-end-column="54" />
+              <folding>
+                <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#0;n#block#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#7884#9006#0" />
+                <element signature="e#9050#9221#0" />
+                <element signature="e#13851#14817#0" />
+                <element signature="e#14852#15060#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="history_rank.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/history_rank.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="392">
-              <caret line="31" column="64" lean-forward="true" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
+            <state relative-caret-position="776">
+              <caret line="31" column="64" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
               <folding>
                 <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -200,7 +223,6 @@
         <option value="$PROJECT_DIR$/src/components/sign_in.wpy" />
         <option value="$PROJECT_DIR$/src/pages/goods_detail.wpy" />
         <option value="$PROJECT_DIR$/src/components/common/cover_layer.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/go_shake.wpy" />
         <option value="$PROJECT_DIR$/src/app.wpy" />
         <option value="$PROJECT_DIR$/src/app.wpy" />
         <option value="$PROJECT_DIR$/src/utils/tip.js" />
@@ -218,6 +240,7 @@
         <option value="$PROJECT_DIR$/src/components/ranking_world.wpy" />
         <option value="$PROJECT_DIR$/src/pages/history_rank.wpy" />
         <option value="$PROJECT_DIR$/src/components/ranking_friend.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/go_shake.wpy" />
       </list>
     </option>
   </component>
@@ -400,12 +423,12 @@
       <workItem from="1538185712673" duration="12244000" />
       <workItem from="1538962237665" duration="14591000" />
       <workItem from="1539047542430" duration="32580000" />
-      <workItem from="1539133779738" duration="5234000" />
+      <workItem from="1539133779738" duration="7160000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1350590000" />
+    <option name="totallyTimeSpent" value="1352516000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -420,7 +443,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49618322" visible="true" weight="0.12486828" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49618322" visible="true" weight="0.12486828" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32897604" />
       <window_info anchor="bottom" id="Messages" weight="0.3293348" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
@@ -703,18 +726,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/select_bluetooth.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1255">
-          <caret line="367" column="64" selection-start-line="367" selection-start-column="64" selection-end-line="367" selection-end-column="64" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/static/css/animate.less">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="672">
@@ -763,17 +774,6 @@
             <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#0;n#view#0;n#coverlayer#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#1;n#view#0;n#view#0;n#coverlayer#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#view#0;n#coverlayer#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5531">
-          <caret line="39" column="22" lean-forward="true" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#block#1;n#view#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -864,13 +864,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/order_item.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="560">
@@ -896,37 +889,6 @@
           <caret line="108" column="53" lean-forward="true" selection-start-line="108" selection-start-column="53" selection-end-line="108" selection-end-column="53" />
           <folding>
             <element signature="n#style#0;n#view#0;n#view#0;n#coverlayer#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/weixin.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="277">
-          <caret line="217" column="62" lean-forward="true" selection-start-line="217" selection-start-column="62" selection-end-line="217" selection-end-column="62" />
-          <folding>
-            <element signature="e#200#230#0" expanded="true" />
-            <element signature="e#745#2720#0" />
-            <element signature="e#2868#3508#0" />
-            <element signature="e#3600#4959#0" />
-            <element signature="e#5024#5107#0" />
-            <element signature="e#5245#6156#0" />
-            <element signature="e#6223#6329#0" />
-            <element signature="e#6377#6686#0" />
-            <element signature="e#8517#9097#0" />
-            <element signature="e#9362#10709#0" />
-            <element signature="e#10769#11872#0" />
-            <element signature="e#11921#12210#0" />
-            <element signature="e#12242#12365#0" />
-            <element signature="e#12420#12655#0" />
-            <element signature="e#12702#13054#0" />
-            <element signature="e#13117#13996#0" />
-            <element signature="e#14121#14873#0" />
-            <element signature="e#14999#15731#0" />
-            <element signature="e#15839#15957#0" />
-            <element signature="e#16049#16556#0" />
-            <element signature="e#16663#17116#0" />
-            <element signature="e#17153#17352#0" />
           </folding>
         </state>
       </provider>
@@ -967,10 +929,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="84">
+          <caret line="3" column="34" selection-start-line="3" selection-start-column="34" selection-end-line="3" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/history_rank.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="31" column="64" lean-forward="true" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
+        <state relative-caret-position="776">
+          <caret line="31" column="64" selection-start-line="31" selection-start-column="64" selection-end-line="31" selection-end-column="64" />
           <folding>
             <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -978,6 +947,65 @@
             <element signature="n#style#0;n#image#0;n#view#1;n#view#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#0;n#block#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#view#0;n#block#1;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/weixin.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="502">
+          <caret line="427" column="6" selection-start-line="427" selection-start-column="6" selection-end-line="427" selection-end-column="6" />
+          <folding>
+            <element signature="e#200#230#0" expanded="true" />
+            <element signature="e#745#2720#0" />
+            <element signature="e#2868#3508#0" />
+            <element signature="e#3600#4959#0" />
+            <element signature="e#5024#5107#0" />
+            <element signature="e#5245#6156#0" />
+            <element signature="e#6223#6329#0" />
+            <element signature="e#6377#6686#0" />
+            <element signature="e#7004#8252#0" />
+            <element signature="e#8517#9097#0" />
+            <element signature="e#9362#10709#0" />
+            <element signature="e#10769#11872#0" />
+            <element signature="e#11921#12210#0" />
+            <element signature="e#12242#12365#0" />
+            <element signature="e#12420#12655#0" />
+            <element signature="e#12702#13054#0" />
+            <element signature="e#13117#13996#0" />
+            <element signature="e#14121#14873#0" />
+            <element signature="e#14999#15731#0" />
+            <element signature="e#15839#15957#0" />
+            <element signature="e#16049#16556#0" />
+            <element signature="e#16663#17116#0" />
+            <element signature="e#17153#17352#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/select_bluetooth.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="499">
+          <caret line="172" column="15" lean-forward="true" selection-start-line="162" selection-start-column="12" selection-end-line="172" selection-end-column="15" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="31" column="54" lean-forward="true" selection-start-line="31" selection-start-column="54" selection-end-line="31" selection-end-column="54" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#1;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#7884#9006#0" />
+            <element signature="e#9050#9221#0" />
+            <element signature="e#13851#14817#0" />
+            <element signature="e#14852#15060#0" />
           </folding>
         </state>
       </provider>
