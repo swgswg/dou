@@ -1,5 +1,5 @@
 <template>
-    <view class="move-area" style="width:{{areaWidth*widthRatio}}px;height:{{areaHeight*heightRatio}}px;">
+    <view id="movable" class="move-area" style="width:{{areaWidth*widthRatio}}px;height:{{areaHeight*heightRatio}}px;">
 
         <block wx:for="{{giftList}}" wx:for-item="list" wx:key="{{index}}">
 
@@ -21,8 +21,10 @@
 <script>
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
-    import util from '@/utils/util';
     import { PX_TO_RPX } from '@/utils/constant';
+
+    let top = 0;
+    let left = 0;
 
     export default class MoveView extends wepy.component {
 
@@ -45,7 +47,6 @@
             },
             giftList:{
                 type:Array,
-                default:null,
                 twoWay:true
             },
             ratio:{
@@ -62,12 +63,19 @@
             // 比例系数
             this.widthRatio = this.px2rpxWidth*2*this.ratio;
             this.heightRatio = this.px2rpxHeight*2*this.ratio;
+
+            // 获取移动区域的信息
+            wx.createSelectorQuery().select('#movable').boundingClientRect().exec(function(res) {
+                console.log(res);
+                top = res[0].top;
+                left = res[0].left;
+            });
+
             this.$apply()
         };
 
         methods = {
             moveView(e){
-                console.log(e);
                 let disabled = e.currentTarget.dataset.disabled;
                 if(disabled == 1){
                     return;
@@ -77,6 +85,10 @@
                 let viewHeight = e.currentTarget.dataset.viewheight;
                 let x = e.touches[0].pageX;
                 let y = e.touches[0].pageY;
+                // 坐标修正
+                x = x - top*(this.px2rpxHeight);
+                y = y - left*(this.px2rpxWidth);
+                //坐标的极限距离
                 let maxX = parseInt(this.areaWidth) - parseInt(viewWidth);
                 let maxY = parseInt(this.areaHeight) - parseInt(viewHeight);
                 if(x <= 0){
@@ -91,10 +103,10 @@
                 if(y >= maxY){
                     y = maxY;
                 }
-                let giftList = this.giftList;
-                giftList[index].xaxle = x;
-                giftList[index].yaxle = y;
-                this.giftList = giftList;
+                // let giftList = this.giftList;
+                this.giftList[index].xaxle = x;
+                this.giftList[index].yaxle = y;
+                // this.giftList = giftList;
                 this.$apply();
             },
 

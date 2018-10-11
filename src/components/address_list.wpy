@@ -8,12 +8,12 @@
                       @tap.stop="selectAddrToOtherPage">
 
                     <view class="flex flex-start w-percent100 name-tel">
-                        <view class="f30 name">{{addr.consignee}}</view>
-                        <view class="f24 tel" style="margin-left:{{20*px2rpxWidth}}px;">{{addr.mobile}}</view>
+                        <view class="f30 c0 name">{{addr.consignee}}</view>
+                        <view class="f24 ca tel" style="margin-left:{{20*px2rpxWidth}}px;">{{addr.mobile}}</view>
                     </view>
                     <view class="flex flex-between w-percent100 addr" style="height:{{90*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
                         <view class="f24 default-text" style="width:{{130*px2rpxWidth}}px;" wx:if="{{addr.status == 1}}">[默认地址]</view>
-                        <view class="f24 default" style="width:{{430*px2rpxWidth}}px;">{{addr.site}}</view>
+                        <view class="f24 c0 default" style="width:{{430*px2rpxWidth}}px;">{{addr.site}}</view>
 
                         <!--编辑 start-->
                         <block wx:if="{{isAllowEdit}}">
@@ -111,20 +111,10 @@
             box-sizing: border-box;
             border-bottom: 2rpx solid #ccc;
 
-            .name{
-                color: #000;
-            }
-            .tel{
-                color: #aaa;
-            }
-
             .default-text{
                 color: #ff0101;
             }
 
-            .default{
-                color: #000;
-            }
             .icon-write{
                 font-size: 40rpx;
             }

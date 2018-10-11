@@ -1,10 +1,9 @@
 <template>
-    <view class="empty-address">
-        <view class="empty-address-content"
+    <view class="flex-center w-percent100 empty-address">
+        <view class="pr flex-start w-percent100"
               style="heigth:{{154*px2rpxHeight}}px;padding: 0 {{30*px2rpxWidth}}px;line-height:{{154*px2rpxHeight}}px;"
-              @tap.stop="selectAddress"
-        >
-            <view class="add" style="width:{{54*px2rpxWidth}}px;height:{{54*px2rpxWidth}}px;">
+              @tap.stop="selectAddress">
+            <view class="flex-center br-percent50 add" style="width:{{54*px2rpxWidth}}px;height:{{54*px2rpxWidth}}px;">
                 <text class="iconfont icon-add"></text>
             </view>
             <view class="text" style="margin-left:{{38*px2rpxWidth}}px;">{{selectOrAdd}}收货地址</view>
@@ -20,7 +19,6 @@
     import wepy from 'wepy';
     import {PX_TO_RPX} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
-    import util from '@/utils/util';
 
     export default class EmptyAddress extends wepy.component {
 
@@ -65,39 +63,22 @@
 
 <style lang="less">
     .empty-address{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
 
-        .empty-address-content{
-            position: relative;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
+        .add{
+            border: 4rpx solid #1a8fff;
 
-            .add{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border: 4rpx solid #1a8fff;
-                border-radius: 50%;
-
-                .icon-add{
-                    font-size: 40rpx;
-                    font-weight: bolder;
-                    color: #1a8fff;
-                }
+            .icon-add{
+                font-size: 40rpx;
+                font-weight: bolder;
+                color: #1a8fff;
             }
+        }
 
-            .bg{
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: -1;
-            }
+        .bg{
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
         }
 
     }

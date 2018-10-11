@@ -8,40 +8,47 @@
         letter-spacing:2rpx;
     }
 
-    .flex{
-        display: flex;
+    .pr{
+        position: relative;
     }
 
     .flex-start{
+        display: flex;
         justify-content: flex-start;
         align-items: center;
     }
 
     .flex-center{
+        display: flex;
         justify-content: center;
         align-items: center;
     }
 
     .flex-end{
+        display: flex;
         justify-content: flex-end;
         align-items: center;
     }
 
     .flex-around{
+        display: flex;
         justify-content: space-around;
         align-items: center;
     }
 
     .flex-between{
+        display: flex;
         justify-content: space-between;
         align-items: center;
     }
 
     .flex-column{
+        display: flex;
         flex-direction: column;
     }
 
     .flex-column-center{
+        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -55,16 +62,8 @@
         height: 100%;
     }
 
-    .br5{
-        border-radius: 5rpx;
-    }
-
-    .br10{
-        border-radius: 10rpx;
-    }
-
-    .br-percent50{
-        border-radius: 50%;
+    .border-box{
+        box-sizing: border-box;
     }
 
     .f18{
@@ -99,8 +98,78 @@
         font-size: 34rpx;
     }
 
+    .f40{
+        font-size: 40rpx;
+    }
+
     .f-family-edo{
         font-family: 'Edo SZ';
+    }
+
+    .o-hidden{
+        overflow: hidden;
+    }
+
+    .ellipsis{
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .c0{
+        color: #000;
+    }
+
+    .c3{
+        color: #333;
+    }
+
+    .c6{
+       color: #666;
+    }
+
+    .c9{
+        color: #999;
+    }
+
+    .ca{
+        color: #aaa;
+    }
+
+    .cf0{
+        color: #f0f0f0;
+    }
+
+    .cf{
+        color: #fff;
+    }
+
+    .cec2c98{
+        color: #ec2c98;
+    }
+
+    .cf68668{
+        color: #f68668;
+    }
+
+    .br5{
+        border-radius: 5rpx;
+    }
+
+    .br10{
+        border-radius: 10rpx;
+    }
+
+    .br-percent50{
+        border-radius: 50%;
+    }
+
+    .bgcf{
+        background-color: #fff;
+    }
+
+    .bgcf0{
+        background-color: #f0f0f0;
     }
 
     .mt5 {
