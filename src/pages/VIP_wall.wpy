@@ -62,8 +62,8 @@
             fileUrl:imgApi.fileUrl,
             wall_bg:imgApi.wall_bg,
             energy:imgApi.energy,
-            logoWidth:131,
-            logoHeight:234,
+            logoWidth:api.logoWidth,
+            logoHeight:api.logoHeight,
             // 礼物墙还是照片
             wallId:null,
             info:null,

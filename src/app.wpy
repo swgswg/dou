@@ -98,6 +98,10 @@
         font-size: 34rpx;
     }
 
+    .f36{
+        font-size: 36rpx;
+    }
+
     .f40{
         font-size: 40rpx;
     }

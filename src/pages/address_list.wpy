@@ -25,19 +25,18 @@
     import EmptyAddress from '@/components/empty_address';
     import AddressList from '@/components/address_list';
 
+    let userId = null;
+
     export default class MyPage extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '我的地址'
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             emptyaddress:EmptyAddress,
             addresslist:AddressList,
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
@@ -49,21 +48,20 @@
             selectOrAdd:'新建',
         };
 
-        // 在Page和Component共用的生命周期函数
-        async onLoad(){
-            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-            this.$apply();
 
+            userId = wepy.getStorageSync(USER_INFO).id;
+            this.$apply();
         };
 
         async onShow() {
-            let userInfo = await wepy.getStorageSync(USER_INFO);
             // 获取地址列表
             let res = await api.getAddress({
                 query:{
-                    userId:userInfo.id
+                    userId: userId
                 }
             });
             if(res.data.state == 1){
@@ -80,15 +78,9 @@
             this.$apply();
         };
 
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             add(){
-                wepy.redirectTo({
-                    url:'/pages/address_add'
-                });
+                this.$redirect('/pages/address_add');
             },
         };
 
@@ -110,7 +102,7 @@
             align-items: center;
             width: 100%;
             left: 0;
-            bottom: 0rpx;
+            bottom: 0;
             color: #fff;
             background-color: #ffd824;
         }

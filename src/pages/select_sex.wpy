@@ -103,7 +103,7 @@
 
             // 选择人物
             selectProfile(e){
-                let index = e.currentTarget.dataset.index;
+                let index = parseInt(e.currentTarget.dataset.index);
                 this.currentProfile = index;
                 if(this.currentSex == 0){
                     this.logo = 'man'+(index+1)+'.png';

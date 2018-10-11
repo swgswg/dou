@@ -18,25 +18,20 @@
     import tip from '@/utils/tip';
     import AddressAdd from '@/components/address_add';
 
+    let addressId = null;
+
     export default class MyPage extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '编辑地址'
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             addressadd:AddressAdd,
-
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            userId:null,
-            addressId:null,
-            // address:null,
             consignee:null,
             mobile:null,
             region:null,
@@ -45,39 +40,29 @@
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(options){
-            let that = this;
-            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+        onLoad(options){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-
-            let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
 
             if(util.isEmpty(options.addressId)){
                tip.error('网络错误');
             } else {
-                this.addressId = options.addressId;
+                addressId = options.addressId;
             }
             this.$apply();
         }
 
         // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
         async onReady() {
-            let that = this;
             // 通过地址id获取地址详情
             let res = await api.getAddressId({
                 query:{
-                    addressId:that.addressId
+                    addressId: addressId
                 }
             });
             if(res.data.state == 1){
                 let addr = res.data.data;
-                console.log(addr);
                 this.consignee = addr.consignee;
                 this.mobile = addr.mobile;
                 this.status = addr.status;
@@ -89,14 +74,12 @@
             this.$apply();
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 删除地址
             async deleteAddr(){
-                let addressId = this.addressId;
                 let res = await api.deleteAddress({
                     query:{
-                        addressId:addressId
+                        addressId: addressId
                     }
                 });
                 if(res.data.state == 1){
@@ -110,20 +93,20 @@
                                 wepy.redirectTo({
                                     url: '/pages/address_list'
                                 })
-                            },1100);
+                            },1000);
                         }
                     });
+                } else {
+                    tip.error('删除失败');
                 }
             },
 
             // 保存编辑地址
             editAddr(){
-                this.$broadcast('saveAddr','edit',this.addressId);
+                this.$broadcast('saveOrEdit','edit',this.addressId);
             },
         };
 
-        // 声明组件之间的事件处理函数
-        events = {};
     }
 </script>
 
@@ -141,7 +124,6 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            /*background-color: #ffd824;*/
             color: #fff;
             box-sizing: border-box;
 

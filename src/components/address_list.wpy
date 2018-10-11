@@ -74,19 +74,22 @@
             // 选择地址再跳转回去
             selectAddrToOtherPage(e){
                 let currentPage = util.getCurrentPageUrl();
-                if(currentPage == 'pages/commit_order'){
-                    wx.navigateTo({
+                if(currentPage === 'pages/commit_order'){
+                    // 提交订单页跳转到地址列表页
+                    wepy.navigateTo({
                         url:'/pages/address_list'
                     });
                 } else {
                     let index = e.currentTarget.dataset.index;
                     let address = this.addressList[index];
                     let prevUrl = util.getPrevPageUrl();
-                    if(prevUrl == 'pages/commit_order'){
+                    if(prevUrl === 'pages/commit_order'){
                         let pages = getCurrentPages();
                         let prevPage = pages[pages.length - 2];
                         prevPage.changeAddr(address);
                         wepy.navigateBack();
+                        // console.log(prevUrl);
+                        // this.$emit('changeAddr',address);
                     }
                 }
 

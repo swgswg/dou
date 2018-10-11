@@ -10,9 +10,6 @@
 <script>
     import wepy from 'wepy';
     import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
-    import util from '@/utils/util';
-    import tip from '@/utils/tip';
-    import api from '@/utils/api';
     import AddressAdd from '@/components/address_add';
 
     export default class MyPage extends wepy.page {
@@ -30,11 +27,11 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            userId:null,
             consignee:null,
             mobile:null,
             region:['北京市','北京市','东城区'],
             street:null,
+            // 1默认/0不默认
             status:0,
         };
 
@@ -43,32 +40,16 @@
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-
-            let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
             this.$apply();
         }
 
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
-        onReady() {
-        };
-
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
+            // 保存地址
             async saveAddress(){
-                this.$broadcast('saveAddr','save');
+                this.$broadcast('saveOrEdit','save');
             },
         };
 
-        // 声明组件之间的事件处理函数
-        events = {};
     }
 </script>
 

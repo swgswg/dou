@@ -1,6 +1,7 @@
+// page--提交订单
 <template>
     <view class="commit-order">
-        <view class="commit-order-content">
+        <view>
             <!--地址 start-->
             <block wx:if="{{hasAddress}}">
                 <view style="width:100%;height:{{160*px2rpxHeight}}px;background-color:#fff;">
@@ -8,7 +9,7 @@
                 </view>
             </block>
             <block wx:else>
-                <view class="" style="width:100%;height:{{154*px2rpxHeight}}px;">
+                <view style="width:100%;height:{{154*px2rpxHeight}}px;">
                     <emptyaddress :selectOrAdd.sync="selectOrAdd"></emptyaddress>
                 </view>
             </block>
@@ -16,39 +17,39 @@
 
             <!--商品信息 start-->
             <view class="goods-infomation" style="margin-top:{{20*px2rpxHeight}}px;padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;box-sizing: border-box">
-                <view class="infomation">
-                    <view class="info-img" style="width:{{185*px2rpxWidth}}px;">
+                <view class="flex-start w-percent100">
+                    <view class="flex-center" style="width:{{185*px2rpxWidth}}px;">
                         <image src="{{fileUrl + goodsInfo.photo}}" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
                     </view>
-                    <view class="name-price-num" style="width:{{480*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
-                        <view class="name-price">
-                            <view class="name">{{goodsInfo.name}}</view>
-                            <view class="price">¥{{goodsInfo.money}}</view>
+                    <view class="flex-column" style="width:{{480*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
+                        <view class="flex-between">
+                            <view class="f32 c0">{{goodsInfo.name}}</view>
+                            <view class="f24 price">¥{{goodsInfo.money}}</view>
                         </view>
-                        <view class="num" style="margin-top:{{45*px2rpxHeight}}px;">x{{goodsNum}}</view>
+                        <view class="flex-end f24 ca" style="margin-top:{{45*px2rpxHeight}}px;">x{{goodsNum}}</view>
                     </view>
                 </view>
-                <view class="express">
+                <view class="flex-between w-percent100 f30">
                     <view style="font-size:30rpx;color:#000;">配送方式</view>
-                    <view class="express-right" style="width:{{130*px2rpxWidth}}px;">普通快递 <text class="iconfont icon-youjiantou" style="margin-top:{{5*px2rpxHeight}}px;"></text></view>
+                    <view class="flex-between f24 ca" style="width:{{130*px2rpxWidth}}px;">普通快递 <text class="iconfont icon-youjiantou" style="margin-top:{{5*px2rpxHeight}}px;"></text></view>
                 </view>
             </view>
             <!--商品信息 end-->
 
             <!--合计 start-->
-            <view class="heji" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
+            <view class="flex-between f30 border-box bgcf" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
                 <view>合计</view>
                 <view style="color:#f03e3e">¥{{goodsTotal}}<text style="font-size:20rpx" wx:if="{{goodsInfo.type != 0}}">({{goodsIntegrals}}积分)</text></view>
             </view>
             <!--合计 end-->
 
             <!--提交订单 start-->
-            <view class="commit" style="height:{{98*px2rpxHeight}}px;">
-                <veiw class="heji" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">
+            <view class="flex-center w-percent100 bgcf commit" style="height:{{98*px2rpxHeight}}px;">
+                <veiw class="flex-end h-percent100 border-box" style="width:{{519*px2rpxWidth}}px;padding-right:{{20*px2rpxWidth}}px;font-size:30rpx;">
                     合计：<text style="color:#f03e3e;">¥{{goodsTotal}}</text>
                         <text style="font-size:20rpx;color:#f03e3e;" wx:if="{{goodsInfo.type != 0}}">({{goodsIntegrals}}积分)</text>
                 </veiw>
-                <view class="btn" style="width:{{231*px2rpxWidth}}px;" @tap.stop="commitOrder">{{btnText}}</view>
+                <view class="flex-center h-percent100 cf btn" style="width:{{231*px2rpxWidth}}px;" @tap.stop="commitOrder">{{btnText}}</view>
             </view>
             <!--提交订单 end-->
         </view>
@@ -80,8 +81,8 @@
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
-            emptyaddress:EmptyAddress,
             addresslist:AddressList,
+            emptyaddress:EmptyAddress,
         };
 
         // 页面所需数据均需在这里声明，可用于模板数据绑定
@@ -102,7 +103,6 @@
             // 总积分
             goodsIntegrals:null,
             btnText:'提交订单',
-
         };
 
         // 在Page和Component共用的生命周期函数
@@ -133,47 +133,13 @@
 
         // 只在Page中存在的页面生命周期函数
         async onReady() {
-            let that = this;
             // 获取商品信息
-            let result = await api.getGoodsDetails({
-                query:{
-                    goodsId: goodsId
-                }
-            });
-            if(result.data.state == 1){
-                that.goodsInfo = result.data.data;
-                // console.log(result.data.data);
-            } else {
-                tip.error('网络错误');
-            }
+            this.getOneGoodsInfo();
 
-            // 合计
-            this.goodsTotal = calculate.calcMul(parseFloat(this.goodsInfo.money),parseInt(this.goodsNum));
-            // 总积分
-            if(this.goodsInfo.type != 0){
-                this.goodsIntegrals = calculate.calcMul(parseFloat(this.goodsInfo.integral),parseInt(this.goodsNum));
-            }
             // 获取默认地址
-            let res = await api.getMoRen({
-                query:{
-                    userId:userId,
-                }
-            });
-            if(res.data.state == 1){
-                let addr = res.data.data;
-                if(util.isEmpty(addr)){
-                    this.hasAddress = false;
-                } else {
-                    this.hasAddress = true;
-                    this.address = [addr];
-                }
-            } else {
-                tip.error('网络错误')
-            }
-            this.$apply();
+            this.getDefaultAddr();
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 提交订单
             async commitOrder(){
@@ -215,6 +181,53 @@
             }
         };
 
+        // 获取商品信息
+        async getOneGoodsInfo(){
+            let res = await api.getGoodsDetails({
+                query:{
+                    goodsId: goodsId
+                }
+            });
+            if(res.data.state == 1){
+                let goodsInfo = res.data.data;
+
+                // 合计
+                this.goodsTotal = calculate.calcMul(parseFloat(goodsInfo.money),parseInt(this.goodsNum));
+
+                // 总积分
+                if(goodsInfo.type != 0){
+                    this.goodsIntegrals = calculate.calcMul(parseFloat(goodsInfo.integral),parseInt(this.goodsNum));
+                }
+
+                this.goodsInfo = goodsInfo;
+                this.$apply();
+            } else {
+                tip.error('网络错误');
+            }
+
+        }
+
+        // 获取默认地址
+        async getDefaultAddr(){
+            let res = await api.getMoRen({
+                query:{
+                    userId: userId,
+                }
+            });
+            if(res.data.state == 1){
+                let addr = res.data.data;
+                if(util.isEmpty(addr)){
+                    this.hasAddress = false;
+                } else {
+                    this.hasAddress = true;
+                    this.address = [addr];
+                }
+            } else {
+                tip.error('网络错误')
+            }
+            this.$apply();
+        }
+
         // 付钱
         pay(myorderId){
             let that = this;
@@ -248,12 +261,22 @@
             }
         };
 
+        // events = {
+        //     // 改变地址,供子组件调用
+        //     changeAddr(addr){
+        //         console.log(addr);
+        //         this.address = [addr];
+        //         this.hasAddress = true;
+        //         this.$apply();
+        //     }
+        // };
+
         // 改变地址,供子组件调用
         changeAddr(addr){
             this.address = [addr];
             this.hasAddress = true;
             this.$apply();
-        };
+        }
 
     }
 </script>
@@ -264,115 +287,30 @@
     }
     .commit-order{
 
-        .commit-order-content{
+        .goods-infomation{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            background-color: #fff;
+            border-bottom: 1rpx solid #bbb;
 
-            .goods-infomation{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                width: 100%;
-                background-color: #fff;
-                border-bottom: 1rpx solid #bbb;
-
-                .infomation{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    width: 100%;
-
-                    .info-img{
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                    }
-
-                    .name-price-num{
-                        display: flex;
-                        flex-direction: column;
-
-                        .name-price{
-                            display: flex;
-                            justify-content: space-between;
-                            align-items: center;
-                            
-                            .name{
-                                font-size: 32rpx;
-                                color: #000;
-                            }
-                            .price{
-                                font-size: 24rpx;
-                                color: #f03e3e;
-                            }
-                        }
-
-                        .num{
-                            display: flex;
-                            justify-content: flex-end;
-                            align-items: center;
-                            font-size: 24rpx;
-                            color: #aaa;
-                        }
-                    }
-                }
-
-                .express{
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                    font-size: 30rpx;
-
-                    .express-right{
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        font-size: 24rpx;
-                        color: #aaa;
-
-                        .icon-youjiantou{
-                            font-size: 22rpx;
-                        }
-
-                    }
-
-                }
+            .price{
+                color: #f03e3e;
             }
 
-            .heji{
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                font-size: 30rpx;
-                box-sizing: border-box;
-                background-color: #fff;
+            .icon-youjiantou{
+                font-size: 22rpx;
             }
+        }
 
-            .commit{
-                position: fixed;
-                left: 0;
-                bottom: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                background-color: #fff;
+        .commit{
+            position: fixed;
+            left: 0;
+            bottom: 0;
 
-                .heji{
-                    display: flex;
-                    justify-content:flex-end;
-                    align-items: center;
-                    height: 100%;
-                    box-sizing: border-box;
-                }
-
-                .btn{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100%;
-                    color: #fff;
-                    background-color: #ffd824;
-                }
+            .btn{
+                background-color: #ffd824;
             }
         }
     }

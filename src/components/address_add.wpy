@@ -41,6 +41,8 @@
     import api from '@/utils/api';
     import MySwitch from '@/components/common/my_switch';
 
+    let userId = null;
+
     export default class AddressAdd extends wepy.component {
         components = {
             myswitch:MySwitch,
@@ -49,40 +51,26 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            userId:null,
-            // 收货人
-            // consignee:null,
-            // 电话
-            // mobile:null,
-            // street:null,
-            // region: ['北京市','北京市','东城区'],
-            // 1设为默认/0不默认
-            // activeDot:0,
         };
 
         props = {
             consignee:{
-                type:String,
                 default:null,
                 twoWay:true,
             },
             mobile:{
-                type:Number,
                 default:null,
                 twoWay:true,
             },
             region:{
-                type:Array,
                 default:['北京市','北京市','东城区'],
                 twoWay:true,
             },
             street:{
-                type:String,
                 default:null,
                 twoWay:true,
             },
             status:{
-                type:Number,
                 default:0,
                 twoWay:true,
             }
@@ -94,9 +82,7 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
-            let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
-            this.activeDot = this.status;
+            userId = wepy.getStorageSync(USER_INFO).id;
             this.$apply();
         }
 
@@ -104,85 +90,97 @@
             // 修改省市区
             bindRegionChange: function (e) {
                 this.region = e.detail.value;
-                // console.log(this.region);
+                this.$apply();
             },
 
             // 获取收货人
             inputConsignee(e){
                 this.consignee = e.detail.value;
+                this.$apply();
             },
 
             // 获取联系电话
             inputMobile(e){
                 this.mobile = e.detail.value;
+                this.$apply();
             },
 
             // 获取详细地址
             inputStreet(e){
                 this.street = e.detail.value;
+                this.$apply();
             },
 
         };
 
         events = {
             // 保存地址
-            async saveAddr(flag,myaddressId = null){
-                let that = this;
-                let consignee = this.consignee;
-                if(util.isEmpty(consignee)){
+            saveOrEdit(flag,myaddressId = null){
+                // let consignee = this.consignee;
+                if(util.isEmpty(this.consignee)){
                     tip.error('收货人不能为空');
                     return;
                 }
 
-                let mobile = this.mobile;
-                if(!util.checkReg(1,mobile)){
+                // let mobile = this.mobile;
+                if(!util.checkReg(1,this.mobile)){
                     tip.error('手机号不正确');
                     return;
                 }
 
-                let street = this.street;
-                if(util.isEmpty(street)){
+                // let street = this.street;
+                if(util.isEmpty(this.street)){
                     tip.error('详细地址不能为空');
                     return;
                 }
                 let site = this.region.join(' ') + ' ' + this.street;
                 let data = {
-                    userId:that.userId,
-                    site:site,
-                    consignee:consignee,
-                    mobile:mobile,
-                    status:that.status
+                    userId: userId,
+                    site: site,
+                    consignee: this.consignee,
+                    mobile: this.mobile,
+                    status: this.status
                 };
-                if(flag == 'save'){
+                if(flag === 'save'){
                     // 保存
-                    let saveres = await api.addAddress({
-                        query:data
-                    });
-                    if(saveres.data.state == 1){
-                        tip.toast('添加成功');
-                        wepy.redirectTo({
-                            url:'/pages/address_list'
-                        });
-                    } else {
-                        tip.error('网络错误');
-                    }
-                } else if(flag == 'edit'){
+                    this.saveAddress(data);
+                } else if(flag === 'edit'){
                     // 修改
                     data.addressId = myaddressId;
-                    let editres = await api.updateAddress({
-                        query:data
-                    });
-                    if(editres.data.state == 1){
-                        tip.toast('修改成功');
-                        wepy.redirectTo({
-                            url:'/pages/address_list'
-                        });
-                    } else {
-                        tip.error('网络错误');
-                    }
+                    this.editAddress(data);
                 }
             },
         };
+
+        // 保存地址
+        async saveAddress(data){
+            let res = await api.addAddress({
+                query: data
+            });
+            if(res.data.state == 1){
+                tip.toast('添加成功');
+                wepy.redirectTo({
+                    url:'/pages/address_list'
+                });
+            } else {
+                tip.error('网络错误');
+            }
+        }
+
+        // 修改地址
+        async editAddress(data){
+            let res = await api.updateAddress({
+                query:data
+            });
+            if(res.data.state == 1){
+                tip.toast('修改成功');
+                wepy.redirectTo({
+                    url:'/pages/address_list'
+                });
+            } else {
+                tip.error('网络错误');
+            }
+        }
     }
 </script>
 

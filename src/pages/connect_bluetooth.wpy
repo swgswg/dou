@@ -1,14 +1,14 @@
 <template>
     <view class="connect-bluetooth" style="height:{{1205*px2rpxHeight}}px;">
-        <view class="text1" style="margin-top:{{50*px2rpxHeight}}px;">当前没有连接设备</view>
-        <view class="connect-bluetooth-circle" style="margin-top:{{100*px2rpxHeight}}px;">
+        <view class="flex-center w-percent100 f36 cf" style="margin-top:{{50*px2rpxHeight}}px;">当前没有连接设备</view>
+        <view class="flex-center w-percent100" style="margin-top:{{100*px2rpxHeight}}px;">
             <circle :imgSrc.sync = "imgSrcData" ></circle>
         </view>
-        <view class="text2" style="margin-top:{{152*px2rpxHeight}}px;">
-            <navigator class="text2-btn" style="width:{{560*px2rpxWidth}}px;height:{{90*px2rpxHeight}}px;border-radius:{{45*px2rpxHeight}}px;" open-type="switchTab" url="/pages/go_shake">手动抖动</navigator>
+        <view class="flex-center w-percent100" style="margin-top:{{152*px2rpxHeight}}px;">
+            <navigator class="flex-center f36 cf text2-btn" style="width:{{560*px2rpxWidth}}px;height:{{90*px2rpxHeight}}px;border-radius:{{45*px2rpxHeight}}px;" open-type="switchTab" url="/pages/go_shake">手动抖动</navigator>
         </view>
-        <view class="text3" style="margin-top:{{56*px2rpxHeight}}px;">
-            <navigator class="text3-btn" style="width:{{560*px2rpxWidth}}px;height:{{90*px2rpxHeight}}px;border-radius:{{45*px2rpxHeight}}px;" open-type="navigate" url="/pages/select_bluetooth">进入蓝牙设置</navigator>
+        <view class="flex-center w-percent100" style="margin-top:{{56*px2rpxHeight}}px;">
+            <navigator class="flex-center f36 cf text3-btn" style="width:{{560*px2rpxWidth}}px;height:{{90*px2rpxHeight}}px;border-radius:{{45*px2rpxHeight}}px;" open-type="navigate" url="/pages/select_bluetooth">进入蓝牙设置</navigator>
         </view>
     </view>
 </template>
@@ -20,26 +20,22 @@
     import Circle from  '@/components/circle';
 
     export default class MyPage extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '蓝牙连接',
             disableScroll: true,
             enablePullDownRefresh:false,
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             circle:Circle
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
             imgSrcData: imgApi.bluetooth_active,
         };
 
-        // 在Page和Component共用的生命周期函数
         async onLoad(){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
@@ -47,21 +43,6 @@
             this.$apply();
         }
 
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
-        onReady() {
-        };
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {
-
-        };
-
-        // 声明组件之间的事件处理函数
-        events = {};
     }
 </script>
 
@@ -71,68 +52,11 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
-        /*height: 1205rpx;*/
         background: linear-gradient(to top right,#ec2c98, #f68668);
 
-        .text1{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            /*margin-top: 50rpx;*/
-            font-size: 36rpx;
-            color: #fff;
-            /*border: 1rpx solid red;*/
-        }
-
-        .connect-bluetooth-circle{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            /*margin-top: 100rpx;*/
-            /*border: 1rpx solid blue;*/
-        }
-
-        .text2,.text3{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        .text2{
-            /*margin-top: 152rpx;*/
-            /*border: 1rpx solid red;*/
-
-            .text2-btn{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                /*width: 560rpx;*/
-                /*height: 90rpx;*/
-                font-size: 36rpx;
-                color: #fff;
-                /*border-radius: 45rpx;*/
-                border: 4rpx solid #fff;
-                background:rgba(255,255,255,0.3);
-            }
-        }
-
-        .text3{
-            /*margin-top: 56rpx;*/
-            .text3-btn{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                /*width: 560rpx;*/
-                /*height: 90rpx;*/
-                font-size: 36rpx;
-                color: #fff;
-                /*border-radius: 45rpx;*/
-                border: 4rpx solid #fff;
-                background:rgba(255,255,255,0.3);
-            }
+        .text2-btn,.text3-btn{
+            border: 4rpx solid #fff;
+            background:rgba(255,255,255,0.3);
         }
 
     }
