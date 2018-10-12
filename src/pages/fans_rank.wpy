@@ -58,9 +58,11 @@
                     </view>
                 </block>
                 <!--正在加载显示-->
-                <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
+                <bottomLoadMore :show.sync="showLoading"></bottomLoadMore>
                 <!--暂无数据显示-->
                 <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
+                <!--最后一页提示-->
+                <bottomend :show.sync="isEnd"></bottomend>
             </scroll-view>
         </view>
     </view>
@@ -71,24 +73,29 @@
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
+    import tip from '@/utils/tip';
     import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
+    import BottomEnd from  '@/components/common/bottom_end';
+
+    let userId = null;
+    let page = 1;
+    let pageSize = 20;
+    let isLastPage = false;
 
     export default class MyPage extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '粉丝排名',
             disableScroll: true,
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             bottomLoadMore:BottomLoadMore,
-            placeholder:Placeholder
+            placeholder:Placeholder,
+            bottomend:BottomEnd,
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             fans_data:imgApi.fans_data,
             fans_no1:imgApi.fans_no1,
@@ -96,62 +103,41 @@
             fans_no3:imgApi.fans_no3,
             px2rpxWidth:0,
             px2rpxHeight:0,
-            page:1,
-            pageSize:20,
-            // 是否是最后一页
-            isLastPage:true,
-            userId:null,
             fansList:[],
             //是否有数据
             is_empty: true,
             //是否显示 底部loading
             showLoading: false,
+            isEnd:false,
         };
 
-        // 在Page和Component共用的生命周期函数
         onLoad() {
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
+            userId = wepy.getStorageSync(USER_INFO).id;
             this.$apply();
         };
 
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
         onReady() {
             // 获取用户粉丝
-            this.getFans(this.page,this.pageSize);
+            this.getFans();
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
-                if(this.isLastPage){
-                    wx.showToast({
-                        title: '最后一页了',
-                        icon: 'none',
-                        duration: 1000
-                    });
-                   return;
+                if(isLastPage){
+                    return;
                 }
-                this.showLoading = true;
-                let page = this.page + 1;
-                let pageSize = this.pageSize;
-                this.getFans(page,pageSize);
-                this.showLoading = false;
+                page++;
+                this.getFans();
             },
 
             // 前去朋友礼物墙
             goToFriendGiftWall(e){
                 let userId = e.currentTarget.dataset.userid;
-
                 wx.navigateTo({
                     url:'/pages/friend_gift_wall?userId='+userId
                 });
@@ -159,13 +145,14 @@
         };
 
         // 获取用户粉丝
-        async getFans(mypage,mypageSize){
-            let that = this;
+        async getFans(){
+            this.showLoading = true;
+            this.$apply();
             let res = await api.getFans({
                 query:{
-                    userId:that.userId,
-                    page: mypage,
-                    pageSize:mypageSize
+                    userId: userId,
+                    page: page,
+                    pageSize: pageSize
                 }
             });
             if(res.data.state == 1){
@@ -173,16 +160,17 @@
                 if(util.isEmpty(fansList)){
                     fansList = [];
                 }
-                let data = res.data.data.PageInfo.list;
-                let newFansData = fansList.concat(data);
-                this.fansList = newFansData;
-                this.isLastPage = res.data.data.PageInfo.isLastPage;
+                let newFansData = fansList.concat(res.data.data.PageInfo.list);
                 if(newFansData.length < 1){
                     this.is_empty = true;
                 } else {
                     this.is_empty = false;
                 }
-                that.$apply();
+                this.fansList = newFansData;
+                isLastPage = res.data.data.PageInfo.isLastPage;
+                this.isEnd = (!this.is_empty) && isLastPage;
+                this.showLoading = false;
+                this.$apply();
             }
         }
     }

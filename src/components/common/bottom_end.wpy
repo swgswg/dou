@@ -1,0 +1,32 @@
+// 已经到底了
+<style lang="less">
+    .bottom-end{
+
+        .icon-zhongdian{
+            font-size: 36rpx;
+            color: #f68668;
+        }
+    }
+</style>
+
+<template>
+    <view class="flex-center w-percent100 bottom-end" style="height:60rpx;" wx:if="{{show}}">
+        <text class="iconfont icon-zhongdian"></text>
+        <text class="flex-center f24 cf68668" style="margin-left:15rpx;">已经到底了^_^</text>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+
+    export default class BottomEnd extends wepy.component {
+
+        props= {
+            show:{
+                type: Boolean,
+                default: false
+            }
+        }
+
+    }
+</script>

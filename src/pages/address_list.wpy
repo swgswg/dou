@@ -1,5 +1,19 @@
+// page--地址列表
+<style lang="less">
+    .address{
+        position: relative;
+
+        .add-btn {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            background-color: #ffd824;
+        }
+    }
+</style>
+
 <template>
-    <view class="address">
+    <view class="flex-center w-percent100 address">
         <block wx:if="{{hasData}}">
             <view style="width:100%;">
                 <addresslist :addressList.sync="addressList" :isAllowEdit.sync="isAllowEditAddress"></addresslist>
@@ -10,7 +24,7 @@
                 <emptyaddress :selectOrAdd.sync="selectOrAdd"></emptyaddress>
             </view>
         </block>
-        <view class="add-btn" style="height:{{98*px2rpxHeight}}px;">
+        <view class="flex-center w-percent100 cf add-btn" style="height:{{98*px2rpxHeight}}px;">
             <view @tap.stop="add">+ 新增地址</view>
         </view>
     </view>
@@ -86,25 +100,3 @@
 
     }
 </script>
-
-<style lang="less">
-    .address{
-        position: relative;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-
-        .add-btn {
-            position: fixed;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            left: 0;
-            bottom: 0;
-            color: #fff;
-            background-color: #ffd824;
-        }
-    }
-</style>

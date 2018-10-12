@@ -12,6 +12,10 @@
         position: relative;
     }
 
+    .pa{
+        position: absolute;
+    }
+
     .flex-start{
         display: flex;
         justify-content: flex-start;
@@ -56,6 +60,10 @@
 
     .w-percent100{
         width: 100%;
+    }
+
+    .w-percent50{
+        width: 50%;
     }
 
     .h-percent100{

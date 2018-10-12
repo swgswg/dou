@@ -3,9 +3,9 @@
         <view style="width: 100%;">
             <addressadd :consignee.sync="consignee" :mobile.sync="mobile" :region.sync="region" :street.sync="street" :status.sync="status"></addressadd>
         </view>
-        <view class="btn" style="height:{{98*px2rpxHeight}}px;margin-top:{{140*px2rpxHeight}}px;padding:0 {{70*px2rpxWidth}}px;">
-            <view class="btn-each btn-delete" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="deleteAddr">删除</view>
-            <view class="btn-each btn-save" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="editAddr">保存</view>
+        <view class="flex-between cf border-box" style="height:{{98*px2rpxHeight}}px;margin-top:{{140*px2rpxHeight}}px;padding:0 {{70*px2rpxWidth}}px;">
+            <view class="flex-center btn-delete" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="deleteAddr">删除</view>
+            <view class="flex-center btn-save" style="width:{{270*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;border-radius:{{50*px2rpxHeight}}px;" @tap.stop="editAddr">保存</view>
         </view>
     </view>
 </template>
@@ -120,25 +120,11 @@
         justify-content: center;
         width: 100%;
 
-        .btn{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            color: #fff;
-            box-sizing: border-box;
-
-            .btn-each{
-                display: flex;
-                justify-content:center;
-                align-items: center;
-            }
-
-            .btn-delete{
-               background-color: #d2d2d2;
-            }
-            .btn-save{
-                background-color: #ffd824;
-            }
+        .btn-delete{
+           background-color: #d2d2d2;
+        }
+        .btn-save{
+            background-color: #ffd824;
         }
     }
 </style>

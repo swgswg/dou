@@ -3,7 +3,7 @@
         <view style="width: 100%;">
             <addressadd :consignee.sync="consignee" :mobile.sync="mobile" :region.sync="region" :street.sync="street" :status.sync="status"></addressadd>
         </view>
-        <view class="btn" style="height:{{98*px2rpxHeight}}px;margin-top:{{50*px2rpxHeight}}px" @tap.stop="saveAddress">保存</view>
+        <view class="flex-center cf btn" style="height:{{98*px2rpxHeight}}px;margin-top:{{50*px2rpxHeight}}px" @tap.stop="saveAddress">保存</view>
     </view>
 </template>
 
@@ -64,10 +64,6 @@
         width: 100%;
 
         .btn{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #fff;
             background-color: #ffd824;
         }
     }

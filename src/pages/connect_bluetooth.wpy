@@ -27,7 +27,7 @@
         };
 
         components = {
-            circle:Circle
+            circle:Circle,
         };
 
         data = {
