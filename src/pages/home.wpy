@@ -1,126 +1,42 @@
+<style lang="less">
+
+</style>
+
 <template>
-    <!--<view>-->
-        <!--<image style="width:{{winWidth}}px;height:{{winHeight}}px;" src="{{ imgSrc }}" />-->
-    <!--</view>-->
-    <view class="tiaoguo" style="width:{{120*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;top:{{20*px2rpxHeight}}px;right:{{20*px2rpxWidth}}px;border-radius:{{30*px2rpxHeight}}px;" @tap.stop="goToxxx">跳过</view>
-    <swiper autoplay="{{swiper_autoplay}}" interval="2000"  bindanimationfinish="animationFinish" style="width:{{winWidth}}px;height:{{winHeight}}px;">
-        <repeat for="{{imgSrc}}" key="index" item="img">
-            <swiper-item>
-                <image src="{{img}}" style="width:{{winWidth}}px;height:{{winHeight}}px;"/>
-            </swiper-item>
-        </repeat>
-    </swiper>
+    <view class="flex-center">
+        <image src="{{img}}" style="width:{{winWidth}};height:{{winHeight}};"></image>
+    </view>
 </template>
 
 <script>
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
-    import util from '@/utils/util';
-    import { USER_INFO, PX_TO_RPX} from '@/utils/constant';
-
-    let userInfo = null;
+    import {USER_INFO, PX_TO_RPX} from '@/utils/constant';
 
     export default class Home extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '抖腿'
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             winWidth:0,
             winHeight:0,
-            px2rpxWidth:0,
-            px2rpxHeight:0,
-            swiper_autoplay:true,
-            imgSrc: [
-                imgApi.doutui_jinru5,
-                imgApi.doutui_jinru1,
-                imgApi.doutui_jinru2,
-                imgApi.doutui_jinru3,
-                imgApi.doutui_jinru4,
-            ]
+            img:imgApi.doutui_jinru5,
         };
 
-        // 在Page和Component共用的生命周期函数
         onLoad() {
-            // 获取系统信息
-            let systemInfo = wepy.getSystemInfoSync();
-            this.winWidth = systemInfo.windowWidth;
-            this.winHeight = systemInfo.windowHeight;
-
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
-            this.px2rpxWidth = px2rpx.px2rpxWidth;
-            this.px2rpxHeight = px2rpx.px2rpxHeight;
-            this.$apply();
+            this.winWidth = px2rpx.originalWidth + 'px';
+            this.winHeight = px2rpx.originalHeight + 'px';
         };
 
-        // 只在Page中存在的页面生命周期函数
         onReady() {
-            userInfo = wepy.getStorageSync(USER_INFO);
-        };
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
-        methods = {
-            // 跳过
-            goToxxx(){
-                this.isLogo();
-                // if(util.isEmpty(userInfo.logo)){
-                //     // 用户信息不全
-                //     this.$redirect({
-                //         url: '/pages/mobile_verify'
-                //     });
-                // } else {
-                //     // 用户信息完整
-                //     this.$redirect({
-                //         url: '/pages/connect_bluetooth'
-                //     });
-                // }
-            },
-
-            // 滑块动画结束
-            animationFinish(e){
-                let that = this;
-                // 获取结束时的滑块索引
-                let current = e.detail.current;
-                // 最后一个滑块结束时同时结束动画,跳转到首页
-                if(current >= 3){
-                    that.swiper_autoplay = false;
-                    setTimeout(function() {
-                        that.isLogo();
-                    },1000);
-                }
-            },
-        };
-
-        // 判断用户信息是否完全
-        isLogo(){
-            if(util.isEmpty(userInfo.logo)){
-                // 用户信息不全
-                this.$redirect({
-                    url: '/pages/mobile_verify'
+            setTimeout(function() {
+                wepy.redirectTo({
+                    url:'/pages/open'
                 });
-            } else {
-                // 用户信息完整
-                this.$redirect({
-                    // url: '/pages/select_model'
-                    url: '/pages/connect_bluetooth'
-                });
-            }
-        }
-
+            },1500);
+        };
     }
 </script>
 
-<style lang="less">
-    .tiaoguo{
-        position: fixed;
-        z-index: 999;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        font-size: 24rpx;
-        color:#fff;
-        background-color: #666;
-    }
-</style>

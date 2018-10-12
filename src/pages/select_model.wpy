@@ -1,36 +1,18 @@
 // page--选择模式
 <template>
-    <view class="select-model" style="height:{{originalHeight}}px;">
-        <!--<view class="model-text" style="padding-top:{{20*px2rpxHeight}}px;">根据年龄选择相应模式</view>-->
-        <!--<view class="model-each">-->
-            <!--<view class="each" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;margin-top:{{15*px2rpxHeight}}px;">-->
-                <!--<image src="{{model_oldman}}" class="img1" data-select="1" @tap.stop="selectModel" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;"></image>-->
-                <!--<image wx:if="{{select == 1}}" src="{{model_dui}}" class="img2" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;"></image>-->
-            <!--</view>-->
-            <!--<view class="each" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;margin-top:{{15*px2rpxHeight}}px;">-->
-                <!--<image src="{{model_child}}" class="img1" data-select="2" @tap.stop="selectModel" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;"></image>-->
-                <!--<image wx:if="{{select == 2}}" src="{{model_dui}}" class="img2" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;"></image>-->
-            <!--</view>-->
-            <!--<view class="each" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;margin-top:{{15*px2rpxHeight}}px;">-->
-                <!--<image src="{{model_woman}}" class="img1" data-select="3" @tap.stop="selectModel" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;"></image>-->
-                <!--<image wx:if="{{select == 3}}" src="{{model_dui}}" class="img2" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;"></image>-->
-            <!--</view>-->
-            <!--<view class="each" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;margin-top:{{15*px2rpxHeight}}px;">-->
-                <!--<image src="{{model_man}}" class="img1" data-select="4" @tap.stop="selectModel" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;"></image>-->
-                <!--<image wx:if="{{select == 4}}" src="{{model_dui}}" class="img2" style="width:{{540*px2rpxWidth}}px;height:{{230*px2rpxWidth}}px;"></image>-->
-            <!--</view>-->
-        <!--</view>-->
+    <view class="flex-center w-percent100 select-model"
+          style="height:{{1100*px2rpxHeight}}px;background-image: url({{select_model_bg}})">
+
         <view class="model-content" style="height:{{800*px2rpxHeight}}px;">
-            <block wx:for="{{model}}" wx:for-item="model" wx:key="{{index}}" @tap.stop="goToGameModel">
-                <view class="each" style="height:{{100*px2rpxHeight}}px;" data-status="{{model.status}}">
+            <block wx:for="{{model}}" wx:for-item="model" wx:key="{{index}}">
+                <view class="each" style="height:{{90*px2rpxHeight}}px;"
+                      data-skip="{{model.skip}}"
+                      @tap.stop="goToGameModel">
                     {{model.name}}
                 </view>
             </block>
-
         </view>
-        <!--<view class="model-btn" style="margin-top:{{20*px2rpxHeight}}px;">-->
-            <!--<view class="button button-highlight button-pill button-large" @tap.stop="comfirm">确认</view>-->
-        <!--</view>-->
+
     </view>
 </template>
 
@@ -38,8 +20,8 @@
     import wepy from 'wepy';
     import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
-    // import api from '@/utils/api';
-    // import tip from '@/utils/tip';
+
+    let userId = null;
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -51,132 +33,48 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            originalHeight:0,
+            windowHeight:0,
             model_child:imgApi.model_child,
             model_man:imgApi.model_man,
             model_oldman:imgApi.model_oldman,
             model_woman:imgApi.model_woman,
             model_dui:imgApi.model_dui,
+            select_model_bg:imgApi.select_model_bg,
             model:[
-                {status:1,name:'挑战模式'},
-                {status:2,name:'故事模式'},
-                {status:3,name:'PK模式'},
-                {status:4,name:'休闲模式'},
+                {skip: '/pages/fight',name:'挑战模式'},
+                {skip: '/pages/',name:'故事模式'},
+                {skip: '/pages/',name:'PK模式'},
+                {skip: '/pages/',name:'休闲模式'},
             ],
-            userId:null,
+            // userId:null,
             select:0,
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(){
-            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-            this.originalHeight = px2rpx.originalHeight;
-            let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.userId = userInfo.id;
+            userId = wepy.getStorageSync(USER_INFO).id;
             this.$apply();
         }
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 选择模式
-            // selectModel(e){
-            //     let select = e.currentTarget.dataset.select;
-            //     this.select = select;
-            // },
-
-            // 确认
-            // async comfirm(){
-            //     let userId = this.userId;
-            //     let Pattern = this.select;
-            //     let res =await api.UpdatePattern({
-            //         query:{
-            //             userId: userId,
-            //             Pattern: Pattern
-            //         }
-            //     });
-            //     if(res.data.state == 1){
-            //         // 更新个人信息
-            //         this.updateUserInfo();
-            //         wepy.redirectTo({
-            //             url: '/pages/connect_bluetooth'
-            //         });
-            //     } else {
-            //         tip.error('网络错误');
-            //     }
-            // },
-
-            // 选择模式
             goToGameModel(e){
-                let status = e.currentTarget.dataset.status;
-                this.$navigate('/pages/game',{model:status});
+                let skip = e.currentTarget.dataset.skip;
+                this.$navigate(skip);
             },
 
         };
-
-        // 更新个人缓存
-        // async updateUserInfo(){
-        //     let userInfo = wepy.getStorageSync(USER_INFO);
-        //     // 获取个人信息
-        //     let OneUserInfo = await api.getOneUserInfo({
-        //         query:{
-        //             userId:userInfo.id
-        //         }
-        //     });
-        //     if(OneUserInfo.data.state == 1){
-        //         // 更新缓存
-        //         wepy.setStorageSync(USER_INFO, OneUserInfo.data.data);
-        //     }
-        // }
-
     }
 </script>
 
 <style lang="less">
     .select-model{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-
-        .model-text,.model-btn{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .model-text{
-            font-size: 25rpx;
-            color: #999;
-        }
-
-        .model-each{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-
-            .each{
-                position: relative;
-
-                .img1{
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    z-index: 10;
-                }
-
-                .img2{
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    z-index: 20;
-                }
-            }
-        }
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
 
         .model-content{
             display: flex;
@@ -184,7 +82,6 @@
             justify-content: space-around;
             align-items: center;
             width: 70%;
-            box-sizing: border-box;
             border-radius: 20rpx;
             background-color: #353a68;
 
@@ -192,8 +89,8 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 70%;
-                font-size: 40rpx;
+                width: 65%;
+                font-size: 36rpx;
                 font-weight: bold;
                 color:#ffff46;
                 border: 2px solid #ffff46;

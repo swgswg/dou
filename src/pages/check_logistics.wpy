@@ -25,7 +25,7 @@
     import api from '@/utils/api';
     import {PX_TO_RPX } from '@/utils/constant';
 
-    export default class MyPage extends wepy.page {
+    export default class CheckLogistics extends wepy.page {
         config = {
             navigationBarTitleText: '查看物流'
         };

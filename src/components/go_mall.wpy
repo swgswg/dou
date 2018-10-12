@@ -1,0 +1,54 @@
+// components--去商城
+<style lang="less">
+    .go-mall{
+
+        .mall{
+            background-color: #fcf05b;
+        }
+    }
+</style>
+
+<template>
+    <view class="flex-center go-mall">
+        <image src="{{mall}}"
+               style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
+               @tap.stop="goToMall">
+        </image>
+        <!--<view class="flex-center f28 c0 br-percent50 mall"-->
+              <!--style="width:{{70*px2rpxWidth}}px;height:{{70*px2rpxWidth}}px;"-->
+              <!--@tap.stop="goToMall">-->
+            <!--商城-->
+        <!--</view>-->
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+
+    export default class GoMall extends wepy.component {
+
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            mall:imgApi.mall,
+        };
+
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
+
+        mathods = {
+            goToMall(){
+                wepy.navigateTo({
+                    url:'/pages/mall'
+                });
+            }
+        }
+    }
+</script>
+

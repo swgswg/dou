@@ -1,23 +1,39 @@
-<template>
-    <view class="fans-rank">
+// 粉丝榜单
+<style lang="less">
+    .fans-rank{
+        padding: 30rpx 24rpx 0rpx 24rpx;
 
-        <view class="fans-title" style="height:{{80*px2rpxHeight}}px">
-            <view class="title-center" style="width:{{80*px2rpxWidth}}px; ">排名</view>
-            <view class="title-center" style="width:{{80*px2rpxWidth}}px; ">头像</view>
-            <view class="title-center" style="width:{{150*px2rpxWidth}}px;">用户名</view>
-            <view class="title-center" style="width:{{100*px2rpxWidth}}px;">VIP墙</view>
-            <view class="title-center" style="width:{{200*px2rpxWidth}}px;">礼物值</view>
+        .fans-title{
+            background: linear-gradient(to top right,#ec2c98, #f68668);
+        }
+
+        .fans-data-each{
+            border: 1px solid #ffe78c;
+
+        }
+    }
+</style>
+
+<template>
+    <view class="flex-column-center w-percent100 border-box fans-rank">
+
+        <view class="flex-around w-percent100 f28 c3 fans-title" style="height:{{80*px2rpxHeight}}px">
+            <view class="flex-center" style="width:{{80*px2rpxWidth}}px; ">排名</view>
+            <view class="flex-center" style="width:{{80*px2rpxWidth}}px; ">头像</view>
+            <view class="flex-center" style="width:{{150*px2rpxWidth}}px;">用户名</view>
+            <!--<view class="flex-center" style="width:{{100*px2rpxWidth}}px;">VIP墙</view>-->
+            <view class="flex-center" style="width:{{200*px2rpxWidth}}px;">礼物值</view>
         </view>
 
-        <view class="fans-data" style="{{1080*px2rpxHeight}}px">
+        <view class="flex-column-center w-percent100" style="{{1080*px2rpxHeight}}px">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <block wx:for="{{fansList}}" wx:for-item="fans" wx:key="{{index}}">
-                    <view class="fans-data-each"
+                    <view class="flex-around w-percent100 f28 c3 fans-data-each"
                           style="height:{{80*px2rpxHeight}}px;margin-bottom:{{10*px2rpxHeight}}px;"
                           data-userid="{{fans.userId}}" @tap.stop="goToFriendGiftWall">
 
                         <!--排名 start-->
-                        <view class="data-no data-center" style="width:{{80*px2rpxWidth}}px;">
+                        <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">
                             <block wx:if="{{fans.rownum == 1}}">
                                 <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="{{fans_no1}}"></image>
                             </block>
@@ -34,25 +50,25 @@
                         <!--排名 end-->
 
                         <!--头像 start-->
-                        <view class="data-profile data-center" style="width:{{80*px2rpxWidth}}px;">
+                        <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">
                             <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;" src="{{fans.photo}}"></image>
                         </view>
                         <!--头像 end-->
 
                         <!--用户名 start-->
-                        <view class="data-name" style="width:{{150*px2rpxWidth}}px;">{{fans.name}}</view>
+                        <view class="flex-center ellipsis" style="width:{{150*px2rpxWidth}}px;">{{fans.name}}</view>
                         <!--用户名 end-->
 
                         <!--vip墙 start-->
-                        <view class="vip-qiang data-center" style="width:{{100*px2rpxWidth}}px;">
-                            <image style="width:{{25*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"></image>
-                        </view>
+                        <!--<view class="flex-center" style="width:{{100*px2rpxWidth}}px;">-->
+                            <!--<image style="width:{{25*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"></image>-->
+                        <!--</view>-->
                         <!--vip墙 end-->
 
                         <!--礼物值 start-->
-                        <view class="gift-data" style="width:{{200*px2rpxWidth}}px;">
-                            <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" class="gift-img" src="{{fans_data}}"></image>
-                            <view class="data-center" style="margin-left:{{8*px2rpxWidth}}px;">{{fans.score}}</view>
+                        <view class="flex-start border-box" style="width:{{200*px2rpxWidth}}px;">
+                            <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" src="{{fans_data}}"></image>
+                            <view class="flex-center" style="margin-left:{{8*px2rpxWidth}}px;">{{fans.score}}</view>
                         </view>
                         <!--礼物值 end-->
                     </view>
@@ -176,75 +192,3 @@
     }
 </script>
 
-<style lang="less">
-    .fans-rank{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        padding: 30rpx 24rpx 0rpx 24rpx;
-        box-sizing: border-box;
-
-        .fans-title{
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-            font-size: 28rpx;
-            color: #333;
-            background: linear-gradient(to top right,#ec2c98, #f68668);
-
-            .title-center{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-        }
-
-        .fans-data{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-
-            .fans-data-each{
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                width: 100%;
-                font-size: 28rpx;
-                color: #333;
-                border: 1px solid #ffe78c;
-
-
-                .data-center{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .data-name{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-
-                .gift-data{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    box-sizing: border-box;
-                }
-            }
-        }
-    }
-
-
-
-
-</style>

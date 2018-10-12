@@ -1,0 +1,182 @@
+// page--挑战模式
+<style lang="less">
+    .fight{
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+
+        .num{
+            font-size: 100rpx;
+            font-weight: bolder;
+        }
+
+        .time{
+            font-weight: bolder;
+        }
+
+    }
+</style>
+
+<template>
+    <view class="pr flex-column fight"
+          style="width:{{widWidth}}px;height:{{widHeight}}px;background-image: url({{bgImg}});">
+
+        <!--退出按钮 start-->
+        <view class="pa" style="top:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+            <outmodel></outmodel>
+        </view>
+        <!--退出按钮 end-->
+
+        <!--倒计时 start-->
+        <view class="flex-center w-percent100 f36 cfcf05b time" style="margin-top:{{100*px2rpxHeight}}px;">
+            <view>倒计时: </view>
+            <view style="width:{{200*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;margin:0 {{20*px2rpxWidth}}px;">
+                <countdown :time.sync="countDownTime" :timeFinish.sync="timeFinish"></countdown>
+            </view>
+            <view>分</view>
+        </view>
+        <!--倒计时 end-->
+
+        <!--抖动次数 start-->
+        <view class="flex-center w-percent100 cfcf05b f-family-edo num" style="margin-top:{{50*px2rpxHeight}}px;">
+            <view>{{shakeNumer}}</view>
+        </view>
+        <!--抖动次数 end-->
+
+        <!--点击按钮 start-->
+        <view>
+            <view class="flex-center w-percent100">
+                <image src="{{btnImg}}" style="width:{{317*px2rpxWidth}}px;height:{{272*px2rpxWidth}}px;"></image>
+            </view>
+        </view>
+        <!--点击按钮 end-->
+
+        <!--商城按钮 start-->
+        <view class="pa" style="bottom:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+            <gomall></gomall>
+        </view>
+        <!--商城按钮 send-->
+
+        <!--通关奖励弹窗 start-->
+        <view wx:if="{{showCoverLayer}}">
+            <coverlayer>
+                <view slot="content" class="pr flex-column-center bg-repeat-size"
+                      style="width:{{705*px2rpxWidth}}px;height:{{735*px2rpxWidth}}px;background-image: url({{jiangli}});">
+                    <!--奖励礼物 start-->
+                    <view class="pa flex-center w-percent100 border">
+                        <!--<image src="{{}}" style="width:{{}}px;height:{{}}px;"></image>-->
+                    </view>
+                    <!--奖励礼物 end-->
+
+                    <view class="flex-center w-percent100 f30 border" style="margin:{{30*px2rpxWidth}}px 0;">
+                        <view>点击</view>
+                        <view style="margin:0 {{10*px2rpxWidth}}px;">
+                            <gomall></gomall>
+                        </view>
+                        <view>购买更多礼物</view>
+                    </view>
+
+                    <view class="flex-center border">
+                        <image src="{{liqu}}" style="width:{{189*px2rpxWidth}}px;height:{{96*px2rpxWidth}}px;"></image>
+                    </view>
+
+                </view>
+            </coverlayer>
+        </view>
+        <!--通关奖励弹窗 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import OutModel from '@/components/out_model';
+    import GoMall from '@/components/go_mall';
+    import CountDown from '@/components/count_down';
+    import CoverLayer from '@/components/common/cover_layer';
+
+    export default class Fight extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: '挑战模式',
+            disableScroll: true,
+            enablePullDownRefresh:false,
+        };
+
+        // 声明页面中所引用的组件，或声明组件中所引用的子组件
+        components = {
+            outmodel: OutModel,
+            gomall: GoMall,
+            countdown: CountDown,
+            coverlayer: CoverLayer,
+        };
+
+        // 页面所需数据均需在这里声明，可用于模板数据绑定
+        data = {
+            widWidth:0,
+            widHeight:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            bgImg: imgApi.fight_bg,
+            btnImg:imgApi.open_btn,
+            jiangli:imgApi.flight_jiangli,
+            liqu:imgApi.flight_liqu,
+            countDownTime:'01:00',
+            // true倒计时结束/false倒计时没有结束
+            timeFinish:false,
+            shakeNumer:0,
+            // true显示遮盖层/false不显示遮盖层
+            showCoverLayer:true,
+        };
+
+        // 在Page和Component共用的生命周期函数
+        onLoad() {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.widWidth = px2rpx.originalWidth;
+            this.widHeight = px2rpx.originalHeight;
+
+            this.$apply();
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onShow() {
+        };
+
+        // 只在Page中存在的页面生命周期函数
+        onReady() {
+        };
+
+        methods = {
+
+        };
+
+        watch = {
+            timeFinish(newValue){
+                // 倒计时结束
+                if(newValue){
+
+                }
+            },
+        };
+
+        events = {
+            cancelShow(){
+                this.cancelCoverlayer();
+            }
+        };
+
+        // 倒计时结束送出奖励
+        clearanceIncentive(){
+            this.showCoverLayer = true;
+        }
+
+        // 取消遮盖层
+        cancelCoverlayer(){
+            this.showCoverLayer = false;
+            this.$apply();
+        }
+    }
+</script>

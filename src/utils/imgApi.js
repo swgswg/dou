@@ -14,6 +14,16 @@ module.exports = {
     doutui_jinru3: uploadFileUrl + 'doutui_jinru3.png',
     doutui_jinru4: uploadFileUrl + 'doutui_jinru4.png',
 
+    // 开启抖腿
+    open1:uploadFileUrl + 'open1.png',
+    open2:uploadFileUrl + 'open2.png',
+    open3:uploadFileUrl + 'open3.png',
+    open4:uploadFileUrl + 'open4.png',
+    open_btn:uploadFileUrl + 'open_btn.png',
+    select_model_bg:uploadFileUrl + 'select_model_bg.png',
+
+
+
     // 男女性别
     man_active: uploadFileUrl + 'man_active.png',
     man_inactive: uploadFileUrl + 'man_inactive.png',
@@ -25,6 +35,12 @@ module.exports = {
     man2: uploadFileUrl + 'man2.png',
     woman1: uploadFileUrl + 'woman1.png',
     woman2: uploadFileUrl + 'woman2.png',
+
+    // 挑战模式背景/商城按钮/通关奖励/领取按钮
+    fight_bg:uploadFileUrl + 'fight_bg.png',
+    mall:uploadFileUrl + 'mall.png',
+    flight_jiangli: uploadFileUrl + 'flight_jiangli.png',
+    flight_liqu: uploadFileUrl + 'flight_liqu.png',
 
     // 蓝牙
     bluetooth_inactive: uploadFileUrl + 'bluetooth_inactive.png',

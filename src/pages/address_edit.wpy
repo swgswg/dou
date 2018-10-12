@@ -20,7 +20,7 @@
 
     let addressId = null;
 
-    export default class MyPage extends wepy.page {
+    export default class AddressEdit extends wepy.page {
         config = {
             navigationBarTitleText: '编辑地址'
         };

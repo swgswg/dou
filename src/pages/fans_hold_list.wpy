@@ -1,4 +1,20 @@
 // page--粉丝霸榜
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+    .fans-hold-list{
+
+        .fans-list-each{
+            border-bottom: 1rpx solid #ccc;
+
+            .energy{
+                color:#d34e00;
+            }
+        }
+    }
+</style>
+
 <template>
     <view class="w-percent100 fans-hold-list">
         <block wx:if="{{!is_empty}}">
@@ -160,18 +176,3 @@
     }
 </script>
 
-<style lang="less">
-    page{
-        background-color: #f0f0f0;
-    }
-    .fans-hold-list{
-
-        .fans-list-each{
-            border-bottom: 1rpx solid #ccc;
-
-            .energy{
-                color:#d34e00;
-            }
-        }
-    }
-</style>

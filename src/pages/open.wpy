@@ -1,0 +1,109 @@
+// page--开启抖动
+<style lang="less">
+    .open{
+
+        .text{
+            font-weight: bolder;
+            border: 2px solid #fcf05b;
+        }
+    }
+</style>
+
+<template>
+    <view class="flex-center bgc353a68 open" style="width:{{winWidth}};height:{{winHeight}}">
+        <view wx:if="{{!isOpenShake}}">
+            <view class="flex-center f40 br10 cfcf05b text"
+                  style="width: {{380*px2rpxWidth}}px;height:{{110*px2rpxHeight}}px;"
+                  @tap.stop="goToShake" >
+                开启抖动模式
+            </view>
+            <view class="flex-center" style="margin-top:{{100*px2rpxHeight}}px;">
+                <image src="{{btnImg}}" style="width: {{220*px2rpxWidth}}px;height: {{190*px2rpxWidth}}px;"></image>
+            </view>
+        </view>
+        <view class="w-percent100;h-percent100" wx:else>
+            <swiper autoplay="{{swiper_autoplay}}" interval="2000"  bindanimationfinish="animationFinish" style="width:{{winWidth}};height:{{winHeight}};">
+                <repeat for="{{imgSrc}}" key="index" item="img">
+                    <swiper-item>
+                        <image src="{{img}}" style="width:{{winWidth}};height:{{winHeight}};"/>
+                    </swiper-item>
+                </repeat>
+            </swiper>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX, USER_INFO} from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
+
+    let userInfo = null;
+
+    export default class MyPage extends wepy.page {
+        config = {
+            navigationBarTitleText: '开启抖动'
+        };
+
+        data = {
+            winWidth:0,
+            winHeight:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            btnImg:imgApi.open_btn,
+            swiper_autoplay:true,
+            imgSrc: [
+                imgApi.open1,
+                imgApi.open2,
+                imgApi.open3,
+                imgApi.open4,
+            ],
+            isOpenShake: false,
+        };
+
+        onLoad() {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.winWidth = px2rpx.originalWidth + 'px';
+            this.winHeight = px2rpx.originalHeight + 'px';
+
+            userInfo = wepy.getStorageSync(USER_INFO);
+            this.$apply();
+        };
+
+        methods = {
+            goToShake(){
+                this.isOpenShake = true;
+                this.$apply();
+            },
+
+            // 滑块动画结束
+            animationFinish(e){
+                let that = this;
+                // 获取结束时的滑块索引
+                let current = e.detail.current;
+                // 最后一个滑块结束时同时结束动画,跳转到首页
+                if(current >= 3){
+                    that.swiper_autoplay = false;
+                    setTimeout(function() {
+                        that.isLogo();
+                    },1000);
+                }
+            },
+        };
+
+        // 判断用户信息是否完全
+        isLogo(){
+            if(util.isEmpty(userInfo.logo)){
+                // 用户信息不全
+                this.$redirect('/pages/mobile_verify');
+            } else {
+                // 用户信息完整
+                this.$switch('/pages/select_model');
+            }
+        }
+    }
+</script>
+

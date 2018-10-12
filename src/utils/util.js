@@ -411,6 +411,61 @@ function randomWord(randomFlag, min, max) {
 }
 
 /**
+ * 将时分秒转化为秒数
+ * @param time
+ */
+function timeToSecond(time) {
+    let timeArr = time.split(':');
+    let hour = null;
+    let min = null;
+    let sec = null;
+    if(timeArr.length === 1){
+        return timeArr[0];
+    } else if(timeArr.length === 2){
+        min = parseInt(timeArr[0]);
+        sec = parseInt(timeArr[1]);
+        return min * 60 + sec;
+    } else if(timeArr.length === 3){
+        hour = parseInt(timeArr[0]);
+        min = parseInt(timeArr[1]);
+        sec = parseInt(timeArr[2]);
+        return hour * 3600 + min * 60 + sec;
+    }
+}
+
+/**
+ * 时分秒倒计时
+ * @param time
+ */
+function countDown(time) {
+    // 00:00:00 将时间转化为秒数
+    let second = timeToSecond(time) - 1;
+    let hour = Math.floor(second / 3600);
+    second = second % 3600;
+    let minute = Math.floor(second / 60);
+    second = second % 60;
+    if(hour < 10){
+        hour = '0' + hour;
+    }
+    if(minute < 10){
+        minute = '0' + minute;
+    }
+    if(second < 10){
+        second = '0' + second;
+    }
+    if( parseInt(hour) > 0){
+
+        return hour + ':' + minute + ':' + second;
+    }
+    if( parseInt(minute) > 0){
+        return minute + ':' + second;
+    }
+    if( parseInt(second) > 0){
+        return second;
+    }
+}
+
+/**
  * ArrayBuffer转16进度字符串
  * @param buffer
  * @returns {string}
@@ -461,4 +516,6 @@ module.exports = {
     timeStamp: timeStamp,
     ab2hex:ab2hex,
     hex2ab:hex2ab,
+    timeToSecond:timeToSecond,
+    countDown:countDown,
 };

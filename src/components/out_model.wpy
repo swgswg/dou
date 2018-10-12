@@ -1,0 +1,42 @@
+// component--退出到选择游戏模式
+<style lang="less">
+
+</style>
+
+<template>
+    <view class="flex-center">
+        <image src="{{logout}}"
+               style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
+               @tap.stop="goToSelectModel">
+        </image>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+
+    export default class OutModel extends wepy.component {
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            logout:imgApi.logout,
+        };
+
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
+
+        methods = {
+            goToSelectModel(){
+                wx.switchTab({
+                    url:'/pages/select_model'
+                });
+            }
+        }
+    }
+</script>

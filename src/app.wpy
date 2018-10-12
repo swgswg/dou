@@ -164,6 +164,10 @@
         color: #f68668;
     }
 
+    .cfcf05b{
+        color:#fcf05b
+    }
+
     .br5{
         border-radius: 5rpx;
     }
@@ -184,96 +188,109 @@
         background-color: #f0f0f0;
     }
 
-    .mt5 {
-        margin-top: 5px;
+    .bgc353a68{
+        background-color: #353a68;
     }
 
-    .mt10 {
-        margin-top: 20rpx;
+    .bg-repeat-size{
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
     }
 
-    .mt15 {
-        margin-top: 30rpx;
+    .border{
+        border: 1px solid red;
     }
 
-    .mt20 {
-        margin-top: 40rpx;
-    }
+    /*.mt5 {*/
+        /*margin-top: 5px;*/
+    /*}*/
 
-    .mr5 {
-        margin-right: 10rpx;
-    }
+    /*.mt10 {*/
+        /*margin-top: 20rpx;*/
+    /*}*/
 
-    .mr10 {
-        margin-right: 20rpx;
-    }
+    /*.mt15 {*/
+        /*margin-top: 30rpx;*/
+    /*}*/
 
-    .mr15 {
-        margin-right: 30rpx;
-    }
+    /*.mt20 {*/
+        /*margin-top: 40rpx;*/
+    /*}*/
 
-    .mr20 {
-        margin-right: 40rpx;
-    }
+    /*.mr5 {*/
+        /*margin-right: 10rpx;*/
+    /*}*/
 
-    .ml5 {
-        margin-left: 10rpx;
-    }
+    /*.mr10 {*/
+        /*margin-right: 20rpx;*/
+    /*}*/
 
-    .ml10 {
-        margin-left: 20rpx;
-    }
+    /*.mr15 {*/
+        /*margin-right: 30rpx;*/
+    /*}*/
 
-    .ml15 {
-        margin-left: 30rpx;
-    }
+    /*.mr20 {*/
+        /*margin-right: 40rpx;*/
+    /*}*/
 
-    .ml30 {
-        margin-left: 60rpx;
-    }
+    /*.ml5 {*/
+        /*margin-left: 10rpx;*/
+    /*}*/
 
-    .mb5 {
-        margin-bottom: 10rpx;
-    }
+    /*.ml10 {*/
+        /*margin-left: 20rpx;*/
+    /*}*/
 
-    .mb10 {
-        margin-bottom: 20rpx;
-    }
+    /*.ml15 {*/
+        /*margin-left: 30rpx;*/
+    /*}*/
 
-    .mb15 {
-        margin-bottom: 30rpx;
-    }
+    /*.ml30 {*/
+        /*margin-left: 60rpx;*/
+    /*}*/
 
-    .mb20 {
-        margin-bottom: 40rpx;
-    }
+    /*.mb5 {*/
+        /*margin-bottom: 10rpx;*/
+    /*}*/
 
-    .m10 {
-        margin: 20rpx;
-    }
+    /*.mb10 {*/
+        /*margin-bottom: 20rpx;*/
+    /*}*/
 
-    .m15 {
-        margin: 30rpx;
-    }
+    /*.mb15 {*/
+        /*margin-bottom: 30rpx;*/
+    /*}*/
 
-    .m20 {
-        margin: 40rpx;
-    }
+    /*.mb20 {*/
+        /*margin-bottom: 40rpx;*/
+    /*}*/
 
-    .p10 {
-        padding: 20rpx;
-        box-sizing: border-box;
-    }
+    /*.m10 {*/
+        /*margin: 20rpx;*/
+    /*}*/
 
-    .pb10 {
-        padding-bottom: 20rpx;
-        box-sizing: border-box;
-    }
+    /*.m15 {*/
+        /*margin: 30rpx;*/
+    /*}*/
 
-    .pt15 {
-        padding-top: 15rpx;
-        box-sizing: border-box;
-    }
+    /*.m20 {*/
+        /*margin: 40rpx;*/
+    /*}*/
+
+    /*.p10 {*/
+        /*padding: 20rpx;*/
+        /*box-sizing: border-box;*/
+    /*}*/
+
+    /*.pb10 {*/
+        /*padding-bottom: 20rpx;*/
+        /*box-sizing: border-box;*/
+    /*}*/
+
+    /*.pt15 {*/
+        /*padding-top: 15rpx;*/
+        /*box-sizing: border-box;*/
+    /*}*/
 
     /* 渐变线 */
     .line{
@@ -309,8 +326,10 @@
         config = {
             pages: [
                 'pages/home',
+                'pages/open',
                 'pages/select_sex',
                 'pages/select_model',
+                'pages/fight',
                 'pages/mobile_verify',
                 'pages/friend_gift_wall',
                 'pages/send_gift',
@@ -349,7 +368,7 @@
             ],
             window: {
                 backgroundTextStyle: 'light',
-                navigationBarBackgroundColor: '#f68668',
+                navigationBarBackgroundColor: '#ecd13b',
                 navigationBarTitleText: 'WeChat',
                 navigationBarTextStyle: 'write',
                 enablePullDownRefresh: false,
@@ -368,8 +387,8 @@
                         "selectedIconPath": "static/images/tabbar/rank_active.png"
                     },
                     {
-                        "pagePath": "pages/go_shake",
-                        "text": "抖腿大乐斗",
+                        "pagePath": "pages/select_model",
+                        "text": "选择模式",
                         "iconPath": "static/images/tabbar/shake.png",
                         "selectedIconPath": "static/images/tabbar/shake_active.png"
                     },
@@ -464,37 +483,6 @@
             }
         }
 
-        /* 此接口等设备接入(连接蓝牙成功时使用) */
-        // 把上次的脚动记录存入数据库(个人记录不需要房间号)
-        // async addLegRecord(){
-        //     // let userInfo = wepy.getStorageSync(USER_INFO);
-        //     let prevShakeLegTime = wepy.getStorageSync(SHAKE_LEG_TIME);
-        //     let prevShakeLegNumber = wepy.getStorageSync(SHAKE_LEG_NUMBER);
-        //     if(!util.isEmpty(prevShakeLegTime)){
-        //         prevShakeLegTime = util.secondToDHMS(prevShakeLegTime);
-        //
-        //         if(util.isEmpty(prevShakeLegNumber)){
-        //             prevShakeLegNumber = 0;
-        //         }
-        //
-        //         let res = await api.addRecord({
-        //             query:{
-        //                 // userId:that.userInfo.id,
-        //                 userId: user_info.id,
-        //                 time:prevShakeLegTime,
-        //                 shakeNum:prevShakeLegNumber,
-        //                 type:0, // 0自己,1好友
-        //                 status: 1,// 0手动,1脚动
-        //             }
-        //         });
-        //         if(res.data.state == 1){
-        //             wepy.setStorageSync(SHAKE_LEG_TIME, 0);
-        //             wepy.setStorageSync(SHAKE_LEG_NUMBER, 0);
-        //         }
-        //     }
-        // };
-
-
         // px2rpx(尺寸适配比例) rpx = px * (目标设备宽 px 值 / 750)
         px2rpx(){
             let systemInfo = wepy.getSystemInfoSync();
@@ -505,6 +493,7 @@
                 px2rpxHeight:systemInfo.screenHeight / 1334,
                 originalWidth:systemInfo.windowWidth,
                 originalHeight:systemInfo.windowHeight,
+                tabBarHeight:systemInfo.statusBarHeight,
             });
         }
 

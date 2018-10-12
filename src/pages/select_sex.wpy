@@ -1,6 +1,6 @@
 <template>
     <view class="select-sex">
-        <view class="sex" style="top:{{50*px2rpxHeight}}px;">请选择您的性别</view>
+        <!--<view class="sex" style="top:{{50*px2rpxHeight}}px;">请选择您的性别</view>-->
 
         <!--<view class="sex-img" style="margin-top:{{100*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">-->
             <!--<image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>-->
