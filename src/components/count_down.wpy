@@ -26,11 +26,11 @@
         props = {
             time:{
                 type:String,
-                default:'01:00',
                 twoWay:true
             },
             timeFinish:{
                 type:Boolean,
+                default:true,
                 // true倒计时结束/false倒计时没有结束
                 twoWay:true,
             }
@@ -49,18 +49,28 @@
             }
         };
 
+        watch = {
+            timeFinish(newValue){
+                if(newValue){
+                    clearInterval(cleat_set);
+                } else {
+                    this.count();
+                }
+            }
+        };
+
         // 倒计时
         count(){
             let that = this;
             cleat_set = setInterval(function() {
                 let newTime = util.timeToSecond(that.time);
                 if(newTime <= 0){
-                    that.time = 0;
                     that.timeFinish = true;
+                    that.$apply();
                     clearInterval(cleat_set);
-                } else {
-                    that.time = util.countDown(newTime);
+                    return;
                 }
+                that.time = util.SecondFormat(newTime - 1, 'mm:ss');
                 that.$apply();
             },1000);
         }

@@ -32,6 +32,9 @@ const logoHeight = 234;
 // 满能量才能送礼
 const fullEnergy = 500;
 
+// 挑战模式时间
+const fightTime = '01:00';
+
 /**
  * 接口
  * @param  {[type]} params [description]
@@ -169,6 +172,7 @@ export default {
     logoWidth,
     logoHeight,
     fullEnergy,
+    fightTime,
     myLogin,
     updateSex,
     addRecord,

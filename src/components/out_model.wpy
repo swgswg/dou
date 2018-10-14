@@ -33,6 +33,7 @@
 
         methods = {
             goToSelectModel(){
+                this.$emit('outEvents');
                 wx.switchTab({
                     url:'/pages/select_model'
                 });

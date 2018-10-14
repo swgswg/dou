@@ -42,8 +42,9 @@
             this.$apply();
         }
 
-        mathods = {
+        methods = {
             goToMall(){
+                this.$emit('receiveEvents');
                 wepy.navigateTo({
                     url:'/pages/mall'
                 });

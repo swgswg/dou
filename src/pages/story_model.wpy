@@ -1,0 +1,136 @@
+// page--故事模式
+<style lang="less">
+    .story{
+
+    }
+</style>
+
+<template>
+    <view class="pr flex-column bg-repeat-size story"
+          style="width:{{widWidth}}px;height:{{widHeight}}px;background-image: url({{bgImg}});">
+
+        <!--退出按钮 start-->
+        <view class="pa" style="top:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+            <outmodel></outmodel>
+        </view>
+        <!--退出按钮 end-->
+
+        <!--点击按钮 start-->
+        <view class="flex-center w-percent100">
+            <image src="{{btnImg}}"
+                   style="width:{{332*px2rpxWidth}}px;height:{{292*px2rpxWidth}}px;"
+                   @tap.stop="clickEvent">
+            </image>
+        </view>
+        <!--点击按钮 end-->
+
+        <!--遮盖层 start-->
+        <view wx:if="{{showCoverLayer}}">
+            <coverlayer>
+                <veiw slot="content">
+
+                </veiw>
+            </coverlayer>
+        </view>
+        <!--遮盖层 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import OutModel from '@/components/out_model';
+    import GoMall from '@/components/go_mall';
+    import CountDown from '@/components/count_down';
+    import CoverLayer from '@/components/common/cover_layer';
+
+    let storys = null;
+
+    export default class StoryModel extends wepy.page {
+        config = {
+            navigationBarTitleText: '故事模式',
+            disableScroll: true,
+            enablePullDownRefresh:false,
+        };
+
+        components = {
+            outmodel: OutModel,
+            gomall: GoMall,
+            countdown: CountDown,
+            coverlayer: CoverLayer,
+        };
+
+        data = {
+            widWidth:0,
+            widHeight:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            bgImg: imgApi.fight_bg,
+            btnImg:imgApi.story_btn,
+            logo:null,
+            photo:null,
+            shakeNumber:0,
+            // true显示遮盖层/false不显示遮盖层
+            showCoverLayer:false,
+        };
+
+        onLoad() {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.widWidth = px2rpx.originalWidth;
+            this.widHeight = px2rpx.originalHeight;
+
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            this.logo = userInfo.logo;
+            this.photo = userInfo.photo;
+            this.$apply();
+        };
+
+        onShow() {
+        };
+
+        onReady() {
+            // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
+            wx.setKeepScreenOn({
+                keepScreenOn:true
+            });
+        };
+
+        methods = {
+            // 点击按钮计数
+            clickEvent(){
+                this.shakeNumber++;
+                this.$apply();
+            }
+        };
+
+        watch = {
+            shakeNumber(newvalue){
+
+            },
+        };
+
+        events = {
+            // 取消遮盖层
+            cancelShow(){
+                this.cancelCoverlayer();
+            },
+        };
+
+        // 取消遮盖层
+        cancelCoverlayer(){
+            this.showCoverLayer = false;
+            this.$apply();
+        }
+
+        // 获取故事
+        getStory(){
+
+        }
+    }
+</script>
+

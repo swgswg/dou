@@ -1,0 +1,126 @@
+// 休闲模式
+<style lang="less">
+    .arder{
+
+        .num{
+            font-size: 100rpx;
+            font-weight: bolder;
+        }
+    }
+</style>
+
+<template>
+    <view class="pr flex-column bg-repeat-size arder"
+          style="width:{{widWidth}}px;height:{{widHeight}}px;background-image: url({{bgImg}});">
+
+        <!--退出按钮 start-->
+        <view class="pa" style="top:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+            <outmodel></outmodel>
+        </view>
+        <!--退出按钮 end-->
+
+        <!--抖动次数 start-->
+        <view class="flex-center w-percent100 cfcf05b f-family-edo num" style="margin-top:{{100*px2rpxHeight}}px;">
+            <view class="animated {{animate}}">{{shakeHandNumber}}</view>
+        </view>
+        <!--抖动次数 end-->
+
+        <!--点击按钮 start-->
+        <view class="flex-center w-percent100" style="margin-top:{{100*px2rpxHeight}}px;">
+            <image src="{{btnImg}}"
+                   style="width:{{317*px2rpxWidth}}px;height:{{272*px2rpxWidth}}px;"
+                   @tap.stop="arderEvent">
+            </image>
+        </view>
+        <!--点击按钮 end-->
+
+        <!--商城按钮 start-->
+        <view class="pa" style="bottom:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+            <gomall></gomall>
+        </view>
+        <!--商城按钮 send-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX,USER_INFO, SHAKE_HAND_NUMBER } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import OutModel from '@/components/out_model';
+    import GoMall from '@/components/go_mall';
+    import CountDown from '@/components/count_down';
+
+    export default class ArderModel extends wepy.page {
+        config = {
+            navigationBarTitleText: '休闲模式',
+            disableScroll: true,
+            enablePullDownRefresh:false,
+        };
+
+        components = {
+            outmodel: OutModel,
+            gomall: GoMall,
+            countdown: CountDown,
+        };
+
+        data = {
+            widWidth:0,
+            widHeight:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            bgImg: imgApi.fight_bg,
+            btnImg:imgApi.open_btn,
+            jiangli:imgApi.flight_jiangli,
+            lingqu:imgApi.flight_liqu,
+            animate:'',
+            shakeHandNumber:0,
+        };
+
+        onLoad() {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.widWidth = px2rpx.originalWidth;
+            this.widHeight = px2rpx.originalHeight;
+            this.$apply();
+        };
+
+        onShow() {
+        };
+
+        onReady() {
+            // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
+            wx.setKeepScreenOn({
+                keepScreenOn:true
+            });
+        };
+
+        methods = {
+            // 点击按钮
+            arderEvent(){
+                this.shakeHandNumber++;
+                this.$apply();
+                wepy.setStorageSync(SHAKE_HAND_NUMBER,this.shakeHandNumber);
+            },
+        };
+
+        watch = {
+            shakeHandNumber(){
+                this.animated();
+            },
+        };
+
+        // 动画
+        animated(){
+            let that = this;
+            this.animate = 'zoomIn';
+            setTimeout(function() {
+                that.animate = '';
+                that.$apply();
+            },500);
+        };
+    }
+</script>
+

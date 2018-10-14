@@ -36,11 +36,14 @@ module.exports = {
     woman1: uploadFileUrl + 'woman1.png',
     woman2: uploadFileUrl + 'woman2.png',
 
-    // 挑战模式背景/商城按钮/通关奖励/领取按钮
+    // 挑战模式背景/商城按钮/通关奖励按钮/领取按钮
     fight_bg:uploadFileUrl + 'fight_bg.png',
     mall:uploadFileUrl + 'mall.png',
     flight_jiangli: uploadFileUrl + 'flight_jiangli.png',
     flight_liqu: uploadFileUrl + 'flight_liqu.png',
+
+    // 故事模式
+    story_btn:uploadFileUrl + 'story_btn.png',
 
     // 蓝牙
     bluetooth_inactive: uploadFileUrl + 'bluetooth_inactive.png',

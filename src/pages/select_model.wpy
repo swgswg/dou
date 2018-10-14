@@ -41,10 +41,10 @@
             model_dui:imgApi.model_dui,
             select_model_bg:imgApi.select_model_bg,
             model:[
-                {skip: '/pages/fight',name:'挑战模式'},
-                {skip: '/pages/',name:'故事模式'},
+                {skip: '/pages/fight_model',name:'挑战模式'},
+                {skip: '/pages/story_model',name:'故事模式'},
                 {skip: '/pages/',name:'PK模式'},
-                {skip: '/pages/',name:'休闲模式'},
+                {skip: '/pages/arder_model',name:'休闲模式'},
             ],
             // userId:null,
             select:0,

@@ -434,12 +434,14 @@ function timeToSecond(time) {
 }
 
 /**
- * 时分秒倒计时
- * @param time
+ * 将秒数转化为时分秒
+ * @param time 秒数
+ * @param format 转化的格式
+ * @returns {string}
  */
-function countDown(time) {
-    // 00:00:00 将时间转化为秒数
-    let second = timeToSecond(time) - 1;
+function SecondFormat(time,format='hh:mm:ss') {
+    // 将秒数转化为 hh:mm:ss/ mm:ss/ hh-mm-ss/ mm-ss/ ss
+    let second = time;
     let hour = Math.floor(second / 3600);
     second = second % 3600;
     let minute = Math.floor(second / 60);
@@ -453,16 +455,12 @@ function countDown(time) {
     if(second < 10){
         second = '0' + second;
     }
-    if( parseInt(hour) > 0){
 
-        return hour + ':' + minute + ':' + second;
-    }
-    if( parseInt(minute) > 0){
-        return minute + ':' + second;
-    }
-    if( parseInt(second) > 0){
-        return second;
-    }
+    let newTime = format.replace(/hh/g, hour)
+        .replace(/mm/g, minute)
+        .replace(/ss/g, second);
+
+    return newTime;
 }
 
 /**
@@ -514,8 +512,9 @@ module.exports = {
     arrDelete: arrDelete,
     randomWord: randomWord,
     timeStamp: timeStamp,
+    timeToSecond:timeToSecond,
+    SecondFormat:SecondFormat,
     ab2hex:ab2hex,
     hex2ab:hex2ab,
-    timeToSecond:timeToSecond,
-    countDown:countDown,
+
 };
