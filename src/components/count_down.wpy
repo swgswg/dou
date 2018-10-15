@@ -1,7 +1,7 @@
 // components--倒计时
 <style lang="less">
     .count-down{
-        font-size: 6vh;
+        font-size: 50rpx;
     }
 </style>
 <template>

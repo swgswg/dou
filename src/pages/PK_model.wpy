@@ -1,0 +1,103 @@
+// page--PK模式
+<style lang="less">
+    .pk-model{
+
+    }
+</style>
+
+<template>
+    <view class="pr flex-column bg-repeat-size pk-model"
+          style="width:{{widWidth}}px;height:{{widHeight}}px;background-image: url({{bgImg}});">
+        <!--退出按钮 start-->
+        <view class="pa" style="top:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+            <outmodel></outmodel>
+        </view>
+        <!--退出按钮 end-->
+
+        <!--准备按钮 start-->
+        <view class="flex-center w-percent100" style="margin-top:{{250*px2rpxHeight}}px;">
+            <image src="{{no_ready_btn}}" style="width:{{307*px2rpxWidth}}px;height:{{132*px2rpxWidth}}px;"></image>
+        </view>
+        <!--准备按钮 end-->
+
+        <!--选择时间 start-->
+        <view class="flex-center w-percent100" style="height:{{120*px2rpxWidth}}px;">
+            <selecttime></selecttime>
+        </view>
+        <!--选择时间 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import OutModel from '@/components/out_model';
+    import SelectTime from '@/components/select_time';
+
+    export default class PKModel extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: 'PK模式',
+            disableScroll: true,
+            enablePullDownRefresh:false,
+        };
+
+        components = {
+            outmodel: OutModel,
+            selecttime:SelectTime,
+        };
+
+        data = {
+            widWidth:0,
+            widHeight:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            bgImg: imgApi.pk_model_bg,
+            no_ready_btn:imgApi.no_ready_btn,
+            ready_btn: imgApi.ready_btn,
+            no_start_btn:imgApi.no_start_btn,
+            start_btn:imgApi.start_btn,
+        };
+
+        onLoad() {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.widWidth = px2rpx.originalWidth;
+            this.widHeight = px2rpx.originalHeight;
+            this.$apply();
+        };
+
+        onShow() {
+        };
+
+        onReady() {
+            // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
+            wx.setKeepScreenOn({
+                keepScreenOn:true
+            });
+        };
+
+        computed = {};
+
+        watch = {
+
+        };
+
+        methods = {};
+
+        events = {
+            // 退出事件
+            outEvents(){
+                // 抖动次数清零
+                this.shakeNumber = 0;
+                // 倒计时结束
+                this.timeFinish = true;
+                this.$apply();
+            },
+        };
+    }
+</script>

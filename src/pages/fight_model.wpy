@@ -19,15 +19,15 @@
           style="width:{{widWidth}}px;height:{{widHeight}}px;background-image: url({{bgImg}});">
 
         <!--退出按钮 start-->
-        <view class="pa" style="top:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+        <view class="pa" style="top:{{32*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;">
             <outmodel></outmodel>
         </view>
         <!--退出按钮 end-->
 
         <!--倒计时 start-->
-        <view class="flex-center w-percent100 f36 cfcf05b time" style="margin-top:{{100*px2rpxHeight}}px;">
+        <view class="flex-center w-percent100 f36 cfcf05b time" style="margin-top:{{142*px2rpxHeight}}px;">
             <view>倒计时: </view>
-            <view style="width:{{200*px2rpxWidth}}px;height:{{80*px2rpxHeight}}px;margin:0 {{20*px2rpxWidth}}px;">
+            <view style="padding:0 {{10*px2rpxWidth}}px;">
                 <countdown :time.sync="fightTime" :timeFinish.sync="timeFinish"></countdown>
             </view>
             <view>分</view>
@@ -35,24 +35,22 @@
         <!--倒计时 end-->
 
         <!--抖动次数 start-->
-        <view class="flex-center w-percent100 cfcf05b f-family-edo num" style="margin-top:{{50*px2rpxHeight}}px;">
-            <view>{{shakeNumber}}</view>
+        <view class="flex-center w-percent100 cfcf05b f-family-edo num" style="margin-top:{{20*px2rpxHeight}}px;">
+            <view class="animated {{animate}}">{{shakeHandNumber}}</view>
         </view>
         <!--抖动次数 end-->
 
         <!--点击按钮 start-->
-        <view>
-            <view class="flex-center w-percent100">
-                <image src="{{btnImg}}"
-                       style="width:{{317*px2rpxWidth}}px;height:{{272*px2rpxWidth}}px;"
-                       @tap.stop="fight_model">
-                </image>
-            </view>
+        <view class="pa flex-center w-percent100" style="top:{{700*px2rpxHeight}}px;left:0;">
+            <image src="{{btnImg}}"
+                   style="width:{{317*px2rpxWidth}}px;height:{{272*px2rpxWidth}}px;"
+                   @tap.stop="fight">
+            </image>
         </view>
         <!--点击按钮 end-->
 
         <!--开始按钮 start-->
-        <view class="flex-center w-percent100">
+        <view class="pa flex-center w-percent100" style="bottom:50rpx;left:0;">
             <view class="button button-highlight button-pill button-large"
                   @tap.stop="start">
                 开始
@@ -72,12 +70,12 @@
                 <view slot="content" class="pr flex-column-center bg-repeat-size"
                       style="width:{{705*px2rpxWidth}}px;height:{{735*px2rpxWidth}}px;background-image: url({{jiangli}});">
                     <!--奖励礼物 start-->
-                    <view class="pa flex-center w-percent100 border">
-                        <!--<image src="{{}}" style="width:{{}}px;height:{{}}px;"></image>-->
+                    <view class="flex-center w-percent100" style="margin-top:{{180*px2rpxHeight}}px;">
+                        <image src="{{fileUrl + fightData.photo}}" style="width:{{300*px2rpxWidth}}px;height:{{300*px2rpxWidth}}px;"></image>
                     </view>
                     <!--奖励礼物 end-->
 
-                    <view class="flex-center w-percent100 f30 border" style="margin:{{30*px2rpxWidth}}px 0;">
+                    <view class="flex-center w-percent100 f30" style="margin:{{30*px2rpxWidth}}px 0;">
                         <view>点击</view>
                         <view style="margin:0 {{10*px2rpxWidth}}px;">
                             <gomall></gomall>
@@ -104,10 +102,13 @@
     import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
+    import tip from '@/utils/tip';
     import OutModel from '@/components/out_model';
     import GoMall from '@/components/go_mall';
     import CountDown from '@/components/count_down';
     import CoverLayer from '@/components/common/cover_layer';
+
+    let userId = null;
 
     export default class FightModel extends wepy.page {
         config = {
@@ -128,15 +129,19 @@
             widHeight:0,
             px2rpxWidth:0,
             px2rpxHeight:0,
-            bgImg: imgApi.fight_bg,
+            fileUrl:imgApi.fileUrl,
+            bgImg: imgApi.fight_model_bg,
             btnImg:imgApi.open_btn,
             jiangli:imgApi.flight_jiangli,
             lingqu:imgApi.flight_liqu,
+            animate:'',
+            // 挑战模式基础数据
+            fightData:null,
             // 挑战模式的倒计时时间
-            fightTime:api.fightTime,
+            fightTime:'01:00',
             // true倒计时结束/false倒计时没有结束
             timeFinish:true,
-            shakeNumber:0,
+            shakeHandNumber:0,
             // true显示遮盖层/false不显示遮盖层
             showCoverLayer:false,
         };
@@ -147,7 +152,8 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.widWidth = px2rpx.originalWidth;
             this.widHeight = px2rpx.originalHeight;
-            this.$apply();
+
+            userId = wepy.getStorageSync(USER_INFO).id;
         };
 
         onReady() {
@@ -155,12 +161,16 @@
             wx.setKeepScreenOn({
                 keepScreenOn:true
             });
+
+            this.getFightData();
         };
 
         methods = {
             // 开始
             start(){
                 this.timeFinish = false;
+                // 抖动次数清零
+                this.shakeHandNumber = 0;
                 this.$apply();
             },
 
@@ -169,13 +179,13 @@
                 if(this.timeFinish){
                     return;
                 }
-                this.shakeNumber++;
+                this.shakeHandNumber++;
                 this.$apply();
             },
 
             // 领取按钮
             bindReceiveIncentive(){
-                this.receiveIncentive();
+                this.receiveIncentive(true);
             }
         };
 
@@ -183,14 +193,25 @@
             // 游戏结束弹出奖励
             timeFinish(newValue){
                 if(newValue){
+                    // 添加游戏记录--手动
+                    this.addGameRecord(1);
                     // 计时时间归位
-                    this.fightTime = api.fightTime;
-                    // 抖动次数清零
-                    this.shakeNumber = 0;
-                    this.clearanceIncentive();
+                    this.fightTime = this.fightData.time;
+                    // 比较抖动次数有没有超过指定次数
+                    if( parseInt(this.shakeHandNumber) >= parseInt(this.fightData.num)){
+                        // 超过指定次数,显示遮盖层
+                        this.showCoverLayer = true;
+                    } else {
+                        tip.longtoast('您没有达到『'+ this.fightData.num +'』次,无法获取奖励');
+                    }
                     this.$apply();
                 }
-            }
+            },
+
+            // 数字改变
+            shakeHandNumber(){
+                this.animated();
+            },
         };
 
         events = {
@@ -202,25 +223,71 @@
             // 退出事件
             outEvents(){
                 // 计时时间归位
-                this.fightTime = api.fightTime;
+                this.fightTime = this.fightData.time;
                 // 抖动次数清零
-                this.shakeNumber = 0;
+                this.shakeHandNumber = 0;
                 // 倒计时结束
                 this.timeFinish = true;
                 this.$apply();
             },
 
-            // 领取事件
-            receiveEvents(){
+            // 前去商城,同时领取奖励
+            goMallEvents(){
                 if(this.showCoverLayer){
-                    this.receiveIncentive();
+                    this.receiveIncentive(false);
                 }
             },
         };
 
-        // 倒计时结束送出奖励
-        clearanceIncentive(){
-            this.showCoverLayer = true;
+        // 获取挑战模式数据
+        async getFightData(){
+            let res = await api.getChallengeMode();
+            if(res.data.state == 1){
+                let data = res.data.data[0];
+                console.log(data);
+                this.fightData = data;
+                this.fightTime = data.time;
+                this.$apply();
+            } else {
+                tip.error('网络错误');
+            }
+        }
+
+        // 添加游戏记录
+        async addGameRecord(mystatus){
+            let that = this;
+            let res = await api.addRecord({
+                query:{
+                    userId:userId,
+                    time: that.fightData.time,
+                    shakeNum:that.shakeHandNumber,
+                    // 0（自己）1（好友）
+                    type:0,
+                    // 0（手动）1（脚动）
+                    status: mystatus,
+                    model:api.fightModel,
+                }
+            });
+        }
+
+        // 领取通关奖励
+        async receiveIncentive(isToast = true){
+            let giftId = this.fightData.giftId;
+            // 添加相应的礼物
+            let res = await api.addUserGift({
+                query:{
+                    userId: userId,
+                    giftId: giftId,
+                    num:1
+                }
+            });
+            if(res.data.state == 1){
+                if(isToast){
+                    tip.toast('领取成功');
+                }
+            } else {
+                tip.error('网络错误');
+            }
         }
 
         // 取消遮盖层
@@ -229,14 +296,14 @@
             this.$apply();
         }
 
-        // 获取通关奖励
-        getIncentive(){
-
-        }
-
-        // 领取通关奖励
-        receiveIncentive(){
-
-        }
+        // 动画
+        animated(){
+            let that = this;
+            this.animate = 'zoomIn';
+            setTimeout(function() {
+                that.animate = '';
+                that.$apply();
+            },500);
+        };
     }
 </script>

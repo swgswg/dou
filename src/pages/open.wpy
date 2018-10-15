@@ -18,7 +18,7 @@
                 开启抖动模式
             </view>
             <view class="flex-center" style="margin-top:{{100*px2rpxHeight}}px;">
-                <image src="{{btnImg}}" style="width: {{220*px2rpxWidth}}px;height: {{190*px2rpxWidth}}px;"></image>
+                <image src="{{btnImg}}" style="width: {{220*px2rpxWidth}}px;height: {{190*px2rpxWidth}}px;" @tap.stop="goToShake"></image>
             </view>
         </view>
         <view class="w-percent100;h-percent100" wx:else>

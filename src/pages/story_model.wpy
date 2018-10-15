@@ -2,6 +2,9 @@
 <style lang="less">
     .story{
 
+        .logo{
+            align-items: flex-end;
+        }
     }
 </style>
 
@@ -10,25 +13,55 @@
           style="width:{{widWidth}}px;height:{{widHeight}}px;background-image: url({{bgImg}});">
 
         <!--退出按钮 start-->
-        <view class="pa" style="top:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+        <view class="pa" style="top:{{32*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;">
             <outmodel></outmodel>
         </view>
         <!--退出按钮 end-->
 
+        <!--左边闪电 start-->
+        <view class="pa flex-center" style="top:{{400*px2rpxHeight}}px;left:{{54*px2rpxWidth}}px;">
+            <image src="{{fire_flag_left}}" style="width:{{151*px2rpxWidth}}px;height:{{149*px2rpxWidth}}px;"></image>
+        </view>
+        <!--左边闪电 end-->
+
+        <!--右边闪电 start-->
+        <view class="pa flex-center" style="top:{{135*px2rpxHeight}}px;right:{{54*px2rpxWidth}}px;">
+            <image src="{{fire_flag_right}}" style="width:{{151*px2rpxWidth}}px;height:{{149*px2rpxWidth}}px;"></image>
+        </view>
+        <!--右边闪电 end-->
+
         <!--点击按钮 start-->
-        <view class="flex-center w-percent100">
+        <view class="flex-center w-percent100" style="margin-top:{{197*px2rpxHeight}}px;">
             <image src="{{btnImg}}"
-                   style="width:{{332*px2rpxWidth}}px;height:{{292*px2rpxWidth}}px;"
+                   style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;"
                    @tap.stop="clickEvent">
             </image>
         </view>
         <!--点击按钮 end-->
 
+        <!--人物形象 start-->
+        <view class="pa flex-center w-percent100" style="top:{{600*px2rpxHeight}}px;left:0;">
+            <view class="flex-center border-box bg-repeat-size logo"
+                  style="width:{{290*px2rpxWidth}}px;height:{{344*px2rpxWidth}}px;padding-bottom:{{40*px2rpxHeight}}px;background-image:url({{stage_light_center}})">
+                <image src="{{fileUrl + logo}}" style="width:{{logoWidth*ratio}}px;height:{{logoHeight*ratio}}px;"></image>
+            </view>
+        </view>
+        <!--人物形象 end-->
+
+        <!--头像+计数 start-->
+        <view class="pa flex-center w-percent100" style="top:{{970*px2rpxHeight}}px;left:0;">
+            <view class="pr flex-center bg-repeat-size" style="width:{{176*px2rpxWidth}}px;height:{{69*px2rpxWidth}}px;background-image:url({{score_bg_red}})">
+                <view class="f30">{{shakeHandNumber}}</view>
+                <image src="{{photo}}" class="pa br-percent50" style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;"></image>
+            </view>
+        </view>
+        <!--头像+计数 end-->
+
         <!--遮盖层 start-->
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
-                <veiw slot="content">
-
+                <veiw class="flex-center w-percent100 h-percent100" slot="content">
+                    <image model="aspectFill" src="{{fileUrl + storys[i].img}}" style="width:{{storys[i].width}}px;height:{{storys[i].height}}px;"></image>
                 </veiw>
             </coverlayer>
         </view>
@@ -42,13 +75,16 @@
     import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
+    import tip from '@/utils/tip';
     import OutModel from '@/components/out_model';
     import GoMall from '@/components/go_mall';
     import CountDown from '@/components/count_down';
     import CoverLayer from '@/components/common/cover_layer';
 
-    let storys = null;
 
+    // 需要显示故事的次数数组
+    let nums = [];
+    let numsIndex = 0;
     export default class StoryModel extends wepy.page {
         config = {
             navigationBarTitleText: '故事模式',
@@ -68,11 +104,23 @@
             widHeight:0,
             px2rpxWidth:0,
             px2rpxHeight:0,
-            bgImg: imgApi.fight_bg,
+            fileUrl:imgApi.fileUrl,
+            bgImg: imgApi.pk_model_bg,
+            fire_flag_left:imgApi.fire_flag_left,
+            fire_flag_right:imgApi.fire_flag_right,
+            stage_light_center:imgApi.stage_light_center,
             btnImg:imgApi.story_btn,
             logo:null,
+            logoWidth:api.logoWidth,
+            logoHeight:api.logoHeight,
+            ratio:0.5,
             photo:null,
-            shakeNumber:0,
+            score_bg_red:imgApi.score_bg_red,
+            shakeHandNumber:0,
+            // 故事
+            storys: null,
+            // 读取的nums数组的下标
+            i: -1,
             // true显示遮盖层/false不显示遮盖层
             showCoverLayer:false,
         };
@@ -87,10 +135,6 @@
             let userInfo = wepy.getStorageSync(USER_INFO);
             this.logo = userInfo.logo;
             this.photo = userInfo.photo;
-            this.$apply();
-        };
-
-        onShow() {
         };
 
         onReady() {
@@ -98,19 +142,27 @@
             wx.setKeepScreenOn({
                 keepScreenOn:true
             });
+
+            // 获取故事
+            this.getStory();
         };
 
         methods = {
             // 点击按钮计数
             clickEvent(){
-                this.shakeNumber++;
+                this.shakeHandNumber++;
                 this.$apply();
             }
         };
 
         watch = {
-            shakeNumber(newvalue){
-
+            shakeHandNumber(newValue){
+                if(newValue === nums[numsIndex]){
+                    this.i = numsIndex;
+                    this.showCoverLayer = true;
+                    numsIndex++;
+                    this.$apply();
+                }
             },
         };
 
@@ -118,6 +170,14 @@
             // 取消遮盖层
             cancelShow(){
                 this.cancelCoverlayer();
+            },
+
+            // 退出事件
+            outEvents(){
+                // 抖动次数清零
+                this.shakeHandNumber = 0;
+                this.$apply();
+                numsIndex = 0;
             },
         };
 
@@ -128,7 +188,20 @@
         }
 
         // 获取故事
-        getStory(){
+        async getStory(){
+            let res = await api.getStoryModeSJ();
+            console.log(res.data.data);
+            if(res.data.state == 1){
+                let storys = res.data.data;
+                this.storys = storys;
+                this.$apply();
+                nums = storys.map(function(item) {
+                    return item.num;
+                });
+                console.log(nums);
+            } else {
+                tip.error('网络错误');
+            }
 
         }
     }

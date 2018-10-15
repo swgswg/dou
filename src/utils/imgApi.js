@@ -37,13 +37,19 @@ module.exports = {
     woman2: uploadFileUrl + 'woman2.png',
 
     // 挑战模式背景/商城按钮/通关奖励按钮/领取按钮
-    fight_bg:uploadFileUrl + 'fight_bg.png',
+    fight_model_bg:uploadFileUrl + 'fight_model_bg.png',
     mall:uploadFileUrl + 'mall.png',
     flight_jiangli: uploadFileUrl + 'flight_jiangli.png',
     flight_liqu: uploadFileUrl + 'flight_liqu.png',
 
     // 故事模式
     story_btn:uploadFileUrl + 'story_btn.png',
+    fire_flag_left:uploadFileUrl + 'fire_flag_left.png',
+    fire_flag_right:uploadFileUrl + 'fire_flag_right.png',
+    stage_light_center:uploadFileUrl + 'stage_light_center.png',
+
+    // pk模式
+    pk_model_bg:uploadFileUrl + 'pk_model_bg.png',
 
     // 蓝牙
     bluetooth_inactive: uploadFileUrl + 'bluetooth_inactive.png',
@@ -109,11 +115,13 @@ module.exports = {
     // 开始/准备/取消/退出/确定按钮
     start_btn: uploadFileUrl + 'start_btn.png',
     ready_btn: uploadFileUrl + 'ready_btn.png',
+    no_ready_btn:uploadFileUrl + 'no_ready_btn.png',
     no_cancel_btn: uploadFileUrl + 'no_cancel_btn.png',
     no_start_btn: uploadFileUrl + 'no_start_btn.png',
     logout: uploadFileUrl + 'logout.png',
     confirm_btn: uploadFileUrl + 'confirm_btn.png',
     // 倒计时
+    count_down:uploadFileUrl + 'count_down.png',
     countdown1: uploadFileUrl + 'countdown1.png',
     countdown2: uploadFileUrl + 'countdown2.png',
     countdown3: uploadFileUrl + 'countdown3.png',

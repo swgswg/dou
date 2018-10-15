@@ -165,7 +165,11 @@
     }
 
     .cfcf05b{
-        color:#fcf05b
+        color:#ecd13b;
+    }
+
+    .c46a1f5{
+        color:#46a1f5;
     }
 
     .br5{
@@ -332,6 +336,7 @@
                 'pages/fight_model',
                 'pages/story_model',
                 'pages/arder_model',
+                'pages/PK_model',
                 'pages/mobile_verify',
                 'pages/friend_gift_wall',
                 'pages/send_gift',

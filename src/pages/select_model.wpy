@@ -43,7 +43,7 @@
             model:[
                 {skip: '/pages/fight_model',name:'挑战模式'},
                 {skip: '/pages/story_model',name:'故事模式'},
-                {skip: '/pages/',name:'PK模式'},
+                {skip: '/pages/PK_model',name:'PK模式'},
                 {skip: '/pages/arder_model',name:'休闲模式'},
             ],
             // userId:null,

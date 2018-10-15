@@ -1,22 +1,31 @@
 // 选择倒计时时间模块
+<style lang="less">
+    .select-time{
+        .num{
+            font-size: 100rpx;
+        }
+
+    }
+</style>
+
 <template>
-    <view class="select-time" style="width:{{750*px2rpxWidth}};height:{{120*px2rpxHeight}}px;">
+    <view class="flex-around w-percent100 h-percent100 select-time">
         <picker mode="multiSelector" bindchange="changeTime" value="{{selectTimeIndex}}" range="{{selectTimeArray}}" disabled="{{!timeConfirm}}">
-            <view class="mypicker" style="height:{{120*px2rpxHeight}}px;font-size:{{120*px2rpxWidth}}px">
-                <view class="picker-each hour {{isHourAnimate ? 'animated infinite bounceInDown': ''}} bounceInDown" style="width:{{200*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
+            <view class="flex-between w-percent100 h-percent100 cec2c98">
+                <view class="flex-center num" style="padding-right:{{20*px2rpxWidth}}px;">
                     <!--当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}-->
                     {{selectTimeArray[0][selectTimeIndex[0]]}}:
                 </view>
-                <view class="picker-each minute {{isMinuteAnimate ? 'animated infinite bounceInDown': ''}} bounceInDown" style="width:{{200*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
+                <view class="flex-center num" style="padding-right:{{20*px2rpxWidth}}px;">
                     {{selectTimeArray[1][selectTimeIndex[1]]}}:
                 </view>
-                <view class="picker-each second {{isSecondAnimate ? 'animated infinite bounceInDown': ''}}" style="width:{{180*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;">
+                <view class="flex-center num" style="padding-right:{{20*px2rpxWidth}}px;">
                     {{selectTimeArray[2][selectTimeIndex[2]]}}
                 </view>
             </view>
         </picker>
         <block wx:if="{{timeConfirm}}">
-            <view class="confirm-btn">
+            <view class="flex-center">
                 <image wx:if="{{timeConfirm}}"
                        style="width:{{98*px2rpxWidth}}px;height:{{98*px2rpxHeight}}px;"
                        @tap.stop="confirmSelectTime"
@@ -183,69 +192,3 @@
 
     }
 </script>
-
-<style lang="less">
-    .select-time{
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-
-        .mypicker{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            /*font-family: 'Edo SZ';*/
-            color: #ec2f96;
-            /*border: 1px solid red;*/
-
-            .picker-each{
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-            }
-
-        }
-
-        .confirm-btn{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /*动画效果*/
-        .animated {
-            animation-duration: 1s;
-            animation-fill-mode: both;
-        }
-        .animated.infinite {
-            animation-iteration-count: infinite;
-        }
-        .bounceInDown {
-            animation-name: bounceInDown;
-        }
-
-        @keyframes bounceInDown {
-            from,
-            50%,
-            to {
-                animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
-            }
-
-            0% {
-                opacity: 0;
-                transform: translate3d(0, -50px, 0);
-            }
-
-            50% {
-                opacity: 1;
-                transform: translate3d(0, 0px, 0);
-            }
-            to {
-                transform: translate3d(0, 0, 0);
-            }
-        }
-
-
-    }
-</style>

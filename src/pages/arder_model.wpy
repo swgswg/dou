@@ -3,7 +3,7 @@
     .arder{
 
         .num{
-            font-size: 100rpx;
+            font-size: 10vh;
             font-weight: bolder;
         }
     }
@@ -14,19 +14,19 @@
           style="width:{{widWidth}}px;height:{{widHeight}}px;background-image: url({{bgImg}});">
 
         <!--退出按钮 start-->
-        <view class="pa" style="top:{{35*px2rpxHeight}}px;right:{{35*px2rpxWidth}}px;">
+        <view class="pa" style="top:{{32*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;">
             <outmodel></outmodel>
         </view>
         <!--退出按钮 end-->
 
         <!--抖动次数 start-->
-        <view class="flex-center w-percent100 cfcf05b f-family-edo num" style="margin-top:{{100*px2rpxHeight}}px;">
+        <view class="flex-center w-percent100 cfcf05b f-family-edo num" style="margin-top:{{210*px2rpxHeight}}px;height:{{120*px2rpxHeight}}px;">
             <view class="animated {{animate}}">{{shakeHandNumber}}</view>
         </view>
         <!--抖动次数 end-->
 
         <!--点击按钮 start-->
-        <view class="flex-center w-percent100" style="margin-top:{{100*px2rpxHeight}}px;">
+        <view class="pa flex-center w-percent100" style="top:{{700*px2rpxHeight}}px;left:0;">
             <image src="{{btnImg}}"
                    style="width:{{317*px2rpxWidth}}px;height:{{272*px2rpxWidth}}px;"
                    @tap.stop="arderEvent">
@@ -70,10 +70,8 @@
             widHeight:0,
             px2rpxWidth:0,
             px2rpxHeight:0,
-            bgImg: imgApi.fight_bg,
+            bgImg: imgApi.fight_model_bg,
             btnImg:imgApi.open_btn,
-            jiangli:imgApi.flight_jiangli,
-            lingqu:imgApi.flight_liqu,
             animate:'',
             shakeHandNumber:0,
         };
@@ -95,6 +93,10 @@
             wx.setKeepScreenOn({
                 keepScreenOn:true
             });
+
+            // 获取缓存抖动次数
+            this.shakeHandNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
+            this.$apply();
         };
 
         methods = {
@@ -109,6 +111,13 @@
         watch = {
             shakeHandNumber(){
                 this.animated();
+            },
+        };
+
+        events = {
+            // 退出事件
+            outEvents(){
+
             },
         };
 

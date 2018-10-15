@@ -1,8 +1,8 @@
 import { wxRequest } from '@/utils/wxRequest';
 
 // 域名
-const host = 'http://www.dt.pub/';
-// const host = 'http://39.107.70.80:8080/';
+// const host = 'http://www.dt.pub/';
+const host = 'http://39.107.70.80:8080/';
 // const host = 'http://192.168.1.153:8080/';
 
 // webScocket
@@ -32,8 +32,12 @@ const logoHeight = 234;
 // 满能量才能送礼
 const fullEnergy = 500;
 
-// 挑战模式时间
-const fightTime = '01:00';
+// 模式字段数据 挑战1/故事2/PK3/休闲4
+const fightModel = 1;
+const storyModel = 2;
+const PKModel = 3;
+const arderModel = 4;
+
 
 /**
  * 接口
@@ -85,7 +89,7 @@ const getUserData = (params) => wxRequest(params, host + 'shakeLeg/admin/getUser
 // 根据礼物积分获取礼物
 const getOneGiftInfoByScore = (params) => wxRequest(params, host + 'shakeLeg/user/getGift');
 // 添加个人礼物
-const addUserGift = (params) => wxRequest(params, host + 'shakeLeg/user/addUserGift');
+const addUserGift = (params) => wxRequest(params, host + 'shakeLeg/admin/addUserGift');
 //  游戏历史记录
 const getRecord = (params) => wxRequest(params, host + 'shakeLeg/user/getRecord');
 // 送礼物人的头像
@@ -154,6 +158,10 @@ const getMusic = (params) => wxRequest(params, host + 'shakeLeg/user/getMusic');
 const getSms = (params) => wxRequest(params, host + 'shakeLeg/user/getSms');
 // 绑定手机号
 const updateMobile = (params) => wxRequest(params, host + 'shakeLeg/user/updateMobile');
+// 查询随机故事模式数据
+const getStoryModeSJ = (params) => wxRequest(params, host + 'shakeLeg/user/getStoryModeSJ');
+// 查询挑战模式数据
+const getChallengeMode = (params) => wxRequest(params, host + 'shakeLeg/admin/getChallengeMode');
 
 export default {
     host,
@@ -172,7 +180,10 @@ export default {
     logoWidth,
     logoHeight,
     fullEnergy,
-    fightTime,
+    fightModel,
+    storyModel,
+    PKModel,
+    arderModel,
     myLogin,
     updateSex,
     addRecord,
@@ -230,4 +241,6 @@ export default {
     getMusic,
     getSms,
     updateMobile,
+    getStoryModeSJ,
+    getChallengeMode,
 };

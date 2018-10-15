@@ -311,9 +311,7 @@
                 // 显示签到
                 this.showSignIn = true;
                 // 获取签到设定的礼物
-                let res = await api.getSignGift({
-                    query:{}
-                });
+                let res = await api.getSignGift();
                 if(res.data.state == 1){
                     // console.log(res.data.data);
                     this.signDayData = res.data.data;
