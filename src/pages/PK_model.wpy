@@ -20,11 +20,38 @@
         </view>
         <!--准备按钮 end-->
 
-        <!--选择时间 start-->
-        <view class="flex-center w-percent100" style="height:{{120*px2rpxWidth}}px;">
-            <selecttime></selecttime>
+        <!--舞台/人物定位 start-->
+        <view class="pa flex-center w-percent100" style="bottom:{{200*px2rpxHeight}}px;left:0;">
+            <!--<stagetwo :stageData.sync="stageData"></stagetwo>-->
+            <threestage
+                    :stageDataLeft.sync="stageDataLeft" :numLeft.sync="numLeft"
+                    :stageDataCenter.sync="stageDataCenter" :numCenter.sync="numCenter"
+                    :stageDataRight.sync="stageDataRight" :numRight.sync="numRight"
+            >
+            </threestage>
         </view>
+        <!--舞台/人物定位 end-->
+
+        <!--选择时间 start-->
+        <block wx:if="{{isHomeOwner}}">
+            <view class="pa flex-center w-percent100"
+                  style="bottom:{{40*px2rpxHeight}}px;left:0;height:{{120*px2rpxWidth}}px;">
+                <selecttime :countdownStart.sync="countdownStart" :hasTimeConfirmBtn.sync="hasTimeConfirmBtn" :selectTimeIndex.sync="selectTimeIndex" :countdownOver.sync="countdownOver"></selecttime>
+            </view>
+        </block>
         <!--选择时间 end-->
+
+        <view wx:if="{{showCoverLayer}}">
+            <coverlayer>
+
+                <!--连接房间 start-->
+                <view class="flex-center w-percent100" slot="content">
+
+                </view>
+                <!--连接房间 end-->
+
+            </coverlayer>
+        </view>
 
     </view>
 </template>
@@ -34,8 +61,15 @@
     import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
+    import weixin from '@/utils/weixin';
     import OutModel from '@/components/out_model';
+    import ThreeStage from '@/components/three_stage';
     import SelectTime from '@/components/select_time';
+    import CoverLayer from '@/components/common/cover_layer';
+
+    let userInfo = null;
+    let legOrHand = null;
+    let roomId = null;
 
     export default class PKModel extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -48,6 +82,8 @@
         components = {
             outmodel: OutModel,
             selecttime:SelectTime,
+            threestage:ThreeStage,
+            coverlayer:CoverLayer
         };
 
         data = {
@@ -60,18 +96,68 @@
             ready_btn: imgApi.ready_btn,
             no_start_btn:imgApi.no_start_btn,
             start_btn:imgApi.start_btn,
+            // 是不是房主(true房主/false不是房主)
+            isHomeOwner:false,
+
+            stageDataLeft:{userId:'',roomId:'',legOrHand:'', logo:'man1.png', photo:'', isLight:0},
+            numLeft:'邀请',
+            stageDataCenter:{userId:'',roomId:'',legOrHand:'', logo:'woman1.png', photo:'', isLight:0},
+            numCenter:'邀请',
+            stageDataRight:{userId:'',roomId:'',legOrHand:'', logo:'man2.png', photo:'', isLight:0},
+            numRight:'邀请',
+
+            // 倒计时开始(true开始)
+            countdownStart:false,
+            // 选择时间确定按钮(房主有确定按钮/组员没有)
+            hasTimeConfirmBtn: false,
+            // 倒计时时间
+            selectTimeIndex:[0,0,0],
+            // 倒计时结束
+            countdownOver:false,
+
+            // 是否显示遮盖层
+            showCoverLayer:false,
         };
 
-        onLoad() {
+        onLoad(options) {
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.widWidth = px2rpx.originalWidth;
             this.widHeight = px2rpx.originalHeight;
             this.$apply();
+
+            legOrHand = options.legOrHand;
+            roomId = options.roomId;
+            // 是不是从创建房间进来的
+            if(options.homeOwner === '1'){
+                this.isHomeOwner = true;
+                // 房主有确定时间按钮
+                this.hasTimeConfirmBtn = true;
+            }
+            // 通过分享进来的建立好友关系
+            if(options.share){
+                this.buildFriend(options.share);
+
+                // 判断这个房间有没有满员
+            }
+
+            // 把自己的信息绑定到中间舞台
+            this.updateStageDataCenter();
+
+            // 开启webSocket
+            weixin.weixinConnectSocket(userInfo.id);
+            // 发送数据
+            weixin.weixinsendSocketMessage('', this.stageDataCenter );
+            // 接收数据
+            weixin.weixinOnSocketMessage((data)=>{
+                // 把左右数据绑定
+                console.log(data);
+            });
         };
 
         onShow() {
+
         };
 
         onReady() {
@@ -81,10 +167,28 @@
             });
         };
 
-        computed = {};
+        // 转发
+        onShareAppMessage(res) {
+            if ( res.from === 'menu' ) {
+                // 来自页面内转发按钮
+                return {
+                    title: '一起来战吧',
+                    path: '/page/PK_model?share=' + userInfo.id + '&roomId=' + roomId + '&legOrHand=' + legOrHand
+                }
+            }
+        }
+
+        computed = {
+
+        };
 
         watch = {
-
+            // 房主才能出现确定时间按钮
+            timeConfirm(newValue){
+                if(this.isHomeOwner && newValue){
+                    this.timeConfirm = true;
+                }
+            },
         };
 
         methods = {};
@@ -92,12 +196,32 @@
         events = {
             // 退出事件
             outEvents(){
-                // 抖动次数清零
-                this.shakeNumber = 0;
-                // 倒计时结束
-                this.timeFinish = true;
-                this.$apply();
+
             },
         };
+
+        // 完善自己的舞台信息
+        updateStageDataCenter(){
+            // 把自己的信息绑定到中间舞台
+            userInfo = wepy.getStorageSync(USER_INFO);
+            this.stageDataCenter.userId = userInfo.id;
+            this.stageDataCenter.logo = userInfo.logo;
+            this.stageDataCenter.photo = userInfo.photo;
+            this.roomId = roomId;
+            this.legOrHand = legOrHand;
+            this.numCenter = 0;
+            this.$apply();
+        }
+
+        // 建立好友关系
+        async buildFriend(share_id){
+            // 通过转发进来的建立好友关系
+            await api.inviteFriend({
+                query:{
+                    userId: userInfo.id,
+                    weChat: share_id,
+                }
+            });
+        }
     }
 </script>

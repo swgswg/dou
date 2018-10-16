@@ -19,17 +19,21 @@
 <script>
     import wepy from 'wepy';
     import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
+    import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
+    import tip from '@/utils/tip';
 
     let userId = null;
+    let roomId = 0;
+    let legOrHand = 0;
 
     export default class MyPage extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '选择模式'
+            navigationBarTitleText: '选择模式',
+            disableScroll: true,
+            enablePullDownRefresh:false,
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
@@ -43,14 +47,11 @@
             model:[
                 {skip: '/pages/fight_model',name:'挑战模式'},
                 {skip: '/pages/story_model',name:'故事模式'},
-                {skip: '/pages/PK_model',name:'PK模式'},
+                {skip: '/pages/PK_model',   name:'PK模式'},
                 {skip: '/pages/arder_model',name:'休闲模式'},
             ],
-            // userId:null,
-            select:0,
         };
 
-        // 在Page和Component共用的生命周期函数
         onLoad(){
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
@@ -59,15 +60,39 @@
             this.$apply();
         }
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 选择模式
             goToGameModel(e){
                 let skip = e.currentTarget.dataset.skip;
+                if(skip == '/pages/PK_model'){
+                    this.addRoomE(0,skip);
+                    return;
+                }
                 this.$navigate(skip);
             },
 
         };
+
+        // 创建房间
+        async addRoomE(mystatus,skip){
+            // 创建房间
+            let res = await api.addRoom({
+                query:{
+                    userId: userId,
+                    // 1抖腿,0手抖
+                    status: mystatus,
+                }
+            });
+            if(res.data.state == 1){
+                roomId = res.data.data.roomId;
+                legOrHand = res.data.data.status;
+                wepy.navigateTo({
+                    url: skip + '?legOrHand=' + legOrHand + '&roomId=' + roomId + '&homeOwner=' + 1
+                });
+            } else {
+                tip.error('网络错误')
+            }
+        }
     }
 </script>
 

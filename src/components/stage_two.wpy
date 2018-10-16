@@ -1,0 +1,93 @@
+// components--舞台第二版
+<style lang="less">
+    .state-two{
+       .br{
+            border: 2px solid #f68668;
+        }
+    }
+</style>
+
+<template>
+    <view class="flex-column-center state-two" style="width:{{260*px2rpxWidth}}px;">
+
+        <!--舞台 start-->
+        <view class="pr flex-center bg-repeat-size"
+              style="width:{{260*px2rpxWidth}}px;height:{{351*px2rpxWidth}}px;background-image:url({{stageData.isLight == 1 ? bgLightImg : bgNoLightImg}});">
+            <image src="{{fileUrl + stageData.logo}}"
+                   style="width: {{logoWidth*px2rpxWidth}}px;height: {{logoHeight*px2rpxWidth}}px;">
+            </image>
+        </view>
+        <!--舞台 end-->
+
+        <!--头像/计数 start-->
+        <view class="pr flex-center br10" style="width:60%;margin-top:{{24*px2rpxHeight}}px;">
+            <button open-type="share" class="flex-center w-percent100 f26 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{num}}</button>
+            <image src="{{stageData.photo}}"
+                   class="pa br-percent50 {{stageData.photo ? 'br' : ''}}"
+                   style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
+            </image>
+        </view>
+        <!--头像/计数 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+
+    let userId = null;
+
+    export default class StageTwo extends wepy.component {
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            fileUrl:imgApi.fileUrl,
+            bgLightImg:imgApi.stage_light_center,
+            bgNoLightImg:imgApi.stage_nolight_center,
+            logoWidth:api.logoWidth,
+            logoHeight:api.logoHeight,
+        };
+
+        props = {
+            // stageData:{userId:'',roomId:'',legOrHand:'',ratio:1,logo:'', photo:'', isLight:1(1带灯光舞台,0不带灯光舞台)}
+            stageData:{
+                type:Object,
+                twoWay:true
+            },
+            num:{
+                twoWay:true
+            },
+            ratio:{
+                type:Number,
+            }
+        };
+
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth * this.ratio;
+            this.px2rpxHeight = px2rpx.px2rpxHeight * this.ratio;
+
+            userId = wepy.getStorageSync(USER_INFO).id;
+            this.$apply();
+        }
+
+        // 转发
+        onShareAppMessage(res) {
+            let that = this;
+            console.log(that.roomId);
+            console.log(isNaN(this.num));
+            if ( (res.from === 'button' && isNaN(this.num)) ) {
+                // 来自页面内转发按钮
+                return {
+                    title: '一起来战吧',
+                    path: '/page/PK_model?share=' + userId + '&roomId=' + that.stageData.roomId +'&legOrHand='+that.stageData.legOrHand
+                }
+            }
+        }
+
+    }
+</script>
+

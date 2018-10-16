@@ -67,28 +67,41 @@
         <!--通关奖励弹窗 start-->
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
-                <view slot="content" class="pr flex-column-center bg-repeat-size"
+                <view slot="content" class="pr flex-center bg-repeat-size"
                       style="width:{{705*px2rpxWidth}}px;height:{{735*px2rpxWidth}}px;background-image: url({{jiangli}});">
+
                     <!--奖励礼物 start-->
-                    <view class="flex-center w-percent100" style="margin-top:{{180*px2rpxHeight}}px;">
+                    <view class="flex-center w-percent100">
                         <image src="{{fileUrl + fightData.photo}}" style="width:{{300*px2rpxWidth}}px;height:{{300*px2rpxWidth}}px;"></image>
                     </view>
                     <!--奖励礼物 end-->
 
-                    <view class="flex-center w-percent100 f30" style="margin:{{30*px2rpxWidth}}px 0;">
-                        <view>点击</view>
-                        <view style="margin:0 {{10*px2rpxWidth}}px;">
-                            <gomall></gomall>
-                        </view>
-                        <view>购买更多礼物</view>
-                    </view>
+                    <!--按钮 start-->
+                    <view class="pa flex-column-center w-percent100" style="bottom:{{20*px2rpxHeight}}px;left:0;">
 
-                    <view class="flex-center border">
-                        <image src="{{lingqu}}"
-                               style="width:{{189*px2rpxWidth}}px;height:{{96*px2rpxWidth}}px;"
-                               @tap.stop="bindReceiveIncentive">
-                        </image>
+                        <!--商城按钮 start-->
+                        <view class="flex-center w-percent100 f24" style="margin-bottom:{{20*px2rpxWidth}}px;">
+                            <view>点击</view>
+                            <view style="margin:0 {{10*px2rpxWidth}}px;">
+                                <gomall></gomall>
+                            </view>
+                            <view>购买更多礼物</view>
+                        </view>
+                        <!--商城按钮 end-->
+
+                        <!--领取按钮 start-->
+                        <view class="flex-center w-percent100">
+                            <view class="flex-center f30 cfcf05b br10"
+                                  style="width:{{120*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;background-color:#353a68"
+                                  @tap.stop="bindReceiveIncentive">
+                                领取
+                            </view>
+                        </view>
+                        <!--领取按钮 end-->
+
                     </view>
+                    <!--按钮 end-->
+
                 </view>
             </coverlayer>
         </view>

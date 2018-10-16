@@ -138,7 +138,7 @@ module.exports = {
     /**
      * 建立webSocket连接
      */
-    weixinConnectSocket(){
+    weixinConnectSocket(userId){
         wx.connectSocket({
             url: api.wshost +userId,
         });
@@ -146,32 +146,16 @@ module.exports = {
 
     /**
      * webSocket发送数据
-     * @param userId  发送人id
+     * @param receiveId  接收人id
      * @param message 发送消息
      */
-    weixinsendSocketMessage(userId,message){
-
-        // let socketOpen = false;
-        // let socketMsgQueue = [];
+    weixinsendSocketMessage(receiveId,message){
+        let sendMessage = message + '|' + receiveId;
         //连接成功
         wx.onSocketOpen(function () {
             console.log('连接成功');
-            // socketOpen = true;
-            // for (let i = 0; i < socketMsgQueue.length; i++){
-            //     // sendSocketMessage(socketMsgQueue[i]);
-            //     if (socketOpen) {
-            //         // 发送webSocket信息
-            //         wx.sendSocketMessage({
-            //             data:socketMsgQueue[i]
-            //         })
-            //     } else {
-            //         socketMsgQueue.push(socketMsgQueue[i]);
-            //     }
-            // }
-            // socketMsgQueue = [];
-
             wx.sendSocketMessage({
-                data:message
+                data: sendMessage
             });
         });
         wx.onSocketError(function(res){
@@ -183,9 +167,10 @@ module.exports = {
     /**
      * 接收webSocket信息
      */
-    weixinOnSocketMessage(){
+    weixinOnSocketMessage(fun){
         wx.onSocketMessage(function(res){
             let data = JSON.parse(res.data);
+            fun(data);
         });
     },
 

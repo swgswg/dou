@@ -196,6 +196,10 @@
         background-color: #353a68;
     }
 
+    .bgecd13b{
+        background-color: #ecd13b;
+    }
+
     .bg-repeat-size{
         background-repeat: no-repeat;
         background-size: 100% 100%;
@@ -382,8 +386,8 @@
                 backgroundColor: '#EFEFEF'
             },
             "tabBar": {
-                "color": "#ec2c98",
-                "selectedColor": "#ec2c98",
+                "color": "#353a68",
+                "selectedColor": "#353a68",
                 "backgroundColor": "#ffffff",
                 "borderStyle": "white",
                 "list": [
@@ -457,9 +461,6 @@
 
         // 把上次的手动记录存入数据库(个人记录不需要房间号)
         async addHandRecord(){
-            // let userInfo = wepy.getStorageSync(USER_INFO);
-            // console.log(userInfo);
-
             let prevShakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
             console.log('prevShakeHandTime' + '===' +prevShakeHandTime);
 
@@ -475,12 +476,12 @@
 
                 let res = await api.addRecord({
                     query:{
-                        // userId:that.userInfo.id,
                         userId: user_info.id,
-                        time:prevShakeHandTime,
-                        shakeNum:prevShakeHandNumber,
+                        time: prevShakeHandTime,
+                        shakeNum: prevShakeHandNumber,
                         type:0,  // 0自己,1好友
                         status: 0,// 0手动,1脚动
+                        model:api.arderModel, // 休闲模式
                     }
                 });
                 if(res.data.state == 1){

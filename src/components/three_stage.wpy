@@ -1,0 +1,70 @@
+// components--PK模式三人
+<style lang="less">
+    .three-stage{
+        flex-wrap: nowrap;
+    }
+</style>
+
+<template>
+    <view class="flex-between w-percent100 three-stage">
+        <stagetwoLeft   :stageData.sync="stageDataLeft"   :num.sync="numLeft" :ratio.sync="ratioLeft"></stagetwoLeft>
+        <stagetwoCenter :stageData.sync="stageDataCenter" :num.sync="numCenter" :ratio.sync="ratioCenter"></stagetwoCenter>
+        <stagetwoRight  :stageData.sync="stageDataRight"  :num.sync="numRight" :ratio.sync="ratioRight"></stagetwoRight>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import StageTwo from '@/components/stage_two';
+
+    export default class ThreeStage extends wepy.component {
+
+        components = {
+            stagetwoLeft: StageTwo,
+            stagetwoCenter: StageTwo,
+            stagetwoRight: StageTwo,
+        };
+
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+
+            // stageDataLeft:{userId:'',roomId:'',legOrHand:'', ratio:0.9, logo:'man1.png', photo:'', isLight:1},
+            // numLeft:1,
+            ratioLeft:0.9,
+            // stageDataCenter:{userId:'',roomId:'',legOrHand:'', ratio:1.1, logo:'woman1.png', photo:'', isLight:1},
+            // numCenter:'邀请',
+            ratioCenter:1,
+            // stageDataRight:{userId:'',roomId:'',legOrHand:'', ratio:0.9, logo:'man2.png', photo:'', isLight:1},
+            // numRight:'邀请',
+            ratioRight:0.9
+        };
+
+        props = {
+            stageDataLeft:{
+                type:Object,
+            },
+            numLeft:{},
+            stageDataCenter:{
+                type:Object
+            },
+            numCenter:{},
+            stageDataRight:{
+                type:Object
+            },
+            numRight:{},
+        };
+
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
+
+    }
+</script>
+

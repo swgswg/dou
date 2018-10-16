@@ -114,13 +114,6 @@
             },
         };
 
-        events = {
-            // 退出事件
-            outEvents(){
-
-            },
-        };
-
         // 动画
         animated(){
             let that = this;

@@ -10,7 +10,7 @@
 
 <template>
     <view class="flex-around w-percent100 h-percent100 select-time">
-        <picker mode="multiSelector" bindchange="changeTime" value="{{selectTimeIndex}}" range="{{selectTimeArray}}" disabled="{{!timeConfirm}}">
+        <picker mode="multiSelector" bindchange="changeTime" value="{{selectTimeIndex}}" range="{{selectTimeArray}}" disabled="{{!hasTimeConfirmBtn}}">
             <view class="flex-between w-percent100 h-percent100 cec2c98">
                 <view class="flex-center num" style="padding-right:{{20*px2rpxWidth}}px;">
                     <!--当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}-->
@@ -24,10 +24,9 @@
                 </view>
             </view>
         </picker>
-        <block wx:if="{{timeConfirm}}">
+        <block wx:if="{{hasTimeConfirmBtn}}">
             <view class="flex-center">
-                <image wx:if="{{timeConfirm}}"
-                       style="width:{{98*px2rpxWidth}}px;height:{{98*px2rpxHeight}}px;"
+                <image style="width:{{98*px2rpxWidth}}px;height:{{98*px2rpxHeight}}px;"
                        @tap.stop="confirmSelectTime"
                        src="{{confirm_btn}}">
                 </image>
@@ -42,6 +41,8 @@
     import util from '@/utils/util';
     import {PX_TO_RPX} from '@/utils/constant';
 
+    let clear_set = null;
+
     export default class SelectTime extends wepy.component {
 
         data = {
@@ -55,33 +56,35 @@
             isSecondAnimate:false,
             // 选择时间的下标
             // selectTimeIndex:[0,0,0],
-            clear_set:null,
-
+            selectTime:[],
+            // timeConfirm:true,
         };
 
         props = {
             // 倒计时确定按钮是否隐藏 true不隐藏/false隐藏
-            timeConfirm:{
+            hasTimeConfirmBtn:{
                 type:Boolean,
                 default:true,
                 twoWay:true,
-            },
-            selectTime:{
-                type:Array,
-                default:true,
-                twoWay:true
             },
             selectTimeIndex:{
                 type:Array,
                 default:[0,0,0],
                 twoWay:true
             },
+            // 倒计时开始(true开始)
+            countdownStart:{
+                type:Boolean,
+                default:false,
+                twoWay:true,
+            },
+
             // 倒计时结束(true结束)
             countdownOver:{
                 type:Boolean,
                 default:false,
-                twoWay:true,
-            }
+            },
+
         };
 
         onLoad(){
@@ -101,7 +104,6 @@
         methods = {
             // 选择倒计时时间
             changeTime(e){
-                // console.log(e);
                 this.selectTimeIndex = e.detail.value;
                 this.$apply();
             },
@@ -116,20 +118,20 @@
                     });
                     return;
                 }
-                this.selectTime = [
-                    this.selectTimeArray[0][this.selectTimeIndex[0]],
-                    this.selectTimeArray[1][this.selectTimeIndex[1]],
-                    this.selectTimeArray[2][this.selectTimeIndex[2]],
-                ];
+                // this.selectTime = [
+                //     this.selectTimeArray[0][this.selectTimeIndex[0]],
+                //     this.selectTimeArray[1][this.selectTimeIndex[1]],
+                //     this.selectTimeArray[2][this.selectTimeIndex[2]],
+                // ];
                 this.timeConfirm = false;
                 this.$apply();
             },
         };
 
         // 倒计时
-        countDown(otherFun){
+        countDown(){
             let that = this;
-            this.clear_set = setInterval(function() {
+            clear_set = setInterval(function() {
                 let selectTimeIndex = that.selectTimeIndex;
                 selectTimeIndex[2]--;
                 if(selectTimeIndex[2] <= 0){
@@ -150,10 +152,10 @@
                     selectTimeIndex[0] = 0;
                     selectTimeIndex[1] = 0;
                     selectTimeIndex[2] = 0;
-                    clearInterval(that.clear_set);
+                    clearInterval(clear_set);
                     that.countdownOver = true;
                     that.timeConfirm = true;
-                    otherFun();
+                    that.countdownStart = false;
                 }
                 that.$apply();
             },1000);
@@ -163,31 +165,25 @@
         events = {
             //停止倒计时
             stopCountDown(){
-                clearInterval(this.clear_set);
+                clearInterval(clear_set);
             },
         };
 
 
         watch = {
-            selectTimeIndex(newValue,oldValue){
-                console.log(newValue,oldValue);
-                // if(newValue[2] != oldValue[2]){
-                //     this.isSecondAnimate = true;
-                // } else {
-                //     this.isSecondAnimate = false;
-                // }
-                // if(newValue[1] != oldValue[1]){
-                //    this.isMinuteAnimate = true;
-                // } else {
-                //     this.isMinuteAnimate = false;
-                // }
-                // if(newValue[0] != oldValue[0]){
-                //     this.isHourAnimate = true;
-                // } else {
-                //     this.isHourAnimate = false;
-                // }
-                // this.$apply();
-            }
+            // 倒计时开始
+            countdownStart(newValue){
+                if(newValue){
+                    this.countDown();
+                }
+            },
+
+            // 倒计时结束
+            countdownOver(newValue){
+                if(newValue){
+                    clearInterval(clear_set);
+                }
+            },
         }
 
     }

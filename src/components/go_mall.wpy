@@ -11,7 +11,7 @@
 <template>
     <view class="flex-center go-mall">
         <image src="{{mall}}"
-               style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
+               style="width:{{70*px2rpxWidth}}px;height:{{70*px2rpxWidth}}px;"
                @tap.stop="goToMall">
         </image>
         <!--<view class="flex-center f28 c0 br-percent50 mall"-->

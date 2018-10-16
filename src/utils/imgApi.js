@@ -43,10 +43,12 @@ module.exports = {
     flight_liqu: uploadFileUrl + 'flight_liqu.png',
 
     // 故事模式
+    story_model_bg:uploadFileUrl + 'story_model_bg.png',
     story_btn:uploadFileUrl + 'story_btn.png',
     fire_flag_left:uploadFileUrl + 'fire_flag_left.png',
     fire_flag_right:uploadFileUrl + 'fire_flag_right.png',
     stage_light_center:uploadFileUrl + 'stage_light_center.png',
+    stage_nolight_center:uploadFileUrl + 'stage_nolight_center.png',
 
     // pk模式
     pk_model_bg:uploadFileUrl + 'pk_model_bg.png',

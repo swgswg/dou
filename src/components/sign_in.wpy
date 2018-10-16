@@ -1,25 +1,14 @@
 // 签到
 <template>
-    <view class="sign-in" style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;">
-        <!--<view class="sign-in-cancel" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelSignIn">-->
-            <!--<text class="iconfont icon-close" style="margin-top:{{5*px2rpxWidth}}px;"></text>-->
-        <!--</view>-->
-        <image class="img-bg" src="{{sign_in_bg}}" style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;"></image>
+    <view class="pr flex-column bg-repeat-size sign-in"
+          style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;background-image: url({{sign_in_bg}})">
+        <!--<image class="img-bg" src="{{sign_in_bg}}" style="width:{{682*px2rpxWidth}}px;height:{{811*px2rpxWidth}}px;"></image>-->
 
         <view class="sign-in-content" style="margin-top:{{224*px2rpxHeight}}px;">
             <block wx:for="{{signDayData}}" wx:for-item="day" wx:key="{{index}}">
                 <block wx:if="{{index < 6}}">
                     <view class="sign-in-each">
                         <view class="day">{{index + 1}}day</view>
-                        <!--<block wx:if="{{index%3 == 0}}">-->
-                            <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#f5a9c7;">-->
-                        <!--</block>-->
-                        <!--<block wx:if="{{index%3 == 1}}">-->
-                            <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#a7f1d4;">-->
-                        <!--</block>-->
-                        <!--<block wx:if="{{index%3 == 2}}">-->
-                            <!--<view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;color:#65dfea;">-->
-                        <!--</block>-->
                         <view class="img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;border-radius:{{30*px2rpxWidth}}px;background-color:{{index%2 == 0 ? '#f5a9c7':'#a7f1d4'}}">
                             <!--签到1礼物/0积分 start-->
                             <block wx:if="{{day.type == 1}}">
@@ -188,35 +177,18 @@
 
 <style lang="less">
     .sign-in{
-        position: relative;
-        display: flex;
-        flex-direction: column;
+        /*position: relative;*/
+        /*display: flex;*/
+        /*flex-direction: column;*/
         justify-content: center;
         /*align-items: center;*/
 
-        .sign-in-cancel{
-            position: absolute;
-            top: 0;
-            right: 0;
-            z-index: 5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            border: 1rpx solid #ccc;
-
-            .icon-close{
-                font-size: 30rpx;
-                color: #aaa;
-            }
-        }
-
-        .img-bg{
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 0;
-        }
+        /*.img-bg{*/
+            /*position: absolute;*/
+            /*top: 0;*/
+            /*left: 0;*/
+            /*z-index: 0;*/
+        /*}*/
 
         .sign-in-content{
             display: flex;
@@ -283,7 +255,6 @@
             justify-content: center;
             align-items: center;
             z-index: 5;
-            /*width: 100%;*/
         }
     }
 </style>
