@@ -14,11 +14,32 @@
         </view>
         <!--退出按钮 end-->
 
-        <!--准备按钮 start-->
-        <view class="flex-center w-percent100" style="margin-top:{{250*px2rpxHeight}}px;">
-            <image src="{{no_ready_btn}}" style="width:{{307*px2rpxWidth}}px;height:{{132*px2rpxWidth}}px;"></image>
-        </view>
-        <!--准备按钮 end-->
+        <!--准备/开始按钮 start-->
+        <block wx:if="{{!isDot}}">
+            <view class="flex-center w-percent100" style="margin-top:{{250*px2rpxHeight}}px;">
+                <block wx:if="{{isStart}}">
+                    <image src="{{startBtn}}"
+                           style="width:{{307*px2rpxWidth}}px;height:{{132*px2rpxWidth}}px;"
+                           @tap.stop="start">
+                    </image>
+                </block>
+                <block wx:else>
+                    <image src="{{readyBtn}}"
+                           style="width:{{307*px2rpxWidth}}px;height:{{132*px2rpxWidth}}px;"
+                           @tap.stop="ready">
+                    </image>
+                </block>
+            </view>
+        </block>
+        <!--准备/开始按钮 end-->
+
+        <!--点击按钮 start-->
+        <block wx:if="{{isDot}}">
+            <view class="flex-center" style="margin-top:{{200*px2rpxHeight}}px;">
+                <image src="{{DotBtn}}" style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;" @tap.stop="dot"></image>
+            </view>
+        </block>
+        <!--点击按钮 end-->
 
         <!--舞台/人物定位 start-->
         <view class="pa flex-center w-percent100" style="bottom:{{200*px2rpxHeight}}px;left:0;">
@@ -36,22 +57,32 @@
         <block wx:if="{{isHomeOwner}}">
             <view class="pa flex-center w-percent100"
                   style="bottom:{{40*px2rpxHeight}}px;left:0;height:{{120*px2rpxWidth}}px;">
-                <selecttime :countdownStart.sync="countdownStart" :hasTimeConfirmBtn.sync="hasTimeConfirmBtn" :selectTimeIndex.sync="selectTimeIndex" :countdownOver.sync="countdownOver"></selecttime>
+                <selecttime :countdownStart.sync="countdownStart"
+                            :hasTimeConfirmBtn.sync="hasTimeConfirmBtn"
+                            :selectTimeIndex.sync="selectTimeIndex"
+                            :countdownOver.sync="countdownOver"
+                            :time.sync="time">
+                </selecttime>
             </view>
         </block>
         <!--选择时间 end-->
 
+        <!--遮盖层 start-->
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
 
                 <!--连接房间 start-->
-                <view class="flex-center w-percent100" slot="content">
-
+                <view class="flex-center w-percent100 bgcf" style="height:{{500*px2rpxHeight}}px;" slot="content">
+                    <view class="flex-column-center">
+                        <image src="/static/images/loadding.gif" style="width:100px;height:100px;"></image>
+                        <view>正在连接中...</view>
+                    </view>
                 </view>
                 <!--连接房间 end-->
 
             </coverlayer>
         </view>
+        <!--遮盖层 end-->
 
     </view>
 </template>
@@ -68,8 +99,14 @@
     import CoverLayer from '@/components/common/cover_layer';
 
     let userInfo = null;
-    let legOrHand = null;
+    let legOrHand = null;  // 1抖腿,0手抖
     let roomId = null;
+    let isReady = false; // 有没有准备
+    let no_ready_btn = imgApi.no_ready_btn;
+    let ready_btn = imgApi.ready_btn;
+    let no_start_btn = imgApi.no_start_btn;
+    let start_btn = imgApi.start_btn;
+    let shakeHandNumber = 0;
 
     export default class PKModel extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -92,18 +129,25 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             bgImg: imgApi.pk_model_bg,
-            no_ready_btn:imgApi.no_ready_btn,
-            ready_btn: imgApi.ready_btn,
-            no_start_btn:imgApi.no_start_btn,
-            start_btn:imgApi.start_btn,
+
+            // 准备按钮/开始按钮
+            readyBtn: no_ready_btn,
+            isStart:false, // 房主在全部准备好才会变成准备按钮
+            startBtn: no_start_btn,
+
+            // 点击按钮
+            DotBtn: imgApi.story_btn,
+            // 点击按钮是否显示
+            isDot:false,
+
             // 是不是房主(true房主/false不是房主)
             isHomeOwner:false,
 
-            stageDataLeft:{userId:'',roomId:'',legOrHand:'', logo:'man1.png', photo:'', isLight:0},
+            stageDataLeft:{userId:'',roomId:'',legOrHand:'', logo:'man1.png', photo:'', isLight:1},
             numLeft:'邀请',
             stageDataCenter:{userId:'',roomId:'',legOrHand:'', logo:'woman1.png', photo:'', isLight:0},
             numCenter:'邀请',
-            stageDataRight:{userId:'',roomId:'',legOrHand:'', logo:'man2.png', photo:'', isLight:0},
+            stageDataRight:{userId:'',roomId:'',legOrHand:'', logo:'man2.png', photo:'', isLight:1},
             numRight:'邀请',
 
             // 倒计时开始(true开始)
@@ -112,11 +156,12 @@
             hasTimeConfirmBtn: false,
             // 倒计时时间
             selectTimeIndex:[0,0,0],
-            // 倒计时结束
+            time:null,
+            // 倒计时结束(true结束/false没有结束)
             countdownOver:false,
 
             // 是否显示遮盖层
-            showCoverLayer:false,
+            showCoverLayer:true,
         };
 
         onLoad(options) {
@@ -161,10 +206,15 @@
         };
 
         onReady() {
+            let that = this;
             // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
             wx.setKeepScreenOn({
                 keepScreenOn:true
             });
+
+            setTimeout(function() {
+                that.cancelCoverlayer();
+            },3000);
         };
 
         // 转发
@@ -189,15 +239,81 @@
                     this.timeConfirm = true;
                 }
             },
+
+            // 都准备房主准备按钮变开始按钮
+            readyBtn(){
+                if(isReady){
+                    this.isStartBtn();
+                }
+            },
+
+            // 倒计时结束
+            countdownOver(newValue){
+                if(newValue){
+                    this.isOverCountDown();
+                }
+            }
+
         };
 
-        methods = {};
+        methods = {
+            // 准备
+            ready(){
+                if(isReady){
+                    this.stageDataCenter.isLight = 0;
+                    this.readyBtn = no_ready_btn;
+                    isReady = false;
+                } else {
+                    this.stageDataCenter.isLight = 1;
+                    this.readyBtn = ready_btn;
+                    isReady = true;
+                }
+                this.$apply();
+                // 发送websocket
+                weixin.weixinsendSocketMessage('', this.stageDataCenter.isLight );
+            },
+
+            //开始
+            start(){
+                if(this.isStart && (!this.hasTimeConfirmBtn) ){
+                    this.countdownStart = true;
+                    this.isDot = true;
+                    this.$apply();
+                    // 发送websocket
+                    weixin.weixinsendSocketMessage('', this.isDot );
+                }
+            },
+
+            // 按钮点击事件
+            dot(){
+                // 手抖
+                if( (legOrHand == 0) && (!this.hasTimeConfirmBtn) ){
+                    shakeHandNumber++;
+                    this.numCenter = shakeHandNumber;
+                    this.$apply();
+                    // 发送websocket
+                    weixin.weixinsendSocketMessage('', this.numCenter );
+                }
+            }
+        };
 
         events = {
             // 退出事件
             outEvents(){
 
             },
+
+            // 取消遮盖层
+            cancelShow(){
+                this.cancelCoverlayer();
+            },
+
+            // 确定时间按钮事件调用
+            startBtnEvents(){
+                this.isStartBtn();
+                // 把时间发给后台
+                weixin.weixinsendSocketMessage('', this.selectTimeIndex );
+            }
         };
 
         // 完善自己的舞台信息
@@ -223,5 +339,58 @@
                 }
             });
         }
+
+        // 确定开始按钮样式开始按钮
+        isStartBtn(){
+            if( this.stageDataCenter.isLight == 1 && this.stageDataLeft.isLight == 1 && this.stageDataRight.isLight == 1 && this.isHomeOwner){
+                this.isStart = true;
+                if(this.hasTimeConfirmBtn){
+                    this.startBtn = no_start_btn;
+                } else {
+                    this.startBtn = start_btn;
+                }
+            } else {
+                this.isStart = false;
+            }
+            this.$apply();
+        }
+
+        // 倒计时完成
+        isOverCountDown(){
+            // 把数据发送给数据库
+            this.addGameRecord();
+
+            this.isDot = false;
+            this.isStart = false;
+            this.stageDataCenter.isLight = 0;
+            this.readyBtn = no_ready_btn;
+            isReady = false;
+            this.$apply();
+
+        }
+
+        // 取消遮盖层
+        cancelCoverlayer(){
+            this.showCoverLayer = false;
+            this.$apply();
+        }
+
+        // 添加游戏记录
+        async addGameRecord(){
+            let that = this;
+            let res = await api.addRecord({
+                query:{
+                    userId: userInfo.id,
+                    time: that.time,
+                    shakeNum: shakeHandNumber,
+                    // 0（自己）1（好友）
+                    type: 0,
+                    // 0（手动）1（脚动）
+                    status: legOrHand,
+                    model:api.PKModel,
+                }
+            });
+        }
+
     }
 </script>
