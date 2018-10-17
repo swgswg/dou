@@ -20,16 +20,17 @@
 
         <!--点击按钮 start-->
         <view class="flex-center w-percent100" style="margin-top:{{197*px2rpxHeight}}px;">
-            <image src="{{btnImg}}"
-                   style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;"
-                   @tap.stop="clickEvent">
-            </image>
+            <!--<image src="{{btnImg}}"-->
+                   <!--style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;"-->
+                   <!--@tap.stop="clickEvent">-->
+            <!--</image>-->
+            <touch :ratio.sync="ratio" :imgType.sync="imgType"></touch>
         </view>
         <!--点击按钮 end-->
 
         <!--舞台 start-->
         <view class="pa flex-center w-percent100" style="bottom:{{200*px2rpxHeight}}px;left:0;">
-            <stagetwo :stageData.sync="stageData" :num.sync="shakeHandNumber"></stagetwo>
+            <stagetwo :stageData.sync="stageData" :num.sync="shakeHandNumber" :ratio.sync="stageRatio"></stagetwo>
         </view>
         <!--舞台 end-->
 
@@ -56,6 +57,7 @@
     import OutModel from '@/components/out_model';
     import GoMall from '@/components/go_mall';
     import CountDown from '@/components/count_down';
+    import Touch from '@/components/touch';
     import CoverLayer from '@/components/common/cover_layer';
 
 
@@ -75,6 +77,7 @@
             outmodel: OutModel,
             gomall: GoMall,
             countdown: CountDown,
+            touch:Touch,
             coverlayer: CoverLayer,
         };
 
@@ -88,7 +91,13 @@
             fire_flag_left:imgApi.fire_flag_left,
             fire_flag_right:imgApi.fire_flag_right,
             btnImg:imgApi.story_btn,
-            stageData:{ratio:1, logo:'', photo:'', isLight:1},
+            stageData:{logo:'', photo:'', isLight:1},
+            stageRatio:1,
+
+            // 按钮参数
+            ratio:0.8,
+            imgType:1,
+
             shakeHandNumber:0,
             // 故事
             storys: null,
@@ -123,10 +132,10 @@
 
         methods = {
             // 点击按钮计数
-            clickEvent(){
-                this.shakeHandNumber++;
-                this.$apply();
-            }
+            // clickEvent(){
+            //     this.shakeHandNumber++;
+            //     this.$apply();
+            // }
         };
 
         watch = {
@@ -141,6 +150,12 @@
         };
 
         events = {
+            // 点击事件  点击按钮计数
+            clickEvents(){
+                this.shakeHandNumber++;
+                this.$apply();
+            },
+
             // 取消遮盖层
             cancelShow(){
                 this.cancelCoverlayer();
@@ -174,7 +189,6 @@
             } else {
                 tip.error('网络错误');
             }
-
         }
     }
 </script>

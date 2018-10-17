@@ -44,47 +44,18 @@
             this.game = await options.game;
             let userInfo = await wepy.getStorageSync(USER_INFO);
             this.userId = userInfo.id;
-            // console.log(this.game );
             this.$apply();
 
         };
 
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-        };
-
-        // 只在Page中存在的页面生命周期函数
         async onReady() {
-
-            // 判断这个人当前有没有房间(中途退出或掉线)
-
-            // 没有创建 创建房间
-            this.addRoom();
-
-            // 有继续之前的房间
 
             // 进度条加载
             this.progress();
 
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {};
-
-        // 创建房间
-        async addRoom(){
-            // 创建房间
-            let res = await api.addRoom({
-                query:{
-                    userId:this.userId,
-                    // 1抖腿,0手抖
-                    status: this.game,
-                }
-            });
-            console.log(res.data.data);
-            this.roomId = res.data.data.roomId;
-            this.$apply();
-        }
 
         // 进度条
          progress(){
@@ -95,13 +66,11 @@
 
                 clear_set = setInterval(function() {
                     let outWidth = that.outWidth;
-                    // console.log(outWidth)
                     let progressWidth = that.progressWidth;
                     progressWidth += 50;
                     that.progressWidth = progressWidth;
                     that.$apply();
                     if(progressWidth >= outWidth){
-                        // console.log(that.roomId);
                         clearInterval(clear_set);
                         wepy.reLaunch({
                             url: '/pages/gaming?game='+that.game+'&roomId='+that.roomId,

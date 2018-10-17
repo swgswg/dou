@@ -1,0 +1,135 @@
+// components--游戏结束排名
+<style lang="less">
+    .game-rank{
+        align-items: flex-end;
+
+        .br{
+            border: 2px solid #f68668;
+        }
+    }
+
+</style>
+
+<template>
+    <view class="flex-center w-percent100 h-percent100 br10 bg-repeat-size game-rank" style="background-image: url({{bgImg}})">
+
+        <!--第二名 start-->
+        <view class="pr flex-center bg-repeat-size img-left"
+              style="width:{{204*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;background-image:url({{game_rank2}})"
+        >
+            <image src="{{fileUrl + gameRankData.NO2.logo}}" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
+
+            <!--头像/计数 start-->
+            <view class="pa flex-center br10" style="bottom:{{-15*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:80%;">
+                <view open-type="share" class="flex-center w-percent100 br10 f26 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO2.num}}</view>
+                <image src="{{gameRankData.NO2.photo}}"
+                       class="pa br-percent50 {{gameRankData.NO2.photo ? 'br' : ''}}"
+                       style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
+                </image>
+            </view>
+            <!--头像/计数 end-->
+
+        </view>
+        <!--第二名 end-->
+
+        <!--第一名 start-->
+        <view class="pr flex-center bg-repeat-size img-center"
+              style="width:{{211*px2rpxWidth}}px;height:{{818*px2rpxWidth}}px;background-image: url({{game_rank1}})"
+        >
+            <image src="{{fileUrl + gameRankData.NO1.logo}}" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
+
+            <!--头像/计数 start-->
+            <view class="pa flex-center br10" style="bottom:{{-15*px2rpxWidth}}px;left:0;width:80%;">
+                <view open-type="share" class="flex-center w-percent100 f26 br10 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO1.num}}</view>
+                <image src="{{gameRankData.NO1.photo}}"
+                       class="pa br-percent50 {{gameRankData.NO1.photo ? 'br' : ''}}"
+                       style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
+                </image>
+            </view>
+            <!--头像/计数 end-->
+
+        </view>
+        <!--第一名 end-->
+
+        <!--第三名 start-->
+        <view class="pr flex-center bg-repeat-size img-right"
+              style="width:{{211*px2rpxWidth}}px;height:{{592*px2rpxWidth}}px;background-image:url({{game_rank3}})"
+        >
+            <image src="{{fileUrl + gameRankData.NO3.logo}}" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
+
+            <!--头像/计数 start-->
+            <view class="pa flex-center br10" style="bottom:{{-20*px2rpxWidth}}px;right:{{-20*px2rpxWidth}}px;width:80%;">
+                <view open-type="share" class="flex-center w-percent100 f26 br10 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO3.num}}</view>
+                <image src="{{gameRankData.NO3.photo}}"
+                       class="pa br-percent50 {{gameRankData.NO3.photo ? 'br' : ''}}"
+                       style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
+                </image>
+            </view>
+            <!--头像/计数 end-->
+
+        </view>
+        <!--第三名 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX} from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import util from '@/utils/util';
+
+    export default class GameRank extends wepy.component {
+
+        data ={
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            logoWidth: api.logoWidth,
+            logoHeight: api.logoHeight,
+            fileUrl:imgApi.fileUrl,
+            bgImg:imgApi.game_rank_bg,
+            game_rank1:imgApi.game_rank1,
+            game_rank2:imgApi.game_rank2,
+            game_rank3:imgApi.game_rank3,
+
+            gameRankData:{},
+        };
+
+        props = {
+            ratio:{
+                type:Number,
+                default:1,
+            },
+        };
+
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth * this.ratio;
+            this.px2rpxHeight = px2rpx.px2rpxHeight * this.ratio;
+            this.$apply();
+        }
+
+       methods = {
+            display(ranking){
+                this.gameRank(ranking);
+            }
+       };
+
+        // 游戏排名
+        gameRank(ranking){
+            // let ranking = [
+            //     {num:this.numLeft, logo:this.stageDataLeft.logo, photo:this.stageDataLeft.photo},
+            //     {num:this.numCenter,logo:this.stageDataCenter.logo, photo:this.stageDataCenter.photo},
+            //     {num:this.numRight,logo:this.stageDataRight.logo, photo:this.stageDataRight.photo},
+            // ];
+            let newRanking = util.sorting(ranking,'desc','num');
+            this.gameRankData.NO1 = newRanking[0];
+            this.gameRankData.NO2 = newRanking[1];
+            this.gameRankData.NO3 = newRanking[2];
+            console.log(this.gameRankData);
+            this.$apply();
+        }
+
+    }
+</script>

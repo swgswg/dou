@@ -1,0 +1,83 @@
+// components--按钮变换
+<template>
+    <view class="flex-center w-percent100  touch">
+        <view>
+            <image src="{{click_img}}"
+                   style="width:{{475*px2rpxWidth}}px;height:{{417*px2rpxWidth}}px;"
+                   @touchstart="clickStart" @tap.stop="clicking" @touchend="clickEnd"
+            ></image>
+        </view>
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+
+    // 图片类型为1
+    let open_btn = imgApi.open_btn;
+    let btn_click_img1 = imgApi.btn_click_img1;
+
+    // 图片类型为2
+    let story_btn = imgApi.story_btn;
+    let btn_click_im2 = imgApi.btn_click_im2;
+
+    let imgT = [
+        {ing:btn_click_img1, ed: open_btn},
+        {ing:btn_click_im2, ed: story_btn},
+    ];
+
+    export default class Touch extends wepy.component {
+
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+
+            click_img: '',
+        };
+
+        props = {
+            ratio:{
+                type:Number,
+                default: 1
+            },
+            imgType:{
+                // 图片类型
+                type:Number,
+                default: 0
+            }
+        };
+
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth * this.ratio;
+            this.px2rpxHeight = px2rpx.px2rpxHeight * this.ratio;
+            this.click_img = imgT[this.imgType].ed;
+            this.$apply();
+        }
+
+        methods = {
+            clickStart(){
+                this.click_img = imgT[this.imgType].ing;
+                this.$apply();
+            },
+
+            clicking(){
+                this.click_img = imgT[this.imgType].ed;
+                this.$apply();
+            },
+
+            clickEnd(){
+                this.$emit('clickEvents');
+                this.click_img = imgT[this.imgType].ing;
+                this.$apply();
+            }
+        }
+
+    }
+</script>
+
+<style lang="less">
+
+</style>

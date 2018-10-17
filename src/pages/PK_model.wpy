@@ -1,7 +1,10 @@
 // page--PK模式
 <style lang="less">
     .pk-model{
-
+        .f150{
+            font-size: 200rpx;
+            font-weight: bolder;
+        }
     }
 </style>
 
@@ -15,7 +18,7 @@
         <!--退出按钮 end-->
 
         <!--准备/开始按钮 start-->
-        <block wx:if="{{!isDot}}">
+        <block wx:if="{{(!isCountDownNum) && (!isDot)}}">
             <view class="flex-center w-percent100" style="margin-top:{{250*px2rpxHeight}}px;">
                 <block wx:if="{{isStart}}">
                     <image src="{{startBtn}}"
@@ -33,10 +36,22 @@
         </block>
         <!--准备/开始按钮 end-->
 
+        <!--3/2/1倒计时 start-->
+        <block wx:if="{{isCountDownNum}}">
+            <view class="flex-center w-percent100" style="margin-top:{{80*px2rpxHeight}}px;">
+                <view class="flex-center cf bg-repeat-size f150"
+                      style="width:{{463*px2rpxWidth}}px;height:{{481*px2rpxWidth}}px;background-image:url({{NumBg}})">
+                    {{countDownNum}}
+                </view>
+            </view>
+        </block>
+        <!--3/2/1倒计时 end-->
+
         <!--点击按钮 start-->
         <block wx:if="{{isDot}}">
-            <view class="flex-center" style="margin-top:{{200*px2rpxHeight}}px;">
-                <image src="{{DotBtn}}" style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;" @tap.stop="dot"></image>
+            <view class="flex-center w-percent100" style="margin-top:{{200*px2rpxHeight}}px;">
+                <!--<image src="{{DotBtn}}" style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;" @tap.stop="dot"></image>-->
+                <touch :ratio.sync="ratio" :imgType.sync="imgType"></touch>
             </view>
         </block>
         <!--点击按钮 end-->
@@ -71,14 +86,11 @@
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
 
-                <!--连接房间 start-->
-                <view class="flex-center w-percent100 bgcf" style="height:{{500*px2rpxHeight}}px;" slot="content">
-                    <view class="flex-column-center">
-                        <image src="/static/images/loadding.gif" style="width:100px;height:100px;"></image>
-                        <view>正在连接中...</view>
-                    </view>
+                <!--游戏结束排名 start-->
+                <view class="flex-center w-percent100" slot="content" wx:if="{{showGameRank}}">
+                    <gamerank :ratio.sync="gameRankRatio"></gamerank>
                 </view>
-                <!--连接房间 end-->
+                <!--游戏结束排名 end-->
 
             </coverlayer>
         </view>
@@ -92,10 +104,13 @@
     import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
+    import tip from '@/utils/tip';
     import weixin from '@/utils/weixin';
     import OutModel from '@/components/out_model';
+    import Touch from '@/components/touch';
     import ThreeStage from '@/components/three_stage';
     import SelectTime from '@/components/select_time';
+    import GameRank from '@/components/game_rank';
     import CoverLayer from '@/components/common/cover_layer';
 
     let userInfo = null;
@@ -107,6 +122,9 @@
     let no_start_btn = imgApi.no_start_btn;
     let start_btn = imgApi.start_btn;
     let shakeHandNumber = 0;
+    let clear_set = null;
+    let leftReady = false;
+    let rightReady = false;
 
     export default class PKModel extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -118,8 +136,10 @@
 
         components = {
             outmodel: OutModel,
+            touch:Touch,
             selecttime:SelectTime,
             threestage:ThreeStage,
+            gamerank:GameRank,
             coverlayer:CoverLayer
         };
 
@@ -136,19 +156,22 @@
             startBtn: no_start_btn,
 
             // 点击按钮
-            DotBtn: imgApi.story_btn,
+            // DotBtn: imgApi.story_btn,
             // 点击按钮是否显示
             isDot:false,
+            // 按钮参数
+            ratio:0.8,
+            imgType:1,
 
             // 是不是房主(true房主/false不是房主)
             isHomeOwner:false,
 
-            stageDataLeft:{userId:'',roomId:'',legOrHand:'', logo:'man1.png', photo:'', isLight:1},
-            numLeft:'邀请',
-            stageDataCenter:{userId:'',roomId:'',legOrHand:'', logo:'woman1.png', photo:'', isLight:0},
-            numCenter:'邀请',
-            stageDataRight:{userId:'',roomId:'',legOrHand:'', logo:'man2.png', photo:'', isLight:1},
-            numRight:'邀请',
+            stageDataLeft:{userId:1,roomId:'',legOrHand:'', logo:'woman1.png', photo:'', isLight:1},
+            numLeft:100,
+            stageDataCenter:{userId:'',roomId:'',legOrHand:'', logo:'', photo:'', isLight:0},
+            numCenter:200,
+            stageDataRight:{userId:2,roomId:'',legOrHand:'', logo:'man2.png', photo:'', isLight:1},
+            numRight:50,
 
             // 倒计时开始(true开始)
             countdownStart:false,
@@ -160,8 +183,17 @@
             // 倒计时结束(true结束/false没有结束)
             countdownOver:false,
 
+            // 3/2/1倒计时
+            NumBg:imgApi.count_down,
+            // 是否显示3/2/1倒计时
+            isCountDownNum:false,
+            countDownNum:3,
+
             // 是否显示遮盖层
-            showCoverLayer:true,
+            showCoverLayer:false,
+            // 游戏结束排名是否显示
+            showGameRank:false,
+            gameRankRatio:1,
         };
 
         onLoad(options) {
@@ -175,7 +207,7 @@
             legOrHand = options.legOrHand;
             roomId = options.roomId;
             // 是不是从创建房间进来的
-            if(options.homeOwner === '1'){
+            if(options.homeOwner == '1'){
                 this.isHomeOwner = true;
                 // 房主有确定时间按钮
                 this.hasTimeConfirmBtn = true;
@@ -206,15 +238,11 @@
         };
 
         onReady() {
-            let that = this;
             // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
             wx.setKeepScreenOn({
                 keepScreenOn:true
             });
 
-            setTimeout(function() {
-                that.cancelCoverlayer();
-            },3000);
         };
 
         // 转发
@@ -240,7 +268,7 @@
                 }
             },
 
-            // 都准备房主准备按钮变开始按钮
+            // 都准备好房主准备按钮变开始按钮
             readyBtn(){
                 if(isReady){
                     this.isStartBtn();
@@ -276,16 +304,20 @@
             //开始
             start(){
                 if(this.isStart && (!this.hasTimeConfirmBtn) ){
-                    this.countdownStart = true;
-                    this.isDot = true;
-                    this.$apply();
-                    // 发送websocket
-                    weixin.weixinsendSocketMessage('', this.isDot );
+                    // 所有人物都准备好了才能开始
+                    if( this.allReady() ){
+                        this.countDownNum321();
+                    } else {
+                        tip.alert('其他玩家待准备');
+                    }
                 }
             },
 
-            // 按钮点击事件
-            dot(){
+        };
+
+        events = {
+            // 点击事件
+            clickEvents(){
                 // 手抖
                 if( (legOrHand == 0) && (!this.hasTimeConfirmBtn) ){
                     shakeHandNumber++;
@@ -294,13 +326,11 @@
                     // 发送websocket
                     weixin.weixinsendSocketMessage('', this.numCenter );
                 }
-            }
-        };
+            },
 
-        events = {
             // 退出事件
             outEvents(){
-
+                this.isOverCountDown();
             },
 
             // 取消遮盖层
@@ -342,7 +372,8 @@
 
         // 确定开始按钮样式开始按钮
         isStartBtn(){
-            if( this.stageDataCenter.isLight == 1 && this.stageDataLeft.isLight == 1 && this.stageDataRight.isLight == 1 && this.isHomeOwner){
+            if( this.allReady()  && this.isHomeOwner){
+
                 this.isStart = true;
                 if(this.hasTimeConfirmBtn){
                     this.startBtn = no_start_btn;
@@ -355,23 +386,118 @@
             this.$apply();
         }
 
+        // 所有人物都准备好了才能开始(只有两个人也能开始(先把人物给左边,左边有人右边才能有人))
+        allReady(){
+            if(this.stageDataCenter.isLight == 0){
+                return false;
+            }
+            if(this.stageDataLeft.userId){
+                if(this.stageDataLeft.isLight == 1){
+                    leftReady = true;
+                } else {
+                    leftReady = false;
+                }
+            } else {
+                leftReady = false;
+            }
+
+            if(this.stageDataRight.userId){
+                if(this.stageDataRight.isLight == 1){
+                    rightReady = true;
+                } else {
+                    rightReady = false;
+                }
+            } else {
+                rightReady = true;
+            }
+
+            if(leftReady && rightReady){
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // 3/2/1倒计时
+        countDownNum321(){
+            let that =this;
+            this.isCountDownNum = true;
+            clear_set = setInterval(function() {
+                that.countDownNum--;
+                that.$apply();
+                if(that.countDownNum === 0){
+                    clearInterval(clear_set);
+                    that.startE();
+                }
+            },1000);
+        }
+
+        // 开始
+        startE(){
+            this.isCountDownNum = false;
+            this.countdownStart = true;
+            this.countdownOver = false;
+            this.isDot = true;
+            this.$apply();
+            // 发送websocket
+            weixin.weixinsendSocketMessage('', this.isDot);
+        }
+
         // 倒计时完成
         isOverCountDown(){
-            // 把数据发送给数据库
+            // 添加游戏记录
             this.addGameRecord();
-
+            clearInterval(clear_set);
+            this.$broadcast('stopCountDown');
+            this.countDownNum = 3;
+            this.isCountDownNum = false;
+            this.countdownStart = false;
+            this.countdownOver = false;
             this.isDot = false;
             this.isStart = false;
             this.stageDataCenter.isLight = 0;
             this.readyBtn = no_ready_btn;
             isReady = false;
+            leftReady = false;
+            rightReady = false;
             this.$apply();
+            this.gameRankE();
+        }
 
+        // 统计游戏排名
+        gameRankE(){
+            // let ranking = { stageDataLeft: this.numLeft ,stageDataCenter :this.numCenter, stageDataRight : this.numRight};
+            // if(isString(this.numLeft)){
+            //     this.numLeft = 0;
+            // }
+            // if(isString(this.numCenter)){
+            //     this.numCenter = 0;
+            // }
+            // if(isString(this.numRight)){
+            //     this.numRight = 0;
+            // }
+            let ranking = [
+                {num:this.numLeft, logo:this.stageDataLeft.logo, photo:this.stageDataLeft.photo},
+                {num:this.numCenter, logo:this.stageDataCenter.logo, photo:this.stageDataCenter.photo},
+                {num:this.numRight, logo:this.stageDataRight.logo, photo:this.stageDataRight.photo},
+            ];
+            this.gameRankData = ranking;
+            this.$apply();
+            this.$invoke('gamerank','display',ranking);
+            this.showGameRankE();
+        }
+
+        // 显示游戏排名
+        showGameRankE(){
+            this.showCoverLayer = true;
+            this.showGameRank = true;
+            this.$apply();
         }
 
         // 取消遮盖层
         cancelCoverlayer(){
             this.showCoverLayer = false;
+            this.showGameRank = false;
             this.$apply();
         }
 

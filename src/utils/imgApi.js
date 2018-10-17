@@ -50,8 +50,16 @@ module.exports = {
     stage_light_center:uploadFileUrl + 'stage_light_center.png',
     stage_nolight_center:uploadFileUrl + 'stage_nolight_center.png',
 
-    // pk模式
+    // pk模式/游戏结束排名
     pk_model_bg:uploadFileUrl + 'pk_model_bg.png',
+    game_rank1:uploadFileUrl + 'game_rank1.png',
+    game_rank2:uploadFileUrl + 'game_rank2.png',
+    game_rank3: uploadFileUrl + 'game_rank3.png',
+    game_rank_bg: uploadFileUrl + 'game_rank_bg.png',
+
+    // 按钮按下图片
+    btn_click_im2:uploadFileUrl + 'btn_click_im2.png',
+    btn_click_img1:uploadFileUrl + 'btn_click_img1.png',
 
     // 蓝牙
     bluetooth_inactive: uploadFileUrl + 'bluetooth_inactive.png',

@@ -27,10 +27,7 @@
 
         <!--点击按钮 start-->
         <view class="pa flex-center w-percent100" style="top:{{700*px2rpxHeight}}px;left:0;">
-            <image src="{{btnImg}}"
-                   style="width:{{317*px2rpxWidth}}px;height:{{272*px2rpxWidth}}px;"
-                   @tap.stop="arderEvent">
-            </image>
+            <touch :ratio.sync="ratio" :imgType.sync="imgType" ></touch>
         </view>
         <!--点击按钮 end-->
 
@@ -47,10 +44,9 @@
     import wepy from 'wepy';
     import {PX_TO_RPX,USER_INFO, SHAKE_HAND_NUMBER } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
-    import api from '@/utils/api';
     import OutModel from '@/components/out_model';
     import GoMall from '@/components/go_mall';
-    import CountDown from '@/components/count_down';
+    import Touch from '@/components/touch';
 
     export default class ArderModel extends wepy.page {
         config = {
@@ -62,7 +58,7 @@
         components = {
             outmodel: OutModel,
             gomall: GoMall,
-            countdown: CountDown,
+            touch:Touch
         };
 
         data = {
@@ -71,9 +67,12 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             bgImg: imgApi.fight_model_bg,
-            btnImg:imgApi.open_btn,
             animate:'',
             shakeHandNumber:0,
+
+            // 按钮参数
+            ratio: 0.6,
+            imgType: 0,
         };
 
         onLoad() {
@@ -83,9 +82,6 @@
             this.widWidth = px2rpx.originalWidth;
             this.widHeight = px2rpx.originalHeight;
             this.$apply();
-        };
-
-        onShow() {
         };
 
         onReady() {
@@ -100,17 +96,21 @@
         };
 
         methods = {
-            // 点击按钮
-            arderEvent(){
-                this.shakeHandNumber++;
-                this.$apply();
-                wepy.setStorageSync(SHAKE_HAND_NUMBER,this.shakeHandNumber);
-            },
+
         };
 
         watch = {
             shakeHandNumber(){
                 this.animated();
+            },
+        };
+
+        events = {
+            // 点击按钮
+            clickEvents(){
+                this.shakeHandNumber++;
+                this.$apply();
+                wepy.setStorageSync(SHAKE_HAND_NUMBER,this.shakeHandNumber);
             },
         };
 

@@ -18,7 +18,7 @@
                 开启抖动模式
             </view>
             <view class="flex-center" style="margin-top:{{100*px2rpxHeight}}px;">
-                <image src="{{btnImg}}" style="width: {{220*px2rpxWidth}}px;height: {{190*px2rpxWidth}}px;" @tap.stop="goToShake"></image>
+                <touch :ratio.sync="ratio" :imgType="imgType"></touch>
             </view>
         </view>
         <view class="w-percent100;h-percent100" wx:else>
@@ -38,6 +38,7 @@
     import {PX_TO_RPX, USER_INFO} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
+    import Touch from '@/components/touch';
 
     let userInfo = null;
 
@@ -46,12 +47,20 @@
             navigationBarTitleText: '开启抖动'
         };
 
+        components = {
+            touch:Touch,
+        };
+
         data = {
             winWidth:0,
             winHeight:0,
             px2rpxWidth:0,
             px2rpxHeight:0,
-            btnImg:imgApi.open_btn,
+
+            // 按钮参数
+            ratio:0.6,
+            imgType:0,
+
             swiper_autoplay:true,
             imgSrc: [
                 imgApi.open1,
@@ -75,8 +84,7 @@
 
         methods = {
             goToShake(){
-                this.isOpenShake = true;
-                this.$apply();
+                this.openSwipe();
             },
 
             // 滑块动画结束
@@ -93,6 +101,19 @@
                 }
             },
         };
+
+        events = {
+            clickEvents(){
+                this.openSwipe();
+            }
+        };
+
+        // 点击开启轮播图
+        openSwipe(){
+            this.isOpenShake = true;
+            this.$apply();
+        }
+
 
         // 判断用户信息是否完全
         isLogo(){

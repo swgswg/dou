@@ -139,6 +139,56 @@ function rand(m, n) {
 }
 
 /**
+ *  数组排序
+ * @param arr
+ * @param ascOrDesc asc升序 desc降序
+ * @returns {*} 排序后的数组
+ */
+function sorting(arr, ascOrDesc = 'asc', field = null) {
+    console.log(arr);
+    function info(a,b) {
+        if(field){
+            if(ascOrDesc === 'asc'){
+                if(a[field] > b[field]){
+                    return 1;
+                } else if(a[field] < b[field]){
+                    return -1;
+                } else {
+                    return 0;
+                }
+            } else if(ascOrDesc === 'desc') {
+                if(a[field] < b[field]){
+                    return 1;
+                } else if(a[field] > b[field]){
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        } else {
+            if(ascOrDesc === 'asc'){
+                if(a > b){
+                    return 1;
+                } else if(a < b){
+                    return -1;
+                } else {
+                    return 0;
+                }
+            } else if(ascOrDesc === 'desc'){
+                if(a < b){
+                    return 1;
+                } else if(a > b){
+                    return -1;
+                } else {
+                    return 0;
+                }
+            }
+        }
+    }
+    return arr.sort(info);
+}
+
+/**
  * 验证正则
  */
 function checkReg(flag, data) {
@@ -498,6 +548,7 @@ module.exports = {
     formatSmartTime: formatSmartTime,
     formatDate: formatDate,
     rand: rand,
+    sorting:sorting,
     arrRange: arrRange,
     checkReg: checkReg,
     repeatArr: repeatArr,

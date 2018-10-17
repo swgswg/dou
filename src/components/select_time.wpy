@@ -121,15 +121,9 @@
                     return;
                 }
                 this.time = this.selectTimeArray[0][this.selectTimeIndex[0]] + ':' + this.selectTimeArray[1][this.selectTimeIndex[1]] +':' + this.selectTimeArray[2][this.selectTimeIndex[2]];
-                // this.selectTime = [
-                //     this.selectTimeArray[0][this.selectTimeIndex[0]],
-                //     this.selectTimeArray[1][this.selectTimeIndex[1]],
-                //     this.selectTimeArray[2][this.selectTimeIndex[2]],
-                // ];
                 this.hasTimeConfirmBtn = false;
                 this.$apply();
                 this.$emit('startBtnEvents');
-
             },
         };
 
