@@ -1,17 +1,17 @@
 <template>
-    <view class="history-rank">
+    <view class="w-percent100 h-percent100 history-rank">
 
-        <view class="rank-style" style="margin-top:{{10*px2rpxHeight}}px">
-            <rankingstyle :rankingStyle.sync="rankingStyle" :currentTabValue.sync="legOrHand"></rankingstyle>
-        </view>
+        <!--<view class="flex-center w-percent100" style="margin-top:{{10*px2rpxHeight}}px">-->
+            <!--<rankingstyle :rankingStyle.sync="rankingStyle" :currentTabValue.sync="legOrHand"></rankingstyle>-->
+        <!--</view>-->
 
-        <view class="tab" style="height:{{100*px2rpxHeight}}px;margin-top:{{-10*px2rpxHeight}}px">
+        <view class="flex-center w-percent100" style="height:{{100*px2rpxHeight}}px;margin-top:{{-10*px2rpxHeight}}px">
             <rankingbutton :tab.sync="tabData" :currentTabValue.sync="weekOrAll"></rankingbutton>
         </view>
 
-        <view class="rank">
+        <view class="border-box" style="padding:0 {{20*px2rpxWidth}}px;">
 
-            <view class="world-firend">
+            <view class="flex-around" style="margin-top: {{25*px2rpxHeight}}px;">
                 <view>
                     <image class="world-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{worldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFriedEvent"></image>
                 </view>
@@ -43,7 +43,7 @@
     import imgApi from '@/utils/imgApi';
     import {PX_TO_RPX } from '@/utils/constant';
     import RankingButton from '@/components/ranking_button';
-    import RankingStyle from '@/components/ranking_style';
+    // import RankingStyle from '@/components/ranking_style';
     import RankingWorld from '@/components/ranking_world';
     import RankingFriend from '@/components/ranking_friend';
 
@@ -58,7 +58,7 @@
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             rankingbutton:RankingButton,
-            rankingstyle:RankingStyle,
+            // rankingstyle:RankingStyle,
             rankingworld:RankingWorld,
             rankingfriend:RankingFriend,
         };
@@ -72,10 +72,10 @@
             friend_active:imgApi.friend_active,
             friend_inactive:imgApi.friend_inactive,
             // 排行类型
-            rankingStyle:[
-                {name:'设备榜',value:1},
-                {name:'手动榜',value:0}
-            ],
+            // rankingStyle:[
+            //     {name:'设备榜',value:1},
+            //     {name:'手动榜',value:0}
+            // ],
             // 0手/1脚
             legOrHand:0,
             tabData:[
@@ -102,6 +102,7 @@
 
         // 只在Page中存在的页面生命周期函数
         onReady() {
+            // 默认 世界-总-手动
             this.worldOrFriend = 'world';
             this.legOrHand = 0;
             this.weekOrAll = 1;
@@ -143,51 +144,11 @@
 
 <style lang="less">
     page{
-        background: linear-gradient(to top right,#ec2c98, #f68668);
+        /*background: linear-gradient(to top right,#ec2c98, #f68668);*/
+        background-color: #353a68;
     }
 
     .history-rank{
-        width: 100%;
-        height: 100%;
-
-        .rank-style{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-
-        }
-
-        .tab{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            /*height: 120rpx;*/
-        }
-
-        .rank{
-            /*border: 1rpx solid red;*/
-            padding-left: 20rpx;
-            padding-right: 20rpx;
-            box-sizing: border-box;
-            .world-firend{
-                display: flex;
-                justify-content: space-around;
-                align-items: center;
-                margin-top: 25rpx;
-                padding: 0 ;
-                /*border: 1rpx solid red;*/
-
-                .world-img,.friend-img{
-                    /*width: 290rpx;*/
-                    /*height: 75rpx;*/
-                }
-
-            }
-
-        }
-
 
     }
 </style>

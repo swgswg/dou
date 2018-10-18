@@ -1,84 +1,106 @@
+// components--设置
+<style lang="less">
+    .set{
+        .set-left{
+            width: 25%;
+        }
+
+        .set-right{
+            width: 20%;
+        }
+    }
+</style>
+
 <template>
-    <view>
-        <view class="set">
-            <view class="set-left">
-                <image src="{{setImg}}"></image>
-                <view class="">{{setName}}</view>
+    <view class="flex-column w-percent100 set">
+        <block wx:for="{{set}}" wx:for-item="set" wx:key="{{set.id}}">
+            <view class="flex-between w-percent100 border-box bgcf" style="height:{{90*px2rpxHeight}}px;padding: 0 {{30*px2rpxWidth}}px;">
+                <view class="flex-around set-left" style="height:{{90*px2rpxHeight}}px">
+                    <image src="{{set.img}}" style="width:{{69*px2rpxWidth}}px;height:{{68*px2rpxWidth}}px;"></image>
+                    <view class="f30">{{set.name}}</view>
+                </view>
+                <view class="flex-center set-right" style="height:{{90*px2rpxHeight}}px">
+                    <switch type="switch" checked="{{set.isChecked}}" data-index="{{index}}" bindchange="switchChange"/>
+                </view>
             </view>
-            <view class="set-right">
-                <myswitch :activeDot.sync="activeDot"></myswitch>
-            </view>
-        </view>
+        </block>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import MySwitch from '@/components/common/my_switch';
+    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import weixin from '@/utils/weixin';
+    import api from '@/utils/api';
+
+    let userId = null;
 
     export default class Set extends wepy.component {
-
-        components = {
-            myswitch:MySwitch,
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
         };
 
         props = {
-
-            // 设置项的图片
-            setImg:{
-                type:String,
-                // default:'set_sound.png'
-                default:null
-            },
-            // 设置项的名称
-            setName:{
-                type:String,
-                // default:'声音'
-                default:null
-            },
-            // 设置项开/关
-            activeDot:{
-                type:Number,
-                default:0,
+            // set:[
+            //     {id:1,img: 'set_sound.png', name:'声音', isChecked:false},
+            // ],
+            set:{
+                type:Array,
                 twoWay:true
+            }
+        };
+
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            userId = wepy.getStorageSync(USER_INFO).id;
+            this.$apply();
+        }
+
+        methods = {
+            switchChange(e){
+                let index = e.currentTarget.dataset.index;
+                let title = this.set[index].title;
+                let value = e.detail.value;
+                if(value){
+                    value = 1;
+                } else {
+                    value = 0;
+                }
+                this.set[index].isChecked = e.detail.value;
+                this.$apply();
+                this.updateSetE(title, value);
+            }
+        };
+
+        // 修改声音
+        async updateSetE(title, value){
+            let data = {
+                userId: userId,
+            };
+            if(title === 'voice'){
+                data.voice = value;
+            }
+            if(title === 'shake'){
+                data.shake = value;
+            }
+            let res = await api.updateSet({
+                query:data
+            });
+            if(res.data.state == 1){
+                // 同步更新缓存
+                weixin.updateStorage(title,value);
+                if(value == 0){
+                    // 停止背景音乐
+                    weixin.stopMusic();
+                } else if(value == 1){
+                    // 播放音乐
+                    weixin.backgroundMusic();
+                }
             }
         }
     }
 </script>
 
-<style lang="less">
-    .set{
-        display: flex;
-        justify-content:space-between;
-        align-items: center;
-        width: 100%;
-        height: 90rpx;
-        padding: 0 30rpx;
-        box-sizing: border-box;
-        background-color: #fff;
-
-        .set-left{
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 25%;
-            height: 90rpx;
-            /*border: 1rpx solid red;*/
-
-            image{
-                width: 69rpx;
-                height: 68rpx;
-            }
-        }
-
-        .set-right{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 20%;
-            height: 90rpx;
-            /*border: 1rpx solid red;*/
-        }
-
-    }
-</style>

@@ -1,23 +1,27 @@
-<template>
-    <view class="page-set">
-        <!--声音-->
-        <view class="mb10">
-            <soundset :setImg.sync="setSoundImg" :setName.sync="setSoundName" :activeDot.sync="soundActiveDot"></soundset>
-        </view>
+// pages--设置
+<style lang="less">
+    page{
+        background-color: #f7f8ff;
+    }
 
-        <!--振动-->
-        <!--<view class="mb10">-->
-            <!--<vibranceset :setImg.sync="setVibranceImg" :setName.sync="setVibranceName" :activeDot.sync="vibranceActiveDot"></vibranceset>-->
-        <!--</view>-->
+    .page-set{
+
+    }
+
+</style>
+
+<template>
+    <view class="flex-center w-percent100 border-box page-set" style="padding-top:{{30*px2rpxHeight}}px;">
+        <view class="flex-center w-percent100">
+            <set :set.sync="set"></set>
+        </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
-    import api from '@/utils/api';
-    import weixin from '@/utils/weixin';
-    import {USER_INFO} from '@/utils/constant';
+    import {PX_TO_RPX, USER_INFO} from '@/utils/constant';
     import Set from '@/components/set';
 
     let userInfo = null;
@@ -28,92 +32,38 @@
             navigationBarTitleText: '设置'
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             // 声音
-            soundset:Set,
-            // 振动
-            // vibranceset:Set,
+            set:Set,
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
-            // userInfo:null,
-            // 声音
-            setSoundImg:imgApi.set_sound,
-            setSoundName:'声音',
-            soundActiveDot:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            set:[
+                {id:1, img: imgApi.set_sound , name:'音乐', isChecked:false, title:'voice'},
+            ]
 
-            // 振动
-            // setVibranceImg:imgApi.set_vibrance,
-            // setVibranceName:'振动',
-            // vibranceActiveDot:0,
         };
 
-        // 在Page和Component共用的生命周期函数
         onLoad() {
-
-        };
-
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-
-        };
-
-        // 只在Page中存在的页面生命周期函数
-        onReady() {
-            // 获取设置信息
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
             userInfo = wepy.getStorageSync(USER_INFO);
-            this.soundActiveDot = parseInt(userInfo.voice);
-            // this.vibranceActiveDot = parseInt(userInfo.shake);
+        };
+
+        onReady() {
+            let voice = userInfo.voice;
+            let isChecked = false;
+            if(voice == 0){
+                isChecked = false;
+            } else {
+                isChecked = true;
+            }
+            this.set[0].isChecked = isChecked;
             this.$apply();
         };
 
-        // 声明数据watcher（详见后文介绍）
-        watch = {
-            // 声音设置
-            async soundActiveDot(newValue){
-                console.log(newValue);
-                let res = await api.updateSet({
-                    query:{
-                        userId:userInfo.id,
-                        voice:newValue
-                    }
-                });
-                if(res.data.state == 1){
-                    // 同步更新缓存
-                    weixin.updateStorage('voice',newValue);
-                    if(newValue == 0){
-                        // 停止背景音乐
-                        weixin.stopMusic();
-                    } else if(newValue == 1){
-                        weixin.backgroundMusic();
-                    }
-                }
-            },
-            // 振动设置
-            // async vibranceActiveDot(newValue){
-            //     let that = this;
-            //     console.log(newValue);
-            //     await api.updateSet({
-            //         query:{
-            //             userId:that.userInfo.id,
-            //             shake:newValue
-            //         }
-            //     });
-            // }
-        };
     }
 </script>
-
-<style lang="less">
-    page{
-        background-color: #f7f8ff;
-    }
-
-    .page-set{
-        padding-top: 30rpx;
-        box-sizing: border-box;
-    }
-
-</style>
