@@ -16,6 +16,7 @@
               :hasTimeConfirmBtn.sync="hasTimeConfirmBtn"
               :selectTimeIndex.sync="selectTimeIndex"
               :isCountDownNum.sync="isCountDownNum"
+              :countdownStart.sync="countdownStart"
         >
         </game>
     </view>
@@ -77,6 +78,9 @@
 
             // 3-2-1倒计时是否显示
             isCountDownNum:false,
+
+            // 游戏时间倒计时开始
+            countdownStart:false,
         };
 
         onLoad(options) {
@@ -138,6 +142,11 @@
                 this.$apply();
                 // 发送websocket
                 weixin.weixinsendSocketMessage('', this.stageDataCenter.isLight );
+            },
+
+            // 倒计时结束
+            isOverCountDownEvents(){
+                this.isOverCountDownE();
             }
 
         };
@@ -153,5 +162,15 @@
             });
         }
 
+        // 游戏时间开始倒计时
+        start(){
+            this.$broadcast('countDownNum321Events');
+        }
+
+        // 倒计时结束
+        isOverCountDownE(){
+            this.stageDataCenter.isLight = 0;
+            this.readyBtn = ready_btn;
+        }
     }
 </script>

@@ -126,9 +126,6 @@
             px2rpxHeight:0,
             bgImg: imgApi.pk_model_bg,
 
-            // 房主在全部准备好才会变成准备按钮
-            isStart:false,
-
             // 点击按钮是否显示
             isDot:false,
 
@@ -203,14 +200,9 @@
                 twoWay:true,
             },
 
-            // 3-2-1倒计时是否显示
-            isCountDownNum:{
+            // 开始倒计时
+            countdownStart:{
                 type:Boolean,
-                twoWay:true,
-            },
-            // 3-2-1倒计时时间
-            countDownNum:{
-                type:Number,
                 twoWay:true,
             }
         };
@@ -238,24 +230,10 @@
         };
 
         watch = {
-            // 房主才能出现确定时间按钮
-            timeConfirm(newValue){
-                if(this.isHomeOwner && newValue){
-                    this.timeConfirm = true;
-                }
-            },
-
-            // 都准备好房主准备按钮变开始按钮
-            readyBtn(){
-                if(isReady){
-                    this.isStartBtn();
-                }
-            },
-
             // 倒计时结束
             countdownOver(newValue){
                 if(newValue){
-                    this.isOverCountDown();
+                    this.isOverCountDown(true);
                 }
             }
 
@@ -267,25 +245,18 @@
                 this.$emit('readyOrStartE');
             },
 
-            //开始
-            start(){
-                if(this.isStart && (!this.hasTimeConfirmBtn) ){
-                    // 所有人物都准备好了才能开始
-                    if( this.allReady() ){
-                        this.countDownNum321();
-                    } else {
-                        tip.alert('其他玩家待准备');
-                    }
-                }
-            },
-
         };
 
         events = {
+            // 开始倒计时
+            countDownNum321Events(){
+                this.countDownNum321();
+            },
+
             // 点击事件
             clickEvents(){
                 // 手抖
-                if( (legOrHand == 0) && (!this.hasTimeConfirmBtn) ){
+                if( (this.legOrHand == 0) && (!this.hasTimeConfirmBtn) ){
                     shakeHandNumber++;
                     this.numCenter = shakeHandNumber;
                     this.$apply();
@@ -296,7 +267,7 @@
 
             // 退出事件
             outEvents(){
-                this.isOverCountDown();
+                this.isOverCountDown(false);
                 // 关闭websocket
                 weixin.weixinCloseWebSocket();
             },
@@ -306,12 +277,8 @@
                 this.cancelCoverlayer();
             },
 
-            // 确定时间按钮事件调用
-            startBtnEvents(){
-                this.isStartBtn();
-                // 把时间发给后台
-                weixin.weixinsendSocketMessage('', this.selectTimeIndex );
-            }
+
+
         };
 
         // 完善自己的舞台信息
@@ -327,57 +294,11 @@
             this.$apply();
         }
 
-        // 确定开始按钮样式开始按钮
-        isStartBtn(){
-            if( this.allReady()  && this.isHomeOwner){
-
-                this.isStart = true;
-                if(this.hasTimeConfirmBtn){
-                    this.startBtn = no_start_btn;
-                } else {
-                    this.startBtn = start_btn;
-                }
-            } else {
-                this.isStart = false;
-            }
-            this.$apply();
-        }
-
-        // 所有人物都准备好了才能开始(只有两个人也能开始(先把人物给左边,左边有人右边才能有人))
-        allReady(){
-            if(this.stageDataCenter.isLight == 0){
-                return false;
-            }
-            if(this.stageDataLeft.userId){
-                if(this.stageDataLeft.isLight == 1){
-                    leftReady = true;
-                } else {
-                    leftReady = false;
-                }
-            } else {
-                leftReady = false;
-            }
-
-            if(this.stageDataRight.userId){
-                if(this.stageDataRight.isLight == 1){
-                    rightReady = true;
-                } else {
-                    rightReady = false;
-                }
-            } else {
-                rightReady = true;
-            }
-
-            if(leftReady && rightReady){
-                return true;
-            } else {
-                return false;
-            }
-        }
-
         // 3/2/1倒计时
         countDownNum321(){
             let that =this;
+            // 发送websocket
+            weixin.weixinsendSocketMessage('', this.isCountDownNum);
             this.isCountDownNum = true;
             clear_set = setInterval(function() {
                 that.countDownNum--;
@@ -395,8 +316,8 @@
             this.countdownStart = true;
             this.countdownOver = false;
             this.isDot = true;
-            this.numLeft = 0;
             this.numCenter = 0;
+            this.numLeft = 0;
             this.numRight = 0;
             this.$apply();
             // 发送websocket
@@ -404,9 +325,8 @@
         }
 
         // 倒计时完成
-        isOverCountDown(){
+        isOverCountDown(flag = true){
             // 添加游戏记录
-            this.addGameRecord();
             clearInterval(clear_set);
             this.$broadcast('stopCountDown');
             this.countDownNum = 3;
@@ -414,14 +334,13 @@
             this.countdownStart = false;
             this.countdownOver = false;
             this.isDot = false;
-            this.isStart = false;
-            this.stageDataCenter.isLight = 0;
-            this.readyBtn = no_ready_btn;
-            isReady = false;
-            leftReady = false;
-            rightReady = false;
+            this.$emit('isOverCountDownEvents');
             this.$apply();
-            this.gameRankE();
+            if(flag){
+                this.addGameRecord();
+                this.gameRankE();
+            }
+
         }
 
         // 统计游戏排名
@@ -462,7 +381,7 @@
                     // 0（自己）1（好友）
                     type: 0,
                     // 0（手动）1（脚动）
-                    status: legOrHand,
+                    status: that.legOrHand,
                     model:api.PKModel,
                 }
             });
