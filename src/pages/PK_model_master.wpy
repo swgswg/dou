@@ -1,0 +1,190 @@
+// pages--游戏-房主
+<style lang="less">
+
+</style>
+<template>
+    <view>
+        <game :roomId.sync="roomId"
+              :legOrHand.sync="legOrHand"
+              :readyOrStartBtn.sync="readyOrStartBtn"
+              :stageDataLeft.sync="stageDataLeft"
+              :numLeft.sync="numLeft"
+              :stageDataCenter.sync="stageDataCenter"
+              :numCenter.sync="numCenter"
+              :stageDataRight="stageDataRight"
+              :numRight="numRight"
+              :hasTimeConfirmBtn.sync="hasTimeConfirmBtn"
+              :selectTimeIndex.sync="selectTimeIndex"
+              :isCountDownNum.sync="isCountDownNum"
+        >
+        </game>
+
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+    import tip from '@/utils/tip';
+    import weixin from '@/utils/weixin';
+
+    import Game from '@/components/game';
+
+    let userInfo = null;
+    let isReady = false; // 有没有准备
+    let no_start_btn = imgApi.no_start_btn;
+    let start_btn = imgApi.start_btn;
+    let shakeHandNumber = 0;
+    let clear_set = null;
+
+    let leftReady = false;
+    let rightReady = false;
+
+    export default class PKModelMaster extends wepy.page {
+        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+        config = {
+            navigationBarTitleText: 'PK模式',
+            disableScroll: true,
+            enablePullDownRefresh:false,
+        };
+
+        components = {
+            game:Game,
+        };
+
+        data = {
+            widWidth:0,
+            widHeight:0,
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+
+            roomId:null,
+            legOrHand:null,
+            // 房主是开始按钮
+            readyOrStartBtn:start_btn,
+            // 房主需要时间的确定按钮
+            hasTimeConfirmBtn:true,
+
+            stageDataLeft:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:0},
+            numLeft:'邀请好友',
+            stageDataCenter:{userId:'',roomId:'',legOrHand:'', logo:'', photo:'', isLight:1},
+            numCenter:0,
+            stageDataRight:{userId:'',roomId:'',legOrHand:'', logo:'', photo:'', isLight:0},
+            numRight:'邀请好友',
+
+            selectTimeIndex:[0,0,0],
+
+            // 3-2-1倒计时是否显示
+            isCountDownNum:false,
+        };
+
+        onLoad(options) {
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.widWidth = px2rpx.originalWidth;
+            this.widHeight = px2rpx.originalHeight;
+
+            this.roomId = options.roomId;
+            this.legOrHand = options.legOrHand;
+
+            // 房主从创建房间进来的 有确定时间按钮
+            this.hasTimeConfirmBtn = true;
+
+            this.$apply();
+
+
+            // 发送数据
+            weixin.weixinsendSocketMessage('', this.stageDataCenter );
+            // 接收数据
+            weixin.weixinOnSocketMessage((data)=>{
+                // 把左右数据绑定
+                console.log(data);
+            });
+        };
+
+        onReady() {
+            // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
+            wx.setKeepScreenOn({
+                keepScreenOn:true
+            });
+
+        };
+
+        // 转发
+        onShareAppMessage(res) {
+            if ( res.from === 'menu' ) {
+                // 来自页面内转发按钮
+                return {
+                    title: '一起来战吧',
+                    path: '/page/PK_model_slave?share=' + userInfo.id + '&roomId=' + roomId + '&legOrHand=' + legOrHand
+                }
+            }
+        }
+
+        computed = {};
+
+        watch = {
+
+        };
+
+        methods = {};
+
+        events = {
+            // 房主开始按钮
+            readyOrStartE(){
+
+            }
+        };
+
+
+        // 房主默认已经准备,点击开始按钮,开始游戏
+        startGameE(){
+            // 时间已经选择 false为选择了时间
+            if(this.hasTimeConfirmBtn){
+                return;
+            }
+            //所有组员都准备好
+            if( !this.allReady() ){
+                return;
+            }
+
+            // 开始游戏
+            
+        }
+
+        // 所有人都准备好
+        allReady(){
+            // 左边玩家
+            if(this.stageDataLeft.userId){
+                if(this.stageDataLeft.isLight == 1){
+                    leftReady = true;
+                } else {
+                    leftReady = false;
+                }
+            } else {
+                leftReady = false;
+            }
+
+            // 右边玩家
+            if(this.stageDataRight.userId){
+                if(this.stageDataRight.isLight == 1){
+                    rightReady = true;
+                } else {
+                    rightReady = false;
+                }
+            } else {
+                rightReady = true;
+            }
+
+            if(leftReady && rightReady){
+                return true;
+            } else {
+                return false;
+            }
+        }
+    }
+</script>

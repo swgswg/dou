@@ -1,11 +1,30 @@
 // page--选择模式
+<style lang="less">
+    .select-model{
+
+        .model-content{
+            justify-content: space-around;
+            width: 70%;
+            border-radius: 20rpx;
+            background-color: #353a68;
+
+            .each{
+                width: 65%;
+                font-weight: bold;
+                color:#ffff46;
+                border: 2px solid #ffff46;
+            }
+        }
+    }
+</style>
+
 <template>
-    <view class="flex-center w-percent100 select-model"
+    <view class="flex-center w-percent100 bg-repeat-size select-model"
           style="height:{{1100*px2rpxHeight}}px;background-image: url({{select_model_bg}})">
 
-        <view class="model-content" style="height:{{800*px2rpxHeight}}px;">
+        <view class="flex-column-center w-percent100 model-content" style="height:{{800*px2rpxHeight}}px;">
             <block wx:for="{{model}}" wx:for-item="model" wx:key="{{index}}">
-                <view class="each" style="height:{{90*px2rpxHeight}}px;"
+                <view class="flex-center f36 br10 each" style="height:{{90*px2rpxHeight}}px;"
                       data-skip="{{model.skip}}"
                       @tap.stop="goToGameModel">
                     {{model.name}}
@@ -49,6 +68,8 @@
                 {skip: '/pages/story_model',name:'故事模式'},
                 {skip: '/pages/PK_model',   name:'PK模式'},
                 {skip: '/pages/arder_model',name:'休闲模式'},
+                {skip: '/pages/PK_model_master',name:'房主'},
+                {skip: '/pages/PK_model_slave',name:'组员'},
             ],
         };
 
@@ -64,8 +85,12 @@
             // 选择模式
             goToGameModel(e){
                 let skip = e.currentTarget.dataset.skip;
-                if(skip == '/pages/PK_model'){
+                if(skip == '/pages/PK_model' || skip == '/pages/PK_model_master'){
                     this.addRoomE(0,skip);
+                    return;
+                }
+                if(skip == '/pages/PK_model_slave'){
+                    this.slaveEnter(skip);
                     return;
                 }
                 this.$navigate(skip);
@@ -87,41 +112,19 @@
                 roomId = res.data.data.roomId;
                 legOrHand = res.data.data.status;
                 wepy.navigateTo({
-                    url: skip + '?legOrHand=' + legOrHand + '&roomId=' + roomId + '&homeOwner=' + 1
+                    url: skip + '?legOrHand=' + legOrHand + '&roomId=' + roomId
                 });
             } else {
                 tip.error('网络错误')
             }
         }
+
+        //模拟组员进入房间
+        slaveEnter(skip){
+            wepy.navigateTo({
+                url: skip + '?legOrHand=0&roomId=100&share=53',
+            });
+        }
     }
 </script>
 
-<style lang="less">
-    .select-model{
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-
-        .model-content{
-            display: flex;
-            flex-direction: column;
-            justify-content: space-around;
-            align-items: center;
-            width: 70%;
-            border-radius: 20rpx;
-            background-color: #353a68;
-
-            .each{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 65%;
-                font-size: 36rpx;
-                font-weight: bold;
-                color:#ffff46;
-                border: 2px solid #ffff46;
-                border-radius: 10rpx;
-
-            }
-        }
-    }
-</style>
