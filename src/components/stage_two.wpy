@@ -1,7 +1,10 @@
 // components--舞台第二版
 <style lang="less">
     .state-two{
-       .br{
+       .btn{
+            padding: 0;
+        }
+        .br{
             border: 2px solid #f68668;
         }
     }
@@ -20,8 +23,8 @@
         <!--舞台 end-->
 
         <!--头像/计数 start-->
-        <view class="pr flex-center br10" style="width:60%;margin-top:{{24*px2rpxHeight}}px;">
-            <button open-type="share" class="flex-center w-percent100 f26 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{num}}</button>
+        <view class="pr flex-center br10" style="width:70%;margin-top:{{24*px2rpxHeight}}px;">
+            <button open-type="share" class="flex-center w-percent100 f26 ellipsis bgecd13b btn" style="height:{{65*px2rpxHeight}}px;">{{num}}</button>
             <image src="{{stageData.photo}}"
                    class="pa br-percent50 {{stageData.photo ? 'br' : ''}}"
                    style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
