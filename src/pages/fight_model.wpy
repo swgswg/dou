@@ -40,6 +40,12 @@
         </view>
         <!--抖动次数 end-->
 
+        <!--鹿背景 start-->
+        <view class="flex-center w-percent100" style="top:{{300*px2rpxHeight}}px;left:0;">
+            <image src="{{beerImg}}" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
+        </view>
+        <!--鹿背景 end-->
+
         <!--点击按钮 start-->
         <view class="pa flex-center w-percent100" style="top:{{700*px2rpxHeight}}px;left:0;">
             <touch :ratio.sync="ratio" :imgType.sync="imgType" :num.sync="shakeHandNumber"></touch>
@@ -121,6 +127,8 @@
     import CoverLayer from '@/components/common/cover_layer';
 
     let userId = null;
+    // true开始/false没开始
+    let startFlag = false;
     // true领取奖励/false没有领取奖励
     let isReceiveIncentive = false;
 
@@ -146,6 +154,7 @@
             px2rpxHeight:0,
             fileUrl:imgApi.fileUrl,
             bgImg: imgApi.fight_model_bg,
+            beerImg:imgApi.fight_model_deer,
             jiangli:imgApi.flight_jiangli,
             lingqu:imgApi.flight_liqu,
             animate:'',
@@ -186,11 +195,15 @@
         methods = {
             // 开始
             start(){
+                if(startFlag){
+                    return;
+                }
                 this.timeFinish = false;
                 // 抖动次数清零
                 this.shakeHandNumber = 0;
-                isReceiveIncentive = false;
                 this.$apply();
+                isReceiveIncentive = false;
+                startFlag = true;
             },
 
             // 领取按钮
@@ -215,6 +228,7 @@
                         tip.longtoast('您没有达到『'+ this.fightData.num +'』次,无法获取奖励');
                     }
                     this.$apply();
+                    startFlag = false;
                 }
             },
 
@@ -257,7 +271,6 @@
             let res = await api.getChallengeMode();
             if(res.data.state == 1){
                 let data = res.data.data[0];
-                console.log(data);
                 this.fightData = data;
                 this.fightTime = data.time;
                 this.$apply();
@@ -326,6 +339,7 @@
             // 倒计时结束
             this.timeFinish = true;
             isReceiveIncentive = false;
+            startFlag = false;
             this.$apply();
         }
 

@@ -132,8 +132,11 @@ function formatSmartTime(time) {
 }
 
 /**
-* m-n之间的随机数
-*/
+ * m-n之间的随机数(包含m,n)
+ * @param m
+ * @param n
+ * @returns {number}
+ */
 function rand(m, n) {
     return Math.ceil(Math.random() * (n - m + 1)) + (m - 1);
 }
@@ -145,7 +148,6 @@ function rand(m, n) {
  * @returns {*} 排序后的数组
  */
 function sorting(arr, ascOrDesc = 'asc', field = null) {
-    console.log(arr);
     function info(a,b) {
         if(field){
             if(ascOrDesc === 'asc'){

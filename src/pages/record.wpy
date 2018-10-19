@@ -1,12 +1,25 @@
+// pages--我的记录
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+
+    .page-record{
+
+    }
+
+</style>
+
 <template>
-    <view class="page-record">
-        <view class="user-info" style="margin-top:{{20*px2rpxHeight}}px;">
+    <view class="flex-column w-percent100 border-box page-record" style="padding:0 {{30*px2rpxWidth}}px;">
+        <view class="flex-center w-percent100 user-info" style="margin-top:{{20*px2rpxHeight}}px;">
             <info :userId.sync="userId" :userName.sync="userName" :photo.sync="photo" :showRight.sync="showRight"></info>
         </view>
 
         <view  style="margin-top:{{20*px2rpxHeight}}px;">
             <bestrecord :userId.sync="userId"></bestrecord>
         </view>
+
         <view  style="margin-top:{{20*px2rpxHeight}}px;">
             <record :userId.sync="userId"></record>
         </view>
@@ -82,16 +95,3 @@
     }
 </script>
 
-<style lang="less">
-    page{
-        background-color: #f0f0f0;
-    }
-
-    .page-record{
-        display: flex;
-        flex-direction: column;
-        padding: 0 30rpx;
-        box-sizing: border-box;
-    }
-
-</style>

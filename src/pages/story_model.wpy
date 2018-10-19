@@ -53,6 +53,7 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
+    import util from '@/utils/util';
     import StageTwo from '@/components/stage_two';
     import OutModel from '@/components/out_model';
     import GoMall from '@/components/go_mall';
@@ -64,6 +65,7 @@
     // 需要显示故事的次数数组
     let nums = [];
     let numsIndex = 0;
+    let storyImgMaxIndex = 0;
 
     export default class StoryModel extends wepy.page {
         config = {
@@ -131,19 +133,22 @@
         };
 
         methods = {
-            // 点击按钮计数
-            // clickEvent(){
-            //     this.shakeHandNumber++;
-            //     this.$apply();
-            // }
+
         };
 
         watch = {
             shakeHandNumber(newValue){
-                if(newValue === nums[numsIndex]){
-                    this.i = numsIndex;
+                // if(newValue === nums[numsIndex]){
+                //     this.i = numsIndex;
+                //     this.showCoverLayer = true;
+                //     numsIndex++;
+                //     this.$apply();
+                // }
+                let res = nums.includes(newValue);
+                console.log(res);
+                if(res){
+                    this.i = util.rand(0,storyImgMaxIndex);
                     this.showCoverLayer = true;
-                    numsIndex++;
                     this.$apply();
                 }
             },
@@ -176,20 +181,36 @@
             this.$apply();
         }
 
-        // 获取故事
+        // 获取次数
         async getStory(){
-            let res = await api.getStoryModeSJ();
+            let res = await api.getStoryIMG();
+
             if(res.data.state == 1){
-                let storys = res.data.data;
+                console.log(res.data.data);
+                nums = res.data.data.random;
+                let storys = res.data.data.storyIMG;
                 this.storys = storys;
                 this.$apply();
-                nums = storys.map(function(item) {
-                    return item.num;
-                });
+                storyImgMaxIndex = storys.length - 1;
             } else {
                 tip.error('网络错误');
             }
         }
+
+        // 获取故事
+        // async getStory(){
+        //     let res = await api.getStoryModeSJ();
+        //     if(res.data.state == 1){
+        //         let storys = res.data.data;
+        //         this.storys = storys;
+        //         this.$apply();
+        //         nums = storys.map(function(item) {
+        //             return item.num;
+        //         });
+        //     } else {
+        //         tip.error('网络错误');
+        //     }
+        // }
     }
 </script>
 

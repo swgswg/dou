@@ -1,19 +1,41 @@
 // 历史排名--世界
+<style lang="less">
+    .ranking-world{
+
+        .first-three-img{
+            align-items: flex-end;
+
+            .first-three-profile{
+                border: 1rpx solid red;
+            }
+        }
+
+        .first-three-time{
+            color: #b30cdd;
+        }
+        .first-three-number{
+            color: #ff145c;
+        }
+
+    }
+</style>
+
 <template>
-    <view class="ranking-world">
-        <view class="ranking-empty" style="height:{{760*px2rpxHeight}}px;">
+    <view class="w-percent100 border-box br10 bgecd13b ranking-world" style="padding: {{10*px2rpxHeight}}px {{10*px2rpxWidth}}px 0;">
+        <view class="w-percent100 border-box bgcf ranking-empty" style="height:{{760*px2rpxHeight}}px;padding: {{30*px2rpxHeight}}px {{10*px2rpxWidth}}px 0">
             <block wx:if="{{!is_empty}}">
+
                 <!--前三名 start-->
-                <view class="first-three">
+                <view class="flex-around w-percent100 f28 border-box bgcf">
                     <block wx:for="{{first_three}}" wx:for-item="first_three" wx:key="{{index}}">
-                        <view class="first-three-each">
-                            <view class="first-three-img" style="width:{{124*px2rpxWidth}}px;height:{{154*px2rpxWidth}}px;">
+                        <view class="flex-column-center">
+                            <view class="pr flex-center first-three-img" style="width:{{124*px2rpxWidth}}px;height:{{154*px2rpxWidth}}px;">
                                 <block wx:if="{{first_three.rownum == 2}}">
                                     <image class="first-three-img2"
                                            style="width:{{108*px2rpxWidth}}px;height:{{115*px2rpxWidth}}px;"
                                            src="{{history_no2}}">
                                     </image>
-                                    <image class="first-three-profile no2-profile"
+                                    <image class="pa br-percent50 first-three-profile"
                                            style="bottom:{{6*px2rpxWidth}}px;left:{{22*px2rpxWidth}}px;width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
                                            src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
                                            @tap.stop="seeOtherGiftWall">
@@ -24,7 +46,7 @@
                                            style="width:{{124*px2rpxWidth}}px;height:{{154*px2rpxWidth}}px;"
                                            src="{{history_no1}}">
                                     </image>
-                                    <image class="first-three-profile no1-profile"
+                                    <image class="pa br-percent50 first-three-profile "
                                            style="bottom:{{6*px2rpxWidth}}px;left:{{6*px2rpxWidth}}px;width:{{108*px2rpxWidth}}px;height:{{108*px2rpxWidth}}px;"
                                            src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
                                            @tap.stop="seeOtherGiftWall">
@@ -35,7 +57,7 @@
                                            style="width:{{108*px2rpxWidth}}px;height:{{115*px2rpxWidth}}px;"
                                            src="{{history_no3}}">
                                     </image>
-                                    <image class="first-three-profile no3-profile"
+                                    <image class="pa br-percent50 first-three-profile"
                                            style="bottom:{{6*px2rpxWidth}}px;left:{{14*px2rpxWidth}}px;width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
                                            src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
                                            @tap.stop="seeOtherGiftWall">
@@ -43,55 +65,17 @@
                                 </block>
                             </view>
 
-                            <!--第二名 start-->
-                            <!--<block wx:if="{{first_three.rownum == 2}}">-->
-                                <!--<view class="profile" style="width:{{117*px2rpxWidth}}px;height:{{131*px2rpxWidth}}px;background-image:url({{history_no2jpg}});">-->
-                                    <!--<image class="photo"-->
-                                           <!--style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"-->
-                                           <!--src="{{first_three.photo}}"-->
-                                           <!--data-userid="{{first_three.userId}}"-->
-                                           <!--@tap.stop="seeOtherGiftWall">-->
-                                    <!--</image>-->
-                                <!--</view>-->
-                            <!--</block>-->
-                            <!--第二名 end-->
 
-                            <!--第一名 start-->
-                            <!--<block wx:if="{{first_three.rownum == 1}}">-->
-                                <!--<view class="profile" style="width:{{96*px2rpxWidth}}px;height:{{140*px2rpxWidth}}px;background-image:url({{history_no1jpg}});">-->
-                                    <!--<image class="photo"-->
-                                           <!--style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"-->
-                                           <!--src="{{first_three.photo}}"-->
-                                           <!--data-userid="{{first_three.userId}}"-->
-                                           <!--@tap.stop="seeOtherGiftWall">-->
-                                    <!--</image>-->
-                                <!--</view>-->
-                            <!--</block>-->
-                            <!--第一名 end-->
-
-                            <!--第三名 star-->
-                            <!--<block wx:if="{{first_three.rownum == 3}}">-->
-                                <!--<view class="profile" style="width:{{117*px2rpxWidth}}px;height:{{131*px2rpxWidth}}px;background-image:url({{history_no3jpg}});">-->
-                                    <!--<image class="photo"-->
-                                           <!--style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"-->
-                                           <!--src="{{first_three.photo}}"-->
-                                           <!--data-userid="{{first_three.userId}}"-->
-                                           <!--@tap.stop="seeOtherGiftWall">-->
-                                    <!--</image>-->
-                                <!--</view>-->
-                            <!--</block>-->
-                            <!--第三名 end-->
-
-                            <view class="first-three-name" style="width:{{180*px2rpxWidth}}px;">{{first_three.name}}</view>
-                            <!--<view class="first-three-time" style="width:{{180*px2rpxWidth}}px;margin-top:{{5*px2rpxHeight}}px;">{{first_three.time}}</view>-->
-                            <view class="first-three-number" style="margin-top:{{10*px2rpxHeight}}px;">{{first_three.shakeNum}}</view>
+                            <view class="flex-center ellipsis" style="width:{{180*px2rpxWidth}}px;">{{first_three.name}}</view>
+                            <!--<view class="flex-center ellipsis" style="width:{{180*px2rpxWidth}}px;margin-top:{{5*px2rpxHeight}}px;">{{first_three.time}}</view>-->
+                            <view class="flex-center ellipsis" style="margin-top:{{10*px2rpxHeight}}px;">{{first_three.shakeNum}}</view>
                         </view>
                     </block>
                 </view>
                 <!--前三名 end-->
 
                 <!--其余排名 start-->
-                <view class="remain" style="height:{{480*px2rpxHeight}}px">
+                <view class="w-percent100 border-box bgcf" style="height:{{480*px2rpxHeight}}px;padding: 0 {{10*px2rpxWidth}}px;">
                     <scroll-view scroll-y bindscrolltolower="scrollToLower" >
                         <ranking :ranking.sync="worldRanking"></ranking>
                         <!--加载更多时动画-->
@@ -107,12 +91,12 @@
         </view>
         <!--自己排名-->
         <block wx:if="{{myWorldRanking}}">
-            <view class="self-ranking" style="height:{{90*px2rpxHeight}}px;">
-                <view class="sort" style="width:{{90*px2rpxWidth}}px;height:{{97*px2rpxWidth}}px;">{{myWorldRanking.rownum}}</view>
-                <image class="img" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{myWorldRanking.photo}}"></image>
-                <view class="w100" style="width:{{100*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.name}}</view>
-                <view class="w150" style="width:{{150*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.time}}</view>
-                <view class="w150" style="width:{{150*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.shakeNum}}</view>
+            <view class="flex-start w-percent100 f28 cf" style="height:{{90*px2rpxHeight}}px;">
+                <view class="flex-center" style="width:{{90*px2rpxWidth}}px;height:{{97*px2rpxWidth}}px;">{{myWorldRanking.rownum}}</view>
+                <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{myWorldRanking.photo}}"></image>
+                <view class="flex-center ellipsis" style="width:{{100*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.name}}</view>
+                <view class="flex-center ellipsis" style="width:{{150*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.time}}</view>
+                <view class="flex-center ellipsis" style="width:{{150*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.shakeNum}}</view>
             </view>
         </block>
     </view>
@@ -134,8 +118,8 @@
     let isFirstPage = false;
     let isLastPage = false;
     let userId = null;
-    export default class RankingWorld extends wepy.component {
 
+    export default class RankingWorld extends wepy.component {
         components = {
             ranking:Ranking,
             bottomLoadMore: BottomLoadMore,
@@ -300,178 +284,3 @@
     }
 </script>
 
-<style lang="less">
-    .ranking-world{
-        width: 100%;
-        padding-top: 10rpx;
-        padding-left: 10rpx;
-        padding-right: 10rpx;
-        box-sizing: border-box;
-        border-radius: 10rpx;
-        /*border: 1rpx solid red;*/
-        background-color: #fbbd46;
-
-        .ranking-empty{
-            width:100%;
-            /*height:790rpx;*/
-            padding-top:30rpx;
-            padding-left:10rpx;
-            padding-right:10rpx;
-            box-sizing:border-box;
-            background-color:#fff;
-
-        }
-
-
-        /*前三名*/
-        .first-three{
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            width: 100%;
-            font-size: 28rpx;
-            box-sizing: border-box;
-            background-color: #fff;
-
-            .first-three-each{
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-
-                .first-three-img{
-                    position: relative;
-                    display: flex;
-                    justify-content: center;
-                    align-items: flex-end;
-
-                    /*第一名*/
-                    .first-three-img1{
-                        /*position: absolute;*/
-                        /*top: 0;*/
-                        /*left: 0;*/
-                        /*width: 124rpx;*/
-                        /*height: 154rpx;*/
-                        /*border: 1rpx solid blue;*/
-                    }
-
-                    /*第2,3名*/
-                    .first-three-img2,.first-three-img3{
-                        /*position: absolute;*/
-                        /*top: 0;*/
-                        /*left: 0;*/
-                        /*width: 108rpx;*/
-                        /*height: 115rpx;*/
-                        /*border: 1rpx solid blue;*/
-                    }
-
-                    .first-three-profile{
-                        position: absolute;
-                        border-radius: 50%;
-                        border: 1rpx solid red;
-                    }
-
-                    .no1-profile{
-                        /*bottom: 6rpx;*/
-                        /*left: 6rpx;*/
-                        /*width: 108rpx;*/
-                        /*height: 108rpx;*/
-                    }
-
-                    .no2-profile{
-                        /*bottom: 6rpx;*/
-                        /*left: 22rpx;*/
-                        /*width: 84rpx;*/
-                        /*height: 84rpx;*/
-                    }
-
-                    .no3-profile{
-                        /*bottom: 6rpx;*/
-                        /*left: 14rpx;*/
-                        /*width: 84rpx;*/
-                        /*height: 84rpx;*/
-                    }
-                }
-
-                .profile{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;
-
-                    .photo{
-                        border-radius: 50%;
-                    }
-                }
-
-                .first-three-name,.first-three-time,.first-three-number{
-                    /*display: flex;*/
-                    /*justify-content: center;*/
-                    /*align-items: center;*/
-                    text-align: center;
-                    white-space: nowrap;
-                    overflow: hidden;
-                    text-overflow: ellipsis;
-                }
-                .first-three-time{
-                    /*margin-top: 5rpx;*/
-                    color: #b30cdd;
-                }
-                .first-three-number{
-                    /*margin-top: 10rpx;*/
-                    color: #ff145c;
-                }
-            }
-        }
-
-        /*剩下排名*/
-        .remain{
-            width: 100%;
-            /*height: 450rpx;*/
-            padding-left:10rpx;
-            padding-right:10rpx;
-            box-sizing: border-box;
-            background-color: #fff;
-            /*border: 2rpx solid red;*/
-        }
-
-        /*自己排名*/
-        .self-ranking{
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            /*height: 97rpx;*/
-            font-size: 28rpx;
-            color: #fff;
-            box-sizing: border-box;
-
-            .sort{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                /*width: 80rpx;*/
-                /*border: 1rpx solid red;*/
-            }
-
-            .w100,.w150{
-                /*width: 100rpx;*/
-                /*margin-left: 30rpx;*/
-                /*border: 1rpx solid red;*/
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .w150{
-                /*width: 150rpx;*/
-            }
-        }
-
-
-    }
-
-
-
-</style>

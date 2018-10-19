@@ -1,7 +1,13 @@
-// 历史排名--好友
+// components--历史排名-好友
+<style lang="less">
+    .ranking-firend{
+
+    }
+</style>
+
 <template>
-    <view class="ranking-firend">
-        <view class="rank-data" style="height:{{770*px2rpxHeight}}px;">
+    <view class="w-percent100 border-box br10 bgecd13b ranking-firend" style="padding:{{10*px2rpxHeight}}px {{10*px2rpxWidth}}px;">
+        <view class="w-percent100 border-box bgcf" style="height:{{770*px2rpxHeight}}px;padding:{{60*px2rpxHeight}}px {{10*px2rpxWidth}}px 0;">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <ranking :ranking.sync="friendRanking"></ranking>
                 <!--加载更多时动画-->
@@ -11,12 +17,12 @@
             </scroll-view>
         </view>
 
-        <view class="change-page" style="height:{{70*px2rpxHeight}}px">
-            <view class="prev-page" style="width:{{160*px2rpxWidth}}px;" data-change="prev" @tap.stop="changePage">
+        <view class="flex-between w-percent100 border-box bgcf" style="height:{{70*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;">
+            <view class="flex-between f30 cfcf05b" style="width:{{160*px2rpxWidth}}px;" data-change="prev" @tap.stop="changePage">
                 <image style="width:{{55*px2rpxWidth}}px;height:{{37*px2rpxWidth}}px;" src="{{prev_page}}"></image>
                 <view>上一页</view>
             </view>
-            <view class="next-page" style="width:{{160*px2rpxWidth}}px;" data-change="next" @tap.stop="changePage">
+            <view class="flex-between f30 cfcf05b" style="width:{{160*px2rpxWidth}}px;" data-change="next" @tap.stop="changePage">
                 <view>下一页</view>
                 <image style="width:{{55*px2rpxWidth}}px;height:{{37*px2rpxWidth}}px;" src="{{next_page}}"></image>
             </view>
@@ -167,58 +173,3 @@
 
     }
 </script>
-
-<style lang="less">
-    .ranking-firend{
-        width: 100%;
-        /*height: 910rpx;*/
-        padding-top: 10rpx;
-        padding-left: 10rpx;
-        padding-right: 10rpx;
-        box-sizing: border-box;
-        border-radius: 10rpx;
-        /*border: 1rpx solid red;*/
-        background-color: #fbbd46;
-
-        .rank-data{
-            width: 100%;
-            /*height: 816rpx;*/
-            padding-top: 60rpx;
-            padding-left: 10rpx;
-            padding-right: 10rpx;
-            box-sizing: border-box;
-            /*height: 990rpx;*/
-            /*border: 1rpx solid red;*/
-            background-color: #fff;
-        }
-
-        .change-page{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            /*height: 70rpx;*/
-            padding: 0 20rpx;
-            box-sizing: border-box;
-            background-color: #fff;
-
-            .prev-page,.next-page{
-                display:flex;
-                justify-content: space-between;
-                align-items: center;
-                /*width: 160rpx;*/
-                font-size: 30rpx;
-                color: #fbbd46;
-                /*height: 100%;*/
-                /*border: 1rpx solid red;*/
-
-                image{
-                    /*width: 55rpx;*/
-                    /*height: 37rpx;*/
-                    /*border: 1rpx solid red;*/
-                }
-            }
-
-        }
-    }
-</style>

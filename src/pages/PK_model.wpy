@@ -50,7 +50,6 @@
         <!--点击按钮 start-->
         <block wx:if="{{isDot}}">
             <view class="flex-center w-percent100" style="margin-top:{{200*px2rpxHeight}}px;">
-                <!--<image src="{{DotBtn}}" style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;" @tap.stop="dot"></image>-->
                 <touch :ratio.sync="ratio" :imgType.sync="imgType"></touch>
             </view>
         </block>
@@ -58,7 +57,6 @@
 
         <!--舞台/人物定位 start-->
         <view class="pa flex-center w-percent100" style="bottom:{{200*px2rpxHeight}}px;left:0;">
-            <!--<stagetwo :stageData.sync="stageData"></stagetwo>-->
             <threestage
                     :stageDataLeft.sync="stageDataLeft" :numLeft.sync="numLeft"
                     :stageDataCenter.sync="stageDataCenter" :numCenter.sync="numCenter"
@@ -155,8 +153,6 @@
             isStart:false, // 房主在全部准备好才会变成准备按钮
             startBtn: no_start_btn,
 
-            // 点击按钮
-            // DotBtn: imgApi.story_btn,
             // 点击按钮是否显示
             isDot:false,
             // 按钮参数
@@ -466,16 +462,15 @@
 
         // 统计游戏排名
         gameRankE(){
-            // let ranking = { stageDataLeft: this.numLeft ,stageDataCenter :this.numCenter, stageDataRight : this.numRight};
-            // if(isString(this.numLeft)){
-            //     this.numLeft = 0;
-            // }
-            // if(isString(this.numCenter)){
-            //     this.numCenter = 0;
-            // }
-            // if(isString(this.numRight)){
-            //     this.numRight = 0;
-            // }
+            if( !this.stageDataLeft.userId ){
+                this.numLeft = 0;
+            }
+            if(!this.stageDataCenter.userId){
+                this.numCenter = 0;
+            }
+            if(!this.stageDataRight.userId){
+                this.numRight = 0;
+            }
             let ranking = [
                 {num:this.numLeft, logo:this.stageDataLeft.logo, photo:this.stageDataLeft.photo},
                 {num:this.numCenter, logo:this.stageDataCenter.logo, photo:this.stageDataCenter.photo},
@@ -504,7 +499,7 @@
         // 添加游戏记录
         async addGameRecord(){
             let that = this;
-            let res = await api.addRecord({
+            await api.addRecord({
                 query:{
                     userId: userInfo.id,
                     time: that.time,

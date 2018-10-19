@@ -38,6 +38,7 @@ module.exports = {
 
     // 挑战模式背景/商城按钮/通关奖励按钮/领取按钮
     fight_model_bg:uploadFileUrl + 'fight_model_bg.png',
+    fight_model_deer:uploadFileUrl + 'fight_model_deer.png',
     mall:uploadFileUrl + 'mall.png',
     flight_jiangli: uploadFileUrl + 'flight_jiangli.png',
     flight_liqu: uploadFileUrl + 'flight_liqu.png',
@@ -55,11 +56,19 @@ module.exports = {
     game_rank1:uploadFileUrl + 'game_rank1.png',
     game_rank2:uploadFileUrl + 'game_rank2.png',
     game_rank3: uploadFileUrl + 'game_rank3.png',
-    game_rank_bg: uploadFileUrl + 'game_rank_bg.png',
+    // game_rank_bg: uploadFileUrl + 'game_rank_bg.png',
+    game_rank_bg: uploadFileUrl + 'game_rank_bg.gif',
 
     // 按钮按下图片
     btn_click_im2:uploadFileUrl + 'btn_click_im2.png',
     btn_click_img1:uploadFileUrl + 'btn_click_img1.png',
+
+    //大按钮
+    btn_active1:uploadFileUrl + 'btn_active1.png',
+    btn_inactive1:uploadFileUrl + 'btn_inactive1.png',
+    btn_active2:uploadFileUrl + 'btn_active2.png',
+    btn_inactive2:uploadFileUrl + 'btn_inactive2.png',
+
 
     // 蓝牙
     bluetooth_inactive: uploadFileUrl + 'bluetooth_inactive.png',

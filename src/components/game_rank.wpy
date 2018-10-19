@@ -127,7 +127,6 @@
             this.gameRankData.NO1 = newRanking[0];
             this.gameRankData.NO2 = newRanking[1];
             this.gameRankData.NO3 = newRanking[2];
-            console.log(this.gameRankData);
             this.$apply();
         }
 

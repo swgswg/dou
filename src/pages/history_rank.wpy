@@ -9,7 +9,7 @@
             <rankingbutton :tab.sync="tabData" :currentTabValue.sync="weekOrAll"></rankingbutton>
         </view>
 
-        <view class="border-box" style="padding:0 {{20*px2rpxWidth}}px;">
+        <view class="w-percent100 border-box" style="padding:0 {{20*px2rpxWidth}}px;">
 
             <view class="flex-around" style="margin-top: {{25*px2rpxHeight}}px;">
                 <view>

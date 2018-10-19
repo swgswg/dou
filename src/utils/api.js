@@ -162,6 +162,8 @@ const updateMobile = (params) => wxRequest(params, host + 'shakeLeg/user/updateM
 const getStoryModeSJ = (params) => wxRequest(params, host + 'shakeLeg/user/getStoryModeSJ');
 // 查询挑战模式数据
 const getChallengeMode = (params) => wxRequest(params, host + 'shakeLeg/admin/getChallengeMode');
+//  获取故事随机抖动数
+const getStoryIMG = (params) => wxRequest(params, host + 'shakeLeg/user/getStoryIMG');
 
 export default {
     host,
@@ -243,4 +245,5 @@ export default {
     updateMobile,
     getStoryModeSJ,
     getChallengeMode,
+    getStoryIMG,
 };
