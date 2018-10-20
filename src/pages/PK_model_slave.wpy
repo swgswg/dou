@@ -104,6 +104,9 @@
                 // 判断这个房间有没有满员
             }
 
+            // 获取房主信息
+            this.getMasterE();
+
             // 发送数据
             weixin.weixinsendSocketMessage('', this.stageDataCenter );
             // 接收数据
@@ -160,6 +163,28 @@
                     weChat: share_id,
                 }
             });
+        }
+
+        // 获取房主信息
+        async getMasterE(share_id){
+            let res = await api.getOneUserInfo({
+                query:{
+                    userId:share_id
+                }
+            });
+            // 把房主信息绑定到左边
+            this.updateStageDataLeft(res.data.data);
+        }
+
+        // 把房主的信息绑到左边
+        updateStageDataLeft(userInfo){
+            this.stageDataLeft.userId = userInfo.id;
+            this.stageDataLeft.logo = userInfo.logo;
+            this.stageDataLeft.photo = userInfo.photo;
+            this.stageDataLeft.roomId = this.roomId;
+            this.stageDataLeft.legOrHand = this.legOrHand;
+            this.numLeft = userInfo.name;
+            this.$apply();
         }
 
         // 游戏时间开始倒计时
