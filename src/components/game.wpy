@@ -51,9 +51,9 @@
         <!--舞台/人物定位 start-->
         <view class="pa flex-center w-percent100" style="bottom:{{200*px2rpxHeight}}px;left:0;">
             <threestage
-                    :stageDataLeft.sync="stageDataLeft" :numLeft.sync="numLeft"
-                    :stageDataCenter.sync="stageDataCenter" :numCenter.sync="numCenter"
-                    :stageDataRight.sync="stageDataRight" :numRight.sync="numRight"
+                    :stageDataLeft.sync="stageDataLeft"
+                    :stageDataCenter.sync="stageDataCenter"
+                    :stageDataRight.sync="stageDataRight"
             >
             </threestage>
         </view>
@@ -95,6 +95,8 @@
     import api from '@/utils/api';
     import tip from '@/utils/tip';
     import weixin from '@/utils/weixin';
+    import socketServer from '@/utils/socketServer';
+
     import OutModel from '@/components/out_model';
     import Touch from '@/components/touch';
     import ThreeStage from '@/components/three_stage';
@@ -170,22 +172,14 @@
                 type:Object,
                 twoWay:true,
             },
-            numLeft:{
-                twoWay:true
-            },
             stageDataCenter:{
                 type:Object,
                 twoWay:true,
             },
-            numCenter:{
-                twoWay:true
-            },
+
             stageDataRight:{
                 type:Object,
                 twoWay:true,
-            },
-            numRight:{
-                twoWay:true
             },
 
             // 选择时间确定按钮(房主有确定按钮/组员没有)
@@ -217,16 +211,6 @@
 
             // 把自己的信息绑定到中间舞台
             this.updateStageDataCenter();
-
-            // 开启webSocket
-            weixin.weixinConnectSocket(userInfo.id);
-            // 发送数据
-            weixin.weixinsendSocketMessage('', this.stageDataCenter );
-            // 接收数据
-            weixin.weixinOnSocketMessage((data)=>{
-                // 把左右数据绑定
-                console.log(data);
-            });
         };
 
         watch = {
@@ -258,10 +242,10 @@
                 // 手抖
                 if( (this.legOrHand == 0) && (!this.hasTimeConfirmBtn) ){
                     shakeHandNumber++;
-                    this.numCenter = shakeHandNumber;
+                    this.stageDataCenter.shakeHandNum = shakeHandNumber;
                     this.$apply();
                     // 发送websocket
-                    weixin.weixinsendSocketMessage('', this.numCenter );
+                    // socketServer.wsSend(this.roomId,shakeHandNumber);
                 }
             },
 
@@ -269,15 +253,16 @@
             outEvents(){
                 this.isOverCountDown(false);
                 // 关闭websocket
-                weixin.weixinCloseWebSocket();
+                // weixin.weixinCloseWebSocket();
+                socketServer.wsClose();
+                // 退出游戏
+                this.updateRoomUserStatusE();
             },
 
             // 取消遮盖层
             cancelShow(){
                 this.cancelCoverlayer();
             },
-
-
 
         };
 
@@ -288,9 +273,9 @@
             this.stageDataCenter.userId = userInfo.id;
             this.stageDataCenter.logo = userInfo.logo;
             this.stageDataCenter.photo = userInfo.photo;
+            this.stageDataCenter.shakeHandNum = userInfo.name;
             this.stageDataCenter.roomId = this.roomId;
             this.stageDataCenter.legOrHand = this.legOrHand;
-            this.numCenter = userInfo.name;
             this.$apply();
         }
 
@@ -298,7 +283,6 @@
         countDownNum321(){
             let that =this;
             // 发送websocket
-            weixin.weixinsendSocketMessage('', this.isCountDownNum);
             this.isCountDownNum = true;
             clear_set = setInterval(function() {
                 that.countDownNum--;
@@ -316,12 +300,10 @@
             this.countdownStart = true;
             this.countdownOver = false;
             this.isDot = true;
-            this.numCenter = 0;
-            this.numLeft = 0;
-            this.numRight = 0;
+            this.stageDataCenter.shakeHandNum = 0;
+            this.stageDataLeft.shakeHandNum = 0;
+            this.stageDataRight.shakeHandNum = 0;
             this.$apply();
-            // 发送websocket
-            weixin.weixinsendSocketMessage('', this.isDot);
         }
 
         // 倒计时完成
@@ -346,9 +328,9 @@
         // 统计游戏排名
         gameRankE(){
             let ranking = [
-                {num:this.numLeft, logo:this.stageDataLeft.logo, photo:this.stageDataLeft.photo},
-                {num:this.numCenter, logo:this.stageDataCenter.logo, photo:this.stageDataCenter.photo},
-                {num:this.numRight, logo:this.stageDataRight.logo, photo:this.stageDataRight.photo},
+                {num:this.stageDataLeft.shakeHandNum, logo:this.stageDataLeft.logo, photo:this.stageDataLeft.photo},
+                {num:this.stageDataCenter.shakeHandNum, logo:this.stageDataCenter.logo, photo:this.stageDataCenter.photo},
+                {num:this.stageDataRight.shakeHandNum, logo:this.stageDataRight.logo, photo:this.stageDataRight.photo},
             ];
             this.gameRankData = ranking;
             this.$apply();
@@ -387,6 +369,15 @@
             });
         }
 
+        // 退出游戏
+        async updateRoomUserStatusE(){
+            api.updateRoomUserStatus({
+                query:{
+                    userId: userInfo.id,
+                    roomId: this.roomId,
+                }
+            });
+        }
     }
 </script>
 

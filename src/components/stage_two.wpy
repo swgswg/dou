@@ -15,7 +15,7 @@
 
         <!--舞台 start-->
         <view class="pr flex-center bg-repeat-size"
-              style="width:{{260*px2rpxWidth}}px;height:{{351*px2rpxWidth}}px;background-image:url({{stageData.isLight == 1 ? bgLightImg : bgNoLightImg}});">
+              style="width:{{260*px2rpxWidth}}px;height:{{351*px2rpxWidth}}px;background-image:url({{stageData.isLight == 2 ? bgLightImg : bgNoLightImg}});">
             <image src="{{fileUrl + stageData.logo}}"
                    style="width: {{logoWidth*px2rpxWidth}}px;height: {{logoHeight*px2rpxWidth}}px;">
             </image>
@@ -24,7 +24,7 @@
 
         <!--头像/计数 start-->
         <view class="pr flex-center br10" style="width:70%;margin-top:{{24*px2rpxHeight}}px;">
-            <button open-type="share" class="flex-center w-percent100 f26 ellipsis bgecd13b btn" style="height:{{65*px2rpxHeight}}px;">{{num}}</button>
+            <button open-type="share" class="flex-center w-percent100 f26 ellipsis bgecd13b btn" style="height:{{65*px2rpxHeight}}px;">{{stageData.shakeHandNum}}</button>
             <image src="{{stageData.photo}}"
                    class="pa br-percent50 {{stageData.photo ? 'br' : ''}}"
                    style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
@@ -55,12 +55,18 @@
         };
 
         props = {
-            // stageData:{userId:'',roomId:'',legOrHand:'',ratio:1,logo:'', photo:'', isLight:1(1带灯光舞台,0不带灯光舞台)}
+            // stageData:{
+            //     userId:'',
+            //     roomId:'',
+            //     legOrHand:'',
+            //     ratio:1,
+            //     logo:'',
+            //     photo:'',
+            //     isLight:1(1带灯光舞台,0不带灯光舞台)
+            //     shakeHandNum:'邀请好友'
+            // }
             stageData:{
                 type:Object,
-                twoWay:true
-            },
-            num:{
                 twoWay:true
             },
             ratio:{
@@ -82,7 +88,7 @@
             let that = this;
             console.log(that.roomId);
             console.log(isNaN(this.num));
-            if ( (res.from === 'button' && isNaN(this.num)) ) {
+            if ( (res.from === 'button' && (this.stageData.shakeHandNum == '邀请好友')) ) {
                 // 来自页面内转发按钮
                 return {
                     title: '一起来战吧',

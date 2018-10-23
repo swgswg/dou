@@ -110,8 +110,9 @@
 
         // 点击开启轮播图
         openSwipe(){
-            this.isOpenShake = true;
-            this.$apply();
+            // this.isOpenShake = true;
+            // this.$apply();
+            this.isLogo();
         }
 
 

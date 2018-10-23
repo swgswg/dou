@@ -4,7 +4,7 @@
 
 <template>
     <view class="flex-center">
-        <image src="{{img}}" style="width:{{winWidth}};height:{{winHeight}};"></image>
+        <image src="{{img}}" style="width:{{winWidth}}px;height:{{winHeight}}px;"></image>
     </view>
 </template>
 
@@ -21,13 +21,13 @@
         data = {
             winWidth:0,
             winHeight:0,
-            img:imgApi.doutui_jinru5,
+            img: imgApi.doutui_jinru5,
         };
 
         onLoad() {
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
-            this.winWidth = px2rpx.originalWidth + 'px';
-            this.winHeight = px2rpx.originalHeight + 'px';
+            this.winWidth = px2rpx.originalWidth;
+            this.winHeight = px2rpx.originalHeight;
         };
 
         onReady() {

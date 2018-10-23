@@ -135,60 +135,6 @@ module.exports = {
         });
     },
 
-    /**
-     * 建立webSocket连接
-     */
-    weixinConnectSocket(userId){
-        wx.connectSocket({
-            url: api.wshost +userId,
-        });
-    },
-
-    /**
-     * webSocket发送数据
-     * @param receiveId  接收人id
-     * @param message 发送消息
-     */
-    weixinsendSocketMessage(receiveId,message){
-        let sendMessage = message + '|' + receiveId;
-        //连接成功
-        wx.onSocketOpen(function () {
-            console.log('连接成功');
-            wx.sendSocketMessage({
-                data: sendMessage
-            });
-        });
-        wx.onSocketError(function(res){
-            console.log(res);
-            console.log('WebSocket连接打开失败，请检查！');
-        });
-    },
-
-    /**
-     * 接收webSocket信息
-     */
-    weixinOnSocketMessage(fun){
-        wx.onSocketMessage(function(res){
-            let data = JSON.parse(res.data);
-            fun(data);
-        });
-    },
-
-    // 关闭webSocket
-    weixinCloseWebSocket(){
-        wx.closeSocket({
-            success: function(){
-                console.log("关闭成功...")
-            },
-            fail: function(){
-                console.log("关闭失败...")
-            }
-        });
-        wx.onSocketClose(function(res) {
-            console.log("WebSocket连接已关闭")
-        })
-
-    },
 
     /**
      * 微信支付

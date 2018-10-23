@@ -7,9 +7,9 @@
 
 <template>
     <view class="flex-between w-percent100 three-stage">
-        <stagetwoLeft   :stageData.sync="stageDataLeft"   :num.sync="numLeft" :ratio.sync="ratioLeft"></stagetwoLeft>
-        <stagetwoCenter :stageData.sync="stageDataCenter" :num.sync="numCenter" :ratio.sync="ratioCenter"></stagetwoCenter>
-        <stagetwoRight  :stageData.sync="stageDataRight"  :num.sync="numRight" :ratio.sync="ratioRight"></stagetwoRight>
+        <stagetwoLeft   :stageData.sync="stageDataLeft"   :ratio.sync="ratioLeft"></stagetwoLeft>
+        <stagetwoCenter :stageData.sync="stageDataCenter" :ratio.sync="ratioCenter"></stagetwoCenter>
+        <stagetwoRight  :stageData.sync="stageDataRight"  :ratio.sync="ratioRight"></stagetwoRight>
     </view>
 </template>
 
@@ -32,30 +32,24 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
 
-            // stageDataLeft:{userId:'',roomId:'',legOrHand:'', ratio:0.9, logo:'man1.png', photo:'', isLight:1},
-            // numLeft:1,
             ratioLeft:0.9,
-            // stageDataCenter:{userId:'',roomId:'',legOrHand:'', ratio:1.1, logo:'woman1.png', photo:'', isLight:1},
-            // numCenter:'邀请',
             ratioCenter:1,
-            // stageDataRight:{userId:'',roomId:'',legOrHand:'', ratio:0.9, logo:'man2.png', photo:'', isLight:1},
-            // numRight:'邀请',
             ratioRight:0.9
         };
 
         props = {
             stageDataLeft:{
                 type:Object,
+                twoWay:true,
             },
-            numLeft:{},
             stageDataCenter:{
-                type:Object
+                type:Object,
+                twoWay:true,
             },
-            numCenter:{},
             stageDataRight:{
-                type:Object
+                type:Object,
+                twoWay:true,
             },
-            numRight:{},
         };
 
         onLoad(){

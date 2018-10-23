@@ -1,5 +1,5 @@
 <template>
-    <view class="w-percent100 border-box my-info">
+    <view class="w-percent100 border-box my-info" style="width:{{windowWidth}}px;height:{{windowHeight}}px;">
         <info :userId.sync="userId" :userName.sync="userName" :photo.sync="photo" :showRight.sync="showRight"></info>
 
         <view style="margin-top:{{20*px2rpxHeight}}px;">

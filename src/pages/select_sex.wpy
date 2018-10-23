@@ -114,47 +114,47 @@
                 // console.log(this.logo);
             },
 
-            // 获取用户授权信息
-            async getUserInfo(e){
-                let that = this;
-                console.log(e);
-                // 性别选择
-                if(this.currentSex == -1){
-                    await tip.longtoast('请选择性别');
-                    return;
-                }
-                // 人物选择
-                if(this.currentProfile == -1){
-                    await tip.longtoast('请选择动漫小人物');
-                    return;
-                }
-
-                if (e.detail.errMsg == 'getUserInfo:ok'){
-                    // 授权成功
-                    var userInfo = wepy.getStorageSync(USER_INFO);
-                    // console.log(userInfo);
-                    let rlt = await api.updateSex({
-                        query:{
-                            userId: userInfo.id,
-                            sex: that.currentSex,
-                            logo: that.logo,
-                            name: e.detail.userInfo.nickName,
-                            photo:e.detail.userInfo.avatarUrl,
-                        }
-                    });
-                    if(rlt.data.state == 1){
-                        // 获取信息成功
-                        wepy.redirectTo({
-                            url: '/pages/select_model'
-                        });
-                    }
-                } else {
-                    // 授权失败
-                    let res = await tip.longtoast('请重新确认授权');
-                    return;
-                }
-            },
         };
+
+        // 获取用户授权信息
+        async getUserInfo(e){
+            let that = this;
+            console.log(e);
+            // 性别选择
+            if(this.currentSex == -1){
+                await tip.longtoast('请选择性别');
+                return;
+            }
+            // 人物选择
+            if(this.currentProfile == -1){
+                await tip.longtoast('请选择动漫小人物');
+                return;
+            }
+
+            if (e.detail.errMsg == 'getUserInfo:ok'){
+                // 授权成功
+                var userInfo = wepy.getStorageSync(USER_INFO);
+                let rlt = await api.updateSex({
+                    query:{
+                        userId: userInfo.id,
+                        sex: that.currentSex,
+                        logo: that.logo,
+                        name: e.detail.userInfo.nickName,
+                        photo: e.detail.userInfo.avatarUrl,
+                    }
+                });
+                if(rlt.data.state == 1){
+                    // 获取信息成功
+                    wepy.redirectTo({
+                        url: '/pages/select_model'
+                    });
+                }
+            } else {
+                // 授权失败
+                let res = await tip.longtoast('请重新确认授权');
+                return;
+            }
+        }
 
     }
 </script>

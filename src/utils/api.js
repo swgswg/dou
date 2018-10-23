@@ -1,15 +1,16 @@
+import config from '@/utils/config_local';
 import { wxRequest } from '@/utils/wxRequest';
 
 // 域名
 // const host = 'http://www.dt.pub/';
-const host = 'http://39.107.70.80:8080/';
+const host = config.apiHost;
 // const host = 'http://192.168.1.153:8080/';
 
 // webScocket
-const wshost = 'ws://192.168.3.52:8080/MicroPlatform/websocket/';
+const wshost = config.webSocketHost;
 
 // 上传文件/解析图片 地址
-const uploadFileUrl = 'http://doutui.oss-cn-beijing.aliyuncs.com/';
+const uploadFileUrl = config.uploadFileUrl;
 
 // 订单状态 全部'' 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）6(订单取消)
 const all = '';
@@ -164,6 +165,14 @@ const getStoryModeSJ = (params) => wxRequest(params, host + 'shakeLeg/user/getSt
 const getChallengeMode = (params) => wxRequest(params, host + 'shakeLeg/admin/getChallengeMode');
 //  获取故事随机抖动数
 const getStoryIMG = (params) => wxRequest(params, host + 'shakeLeg/user/getStoryIMG');
+// 用户进入房间
+const intoRoomJudge = (params) => wxRequest(params, host + 'shakeLeg/user/intoRoomJudge');
+// pk退出房间接口
+const updateRoomUserStatus = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoomUserStatus');
+// 修改pk房间时间
+const updateRoomTime = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoomTime');
+// 修改pk用户状态
+const updateRoomStatus = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoomStatus');
 
 export default {
     host,
@@ -246,4 +255,8 @@ export default {
     getStoryModeSJ,
     getChallengeMode,
     getStoryIMG,
+    intoRoomJudge,
+    updateRoomUserStatus,
+    updateRoomTime,
+    updateRoomStatus,
 };

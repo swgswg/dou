@@ -8,11 +8,8 @@
               :legOrHand.sync="legOrHand"
               :readyOrStartBtn.sync="readyOrStartBtn"
               :stageDataLeft.sync="stageDataLeft"
-              :numLeft.sync="numLeft"
               :stageDataCenter.sync="stageDataCenter"
-              :numCenter.sync="numCenter"
               :stageDataRight="stageDataRight"
-              :numRight="numRight"
               :hasTimeConfirmBtn.sync="hasTimeConfirmBtn"
               :selectTimeIndex.sync="selectTimeIndex"
               :isCountDownNum.sync="isCountDownNum"
@@ -31,16 +28,16 @@
     import api from '@/utils/api';
     import tip from '@/utils/tip';
     import weixin from '@/utils/weixin';
+    import util from '@/utils/util';
+    import socketServer from '@/utils/socketServer';
+    import wsDataDeal from '@/utils/wsDataDeal';
 
     import Game from '@/components/game';
 
     let userInfo = null;
-    let isReady = false; // 有没有准备
     let no_start_btn = imgApi.no_start_btn;
     let start_btn = imgApi.start_btn;
-    let shakeHandNumber = 0;
     let clear_set = null;
-
     let leftReady = false;
     let rightReady = false;
 
@@ -69,12 +66,9 @@
             // 房主需要时间的确定按钮
             hasTimeConfirmBtn:true,
 
-            stageDataLeft:{userId:1, roomId:'', legOrHand:'', logo:'woman1.png', photo:'', isLight:1},
-            numLeft:'邀请好友',
-            stageDataCenter:{userId:'',roomId:'',legOrHand:'', logo:'', photo:'', isLight:1},
-            numCenter:0,
-            stageDataRight:{userId:2,roomId:'',legOrHand:'', logo:'woman2.png', photo:'', isLight:1},
-            numRight:'邀请好友',
+            stageDataLeft:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1,shakeHandNum:'邀请好友'},
+            stageDataCenter:{userId:'',roomId:'', legOrHand:'', logo:'', photo:'', isLight:2,shakeHandNum:'邀请好友'},
+            stageDataRight:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1,shakeHandNum:'邀请好友'},
 
             selectTimeIndex:[0,0,0],
 
@@ -86,6 +80,7 @@
         };
 
         onLoad(options) {
+            userInfo = wepy.getStorageSync(USER_INFO);
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
@@ -97,25 +92,39 @@
 
             // 房主从创建房间进来的 有确定时间按钮
             this.hasTimeConfirmBtn = true;
-
             this.$apply();
 
-
-            // 发送数据
-            weixin.weixinsendSocketMessage('', this.stageDataCenter );
-            // 接收数据
-            weixin.weixinOnSocketMessage((data)=>{
-                // 把左右数据绑定
-                console.log(data);
-            });
         };
 
         onReady() {
+            let that = this;
             // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
             wx.setKeepScreenOn({
                 keepScreenOn:true
             });
 
+            // 连接webSocket
+            socketServer.wsInit(userInfo.id, (data)=>{
+                console.log(data);
+                wsDataDeal.wsDeal(data, that, (group)=>{
+                    console.log('group============')
+                    console.log(group);
+                    let arrs = this.dealGroupDataE(group);
+                    console.log(arrs);
+                    if(arrs[0]){
+                        this.updateStageLeftDateE( arrs[0]);
+                    }
+                    if(arrs[1]){
+                        this.updateStageRightDateE(arrs[1]);
+                    }
+                },(newTime)=>{
+                    // 游戏时间
+                }, (readyData)=>{
+                    // 组员准备
+                    that.slaveReadyE(readyData);
+                });
+
+            });
         };
 
         // 转发
@@ -129,15 +138,18 @@
             }
         }
 
-        computed = {};
-
         watch = {
-
+            selectTimeIndex(newvalue){
+                console.log(newvalue);
+            }
         };
 
-        methods = {};
-
         events = {
+            // 确定时间
+            confirmTimeEvents(strTime){
+                this.updateRoomTimeE(strTime);
+            },
+
             // 房主开始按钮
             readyOrStartE(){
                 this.startGameE();
@@ -149,6 +161,34 @@
             }
         };
 
+        // 去掉用户组里自己的信息
+        dealGroupDataE(arrayData){
+            let data = [];
+            let len = arrayData.length;
+            for(let i = 0; i < len; i++){
+                if(arrayData[i].userId != userInfo.id){
+                    data.push(arrayData[i]);
+                }
+            }
+            return data;
+        }
+
+        // 把房间人物信息绑定到左边舞台
+        updateStageLeftDateE(groupInfo){
+            let that = this;
+            for(let k in groupInfo){
+                that.stageDataLeft[k] = groupInfo[k];
+            }
+            this.$apply();
+        }
+        // 把房间人物信息绑定到右边舞台
+        updateStageRightDateE(groupInfo){
+            let that = this;
+            for(let k in groupInfo){
+                that.stageDataRight[k] = groupInfo[k];
+            }
+            this.$apply();
+        }
 
         // 房主默认已经准备,点击开始按钮,开始游戏
         startGameE(){
@@ -160,7 +200,6 @@
             if( !this.allReady() ){
                 return;
             }
-
             // 开始游戏
             this.$broadcast('countDownNum321Events');
         }
@@ -169,7 +208,7 @@
         allReady(){
             // 左边玩家
             if(this.stageDataLeft.userId){
-                if(this.stageDataLeft.isLight == 1){
+                if(this.stageDataLeft.isLight == 2){
                     leftReady = true;
                 } else {
                     leftReady = false;
@@ -180,7 +219,7 @@
 
             // 右边玩家
             if(this.stageDataRight.userId){
-                if(this.stageDataRight.isLight == 1){
+                if(this.stageDataRight.isLight == 2){
                     rightReady = true;
                 } else {
                     rightReady = false;
@@ -201,5 +240,35 @@
         isOverCountDownE(){
             this.readyBtn = start_btn;
         }
+
+        // 确定时间
+        async updateRoomTimeE(strTime){
+            let roomId = this.roomId;
+            let time = this.selectTimeIndex[0]+'#'+this.selectTimeIndex[1]+'#'+this.selectTimeIndex[2];
+            await api.updateRoomTime({
+                query:{
+                    roomId: roomId,
+                    time: time,
+                    time1: strTime
+                }
+            });
+        }
+
+        // 同步组员准备
+        slaveReadyE(readyData){
+            let that = this;
+            readyData.forEach(function(item) {
+                if(item.userId == that.stageDataRight.userId){
+                    that.stageDataRight.isLight = item.status;
+                } else if(item.userId == that.stageDataLeft.userId){
+                    that.stageDataLeft.isLight = item.status;
+                } else if(item.userId == that.stageDataCenter.userId){
+                    that.stageDataCenter.isLight = item.status;
+                }
+                that.$apply();
+            });
+
+        }
+
     }
 </script>

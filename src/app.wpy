@@ -459,6 +459,9 @@
 
             // 播放背景音乐
             // this.backgroundMusicEvent();
+
+            // 关闭webSocket
+            // weixin.weixinCloseWebSocket();
         }
 
         // 把上次的手动记录存入数据库(个人记录不需要房间号)

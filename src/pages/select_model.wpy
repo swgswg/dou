@@ -122,7 +122,7 @@
         //模拟组员进入房间
         slaveEnter(skip){
             wepy.navigateTo({
-                url: skip + '?legOrHand=0&roomId=100&share=53',
+                url: skip + '?legOrHand=0&roomId=814&share=55',
             });
         }
     }

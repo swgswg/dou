@@ -8,11 +8,8 @@
               :legOrHand.sync="legOrHand"
               :readyOrStartBtn.sync="readyOrStartBtn"
               :stageDataLeft.sync="stageDataLeft"
-              :numLeft.sync="numLeft"
               :stageDataCenter.sync="stageDataCenter"
-              :numCenter.sync="numCenter"
               :stageDataRight="stageDataRight"
-              :numRight="numRight"
               :hasTimeConfirmBtn.sync="hasTimeConfirmBtn"
               :selectTimeIndex.sync="selectTimeIndex"
               :isCountDownNum.sync="isCountDownNum"
@@ -29,17 +26,17 @@
     import api from '@/utils/api';
     import tip from '@/utils/tip';
     import weixin from '@/utils/weixin';
+    import util from '@/utils/util';
+    import socketServer from '@/utils/socketServer';
+    import wsDataDeal from '@/utils/wsDataDeal';
 
     import Game from '@/components/game';
 
     let userInfo = null;
-    let isReady = false; // 有没有准备
+    let shareId = null;
+    let isReady = true; // 有没有准备
     let no_ready_btn = imgApi.no_ready_btn;
     let ready_btn = imgApi.ready_btn;
-    let shakeHandNumber = 0;
-    let clear_set = null;
-    let leftReady = false;
-    let rightReady = false;
 
     export default class PKModelSlave extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -66,12 +63,9 @@
             // 组员不需要时间的确定按钮
             hasTimeConfirmBtn:false,
 
-            stageDataLeft:{userId:'' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:0},
-            numLeft:'邀请好友',
-            stageDataCenter:{userId:'' ,roomId:'',legOrHand:'', logo:'', photo:'', isLight:0},
-            numCenter:'邀请好友',
-            stageDataRight:{userId:'' ,roomId:'',legOrHand:'', logo:'', photo:'', isLight:0},
-            numRight:'邀请好友',
+            stageDataLeft:{userId:'' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            stageDataCenter:{userId:'' ,roomId:'',legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            stageDataRight:{userId:'' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
 
             // 倒计时时间
             selectTimeIndex:[0,0,0],
@@ -99,52 +93,63 @@
             userInfo = wepy.getStorageSync(USER_INFO);
             // 通过分享进来的建立好友关系
             if(options.share){
+                shareId = options.share;
                 this.buildFriend(options.share);
-
-                // 判断这个房间有没有满员
             }
+            // 组员判断能不能进入这个房间
+            this.intoRoomJudgeE(options.roomId);
 
-            // 获取房主信息
-            this.getMasterE();
-
-            // 发送数据
-            weixin.weixinsendSocketMessage('', this.stageDataCenter );
-            // 接收数据
-            weixin.weixinOnSocketMessage((data)=>{
-                // 把左右数据绑定
-                console.log(data);
-            });
         };
 
         onReady() {
+            let that = this;
             // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
             wx.setKeepScreenOn({
                 keepScreenOn:true
             });
 
+            // 连接webSocket
+            socketServer.wsInit( userInfo.id, (data)=>{
+                // 组员信息
+                console.log('webSocket==data============');
+                console.log(data);
+                wsDataDeal.wsDeal(data, that, (group)=>{
+                    let arrs = this.dealGroupDataE(group);
+                    if(arrs[0]){
+                        this.updateStageLeftDateE(arrs[0]);
+                    }
+                    if(arrs[1]){
+                        this.updateStageRightDateE(arrs[1]);
+                    }
+                }, (newTime)=>{
+                    // 游戏时间
+                    that.gameTimeE(newTime);
+                }, (readyData)=>{
+                    console.log('readyData=====================');
+                    console.log(readyData);
+                    // 组员准备
+                    that.slaveReadyE(readyData);
+                }, (startData)=>{
+                    that.slaveStartE(startData);
+                });
+            });
+
         };
-
-        computed = {};
-
-        watch = {};
-
-        methods = {};
 
         events = {
             // 组员准备按钮
             readyOrStartE(){
                 if(isReady){
                     this.readyOrStartBtn = no_ready_btn;
-                    this.stageDataCenter.isLight = 1;
+                    this.stageDataCenter.isLight = 2;
                     isReady = false;
                 } else {
                     this.readyOrStartBtn = ready_btn;
-                    this.stageDataCenter.isLight = 0;
+                    this.stageDataCenter.isLight = 1;
                     isReady = true;
                 }
                 this.$apply();
-                // 发送websocket
-                weixin.weixinsendSocketMessage('', this.stageDataCenter.isLight );
+                this.updateRoomStatusE();
             },
 
             // 倒计时结束
@@ -165,25 +170,64 @@
             });
         }
 
-        // 获取房主信息
-        async getMasterE(share_id){
-            let res = await api.getOneUserInfo({
+        // 判断组员能不能进入这个房间
+        async intoRoomJudgeE(myroomId){
+            let res = await api.intoRoomJudge({
                 query:{
-                    userId:share_id
+                    userId:userInfo.id,
+                    roomId:myroomId
                 }
             });
-            // 把房主信息绑定到左边
-            this.updateStageDataLeft(res.data.data);
+            if(res.data.state == 1){
+                // 把已有的房间人绑定到舞台上
+                let userInfoArr = this.dealGroupDataE(res.data.data);
+                if(userInfoArr[0]){
+                    this.updateStageLeftDateE(userInfoArr[0]);
+                }
+                if(userInfoArr[1]){
+                    this.updateStageRightDateE(userInfoArr[1]);
+                }
+
+            } else {
+                // 不能进入房间
+                wx.navigateBack({
+                    delta: 1
+                });
+                // 关闭webSocket
+                weixin.weixinCloseWebSocket();
+                tip.alert('房间已满');
+                return;
+            }
         }
 
-        // 把房主的信息绑到左边
-        updateStageDataLeft(userInfo){
-            this.stageDataLeft.userId = userInfo.id;
-            this.stageDataLeft.logo = userInfo.logo;
-            this.stageDataLeft.photo = userInfo.photo;
-            this.stageDataLeft.roomId = this.roomId;
-            this.stageDataLeft.legOrHand = this.legOrHand;
-            this.numLeft = userInfo.name;
+        // 去掉用户组里自己的信息
+        dealGroupDataE(arrayData){
+            let data = [];
+            let len = arrayData.length;
+            for(let i = 0; i < len; i++){
+                if(arrayData[i].userId != userInfo.id){
+                    data.push(arrayData[i]);
+                }
+            }
+            return data;
+        }
+
+        // 把房间人物信息绑定到左边舞台
+        updateStageLeftDateE(groupInfo){
+            let that = this;
+            for(let k in groupInfo){
+                that.stageDataLeft[k] = groupInfo[k];
+            }
+            that.stageDataLeft.isLight = groupInfo.status;
+            this.$apply();
+        }
+        // 把房间人物信息绑定到右边舞台
+        updateStageRightDateE(groupInfo){
+            let that = this;
+            for(let k in groupInfo){
+                that.stageDataRight[k] = groupInfo[k];
+            }
+            that.stageDataRight.isLight = groupInfo.status;
             this.$apply();
         }
 
@@ -196,6 +240,46 @@
         isOverCountDownE(){
             this.stageDataCenter.isLight = 0;
             this.readyBtn = ready_btn;
+        }
+
+        // 组员准备
+        async updateRoomStatusE(){
+            let that =this;
+            await api.updateRoomStatus({
+                query:{
+                    userId: userInfo.id,
+                    roomId: that.roomId,
+                    status: that.stageDataCenter.isLight,
+                }
+            });
+        }
+
+        // 同步游戏时间
+        gameTimeE(time){
+            this.selectTimeIndex = time;
+            this.$apply();
+        }
+
+        // 同步组员准备
+        slaveReadyE(readyData){
+            let that = this;
+            readyData.forEach(function(item) {
+                if(item.userId == that.stageDataRight.userId){
+                    that.stageDataRight.isLight = item.status;
+                } else if(item.userId == that.stageDataLeft.userId){
+                    that.stageDataLeft.isLight = item.status;
+                } else if(item.userId == that.stageDataCenter.userId){
+                    that.stageDataCenter.isLight = item.status;
+                }
+                that.$apply();
+            });
+        }
+
+        // 同步组员开始
+        slaveStartE(startData){
+            if(startData == 2){
+                this.start();
+            }
         }
     }
 </script>

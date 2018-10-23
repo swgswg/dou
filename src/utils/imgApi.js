@@ -1,7 +1,7 @@
-import api from '@/utils/api';
+import config from '@/utils/config_local';
 
-// const uploadFileUrl = api.uploadFileUrl+'doutui/';
-const uploadFileUrl = api.uploadFileUrl;
+const uploadFileUrl = config.uploadFileUrl;
+
 /**
  * 图片api
  */
