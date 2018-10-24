@@ -58,6 +58,7 @@ module.exports = {
     game_rank3: uploadFileUrl + 'game_rank3.png',
     // game_rank_bg: uploadFileUrl + 'game_rank_bg.png',
     game_rank_bg: uploadFileUrl + 'game_rank_bg.gif',
+    timg: uploadFileUrl + 'timg.gif',
 
     // 按钮按下图片
     btn_click_im2:uploadFileUrl + 'btn_click_im2.png',

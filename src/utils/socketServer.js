@@ -18,6 +18,7 @@ function wsConnect (userId) {
         SocketTask = wx.connectSocket({
             url: wsHost + userId,
             success: function(res) {
+
                 console.log('WebSocket连接创建connectSocket', res);
             }
         });
@@ -27,10 +28,12 @@ function wsConnect (userId) {
 /**
  * 监听WebSocket 连接打开
  */
-function wsOnOpen(){
+function wsOnOpen(heartbeat){
     SocketTask.onOpen( (res) => {
         isOpen = true;
-        console.log('监听 WebSocket 连接打开事件onOpen。', res)
+        console.log('监听 WebSocket 连接打开事件onOpen。', res);
+        // 添加心跳
+        heartbeat()
     });
 }
 
@@ -40,9 +43,13 @@ function wsOnOpen(){
  * @param message
  */
 function wsSend(receiveId, message){
-    let sendMessage = message + '|' + receiveId;
+    let jsonMessage = JSON.stringify(message);
+    let sendMessage = jsonMessage + '|' + receiveId;
+    console.log('sendMessage===================')
+    console.log(typeof sendMessage)
+    console.log(sendMessage)
     SocketTask.send({
-        data: JSON.stringify(sendMessage),
+        data: sendMessage,
     });
 }
 
@@ -54,8 +61,10 @@ function wsSend(receiveId, message){
 function wsOnMswwage(fun) {
     SocketTask.onMessage((res)=>{
         let data = res.data;
-        console.log(data);
-        fun(data);
+        let newData = JSON.parse(data);
+        console.log('websocket==============')
+        console.log(newData);
+        fun(newData);
     });
 }
 
@@ -67,11 +76,11 @@ function wsOnClose(){
     SocketTask.onClose( (res) => {
         console.log('监听 WebSocket 连接关闭事件onClose。', res);
         // 1000代表正常关闭
-        if(res.code != 1000){
-            isOpen = false;
-            // 重新连接
-            wsConnect(user_id);
-        }
+        // if(res.code != 1000){
+        //     isOpen = false;
+        //     // 重新连接
+        //     wsConnect(user_id);
+        // }
     });
 }
 
@@ -101,9 +110,9 @@ function wsClose(){
     });
 }
 
-function wsInit(userId,fun){
+function wsInit(userId,heartbeat,fun){
     wsConnect(userId);
-    wsOnOpen();
+    wsOnOpen(heartbeat);
     wsOnMswwage(fun);
     wsOnClose();
     wsOnError();

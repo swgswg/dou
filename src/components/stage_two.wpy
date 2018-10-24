@@ -84,18 +84,18 @@
         }
 
         // 转发
-        onShareAppMessage(res) {
-            let that = this;
-            console.log(that.roomId);
-            console.log(isNaN(this.num));
-            if ( (res.from === 'button' && (this.stageData.shakeHandNum == '邀请好友')) ) {
-                // 来自页面内转发按钮
-                return {
-                    title: '一起来战吧',
-                    path: '/page/PK_model?share=' + userId + '&roomId=' + that.stageData.roomId +'&legOrHand='+that.stageData.legOrHand
-                }
-            }
-        }
+        // onShareAppMessage(res) {
+        //     let that = this;
+        //     console.log(that.roomId);
+        //     console.log(isNaN(this.num));
+        //     if ( (res.from === 'button' && (this.stageData.shakeHandNum == '邀请好友')) ) {
+        //         // 来自页面内转发按钮
+        //         return {
+        //             title: '一起来战吧',
+        //             path: '/page/PK_model_slave?share=' + userId + '&roomId=' + that.stageData.roomId +'&legOrHand='+that.stageData.legOrHand
+        //         }
+        //     }
+        // }
 
     }
 </script>

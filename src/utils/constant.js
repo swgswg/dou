@@ -45,3 +45,9 @@ export const SHAKE_LEG_NUMBER = "shakeLegNumber";
  * @type {String}
  */
 export const BLUETOOTH = "bluttooth";
+
+/**
+ * 蓝牙数据
+ * @type {String}
+ */
+export const GAME_USER = "gameUser";

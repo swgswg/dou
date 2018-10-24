@@ -1,7 +1,5 @@
 import wepy from 'wepy';
 const util = require('@/utils/util.js');
-const env = require('@/utils/weixinFileToaliyun/env.js');
-const uploadAliyun = require('@/utils/weixinFileToaliyun/uploadAliyun.js');
 import api from '@/utils/api';
 import tip from '@/utils/tip';
 import {USER_INFO,SHAKE_LEG_TIME,SHAKE_LEG_NUMBER} from '@/utils/constant';
@@ -73,25 +71,25 @@ module.exports = {
      * @param filePath 图片路径
      * @param sufun  上传成功执行的方法
      */
-    uploadFiveToAliyunOOS: function(filePath, sufun) {
-        // console.log(filePath);
-        let ext = filePath.slice(filePath.lastIndexOf('.') + 1);
-        let extArr = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'tiff'];
-        // console.log(extArr.indexOf(ext));
-        if (extArr.indexOf(ext) != -1) {
-            // 上传文件
-            uploadAliyun(filePath, function(fileNmae) {
-                let newsrc = env.aliyunServerURL + env.dir + fileNmae;
-                // console.log(env.aliyunServerURL);
-                console.log(newsrc);
-                sufun(fileNmae);
-            }, function() {
-
-            });
-        } else {
-            tip.error('网络错误');
-        }
-    },
+    // uploadFiveToAliyunOOS: function(filePath, sufun) {
+    //     // console.log(filePath);
+    //     let ext = filePath.slice(filePath.lastIndexOf('.') + 1);
+    //     let extArr = ['png', 'jpg', 'jpeg', 'gif', 'bmp', 'webp', 'tiff'];
+    //     // console.log(extArr.indexOf(ext));
+    //     if (extArr.indexOf(ext) != -1) {
+    //         // 上传文件
+    //         uploadAliyun(filePath, function(fileNmae) {
+    //             let newsrc = env.aliyunServerURL + env.dir + fileNmae;
+    //             // console.log(env.aliyunServerURL);
+    //             console.log(newsrc);
+    //             sufun(fileNmae);
+    //         }, function() {
+    //
+    //         });
+    //     } else {
+    //         tip.error('网络错误');
+    //     }
+    // },
 
     /**
      * 上传图片到服务器

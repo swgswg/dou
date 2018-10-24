@@ -173,6 +173,8 @@ const updateRoomUserStatus = (params) => wxRequest(params, host + 'shakeLeg/user
 const updateRoomTime = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoomTime');
 // 修改pk用户状态
 const updateRoomStatus = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoomStatus');
+// 开始游戏
+const updateRoom = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoom');
 
 export default {
     host,
@@ -259,4 +261,5 @@ export default {
     updateRoomUserStatus,
     updateRoomTime,
     updateRoomStatus,
+    updateRoom,
 };

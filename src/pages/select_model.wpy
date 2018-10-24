@@ -66,10 +66,11 @@
             model:[
                 {skip: '/pages/fight_model',name:'挑战模式'},
                 {skip: '/pages/story_model',name:'故事模式'},
-                {skip: '/pages/PK_model',   name:'PK模式'},
-                {skip: '/pages/arder_model',name:'休闲模式'},
-                {skip: '/pages/PK_model_master',name:'房主'},
-                {skip: '/pages/PK_model_slave',name:'组员'},
+                // {skip: '/pages/PK_model',   name:'PK模式'},
+                {skip: '/pages/PK_model_master', name:'PK模式'},
+                {skip: '/pages/arder_model', name:'休闲模式'},
+                // {skip: '/pages/PK_model_master',name:'房主'},
+                // {skip: '/pages/PK_model_slave',name:'组员'},
             ],
         };
 
@@ -85,14 +86,18 @@
             // 选择模式
             goToGameModel(e){
                 let skip = e.currentTarget.dataset.skip;
-                if(skip == '/pages/PK_model' || skip == '/pages/PK_model_master'){
+                if(skip == '/pages/PK_model_master'){
                     this.addRoomE(0,skip);
                     return;
                 }
-                if(skip == '/pages/PK_model_slave'){
-                    this.slaveEnter(skip);
-                    return;
-                }
+                // if(skip == '/pages/PK_model' || skip == '/pages/PK_model_master'){
+                //     this.addRoomE(0,skip);
+                //     return;
+                // }
+                // if(skip == '/pages/PK_model_slave'){
+                //     this.slaveEnter(skip);
+                //     return;
+                // }
                 this.$navigate(skip);
             },
 
@@ -120,11 +125,11 @@
         }
 
         //模拟组员进入房间
-        slaveEnter(skip){
-            wepy.navigateTo({
-                url: skip + '?legOrHand=0&roomId=814&share=55',
-            });
-        }
+        // slaveEnter(skip){
+        //     wepy.navigateTo({
+        //         url: skip + '?legOrHand=0&roomId=961&share=55',
+        //     });
+        // }
     }
 </script>
 

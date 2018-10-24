@@ -19,18 +19,28 @@
         <!--退出按钮 end-->
 
         <!--点击按钮 start-->
-        <view class="flex-center w-percent100" style="margin-top:{{197*px2rpxHeight}}px;">
+        <view class="pa flex-center w-percent100" style="top:{{70*px2rpxHeight}}px;left:0;height: {{734*px2rpxWidth}}px;" >
             <!--<image src="{{btnImg}}"-->
                    <!--style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;"-->
                    <!--@tap.stop="clickEvent">-->
             <!--</image>-->
-            <touch :ratio.sync="ratio" :imgType.sync="imgType"></touch>
+
+            <!--鹿背景 start-->
+            <view class="pa flex-center w-percent100" style="top:0;left:0;z-index:0;">
+                <image src="{{beerImg}}" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
+            </view>
+            <!--鹿背景 end-->
+
+            <view class="flex-center w-percent100" style="z-index: 5">
+                <touch :ratio.sync="ratio" :imgType.sync="imgType"></touch>
+            </view>
+
         </view>
         <!--点击按钮 end-->
 
         <!--舞台 start-->
-        <view class="pa flex-center w-percent100" style="bottom:{{200*px2rpxHeight}}px;left:0;">
-            <stagetwo :stageData.sync="stageData" :num.sync="shakeHandNumber" :ratio.sync="stageRatio"></stagetwo>
+        <view class="pa flex-center w-percent100" style="bottom:{{150*px2rpxHeight}}px;left:0;">
+            <stagetwo :stageData.sync="stageData" :ratio.sync="stageRatio"></stagetwo>
         </view>
         <!--舞台 end-->
 
@@ -88,16 +98,19 @@
             widHeight:0,
             px2rpxWidth:0,
             px2rpxHeight:0,
-            fileUrl:imgApi.fileUrl,
+            fileUrl: imgApi.fileUrl,
+            beerImg: imgApi.fight_model_deer,
             bgImg: imgApi.story_model_bg,
             fire_flag_left:imgApi.fire_flag_left,
             fire_flag_right:imgApi.fire_flag_right,
             btnImg:imgApi.story_btn,
-            stageData:{logo:'', photo:'', isLight:1},
-            stageRatio:1,
+            animate:'',
+
+            stageData:{logo:'', photo:'', isLight:1,shakeHandNum:0},
+            stageRatio:1.1,
 
             // 按钮参数
-            ratio:0.8,
+            ratio:0.6,
             imgType:1,
 
             shakeHandNumber:0,
@@ -144,6 +157,7 @@
                 //     numsIndex++;
                 //     this.$apply();
                 // }
+                this.animated();
                 let res = nums.includes(newValue);
                 console.log(res);
                 if(res){
@@ -151,13 +165,15 @@
                     this.showCoverLayer = true;
                     this.$apply();
                 }
+
             },
         };
 
         events = {
             // 点击事件  点击按钮计数
             clickEvents(){
-                this.shakeHandNumber++;
+                ++this.shakeHandNumber;
+                this.stageData.shakeHandNum = this.shakeHandNumber;
                 this.$apply();
             },
 
@@ -170,6 +186,7 @@
             outEvents(){
                 // 抖动次数清零
                 this.shakeHandNumber = 0;
+                this.stageData.shakeHandNum = 0;
                 this.$apply();
                 numsIndex = 0;
             },
@@ -196,6 +213,16 @@
                 tip.error('网络错误');
             }
         }
+
+        // 动画
+        animated(){
+            let that = this;
+            this.animate = 'zoomIn';
+            setTimeout(function() {
+                that.animate = '';
+                that.$apply();
+            },500);
+        };
 
         // 获取故事
         // async getStory(){

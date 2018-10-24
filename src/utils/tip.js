@@ -86,7 +86,7 @@ export default class Tips {
             title: title,
             image: "../static/images/error.png",
             mask: true,
-            duration: 1000
+            duration: 1500
         });
         // 隐藏结束回调
         if (onHide) {

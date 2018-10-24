@@ -122,12 +122,12 @@
             console.log(e);
             // 性别选择
             if(this.currentSex == -1){
-                await tip.longtoast('请选择性别');
+                tip.longtoast('请选择性别');
                 return;
             }
             // 人物选择
             if(this.currentProfile == -1){
-                await tip.longtoast('请选择动漫小人物');
+                tip.longtoast('请选择动漫人物');
                 return;
             }
 
@@ -145,13 +145,13 @@
                 });
                 if(rlt.data.state == 1){
                     // 获取信息成功
-                    wepy.redirectTo({
+                    wx.redirectTo({
                         url: '/pages/select_model'
                     });
                 }
             } else {
                 // 授权失败
-                let res = await tip.longtoast('请重新确认授权');
+                tip.longtoast('请重新确认授权');
                 return;
             }
         }

@@ -79,6 +79,7 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import util from '@/utils/util';
+    import tip from '@/utils/tip';
 
     export default class GameRank extends wepy.component {
 
@@ -88,7 +89,8 @@
             logoWidth: api.logoWidth,
             logoHeight: api.logoHeight,
             fileUrl:imgApi.fileUrl,
-            bgImg:imgApi.game_rank_bg,
+            // bgImg:imgApi.game_rank_bg,
+            bgImg:imgApi.timg,
             game_rank1:imgApi.game_rank1,
             game_rank2:imgApi.game_rank2,
             game_rank3:imgApi.game_rank3,
@@ -128,6 +130,8 @@
             this.gameRankData.NO2 = newRanking[1];
             this.gameRankData.NO3 = newRanking[2];
             this.$apply();
+
+            tip.longtoast('恭喜你获得双倍积分');
         }
 
     }

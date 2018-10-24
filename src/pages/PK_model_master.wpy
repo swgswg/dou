@@ -23,21 +23,17 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import {PX_TO_RPX,USER_INFO,GAME_USER } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
-    import weixin from '@/utils/weixin';
-    import util from '@/utils/util';
     import socketServer from '@/utils/socketServer';
     import wsDataDeal from '@/utils/wsDataDeal';
 
     import Game from '@/components/game';
 
     let userInfo = null;
-    let no_start_btn = imgApi.no_start_btn;
     let start_btn = imgApi.start_btn;
-    let clear_set = null;
     let leftReady = false;
     let rightReady = false;
 
@@ -104,45 +100,29 @@
             });
 
             // 连接webSocket
-            socketServer.wsInit(userInfo.id, (data)=>{
-                console.log(data);
-                wsDataDeal.wsDeal(data, that, (group)=>{
-                    console.log('group============')
-                    console.log(group);
-                    let arrs = this.dealGroupDataE(group);
-                    console.log(arrs);
-                    if(arrs[0]){
-                        this.updateStageLeftDateE( arrs[0]);
-                    }
-                    if(arrs[1]){
-                        this.updateStageRightDateE(arrs[1]);
-                    }
-                },(newTime)=>{
-                    // 游戏时间
-                }, (readyData)=>{
-                    // 组员准备
-                    that.slaveReadyE(readyData);
-                });
+            socketServer.wsInit(userInfo.id, ()=>{
+                // 开启心跳
+                this.$broadcast('heartbeatEvents');
+            },(data)=>{
 
+                if(data){
+                    // 这次有数据,取消这次心跳
+                    this.$broadcast('cancelHeartbeatEvents');
+                }
+                wsDataDeal.wsDeal(data, that, userInfo.id, '', true);
             });
+            // 开启心跳
+            this.$broadcast('cancelHeartbeatEvents');
         };
 
         // 转发
         onShareAppMessage(res) {
-            if ( res.from === 'menu' ) {
-                // 来自页面内转发按钮
-                return {
-                    title: '一起来战吧',
-                    path: '/page/PK_model_slave?share=' + userInfo.id + '&roomId=' + roomId + '&legOrHand=' + legOrHand
-                }
+            // 来自页面内转发按钮
+            return {
+                title: '一起来战吧',
+                path: '/page/PK_model_slave?share=' + userInfo.id + '&roomId=' + roomId + '&legOrHand=' + legOrHand
             }
         }
-
-        watch = {
-            selectTimeIndex(newvalue){
-                console.log(newvalue);
-            }
-        };
 
         events = {
             // 确定时间
@@ -161,35 +141,6 @@
             }
         };
 
-        // 去掉用户组里自己的信息
-        dealGroupDataE(arrayData){
-            let data = [];
-            let len = arrayData.length;
-            for(let i = 0; i < len; i++){
-                if(arrayData[i].userId != userInfo.id){
-                    data.push(arrayData[i]);
-                }
-            }
-            return data;
-        }
-
-        // 把房间人物信息绑定到左边舞台
-        updateStageLeftDateE(groupInfo){
-            let that = this;
-            for(let k in groupInfo){
-                that.stageDataLeft[k] = groupInfo[k];
-            }
-            this.$apply();
-        }
-        // 把房间人物信息绑定到右边舞台
-        updateStageRightDateE(groupInfo){
-            let that = this;
-            for(let k in groupInfo){
-                that.stageDataRight[k] = groupInfo[k];
-            }
-            this.$apply();
-        }
-
         // 房主默认已经准备,点击开始按钮,开始游戏
         startGameE(){
             // 时间已经选择 false为选择了时间
@@ -200,6 +151,7 @@
             if( !this.allReady() ){
                 return;
             }
+            this.updateRoomE();
             // 开始游戏
             this.$broadcast('countDownNum321Events');
         }
@@ -254,21 +206,25 @@
             });
         }
 
-        // 同步组员准备
-        slaveReadyE(readyData){
-            let that = this;
-            readyData.forEach(function(item) {
-                if(item.userId == that.stageDataRight.userId){
-                    that.stageDataRight.isLight = item.status;
-                } else if(item.userId == that.stageDataLeft.userId){
-                    that.stageDataLeft.isLight = item.status;
-                } else if(item.userId == that.stageDataCenter.userId){
-                    that.stageDataCenter.isLight = item.status;
-                }
-                that.$apply();
-            });
+        start(){}
 
+        // 房主开始游戏
+        async updateRoomE(){
+            let roomId = this.roomId;
+            let res = await api.updateRoom({
+                query:{
+                    roomId: roomId
+                }
+            });
+            if(res.data.state == 1){
+                // console.log(res.data);
+                // 把游戏人物id存入缓存
+                wepy.setStorageSync(GAME_USER, res.data.data);
+            }
         }
+
+        // 房主退出,房间取消
+        masterOut(){}
 
     }
 </script>

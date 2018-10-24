@@ -30,7 +30,7 @@
             <view style="padding:0 {{10*px2rpxWidth}}px;">
                 <countdown :time.sync="fightTime" :timeFinish.sync="timeFinish"></countdown>
             </view>
-            <view>分</view>
+            <view></view>
         </view>
         <!--倒计时 end-->
 
@@ -291,7 +291,7 @@
                     type: 0,
                     // 0（手动）1（脚动）
                     status: mystatus,
-                    model:api.fightModel,
+                    mode:api.fightModel,
                 }
             });
         }

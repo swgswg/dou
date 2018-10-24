@@ -90,7 +90,7 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import {PX_TO_RPX,USER_INFO,GAME_USER } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
@@ -105,11 +105,10 @@
     import CoverLayer from '@/components/common/cover_layer';
 
     let userInfo = null;
-    let isReady = false; // 有没有准备
     let shakeHandNumber = 0;
     let clear_set = null;
-    let leftReady = false;
-    let rightReady = false;
+    let clear_set2 = null;
+    let gameUser = null;
 
     export default class Game extends wepy.component {
         components = {
@@ -229,6 +228,16 @@
                 this.$emit('readyOrStartE');
             },
 
+            // 房主退出
+            masterOutM(){
+                this.isOverCountDown(false);
+                // 关闭websocket
+                setTimeout(function() {
+                    socketServer.wsClose();
+                },2000);
+                // 退出游戏
+                this.cancelHeartbeatE();
+            }
         };
 
         events = {
@@ -241,28 +250,42 @@
             clickEvents(){
                 // 手抖
                 if( (this.legOrHand == 0) && (!this.hasTimeConfirmBtn) ){
-                    shakeHandNumber++;
+                    ++shakeHandNumber;
                     this.stageDataCenter.shakeHandNum = shakeHandNumber;
                     this.$apply();
                     // 发送websocket
-                    // socketServer.wsSend(this.roomId,shakeHandNumber);
+                    this.sendWSNumE(shakeHandNumber);
+                    // socketServer.wsSend(,shakeHandNumber);
                 }
             },
 
             // 退出事件
             outEvents(){
                 this.isOverCountDown(false);
-                // 关闭websocket
-                // weixin.weixinCloseWebSocket();
-                socketServer.wsClose();
                 // 退出游戏
                 this.updateRoomUserStatusE();
+                this.cancelHeartbeatE();
+                // 关闭websocket
+                // setTimeout(function() {
+                //     socketServer.wsClose();
+                // },2000);
             },
 
             // 取消遮盖层
             cancelShow(){
                 this.cancelCoverlayer();
             },
+
+            // 增加心跳,保持长连接50秒发一次
+            heartbeatEvents(){
+                this.heartbeatE();
+            },
+
+            // 连接意外关闭取消心跳
+            cancelHeartbeatEvents(){
+                this.cancelHeartbeatE();
+            }
+
 
         };
 
@@ -360,23 +383,56 @@
                     userId: userInfo.id,
                     time: that.time,
                     shakeNum: shakeHandNumber,
-                    // 0（自己）1（好友）
-                    type: 0,
+                    // 0（自己）1（好友对战）
+                    type: 1,
                     // 0（手动）1（脚动）
+                    roomId: that.roomId,
                     status: that.legOrHand,
-                    model:api.PKModel,
+                    mode:api.PKModel,
                 }
             });
         }
 
         // 退出游戏
         async updateRoomUserStatusE(){
+            let roomId = this.roomId;
             api.updateRoomUserStatus({
                 query:{
                     userId: userInfo.id,
-                    roomId: this.roomId,
+                    roomId: roomId,
                 }
             });
+        }
+
+        // 发送点击数
+        sendWSNumE(number){
+            if(!gameUser){
+                gameUser = wepy.getStorageSync(GAME_USER);
+            }
+            let gameUserIdArr = [];
+            console.log(gameUser);
+            gameUser.forEach(function(item) {
+                if(item.userId != userInfo.id){
+                    gameUserIdArr.push(item.userId);
+                }
+            });
+            console.log(gameUserIdArr);
+            gameUserIdArr.forEach(function(item) {
+                socketServer.wsSend(item, [{userId: userInfo.id, num: number}, {type:6}]);
+            });
+        }
+
+        // 增加心跳,保持长连接50秒发一次
+        heartbeatE(){
+            let roomId = this.roomId;
+            clear_set2 = setInterval(function() {
+                socketServer.wsSend(roomId, '心跳测试');
+            },50000);
+        }
+
+        // 连接意外关闭取消心跳
+        cancelHeartbeatE(){
+            clearInterval(clear_set2);
         }
     }
 </script>

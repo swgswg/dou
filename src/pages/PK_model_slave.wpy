@@ -21,12 +21,10 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import {PX_TO_RPX,USER_INFO,GAME_USER } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
-    import weixin from '@/utils/weixin';
-    import util from '@/utils/util';
     import socketServer from '@/utils/socketServer';
     import wsDataDeal from '@/utils/wsDataDeal';
 
@@ -37,6 +35,7 @@
     let isReady = true; // 有没有准备
     let no_ready_btn = imgApi.no_ready_btn;
     let ready_btn = imgApi.ready_btn;
+
 
     export default class PKModelSlave extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -109,31 +108,22 @@
             });
 
             // 连接webSocket
-            socketServer.wsInit( userInfo.id, (data)=>{
+            socketServer.wsInit( userInfo.id, ()=>{
+                // 开启心跳
+                this.$broadcast('heartbeatEvents');
+            }, (data)=>{
                 // 组员信息
-                console.log('webSocket==data============');
-                console.log(data);
-                wsDataDeal.wsDeal(data, that, (group)=>{
-                    let arrs = this.dealGroupDataE(group);
-                    if(arrs[0]){
-                        this.updateStageLeftDateE(arrs[0]);
-                    }
-                    if(arrs[1]){
-                        this.updateStageRightDateE(arrs[1]);
-                    }
-                }, (newTime)=>{
-                    // 游戏时间
-                    that.gameTimeE(newTime);
-                }, (readyData)=>{
-                    console.log('readyData=====================');
-                    console.log(readyData);
-                    // 组员准备
-                    that.slaveReadyE(readyData);
-                }, (startData)=>{
-                    that.slaveStartE(startData);
-                });
+                if(data){
+                    // 这次有数据,取消这次心跳
+                    this.$broadcast('cancelHeartbeatEvents');
+                }
+                wsDataDeal.wsDeal(data, that, userInfo.id, shareId, false);
             });
 
+            // 进入房间传送空数据
+            socketServer.wsSend(shareId,'我进入了');
+            // 开启心跳
+            this.$broadcast('cancelHeartbeatEvents');
         };
 
         events = {
@@ -183,6 +173,10 @@
                 let userInfoArr = this.dealGroupDataE(res.data.data);
                 if(userInfoArr[0]){
                     this.updateStageLeftDateE(userInfoArr[0]);
+                    if(userInfoArr[0].time){
+                        let newTime = userInfoArr[0].time.split('#');
+                        this.selectTimeIndex = [newTime[0], newTime[1], newTime[2]];
+                    }
                 }
                 if(userInfoArr[1]){
                     this.updateStageRightDateE(userInfoArr[1]);
@@ -194,7 +188,7 @@
                     delta: 1
                 });
                 // 关闭webSocket
-                weixin.weixinCloseWebSocket();
+                socketServer.wsClose();
                 tip.alert('房间已满');
                 return;
             }
@@ -218,6 +212,7 @@
             for(let k in groupInfo){
                 that.stageDataLeft[k] = groupInfo[k];
             }
+            that.stageDataLeft.shakeHandNum = groupInfo.name;
             that.stageDataLeft.isLight = groupInfo.status;
             this.$apply();
         }
@@ -227,13 +222,16 @@
             for(let k in groupInfo){
                 that.stageDataRight[k] = groupInfo[k];
             }
+            that.stageDataRight.shakeHandNum = groupInfo.name;
             that.stageDataRight.isLight = groupInfo.status;
             this.$apply();
         }
 
         // 游戏时间开始倒计时
-        start(){
+        start(data){
             this.$broadcast('countDownNum321Events');
+            // 把游戏人物id存入缓存
+            wepy.setStorageSync(GAME_USER, data);
         }
 
         // 倒计时结束
@@ -254,32 +252,12 @@
             });
         }
 
-        // 同步游戏时间
-        gameTimeE(time){
-            this.selectTimeIndex = time;
-            this.$apply();
-        }
-
-        // 同步组员准备
-        slaveReadyE(readyData){
-            let that = this;
-            readyData.forEach(function(item) {
-                if(item.userId == that.stageDataRight.userId){
-                    that.stageDataRight.isLight = item.status;
-                } else if(item.userId == that.stageDataLeft.userId){
-                    that.stageDataLeft.isLight = item.status;
-                } else if(item.userId == that.stageDataCenter.userId){
-                    that.stageDataCenter.isLight = item.status;
-                }
-                that.$apply();
+        // 房主退出,房间取消
+        masterOut(){
+            this.$invoke('game','masterOutM');
+            wepy.navigateBack({
+                delta: 1
             });
-        }
-
-        // 同步组员开始
-        slaveStartE(startData){
-            if(startData == 2){
-                this.start();
-            }
         }
     }
 </script>

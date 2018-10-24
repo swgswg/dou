@@ -110,8 +110,8 @@
 
         // 点击开启轮播图
         openSwipe(){
-            // this.isOpenShake = true;
-            // this.$apply();
+            this.isOpenShake = true;
+            this.$apply();
             this.isLogo();
         }
 
@@ -120,10 +120,14 @@
         isLogo(){
             if(util.isEmpty(userInfo.logo)){
                 // 用户信息不全
-                this.$redirect('/pages/mobile_verify');
+                wx.redirectTo({
+                    url:'/pages/mobile_verify'
+                });
             } else {
                 // 用户信息完整
-                this.$switch('/pages/select_model');
+                wx.switchTab({
+                    url:'/pages/select_model'
+                });
             }
         }
     }
