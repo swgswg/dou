@@ -2,94 +2,64 @@
 <style lang="less">
     .mobile-verify{
 
-        .login-each{
+        .center{
             width: 80%;
-
-            .each{
-                width: 90%;
-                border-bottom: 1px solid #ccc;
-
-                .head-text{
-                    color: #ec2c98;
-                }
-
-                .getcode{
-                    padding: 0 20rpx;
-                    background: linear-gradient(to top right,#ec2c98, #f68668);
-                }
-                .dis_getcode{
-                    background: #aaa;
-                }
-
-            }
+            height: 45%;
+            background-color: #dbedff;
         }
 
-        .btn{
-            background: linear-gradient(to top right,#ec2c98, #f68668);
-
-            .dui{
-                background-color: #de5177;
-
-                .icon-check{
-                    font-size: 40rpx;
-                    font-weight: bolder;
-                    color: #fff;
-                }
-            }
+        .dis_getcode{
+            background: #aaa;
         }
     }
 </style>
 
 <template>
-    <view class="flex-column-center mobile-verify">
-        <view class="flex-center w-percent100" style="margin-top:{{90*px2rpxHeight}}px;">
-            <image src="{{login_phone}}" style="width:{{151*px2rpxWidth}}px;height:{{208*px2rpxWidth}}px;"></image>
-        </view>
+    <view class="flex-center w-percent100 bg-repeat-size mobile-verify " style="width:{{windowWidth}}px;height:{{windowHeight}}px;background-image: url({{mobile_bg}})">
 
-        <view class="flex-center w-percent100 f30 cc" style="margin-top:{{50*px2rpxHeight}}px;">为了您的账号安全,请绑定手机号</view>
+        <view class="flex-column br10 center">
 
-        <!--输入框 start-->
-        <view class="flex-center w-percent100" style="margin-top:{{50*px2rpxHeight}}px;">
-            <view class="flex-center login-each" style="background:url({{login_bg}}) no-repeat 0 0;">
-                <view class="flex-column-center w-percent100" style="margin-top:{{90*px2rpxHeight}}px;">
-                    <view class="flex-column-center each" style="margin-bottom:{{30*px2rpxHeight}}px;">
-                        <view class="flex-center">
-                            <view class="flex-center br-percent50 o-hidden" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;">
-                                <image src="{{login_user}}" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;"></image>
-                            </view>
-                            <view class="flex-center f24 head-text" style="margin-left:{{10*px2rpxWidth}}px;">UserPhone</view>
-                        </view>
+            <view class="flex-center w-percent100 f32 f-weight-bold cf br10 bgc353a68" style="height:11%;">为了您的账号安全,请绑定手机号</view>
 
-                        <view class="flex-center w-percent100" style="margin-top:{{20*px2rpxHeight}}px;">
-                            <input class="w-percent100 f30 text-center c3" type="number" adjust-position="true" bindinput="inputMobile" placeholder-style="color:#ddd" placeholder="请输入手机号" />
-                        </view>
-                    </view>
-                    <view class="flex-column-center each" style="margin-bottom:{{30*px2rpxHeight}}px;">
-                        <view class="flex-center">
-                            <view class="flex-center br-percent50 o-hidden" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;">
-                                <image src="{{login_verfication}}" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;"></image>
-                            </view>
-                            <view class="flex-center f24 head-text" style="margin-left:{{10*px2rpxWidth}}px;">Verification</view>
-                        </view>
+            <!--手机号 start-->
+            <view class="flex-center" style="margin-top:{{30*px2rpxHeight}}px;">
+                <image src="{{mobile_user}}" style="width:{{22*px2rpxWidth}}px;height:{{22*px2rpxWidth}}px;"></image>
+                <view class="flex-center f30 f-weight-bold c353a68" style="margin-left:{{30*px2rpxWidth}}px;">手机号</view>
+            </view>
 
-                        <view class="flex-end w-percent100 f24" style="margin-top:{{20*px2rpxHeight}}px;">
-                            <input class="f30 text-center c3" type="number" adjust-position="true" bindinput="inputCode" placeholder-style="color:#ddd" placeholder="请输入验证码" style="width:{{340*px2rpxWidth}}px;" />
-                            <view class="flex-center border-box f20 cf br10 getcode {{getCodeBtn ? '' : 'dis_getcode'}}" style="width:{{190*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" @tap.stop="getCode">{{codeText}}</view>
-                        </view>
+            <view class="flex-center w-percent100" style="margin-top:{{20*px2rpxHeight}}px;">
+                <input class="f26 text-center cf bgc353a68" type="number" adjust-position="true" bindinput="inputMobile" placeholder-style="color:#fff" placeholder="请输入手机号"
+                       style="width:{{500*px2rpxWidth}}px;height:{{70*px2rpxHeight}}px;border-radius:{{35*px2rpxHeight}}px;"/>
+            </view>
+            <!--手机号 end-->
+
+            <!--验证码 start-->
+                <view class="flex-end" style="margin-top:{{30*px2rpxHeight}}px;">
+                    <image src="{{mobile_code}}" style="width:{{23*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;"></image>
+                    <view class="flex-center f30 f-weight-bold c353a68" style="margin:0 {{30*px2rpxWidth}}px;">验证码</view>
+                    <view class="flex-center border-box f20 cf br10 bgc353a68 {{getCodeBtn ? '' : 'dis_getcode'}}"
+                          style="width:{{160*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;border-radius:{{20*px2rpxHeight}}px;margin-right:{{60*px2rpxWidth}}px;"
+                          @tap.stop="getCode">
+                        {{codeText}}
                     </view>
                 </view>
-            </view>
-        </view>
-        <!--输入框 end-->
 
-        <!--确定按钮 start-->
-        <view class="flex-center w-percent100 mobile-verify-btn" style="margin-top:{{80*px2rpxHeight}}px;">
-            <view class="flex-center btn" style="width:{{287*px2rpxWidth}}px;height:{{78*px2rpxHeight}}px;border-radius:{{39*px2rpxHeight}}px;" @tap.stop="commit">
-                <view class="flex-center br-percent50 dui" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"><text class="iconfont icon-check"></text></view>
-            </view>
-        </view>
-        <!--确定按钮 end-->
+                <view class="flex-center w-percent100 f24" style="margin-top:{{20*px2rpxHeight}}px;">
+                    <input class="f26 text-center cf bgc353a68" type="number" adjust-position="true" bindinput="inputCode" placeholder-style="color:#ddd" placeholder="请输入验证码"
+                           style="width:{{500*px2rpxWidth}}px;height:{{70*px2rpxHeight}}px;border-radius:{{35*px2rpxHeight}}px;" />
+                </view>
+            <!--验证码 end-->
 
+            <!--确定按钮 start-->
+            <view class="flex-center w-percent100 mobile-verify-btn" style="margin-top:{{50*px2rpxHeight}}px;">
+                <view class="flex-center f30 cf bgc353a68"
+                      style="width:{{150*px2rpxWidth}}px;height:{{70*px2rpxHeight}}px;border-radius:{{35*px2rpxHeight}}px;"
+                      @tap="commit">
+                    提交
+                </view>
+            </view>
+            <!--确定按钮 end-->
+        </view>
     </view>
 </template>
 
@@ -120,11 +90,12 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
+            windowWidth:0,
+            windowHeight:0,
             fileUrl:imgApi.fileUrl,
-            login_bg:imgApi.login_bg,
-            login_phone:imgApi.login_phone,
-            login_user:imgApi.login_user,
-            login_verfication:imgApi.login_verfication,
+            mobile_bg:imgApi.mobile_bg,
+            mobile_user:imgApi.mobile_user,
+            mobile_code:imgApi.mobile_code,
             codeText:'获取验证码',
             getCodeBtn: true,
         };
@@ -134,7 +105,8 @@
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-
+            this.windowWidth = px2rpx.originalWidth;
+            this.windowHeight = px2rpx.originalHeight;
             let userInfo = wepy.getStorageSync(USER_INFO);
             weChat = userInfo.weChat;
             this.$apply();

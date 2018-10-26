@@ -1,7 +1,7 @@
 // components--游戏页面
 <style lang="less">
     .game-components{
-        .f150{
+        .f200{
             font-size: 200rpx;
             font-weight: bolder;
         }
@@ -22,6 +22,7 @@
         <block wx:if="{{(!isCountDownNum) && (!isDot)}}">
             <view class="flex-center w-percent100" style="margin-top:{{250*px2rpxHeight}}px;">
                 <image src="{{readyOrStartBtn}}"
+                       lazy-load='true'
                        style="width:{{307*px2rpxWidth}}px;height:{{132*px2rpxWidth}}px;"
                        @tap.stop="readyOrStartTap">
                 </image>
@@ -31,10 +32,10 @@
 
         <!--3/2/1倒计时 start-->
         <block wx:if="{{isCountDownNum}}">
-            <view class="flex-center w-percent100 text-center" style="margin-top:{{80*px2rpxHeight}}px;">
-                <view class="flex-center cf bg-repeat-size f150"
+            <view class="flex-center w-percent100" style="margin-top:{{80*px2rpxHeight}}px;">
+                <view class="flex-center f200 cf bg-repeat-size border"
                       style="width:{{460*px2rpxWidth}}px;height:{{460*px2rpxWidth}}px;background-image:url({{NumBg}})">
-                    {{countDownNum}}
+                    <veiw class="flex-center w-percent100 h-percent100">{{countDownNum}}</veiw>
                 </view>
             </view>
         </block>

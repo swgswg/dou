@@ -19,18 +19,18 @@
         <view class="content">
             <view class="left {{currentProfile == 0 ? 'content_bgcolor':''}}" style="height:{{1205*px2rpxHeight}}px;padding:{{100*px2rpxHeight}}px 0;">
                 <view class="sex-btn-each">
-                    <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>
+                    <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" lazy-load='true' src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>
                 </view>
                 <view class="sex-img-each">
-                    <image src="{{profile[0]}}" style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="0" @tap.stop="selectProfile"></image>
+                    <image src="{{profile[0]}}" lazy-load='true' style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="0" @tap.stop="selectProfile"></image>
                 </view>
             </view>
             <view class="right {{currentProfile == 1 ? 'content_bgcolor':''}}" style="height:{{1205*px2rpxHeight}}px;padding:{{100*px2rpxHeight}}px 0;">
                 <view class="sex-btn-each">
-                    <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>
+                    <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" lazy-load='true' src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>
                 </view>
                 <view class="sex-img-each">
-                    <image src="{{profile[1]}}" style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="1" @tap.stop="selectProfile"></image>
+                    <image src="{{profile[1]}}" lazy-load='true' style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="1" @tap.stop="selectProfile"></image>
                 </view>
             </view>
         </view>
@@ -175,8 +175,6 @@
                             });
                         }
                     }
-
-
                 }
             } else {
                 // 授权失败

@@ -236,8 +236,7 @@ module.exports = {
     leg_record: uploadFileUrl + 'leg_record.png',
 
     // 绑定手机号
-    login_bg: uploadFileUrl + 'login_bg.png',
-    login_phone: uploadFileUrl + 'login_phone.png',
-    login_user: uploadFileUrl + 'login_user.png',
-    login_verfication: uploadFileUrl + 'login_verfication.png'
+    mobile_bg: uploadFileUrl + 'mobile_bg.png',
+    mobile_code: uploadFileUrl + 'mobile_code.png',
+    mobile_user: uploadFileUrl + 'mobile_user.png'
 };

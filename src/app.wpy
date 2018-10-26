@@ -118,6 +118,15 @@
         font-family: 'Edo SZ';
     }
 
+    .f-weight-bold{
+        font-weight: bold;
+    }
+
+    .f-weight-bolder{
+        font-weight: bolder;
+    }
+
+
     .o-hidden{
         overflow: hidden;
     }
@@ -164,6 +173,10 @@
         color: #fff;
     }
 
+    .c353a68{
+        color: #353a68;
+    }
+
     .cec2c98{
         color: #ec2c98;
     }
@@ -199,6 +212,8 @@
     .bgcf0{
         background-color: #f0f0f0;
     }
+
+
 
     .bgc353a68{
         background-color: #353a68;

@@ -27,6 +27,7 @@
         <block wx:if="{{hasTimeConfirmBtn}}">
             <view class="flex-center">
                 <image style="width:{{98*px2rpxWidth}}px;height:{{98*px2rpxHeight}}px;"
+                       lazy-load="true"
                        @tap.stop="confirmSelectTime"
                        src="{{confirm_btn}}">
                 </image>
