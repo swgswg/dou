@@ -69,7 +69,6 @@
                 // {skip: '/pages/PK_model',   name:'PK模式'},
                 {skip: '/pages/PK_model_master', name:'PK模式'},
                 {skip: '/pages/arder_model', name:'休闲模式'},
-                // {skip: '/pages/PK_model_master',name:'房主'},
                 // {skip: '/pages/PK_model_slave',name:'组员'},
             ],
         };
@@ -90,15 +89,9 @@
                     this.addRoomE(0,skip);
                     return;
                 }
-                // if(skip == '/pages/PK_model' || skip == '/pages/PK_model_master'){
-                //     this.addRoomE(0,skip);
-                //     return;
-                // }
-                // if(skip == '/pages/PK_model_slave'){
-                //     this.slaveEnter(skip);
-                //     return;
-                // }
-                this.$navigate(skip);
+                wx.redirectTo({
+                    url:skip
+                });
             },
 
         };
@@ -116,7 +109,7 @@
             if(res.data.state == 1){
                 roomId = res.data.data.roomId;
                 legOrHand = res.data.data.status;
-                wepy.navigateTo({
+                wx.redirectTo({
                     url: skip + '?legOrHand=' + legOrHand + '&roomId=' + roomId
                 });
             } else {

@@ -241,67 +241,6 @@ module.exports = {
         // }
     },
 
-    /**
-     * 后台播放音乐
-     */
-    async backgroundMusic(){
-        let that = this;
-        let res = await api.getMusic({
-            query:{}
-        });
-        if(res.data.state != 1) {
-           return;
-        }
-        let music = res.data.data;
-        let len = music.length;
-        let i = 0;
-        let musicTitle = music[i].title;
-        let musicSrc = api.uploadFileUrl +  music[i].url;
-
-        // innerAudioContext.autoplay = true;
-        // innerAudioContext.loop = true;
-        // innerAudioContext.obeyMuteSwitch = true;
-        // innerAudioContext.src = musicSrc;
-        // innerAudioContext.play();
-
-        // that.playMusic();
-        that.playMusic(musicTitle,musicSrc);
-        console.log('播放音乐');
-        backgroundAudioManager.onEnded(function (){
-            console.log('循环播放',i);
-            i++;
-            musicTitle = music[i].title;
-            musicSrc = api.uploadFileUrl +  music[i].url;
-            that.playMusic(musicTitle,musicSrc);
-            if(i >= len){
-                i = -1;
-            }
-        });
-
-        backgroundAudioManager.onError(function(res){
-            console.log(res);
-        })
-    },
-
-    // 播放音乐
-    playMusic(musicTitle,musicSrc){
-        console.log('播放音乐');
-        console.log('musicTitle',musicTitle);
-        console.log('musicSrc',musicSrc);
-        backgroundAudioManager.title = musicTitle;
-        // 设置了 src 之后会自动播放
-        backgroundAudioManager.src = musicSrc;
-        backgroundAudioManager.play();
-
-    },
-
-    // 停止播放音乐
-    stopMusic(){
-        // innerAudioContext.stop();
-        // innerAudioContext.destroy();
-        backgroundAudioManager.stop();
-    },
-
     // 更新用户缓存
     async updateStorage(mykey,myvalue){
         let userInfo = wepy.getStorageSync(USER_INFO);
@@ -315,11 +254,11 @@ module.exports = {
 
     // 从服务器更新个人缓存
     async updateUserInfo(){
-        let userInfo = wepy.getStorageSync(USER_INFO);
+        let userId = wepy.getStorageSync(USER_INFO).id;
         // 获取个人信息
         let OneUserInfo = await api.getOneUserInfo({
             query:{
-                userId:userInfo.id
+                userId:userId
             }
         });
         if(OneUserInfo.data.state == 1){

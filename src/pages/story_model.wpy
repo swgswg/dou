@@ -19,24 +19,20 @@
         <!--退出按钮 end-->
 
         <!--点击按钮 start-->
-        <view class="pa flex-center w-percent100" style="top:{{70*px2rpxHeight}}px;left:0;height: {{734*px2rpxWidth}}px;" >
+        <view class="pa flex-center w-percent100" style="top:{{100*px2rpxHeight}}px;left:0;z-index: 5" >
             <!--<image src="{{btnImg}}"-->
-                   <!--style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;"-->
-                   <!--@tap.stop="clickEvent">-->
+            <!--style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;"-->
+            <!--@tap.stop="clickEvent">-->
             <!--</image>-->
-
-            <!--鹿背景 start-->
-            <view class="pa flex-center w-percent100" style="top:0;left:0;z-index:0;">
-                <image src="{{beerImg}}" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
-            </view>
-            <!--鹿背景 end-->
-
-            <view class="flex-center w-percent100" style="z-index: 5">
-                <touch :ratio.sync="ratio" :imgType.sync="imgType"></touch>
-            </view>
-
+            <touch :ratio.sync="ratio" :imgType.sync="imgType"></touch>
         </view>
         <!--点击按钮 end-->
+
+        <!--鹿背景 start-->
+        <view class="pa flex-center w-percent100" style="bottom:{{0*px2rpxHeight}}px;left:0;z-index:0;">
+            <image src="{{beerImg}}" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
+        </view>
+        <!--鹿背景 end-->
 
         <!--舞台 start-->
         <view class="pa flex-center w-percent100" style="bottom:{{150*px2rpxHeight}}px;left:0;">
@@ -64,6 +60,7 @@
     import api from '@/utils/api';
     import tip from '@/utils/tip';
     import util from '@/utils/util';
+
     import StageTwo from '@/components/stage_two';
     import OutModel from '@/components/out_model';
     import GoMall from '@/components/go_mall';
@@ -71,11 +68,15 @@
     import Touch from '@/components/touch';
     import CoverLayer from '@/components/common/cover_layer';
 
-
+    let userId = null;
     // 需要显示故事的次数数组
     let nums = [];
     let numsIndex = 0;
     let storyImgMaxIndex = 0;
+    let shakeHandTime = 0;
+    let clear_set = null;
+    let shakeHandTimeStart = true;
+
 
     export default class StoryModel extends wepy.page {
         config = {
@@ -100,17 +101,17 @@
             px2rpxHeight:0,
             fileUrl: imgApi.fileUrl,
             beerImg: imgApi.fight_model_deer,
-            bgImg: imgApi.story_model_bg,
+            bgImg: imgApi.fight_model_bg,
             fire_flag_left:imgApi.fire_flag_left,
             fire_flag_right:imgApi.fire_flag_right,
             btnImg:imgApi.story_btn,
             animate:'',
 
             stageData:{logo:'', photo:'', isLight:1,shakeHandNum:0},
-            stageRatio:1.1,
+            stageRatio:1.2,
 
             // 按钮参数
-            ratio:0.6,
+            ratio:0.8,
             imgType:1,
 
             shakeHandNumber:0,
@@ -132,6 +133,7 @@
             let userInfo = wepy.getStorageSync(USER_INFO);
             this.stageData.logo = userInfo.logo;
             this.stageData.photo = userInfo.photo;
+            userId = userInfo.id;
             this.$apply();
         };
 
@@ -145,10 +147,6 @@
             this.getStory();
         };
 
-        methods = {
-
-        };
-
         watch = {
             shakeHandNumber(newValue){
                 // if(newValue === nums[numsIndex]){
@@ -159,7 +157,7 @@
                 // }
                 this.animated();
                 let res = nums.includes(newValue);
-                console.log(res);
+                // console.log(res);
                 if(res){
                     this.i = util.rand(0,storyImgMaxIndex);
                     this.showCoverLayer = true;
@@ -172,6 +170,12 @@
         events = {
             // 点击事件  点击按钮计数
             clickEvents(){
+                if(shakeHandTimeStart){
+                    clear_set = setInterval(function() {
+                        ++shakeHandTime;
+                    },1000);
+                }
+                shakeHandTimeStart = false;
                 ++this.shakeHandNumber;
                 this.stageData.shakeHandNum = this.shakeHandNumber;
                 this.$apply();
@@ -184,11 +188,8 @@
 
             // 退出事件
             outEvents(){
-                // 抖动次数清零
-                this.shakeHandNumber = 0;
-                this.stageData.shakeHandNum = 0;
-                this.$apply();
-                numsIndex = 0;
+                this.addGameRecord(0);
+
             },
         };
 
@@ -212,6 +213,39 @@
             } else {
                 tip.error('网络错误');
             }
+        }
+
+        // 添加游戏记录
+        async addGameRecord(mystatus = 0){
+            if(this.shakeHandNumber <= 0){
+                return;
+            }
+            let that = this;
+            let time = util.SecondFormat(shakeHandTime,'mm:ss');
+            await api.addRecord({
+                query:{
+                    userId:userId,
+                    time: time,
+                    shakeNum: that.shakeHandNumber,
+                    // 0（自己）1（好友）
+                    type: 0,
+                    // 0（手动）1（脚动）
+                    status: mystatus,
+                    mode:api.storyModel,
+                }
+            });
+            this.outE();
+        }
+
+        outE(){
+            // 抖动次数清零
+            this.shakeHandNumber = 0;
+            this.stageData.shakeHandNum = 0;
+            clearInterval(clear_set);
+            shakeHandTime = 0;
+            shakeHandTimeStart = true;
+            this.$apply();
+            numsIndex = 0;
         }
 
         // 动画

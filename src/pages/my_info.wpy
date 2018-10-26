@@ -1,5 +1,5 @@
 <template>
-    <view class="w-percent100 border-box my-info" style="width:{{windowWidth}}px;height:{{windowHeight}}px;">
+    <view class="w-percent100 border-box my-info">
         <info :userId.sync="userId" :userName.sync="userName" :photo.sync="photo" :showRight.sync="showRight"></info>
 
         <view style="margin-top:{{20*px2rpxHeight}}px;">
@@ -33,8 +33,6 @@
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
-            windowWidth:0,
-            windowHeight:0,
 
             myinfo_bg:imgApi.myinfo_bg,
             show_gift:imgApi.show_gift,
@@ -62,8 +60,6 @@
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
-            this.windowWidth = px2rpx.originalWidth;
-            this.windowHeight = px2rpx.originalHeight;
             this.$apply();
         };
 
@@ -100,9 +96,12 @@
 </script>
 
 <style lang="less">
+    page{
+        background-color: #353a68;
+    }
 
     .my-info{
         padding: 30rpx 30rpx 50rpx;
-        background-color: #353a68;
+        /*background-color: #353a68;*/
     }
 </style>

@@ -32,6 +32,7 @@
     import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
     import weixin from '@/utils/weixin';
     import api from '@/utils/api';
+    import music from '@/utils/music';
 
     let userId = null;
 
@@ -94,10 +95,10 @@
                 weixin.updateStorage(title,value);
                 if(value == 0){
                     // 停止背景音乐
-                    weixin.stopMusic();
+                    music.stopMusic();
                 } else if(value == 1){
                     // 播放音乐
-                    weixin.backgroundMusic();
+                    music.backgroundMusic();
                 }
             }
         }

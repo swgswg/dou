@@ -53,7 +53,7 @@
         <!--点击按钮 end-->
 
         <!--开始按钮 start-->
-        <view class="pa flex-center w-percent100" style="bottom:50rpx;left:0;">
+        <view wx:if="{{timeFinish}}" class="pa flex-center w-percent100" style="bottom:50rpx;left:0;">
             <view class="button button-highlight button-pill button-large"
                   @tap.stop="start">
                 开始
@@ -217,7 +217,7 @@
             timeFinish(newValue){
                 if(newValue){
                     // 添加游戏记录--手动
-                    this.addGameRecord(1);
+                    this.addGameRecord(0);
                     // 计时时间归位
                     this.fightTime = this.fightData.time;
                     // 比较抖动次数有没有超过指定次数
@@ -280,8 +280,11 @@
         }
 
         // 添加游戏记录
-        async addGameRecord(mystatus){
+        async addGameRecord(mystatus = 0){
             let that = this;
+            if(this.shakeHandNumber <= 0){
+                return;
+            }
             await api.addRecord({
                 query:{
                     userId:userId,
@@ -332,6 +335,7 @@
 
         // 退出事件
         outE(){
+            this.addGameRecord(0);
             // 计时时间归位
             this.fightTime = this.fightData.time;
             // 抖动次数清零

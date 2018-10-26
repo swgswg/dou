@@ -21,10 +21,11 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX,USER_INFO,GAME_USER } from '@/utils/constant';
+    import {PX_TO_RPX,USER_INFO,GAME_USER,GAME_INFO,PAGES_PATH } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
+    import util from '@/utils/util';
     import socketServer from '@/utils/socketServer';
     import wsDataDeal from '@/utils/wsDataDeal';
 
@@ -62,9 +63,11 @@
             // 组员不需要时间的确定按钮
             hasTimeConfirmBtn:false,
 
-            stageDataLeft:{userId:'' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            // stageDataLeft:{userId:'' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            stageDataLeft:{userId:'1' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
             stageDataCenter:{userId:'' ,roomId:'',legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
-            stageDataRight:{userId:'' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            // stageDataRight:{userId:'' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            stageDataRight:{userId:'1' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
 
             // 倒计时时间
             selectTimeIndex:[0,0,0],
@@ -77,26 +80,43 @@
         };
 
         onLoad(options) {
+            let roomId = options.roomId;
+            let legOrHand = options.legOrHand;
+            shareId = options.share;
+            userInfo = wepy.getStorageSync(USER_INFO);
+            // 组员判断能不能进入这个房间
+            this.intoRoomJudgeE(options.roomId);
+
+            // 首次跳转进来的判断用户信息全不全
+            if(util.isEmpty(userInfo.logo)){
+                // 把信息存入缓存
+                // wepy.setStorageSync(GAME_INFOE, {share: shareId, roomId: roomId, legOrHand: legOrHand});
+                let path = '/pages/PK_model_slave?share=' + shareId + '&roomId=' + roomId + '&legOrHand=' + legOrHand;
+                wepy.setStorageSync(PAGES_PATH, {path: path});
+
+                // 信息不全跳转去绑定信息
+                wx.redirectTo({
+                    url:'/pages/mobile_verify'
+                });
+                return;
+            }
+
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.widWidth = px2rpx.originalWidth;
             this.widHeight = px2rpx.originalHeight;
 
-            this.roomId = options.roomId;
-            this.legOrHand = options.legOrHand;
+            this.roomId = roomId;
+            this.legOrHand = legOrHand;
 
             // 组员直接进来的 没有确定时间按钮
             this.hasTimeConfirmBtn = false;
             this.$apply();
-            userInfo = wepy.getStorageSync(USER_INFO);
+
             // 通过分享进来的建立好友关系
-            if(options.share){
-                shareId = options.share;
-                this.buildFriend(options.share);
-            }
-            // 组员判断能不能进入这个房间
-            this.intoRoomJudgeE(options.roomId);
+            this.buildFriend(options.share);
+
 
         };
 
@@ -110,20 +130,20 @@
             // 连接webSocket
             socketServer.wsInit( userInfo.id, ()=>{
                 // 开启心跳
-                this.$broadcast('heartbeatEvents');
+                // this.$broadcast('heartbeatEvents');
             }, (data)=>{
                 // 组员信息
-                if(data){
-                    // 这次有数据,取消这次心跳
-                    this.$broadcast('cancelHeartbeatEvents');
-                }
+                // if(data){
+                //     // 这次有数据,取消这次心跳
+                //     this.$broadcast('cancelHeartbeatEvents');
+                // }
                 wsDataDeal.wsDeal(data, that, userInfo.id, shareId, false);
             });
 
             // 进入房间传送空数据
-            socketServer.wsSend(shareId,'我进入了');
+            // socketServer.wsSend(shareId,'我进入了');
             // 开启心跳
-            this.$broadcast('cancelHeartbeatEvents');
+            // this.$broadcast('cancelHeartbeatEvents');
         };
 
         events = {
@@ -171,24 +191,24 @@
             if(res.data.state == 1){
                 // 把已有的房间人绑定到舞台上
                 let userInfoArr = this.dealGroupDataE(res.data.data);
-                if(userInfoArr[0]){
+                if( !util.isEmpty(userInfoArr[0])){
                     this.updateStageLeftDateE(userInfoArr[0]);
-                    if(userInfoArr[0].time){
+                    if( !util.isEmpty(userInfoArr[0].time)){
                         let newTime = userInfoArr[0].time.split('#');
                         this.selectTimeIndex = [newTime[0], newTime[1], newTime[2]];
                     }
                 }
-                if(userInfoArr[1]){
+                if(!util.isEmpty(userInfoArr[1])){
                     this.updateStageRightDateE(userInfoArr[1]);
                 }
 
             } else {
                 // 不能进入房间
-                wx.navigateBack({
-                    delta: 1
+                wx.switchTab({
+                    url:'/pages/select_model'
                 });
                 // 关闭webSocket
-                socketServer.wsClose();
+                // socketServer.wsClose();
                 tip.alert('房间已满');
                 return;
             }
@@ -238,6 +258,10 @@
         isOverCountDownE(){
             this.stageDataCenter.isLight = 0;
             this.readyBtn = ready_btn;
+            // this.$invoke('selecttime','stopCountDown');
+            this.$broadcast('stopCountDown');
+            this.hasTimeConfirmBtn = false;
+            this.$apply();
         }
 
         // 组员准备
@@ -255,8 +279,8 @@
         // 房主退出,房间取消
         masterOut(){
             this.$invoke('game','masterOutM');
-            wepy.navigateBack({
-                delta: 1
+            wx.switchTab({
+                url:'/pages/select_model'
             });
         }
     }

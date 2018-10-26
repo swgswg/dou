@@ -44,10 +44,12 @@
 
 <script>
     import wepy from 'wepy';
+    import {USER_INFO,PX_TO_RPX,PAGES_PATH} from '@/utils/constant';
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import tip from '@/utils/tip';
-    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
+    import util from '@/utils/util';
+    import weixin from '@/utils/weixin';
 
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
@@ -119,7 +121,7 @@
         // 获取用户授权信息
         async getUserInfo(e){
             let that = this;
-            console.log(e);
+            // console.log(e);
             // 性别选择
             if(this.currentSex == -1){
                 tip.longtoast('请选择性别');
@@ -143,11 +145,38 @@
                         photo: e.detail.userInfo.avatarUrl,
                     }
                 });
-                if(rlt.data.state == 1){
-                    // 获取信息成功
-                    wx.redirectTo({
-                        url: '/pages/select_model'
+                // 更新缓存
+                // weixin.updateUserInfo();
+
+                if( rlt.data.state == 1){
+
+                    let res = await api.getOneUserInfo({
+                        query:{
+                            userId:userInfo.id,
+                        }
                     });
+                    if(res.data.state == 1){
+                        // 更新缓存
+                        wepy.setStorageSync(USER_INFO, res.data.data);
+                        console.log('更新成功');
+
+                        // 获取信息成功
+                        let pagesPath = wepy.getStorageSync(PAGES_PATH);
+                        if(util.isEmpty(pagesPath.path)){
+                            wx.redirectTo({
+                                url: '/pages/select_model'
+                            });
+                        } else {
+                            wx.redirectTo({
+                                url: pagesPath.path,
+                                success:function() {
+                                    wepy.setStorageSync(PAGES_PATH, {path: ''});
+                                }
+                            });
+                        }
+                    }
+
+
                 }
             } else {
                 // 授权失败

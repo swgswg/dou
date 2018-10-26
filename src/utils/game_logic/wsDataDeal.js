@@ -15,15 +15,13 @@ const ty6 = 6; // 同步计数
  * @param that
  */
 function wsDeal(data, that, userId, shareId, isMaster) {
-    console.log('wsDataDeal');
-    console.log(data);
     let res = data;
     let ty = res.pop().type;
     // console.log(typeof ty);
     // console.log('ty===========');
     // console.log(ty);
     switch (ty){
-        case ty0: slaveEnter(res, that, userId, shareId, isMaster);
+        case ty0: memberEnter(res, that, userId, shareId, isMaster);
             break;
         case ty1: slaveOut(res,that);
             break;
@@ -51,13 +49,13 @@ function wsDeal(data, that, userId, shareId, isMaster) {
  * @param shareId
  * @param isMaster (房主true, 组员false)
  */
-function slaveEnter(data, that, userId, shareId,isMaster = true) {
+function memberEnter(data, that, userId, shareId, isMaster = true) {
     let arrs = dealGroupDataE(data,userId);
     if(isMaster){
-        if(!util.isEmpty(arrs[0])){
+        if(util.isEmpty(arrs[0])){
            updateStageLeftDateE(arrs[0],that);
         }
-        if(!util.isEmpty(arrs[1])){
+        if(util.isEmpty(arrs[1])){
             updateStageRightDateE(arrs[1],that);
         }
     } else {
@@ -115,10 +113,7 @@ function gameTimeE(data,that){
     console.log(data);
     let time = data[0].time.split('#');
     console.log(time);
-    let hour = parseInt(time[0]);
-    let minute = parseInt(time[1]);
-    let second = parseInt(time[2]);
-    that.selectTimeIndex = [hour, minute, second];
+    that.selectTimeIndex = [~~time[0], ~~time[1], ~~time[2]];
     that.$apply();
 }
 
@@ -203,7 +198,7 @@ function updateStageLeftDateE(groupInfo,that){
     that.stageDataLeft.shakeHandNum = groupInfo.name;
     that.stageDataLeft.isLight = groupInfo.status;
     console.log(groupInfo.time);
-    if(!util.isEmpty(groupInfo.time)){
+    if(groupInfo.time){
         gameTimeE([{time:groupInfo.time}],that);
     }
     that.$apply();
@@ -217,12 +212,13 @@ function updateStageRightDateE(groupInfo,that){
     that.stageDataRight.shakeHandNum = groupInfo.name;
     that.stageDataRight.isLight = groupInfo.status;
     // console.log(groupInfo.time)
-    if(!util.isEmpty(groupInfo.time)){
+    if(groupInfo.time){
         gameTimeE([{time:groupInfo.time}],that);
     }
     that.$apply();
 }
 
 module.exports = {
-    wsDeal:wsDeal
+    wsDeal:wsDeal,
+    memberEnter:memberEnter,
 };

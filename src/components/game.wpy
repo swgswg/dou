@@ -31,9 +31,9 @@
 
         <!--3/2/1倒计时 start-->
         <block wx:if="{{isCountDownNum}}">
-            <view class="flex-center w-percent100" style="margin-top:{{80*px2rpxHeight}}px;">
+            <view class="flex-center w-percent100 text-center" style="margin-top:{{80*px2rpxHeight}}px;">
                 <view class="flex-center cf bg-repeat-size f150"
-                      style="width:{{463*px2rpxWidth}}px;height:{{481*px2rpxWidth}}px;background-image:url({{NumBg}})">
+                      style="width:{{460*px2rpxWidth}}px;height:{{460*px2rpxWidth}}px;background-image:url({{NumBg}})">
                     {{countDownNum}}
                 </view>
             </view>
@@ -93,8 +93,7 @@
     import {PX_TO_RPX,USER_INFO,GAME_USER } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
-    import tip from '@/utils/tip';
-    import weixin from '@/utils/weixin';
+    import util from '@/utils/util';
     import socketServer from '@/utils/socketServer';
 
     import OutModel from '@/components/out_model';
@@ -218,6 +217,11 @@
                 if(newValue){
                     this.isOverCountDown(true);
                 }
+            },
+
+            time(newvalue){
+                console.log('gamewatch===========');
+                console.log(newvalue);
             }
 
         };
@@ -232,9 +236,9 @@
             masterOutM(){
                 this.isOverCountDown(false);
                 // 关闭websocket
-                setTimeout(function() {
-                    socketServer.wsClose();
-                },2000);
+                // setTimeout(function() {
+                //     socketServer.wsClose();
+                // },2000);
                 // 退出游戏
                 this.cancelHeartbeatE();
             }
@@ -378,10 +382,15 @@
         // 添加游戏记录
         async addGameRecord(){
             let that = this;
+            console.log('time======')
+            console.log(that.time);
+            let time = util.timeToSecond(that.time);
+            console.log(time);
+            time = util.SecondFormat(time,'mm:ss');
             await api.addRecord({
                 query:{
                     userId: userInfo.id,
-                    time: that.time,
+                    time: time,
                     shakeNum: shakeHandNumber,
                     // 0（自己）1（好友对战）
                     type: 1,
@@ -402,6 +411,8 @@
                     roomId: roomId,
                 }
             });
+            // 清除定时器
+            this.$broadcast('stopCountDown');
         }
 
         // 发送点击数
@@ -410,13 +421,13 @@
                 gameUser = wepy.getStorageSync(GAME_USER);
             }
             let gameUserIdArr = [];
-            console.log(gameUser);
+            // console.log(gameUser);
             gameUser.forEach(function(item) {
                 if(item.userId != userInfo.id){
                     gameUserIdArr.push(item.userId);
                 }
             });
-            console.log(gameUserIdArr);
+            // console.log(gameUserIdArr);
             gameUserIdArr.forEach(function(item) {
                 socketServer.wsSend(item, [{userId: userInfo.id, num: number}, {type:6}]);
             });

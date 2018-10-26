@@ -1,39 +1,80 @@
 // page--手机号验证
+<style lang="less">
+    .mobile-verify{
+
+        .login-each{
+            width: 80%;
+
+            .each{
+                width: 90%;
+                border-bottom: 1px solid #ccc;
+
+                .head-text{
+                    color: #ec2c98;
+                }
+
+                .getcode{
+                    padding: 0 20rpx;
+                    background: linear-gradient(to top right,#ec2c98, #f68668);
+                }
+                .dis_getcode{
+                    background: #aaa;
+                }
+
+            }
+        }
+
+        .btn{
+            background: linear-gradient(to top right,#ec2c98, #f68668);
+
+            .dui{
+                background-color: #de5177;
+
+                .icon-check{
+                    font-size: 40rpx;
+                    font-weight: bolder;
+                    color: #fff;
+                }
+            }
+        }
+    }
+</style>
+
 <template>
-    <view class="mobile-verify">
-        <view class="mobile-verify-img" style="margin-top:{{90*px2rpxHeight}}px;">
+    <view class="flex-column-center mobile-verify">
+        <view class="flex-center w-percent100" style="margin-top:{{90*px2rpxHeight}}px;">
             <image src="{{login_phone}}" style="width:{{151*px2rpxWidth}}px;height:{{208*px2rpxWidth}}px;"></image>
         </view>
 
-        <view class="mobile-verify-text" style="margin-top:{{50*px2rpxHeight}}px;">为了您的账号安全,请绑定手机号</view>
+        <view class="flex-center w-percent100 f30 cc" style="margin-top:{{50*px2rpxHeight}}px;">为了您的账号安全,请绑定手机号</view>
 
         <!--输入框 start-->
-        <view class="mobile-verify-content" style="margin-top:{{50*px2rpxHeight}}px;">
-            <view class="login-each" style="background:url({{login_bg}}) no-repeat 0 0;">
-                <view class="each-content" style="margin-top:{{90*px2rpxHeight}}px;">
-                    <view class="each" style="margin-bottom:{{30*px2rpxHeight}}px;">
-                        <view class="each-head">
-                            <view class="head-img" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;">
+        <view class="flex-center w-percent100" style="margin-top:{{50*px2rpxHeight}}px;">
+            <view class="flex-center login-each" style="background:url({{login_bg}}) no-repeat 0 0;">
+                <view class="flex-column-center w-percent100" style="margin-top:{{90*px2rpxHeight}}px;">
+                    <view class="flex-column-center each" style="margin-bottom:{{30*px2rpxHeight}}px;">
+                        <view class="flex-center">
+                            <view class="flex-center br-percent50 o-hidden" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;">
                                 <image src="{{login_user}}" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;"></image>
                             </view>
-                            <view class="head-text" style="margin-left:{{10*px2rpxWidth}}px;">UserPhone</view>
+                            <view class="flex-center f24 head-text" style="margin-left:{{10*px2rpxWidth}}px;">UserPhone</view>
                         </view>
 
-                        <view class="each-input" style="margin-top:{{20*px2rpxHeight}}px;">
-                            <input class="input" type="number" bindinput="inputMobile" placeholder-style="color:#ddd" placeholder="请输入手机号" />
+                        <view class="flex-center w-percent100" style="margin-top:{{20*px2rpxHeight}}px;">
+                            <input class="w-percent100 f30 text-center c3" type="number" adjust-position="true" bindinput="inputMobile" placeholder-style="color:#ddd" placeholder="请输入手机号" />
                         </view>
                     </view>
-                    <view class="each" style="margin-bottom:{{30*px2rpxHeight}}px;">
-                        <view class="each-head">
-                            <view class="head-img" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;">
+                    <view class="flex-column-center each" style="margin-bottom:{{30*px2rpxHeight}}px;">
+                        <view class="flex-center">
+                            <view class="flex-center br-percent50 o-hidden" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;">
                                 <image src="{{login_verfication}}" style="width:{{43*px2rpxWidth}}px;height:{{43*px2rpxWidth}}px;"></image>
                             </view>
-                            <view class="head-text" style="margin-left:{{10*px2rpxWidth}}px;">Verification</view>
+                            <view class="flex-center f24 head-text" style="margin-left:{{10*px2rpxWidth}}px;">Verification</view>
                         </view>
 
-                        <view class="each-input each-code" style="margin-top:{{20*px2rpxHeight}}px;">
-                            <input class="code" type="number" bindinput="inputCode" placeholder-style="color:#ddd" placeholder="请输入验证码" style="width:{{340*px2rpxWidth}}px;" />
-                            <view class="getcode {{getCodeBtn ? '' : 'dis_getcode'}}" style="width:{{190*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" @tap.stop="getCode">{{codeText}}</view>
+                        <view class="flex-end w-percent100 f24" style="margin-top:{{20*px2rpxHeight}}px;">
+                            <input class="f30 text-center c3" type="number" adjust-position="true" bindinput="inputCode" placeholder-style="color:#ddd" placeholder="请输入验证码" style="width:{{340*px2rpxWidth}}px;" />
+                            <view class="flex-center border-box f20 cf br10 getcode {{getCodeBtn ? '' : 'dis_getcode'}}" style="width:{{190*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" @tap.stop="getCode">{{codeText}}</view>
                         </view>
                     </view>
                 </view>
@@ -42,9 +83,9 @@
         <!--输入框 end-->
 
         <!--确定按钮 start-->
-        <view class="mobile-verify-btn" style="margin-top:{{80*px2rpxHeight}}px;">
-            <view class="btn" style="width:{{287*px2rpxWidth}}px;height:{{78*px2rpxHeight}}px;border-radius:{{39*px2rpxHeight}}px;" @tap.stop="commit">
-                <view class="dui" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"><text class="iconfont icon-check"></text></view>
+        <view class="flex-center w-percent100 mobile-verify-btn" style="margin-top:{{80*px2rpxHeight}}px;">
+            <view class="flex-center btn" style="width:{{287*px2rpxWidth}}px;height:{{78*px2rpxHeight}}px;border-radius:{{39*px2rpxHeight}}px;" @tap.stop="commit">
+                <view class="flex-center br-percent50 dui" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"><text class="iconfont icon-check"></text></view>
             </view>
         </view>
         <!--确定按钮 end-->
@@ -65,6 +106,7 @@
     let weChat = null;
     let i = 60;
     let clear_set = null;
+
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
@@ -88,15 +130,15 @@
         };
 
         // 在Page和Component共用的生命周期函数
-        async onLoad(){
-            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
-            let userInfo = await wepy.getStorageSync(USER_INFO);
+            let userInfo = wepy.getStorageSync(USER_INFO);
             weChat = userInfo.weChat;
-
             this.$apply();
+            this.clear();
         }
 
         // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
@@ -130,10 +172,7 @@
                             i--;
                             that.codeText = '重新获取('+i+'s)';
                             if(i <= 0){
-                                i = 60;
-                                that.codeText = '获取验证码';
-                                that.getCodeBtn = true;
-                                clearInterval(clear_set);
+                                that.clear();
                             }
                             that.$apply();
                         },1000);
@@ -146,6 +185,7 @@
                 }
 
             },
+
             async commit(){
                 if(!util.checkReg(1,mobile)){
                     tip.alert('手机号不正确');
@@ -173,157 +213,13 @@
 
         };
 
-        // 声明组件之间的事件处理函数
-        events = {};
+        clear(){
+            i = 60;
+            this.codeText = '获取验证码';
+            this.getCodeBtn = true;
+            this.$apply();
+            clearInterval(clear_set);
+        }
     }
 </script>
 
-<style lang="less">
-    .mobile-verify{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-
-        .mobile-verify-img{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .mobile-verify-text{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 30rpx;
-            color:#ccc;
-        }
-
-        .mobile-verify-content{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .login-each{
-                width: 80%;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                .each-content{
-                    width: 100%;
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-
-                    .each{
-                        width: 90%;
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: center;
-                        align-items: center;
-                        border-bottom: 1px solid #ccc;
-
-                        .each-head{
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-
-                            .head-img{
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                border-radius: 50%;
-                                overflow: hidden;
-                            }
-
-                            .head-text{
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                font-size: 22rpx;
-                                color: #ec2c98;
-                            }
-                        }
-
-                        .each-input{
-                            width: 100%;
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-
-                            .input{
-                                width: 100%;
-                                font-size: 24rpx;
-                                color: #333;
-                                text-align: center;
-                            }
-                        }
-
-                        .each-code{
-                            width: 100%;
-                            display: flex;
-                            justify-content: flex-end;
-                            align-items: center;
-                            font-size: 24rpx;
-
-                            .code{
-                                color: #333;
-                                text-align: center;
-                                /*border: 1px solid red;*/
-                            }
-                            .getcode{
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                padding: 0 20rpx;
-                                box-sizing: border-box;
-                                font-size: 20rpx;
-                                color: #fff;
-                                border-radius: 10rpx;
-                                background: linear-gradient(to top right,#ec2c98, #f68668);
-                            }
-                            .dis_getcode{
-                                background: #aaa;
-                            }
-                        }
-
-                    }
-                }
-
-
-            }
-        }
-
-        .mobile-verify-btn{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .btn{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                background: linear-gradient(to top right,#ec2c98, #f68668);
-
-                .dui{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 50%;
-                    background-color: #de5177;
-
-                    .icon-check{
-                        font-size: 40rpx;
-                        font-weight: bolder;
-                        color: #fff;
-                    }
-                }
-            }
-        }
-    }
-</style>

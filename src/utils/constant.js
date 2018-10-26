@@ -47,7 +47,19 @@ export const SHAKE_LEG_NUMBER = "shakeLegNumber";
 export const BLUETOOTH = "bluttooth";
 
 /**
- * 蓝牙数据
+ * 游戏人物id
  * @type {String}
  */
 export const GAME_USER = "gameUser";
+
+/**
+ * 游戏数据 share roomId legOrHand
+ * @type {String}
+ */
+export const GAME_INfo = "gameInfo";
+
+/**
+ * 要跳转的页面路径
+ * @type {String}
+ */
+export const PAGES_PATH = "pagesPath";

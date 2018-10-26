@@ -494,8 +494,12 @@ function timeToSecond(time) {
 function SecondFormat(time,format='hh:mm:ss') {
     // 将秒数转化为 hh:mm:ss/ mm:ss/ hh-mm-ss/ mm-ss/ ss
     let second = time;
+    let day = Math.floor(second / 86400);
+    second = second % 86400;
+
     let hour = Math.floor(second / 3600);
     second = second % 3600;
+
     let minute = Math.floor(second / 60);
     second = second % 60;
     if(hour < 10){

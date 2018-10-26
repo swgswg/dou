@@ -20,10 +20,16 @@
         <!--退出按钮 end-->
 
         <!--抖动次数 start-->
-        <view class="flex-center w-percent100 cfcf05b f-family-edo num" style="margin-top:{{210*px2rpxHeight}}px;height:{{120*px2rpxHeight}}px;">
+        <view class="pa flex-center w-percent100 cfcf05b f-family-edo num" style="top:{{80*px2rpxHeight}}px;left:0;height:{{120*px2rpxHeight}}px;">
             <view class="animated {{animate}}">{{shakeHandNumber}}</view>
         </view>
         <!--抖动次数 end-->
+
+        <!--鹿背景 start-->
+        <view class="pa flex-center w-percent100" style="top:{{330*px2rpxHeight}}px;left:0;">
+            <image src="{{beerImg}}" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
+        </view>
+        <!--鹿背景 end-->
 
         <!--点击按钮 start-->
         <view class="pa flex-center w-percent100" style="top:{{700*px2rpxHeight}}px;left:0;">
@@ -44,9 +50,17 @@
     import wepy from 'wepy';
     import {PX_TO_RPX,USER_INFO, SHAKE_HAND_NUMBER } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
+    import api from '@/utils/api';
+
     import OutModel from '@/components/out_model';
     import GoMall from '@/components/go_mall';
     import Touch from '@/components/touch';
+
+    let userId = null;
+    let shakeHandTime = 0;
+    let shakeHandTimeStart = true;
+    let clear_set = null;
 
     export default class ArderModel extends wepy.page {
         config = {
@@ -67,6 +81,7 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             bgImg: imgApi.fight_model_bg,
+            beerImg:imgApi.fight_model_deer,
             animate:'',
             shakeHandNumber:0,
 
@@ -82,6 +97,7 @@
             this.widWidth = px2rpx.originalWidth;
             this.widHeight = px2rpx.originalHeight;
             this.$apply();
+            userId = wepy.getStorageSync(USER_INFO).id;
         };
 
         onReady() {
@@ -89,14 +105,11 @@
             wx.setKeepScreenOn({
                 keepScreenOn:true
             });
-
+            shakeHandTime = 0;
+            shakeHandTimeStart = true;
             // 获取缓存抖动次数
-            this.shakeHandNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
+            // this.shakeHandNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
             this.$apply();
-        };
-
-        methods = {
-
         };
 
         watch = {
@@ -108,11 +121,53 @@
         events = {
             // 点击按钮
             clickEvents(){
-                this.shakeHandNumber++;
+                if(shakeHandTimeStart){
+                    clear_set = setInterval(function() {
+                        ++shakeHandTime;
+                        console.log(shakeHandTime)
+                    },1000);
+                }
+                shakeHandTimeStart = false;
+                ++this.shakeHandNumber;
                 this.$apply();
-                wepy.setStorageSync(SHAKE_HAND_NUMBER,this.shakeHandNumber);
+                // wepy.setStorageSync(SHAKE_HAND_NUMBER,this.shakeHandNumber);
+            },
+
+            // 退出事件
+            outEvents(){
+                this.addGameRecord(0);
             },
         };
+
+        // 添加游戏记录
+        async addGameRecord(mystatus = 0){
+            if(this.shakeHandNumber <= 0){
+                return;
+            }
+            let that = this;
+            let time = util.SecondFormat(shakeHandTime,'mm:ss');
+            let res = await api.addRecord({
+                query:{
+                    userId:userId,
+                    time: time,
+                    shakeNum: that.shakeHandNumber,
+                    // 0（自己）1（好友）
+                    type: 0,
+                    // 0（手动）1（脚动）
+                    status: mystatus,
+                    mode: api.arderModel,
+                }
+            });
+            this.outE();
+        }
+
+        outE(){
+            this.shakeHandNumber = 0;
+            clearInterval(clear_set);
+            shakeHandTime = 0;
+            shakeHandTimeStart = true;
+            this.$apply();
+        }
 
         // 动画
         animated(){
