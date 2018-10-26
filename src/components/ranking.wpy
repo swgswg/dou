@@ -22,20 +22,20 @@
                 <view class="flex-center f-family-edo" style="width:{{80*px2rpxWidth}}px;">
 
                     <block wx:if="{{rank.rownum == 1}}">
-                        <image src="{{fans_no1}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                        <image src="{{fans_no1}}" lazy-load="true" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
                     </block>
                     <block wx:elif="{{rank.rownum == 2}}">
-                        <image src="{{fans_no2}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                        <image src="{{fans_no2}}" lazy-load="true" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
                     </block>
                     <block wx:elif="{{rank.rownum == 3}}">
-                        <image src="{{fans_no3}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                        <image src="{{fans_no3}}" lazy-load="true" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
                     </block>
                     <block wx:else>
                         {{rank.rownum}}
                     </block>
                 </view>
                 <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">
-                    <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{rank.photo}}" />
+                    <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" lazy-load="true" src="{{rank.photo}}" />
                 </view>
                 <view class="flex-center ellipsis" style="width:{{150*px2rpxWidth}}px;">
                     {{rank.name}}

@@ -90,6 +90,10 @@
         font-size: 24rpx;
     }
 
+    .f25{
+        font-size: 25rpx;
+    }
+
     .f26{
         font-size: 25rpx;
     }

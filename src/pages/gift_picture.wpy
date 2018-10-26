@@ -28,11 +28,11 @@
                             <!--<block wx:else>-->
                                 <!--<image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.logo}}" ></image>-->
                             <!--</block>-->
-                            <image class="img" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.url}}" ></image>
+                            <image class="img" lazy-load="true" style="width:{{216*px2rpxWidth}}px;height:{{269*px2rpxHeight}}px" src="{{fileUrl + list.url}}" ></image>
                             <view class="info" style="height:{{50*px2rpxHeight}}px;padding:0 {{10*px2rpxWidth}}px;">
-                                <image src="{{list.photo}}" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;"></image>
+                                <image src="{{list.photo}}" lazy-load="true" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;"></image>
                                 <view class="info-right">
-                                    <image src="{{energy}}" style="width:{{11*px2rpxWidth}}px;height:{{13*px2rpxWidth}}px;margin-right:{{5*px2rpxWidth}}px;"></image>
+                                    <image src="{{energy}}" lazy-load="true" style="width:{{11*px2rpxWidth}}px;height:{{13*px2rpxWidth}}px;margin-right:{{5*px2rpxWidth}}px;"></image>
                                     <view>{{list.score}}</view>
                                 </view>
                             </view>

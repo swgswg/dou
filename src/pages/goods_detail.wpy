@@ -7,7 +7,7 @@
             <swiper indicator-dots="true" autoplay="true" interval="2000" circular="true" style="width:100%;">
                 <block wx:for="{{goodsInfo.photo1}}" wx:for-item="img" wx:key="{{index}}">
                     <swiper-item>
-                        <image src="{{fileUrl + img}}" class="slide-image"
+                        <image src="{{fileUrl + img}}" lazy-load="true" class="slide-image"
                                style="width:{{750*px2rpxWidth}}px;height:{{500*px2rpxWidth}}px;"/>
                     </swiper-item>
                 </block>
@@ -65,6 +65,7 @@
                 <view class="detail-img">
                     <view class="img flex-center">
                         <image src="{{fileUrl + img}}"
+                               lazy-load="true"
                                style="width:{{750*px2rpxWidth}}px;height:{{500*px2rpxWidth}}px;"></image>
                     </view>
                 </view>
@@ -113,6 +114,7 @@
                             <view class="info-img"
                                   style="width:{{106*px2rpxWidth}}px;padding-top:{{22*px2rpxHeight}}px;">
                                 <image src="{{fileUrl + goodsInfo.photo}}"
+                                       lazy-load="true"
                                        style="width:{{106*px2rpxWidth}}px;height:{{106*px2rpxWidth}}px;"></image>
                             </view>
                             <view class="name-price"

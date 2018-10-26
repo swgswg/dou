@@ -45,7 +45,9 @@
 
         methods = {
             goToSelectModel(){
-                this.$switch('/pages/select_model');
+                wx.switchTab({
+                    url:'/pages/select_model'
+                });
             }
         };
 
@@ -56,6 +58,13 @@
                 } else {
                     this.count();
                 }
+            }
+        };
+
+        events = {
+            // 清除定时器
+            clear(){
+                clearInterval(cleat_set);
             }
         };
 
@@ -74,6 +83,8 @@
                 that.$apply();
             },1000);
         }
+
+
     }
 </script>
 

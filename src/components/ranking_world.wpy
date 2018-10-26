@@ -32,10 +32,12 @@
                             <view class="pr flex-center first-three-img" style="width:{{124*px2rpxWidth}}px;height:{{154*px2rpxWidth}}px;">
                                 <block wx:if="{{first_three.rownum == 2}}">
                                     <image class="first-three-img2"
+                                           lazy-load="true"
                                            style="width:{{108*px2rpxWidth}}px;height:{{115*px2rpxWidth}}px;"
                                            src="{{history_no2}}">
                                     </image>
                                     <image class="pa br-percent50 first-three-profile"
+                                           lazy-load="true"
                                            style="bottom:{{6*px2rpxWidth}}px;left:{{22*px2rpxWidth}}px;width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
                                            src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
                                            @tap.stop="seeOtherGiftWall">
@@ -43,10 +45,12 @@
                                 </block>
                                 <block wx:elif="{{first_three.rownum == 1}}">
                                     <image class="first-three-img1"
+                                           lazy-load="true"
                                            style="width:{{124*px2rpxWidth}}px;height:{{154*px2rpxWidth}}px;"
                                            src="{{history_no1}}">
                                     </image>
-                                    <image class="pa br-percent50 first-three-profile "
+                                    <image class="pa br-percent50 first-three-profile"
+                                           lazy-load="true"
                                            style="bottom:{{6*px2rpxWidth}}px;left:{{6*px2rpxWidth}}px;width:{{108*px2rpxWidth}}px;height:{{108*px2rpxWidth}}px;"
                                            src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
                                            @tap.stop="seeOtherGiftWall">
@@ -54,10 +58,12 @@
                                 </block>
                                 <block wx:elif="{{first_three.rownum == 3}}">
                                     <image class="first-three-img3"
+                                           lazy-load="true"
                                            style="width:{{108*px2rpxWidth}}px;height:{{115*px2rpxWidth}}px;"
                                            src="{{history_no3}}">
                                     </image>
                                     <image class="pa br-percent50 first-three-profile"
+                                           lazy-load="true"
                                            style="bottom:{{6*px2rpxWidth}}px;left:{{14*px2rpxWidth}}px;width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
                                            src="{{first_three.photo}}" data-userid="{{first_three.userId}}"
                                            @tap.stop="seeOtherGiftWall">
@@ -93,7 +99,7 @@
         <block wx:if="{{myWorldRanking}}">
             <view class="flex-start w-percent100 f28 cf" style="height:{{90*px2rpxHeight}}px;">
                 <view class="flex-center" style="width:{{90*px2rpxWidth}}px;height:{{97*px2rpxWidth}}px;">{{myWorldRanking.rownum}}</view>
-                <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{myWorldRanking.photo}}"></image>
+                <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" lazy-load="true" src="{{myWorldRanking.photo}}"></image>
                 <view class="flex-center ellipsis" style="width:{{100*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.name}}</view>
                 <view class="flex-center ellipsis" style="width:{{150*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.time}}</view>
                 <view class="flex-center ellipsis" style="width:{{150*px2rpxWidth}}px;margin-left:{{30*px2rpxWidth}}px">{{myWorldRanking.shakeNum}}</view>

@@ -9,7 +9,7 @@
             </view>
             <view class="user-name" style="margin-top:{{17*px2rpxHeight}}px;">{{info.name}}</view>
             <view class="user-energy" style="margin-top:{{10*px2rpxHeight}}px;">
-                <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;"></image>
+                <image src="{{energy}}" lazy-load="true" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;"></image>
                 <view class="name-text" style="margin-left:{{10*px2rpxHeight}}px;">{{info.score}}</view>
             </view>
         </view>
@@ -22,7 +22,7 @@
                     <showgiftwall :giftList.sync="giftList" :ratio.sync="ratio"></showgiftwall>
                 </block>
                 <block wx:else>
-                    <image src="{{fileUrl + url}}" style="width:{{946*px2rpxWidth}}px;height:{{715*px2rpxHeight}}px;"></image>
+                    <image src="{{fileUrl + url}}" lazy-load="true" style="width:{{946*px2rpxWidth}}px;height:{{715*px2rpxHeight}}px;"></image>
                 </block>
             </view>
         </view>

@@ -17,12 +17,13 @@
         <view class="pr flex-center bg-repeat-size img-left"
               style="width:{{204*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;background-image:url({{game_rank2}})"
         >
-            <image src="{{fileUrl + gameRankData.NO2.logo}}" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
+            <image src="{{fileUrl + gameRankData.NO2.logo}}" lazy-load="true" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
 
             <!--头像/计数 start-->
             <view class="pa flex-center br10" style="bottom:{{-15*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:80%;">
                 <view open-type="share" class="flex-center w-percent100 br10 f26 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO2.num}}</view>
                 <image src="{{gameRankData.NO2.photo}}"
+                       lazy-load="true"
                        class="pa br-percent50 {{gameRankData.NO2.photo ? 'br' : ''}}"
                        style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
                 </image>
@@ -36,12 +37,13 @@
         <view class="pr flex-center bg-repeat-size img-center"
               style="width:{{211*px2rpxWidth}}px;height:{{818*px2rpxWidth}}px;background-image: url({{game_rank1}})"
         >
-            <image src="{{fileUrl + gameRankData.NO1.logo}}" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
+            <image src="{{fileUrl + gameRankData.NO1.logo}}" lazy-load="true" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
 
             <!--头像/计数 start-->
             <view class="pa flex-center br10" style="bottom:{{-15*px2rpxWidth}}px;left:0;width:80%;">
                 <view open-type="share" class="flex-center w-percent100 f26 br10 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO1.num}}</view>
                 <image src="{{gameRankData.NO1.photo}}"
+                       lazy-load="true"
                        class="pa br-percent50 {{gameRankData.NO1.photo ? 'br' : ''}}"
                        style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
                 </image>
@@ -55,12 +57,13 @@
         <view class="pr flex-center bg-repeat-size img-right"
               style="width:{{211*px2rpxWidth}}px;height:{{592*px2rpxWidth}}px;background-image:url({{game_rank3}})"
         >
-            <image src="{{fileUrl + gameRankData.NO3.logo}}" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
+            <image src="{{fileUrl + gameRankData.NO3.logo}}" lazy-load="true" style="width:{{logoWidth*px2rpxWidth}}px;height:{{logoHeight*px2rpxWidth}}px;"></image>
 
             <!--头像/计数 start-->
             <view class="pa flex-center br10" style="bottom:{{-20*px2rpxWidth}}px;right:{{-20*px2rpxWidth}}px;width:80%;">
                 <view open-type="share" class="flex-center w-percent100 f26 br10 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO3.num}}</view>
                 <image src="{{gameRankData.NO3.photo}}"
+                       lazy-load="true"
                        class="pa br-percent50 {{gameRankData.NO3.photo ? 'br' : ''}}"
                        style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
                 </image>

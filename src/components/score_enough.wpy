@@ -4,7 +4,7 @@
 
             <!--背景图 start-->
             <view style="position:absolute;top:0;left:0;width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;">
-                <image style="width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;" src="{{score_enough}}"></image>
+                <image style="width:{{553*px2rpxWidth}}px;height:{{598*px2rpxWidth}}px;" lazy-load="true" src="{{score_enough}}"></image>
             </view>
             <!--背景图 end-->
 
@@ -18,7 +18,7 @@
             <view class="score-enough-text" style="top:{{371*px2rpxWidth}}px;left:0;width:{{553*px2rpxWidth}}px;height:{{100*px2rpxWidth}}px;">
                 <view style="font-size:36rpx;color:#00a4de;">抖动次数已达<text style="color:#ff6742;margin: 0 {{20*px2rpxWidth}}px">{{nowScore}}</text>次</view>
                 <view class="score-enough-gift" style="font-size:36rpx;color:#00a4de;">可兑换
-                    <image style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" src="{{fileUrl + exchangeGiftUrl}}"></image>
+                    <image style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" lazy-load="true" src="{{fileUrl + exchangeGiftUrl}}"></image>
                     <text style="color:#ff6742;margin: 0 {{20*px2rpxWidth}}px">{{exchangeGiftName}}</text>
                 </view>
             </view>
@@ -27,10 +27,10 @@
             <!--按钮 start-->
             <view class="score-enough-btn" style="top:{{500*px2rpxWidth}}px;left:0;width:{{553*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;padding: 0 {{53*px2rpxWidth}}px">
                 <button class="btn" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" open-type="share" plain="true" @tap="btnShare">
-                    <image style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{double_integral}}"></image>
+                    <image style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" lazy-load="true" src="{{double_integral}}"></image>
                 </button>
                 <view class="flex-center" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;">
-                    <image style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" src="{{instant_exchange}}" @tap.stop="instantExchange"></image>
+                    <image style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" lazy-load="true" src="{{instant_exchange}}" @tap.stop="instantExchange"></image>
                 </view>
             </view>
             <!--按钮 end-->

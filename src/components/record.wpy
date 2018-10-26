@@ -3,7 +3,7 @@
     <view class="com-record">
         <view class="head" style="height:{{90*px2rpxHeight}}px;">
             <view class="head-left">
-                <image class="img" src="{{record}}" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;"></image>
+                <image class="img" lazy-load="true" src="{{record}}" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;"></image>
                 <view class="name">历史记录</view>
             </view>
             <!--<view class="head-right">-->

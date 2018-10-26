@@ -5,10 +5,10 @@
                 <view class="circle-each circle3">
                     <view class="circle-each circle4">
                         <block wx:if="{{locationUrl}}">
-                            <image class="circle-each circle-img" @tap.stop="mylocation" src="{{imgSrc}}" />
+                            <image class="circle-each circle-img" lazy-load="true" @tap.stop="mylocation" src="{{imgSrc}}" />
                         </block>
                         <block wx:else>
-                            <image class="circle-each circle-img" src="{{imgSrc}}" />
+                            <image class="circle-each circle-img" lazy-load="true" src="{{imgSrc}}" />
                         </block>
                     </view>
                 </view>

@@ -1,7 +1,6 @@
 // page--开启抖动
 <style lang="less">
     .open{
-
         .text{
             font-weight: bolder;
             border: 2px solid #fcf05b;
@@ -25,7 +24,7 @@
             <swiper autoplay="{{swiper_autoplay}}" interval="2000"  bindanimationfinish="animationFinish" style="width:{{winWidth}};height:{{winHeight}};">
                 <repeat for="{{imgSrc}}" key="index" item="img">
                     <swiper-item>
-                        <image src="{{img}}" style="width:{{winWidth}};height:{{winHeight}};"/>
+                        <image src="{{img}}" lazy-load="true" style="width:{{winWidth}};height:{{winHeight}};"/>
                     </swiper-item>
                 </repeat>
             </swiper>

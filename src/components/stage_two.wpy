@@ -17,6 +17,7 @@
         <view class="pr flex-center bg-repeat-size"
               style="width:{{260*px2rpxWidth}}px;height:{{351*px2rpxWidth}}px;background-image:url({{stageData.isLight == 2 ? bgLightImg : bgNoLightImg}});">
             <image src="{{fileUrl + stageData.logo}}"
+                   lazy-load="true"
                    style="width: {{logoWidth*px2rpxWidth}}px;height: {{logoHeight*px2rpxWidth}}px;">
             </image>
         </view>
@@ -26,6 +27,7 @@
         <view class="pr flex-center br10" style="width:70%;margin-top:{{24*px2rpxHeight}}px;">
             <button open-type="share" class="flex-center w-percent100 f26 ellipsis bgecd13b btn" style="height:{{65*px2rpxHeight}}px;">{{stageData.shakeHandNum}}</button>
             <image src="{{stageData.photo}}"
+                   lazy-load="true"
                    class="pa br-percent50 {{stageData.photo ? 'br' : ''}}"
                    style="top:{{-20*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
             </image>
@@ -82,20 +84,6 @@
             userId = wepy.getStorageSync(USER_INFO).id;
             this.$apply();
         }
-
-        // 转发
-        // onShareAppMessage(res) {
-        //     let that = this;
-        //     console.log(that.roomId);
-        //     console.log(isNaN(this.num));
-        //     if ( (res.from === 'button' && (this.stageData.shakeHandNum == '邀请好友')) ) {
-        //         // 来自页面内转发按钮
-        //         return {
-        //             title: '一起来战吧',
-        //             path: '/page/PK_model_slave?share=' + userId + '&roomId=' + that.stageData.roomId +'&legOrHand='+that.stageData.legOrHand
-        //         }
-        //     }
-        // }
 
     }
 </script>

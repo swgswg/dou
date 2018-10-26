@@ -11,12 +11,12 @@
               style="height:{{140*px2rpxHeight}}px;padding: 0 {{20*px2rpxWidth}}px;">
 
              <view class="flex-start w-percent100" @tap.stop="goToRecord">
-                <image class="br-percent50" style="width:{{90*px2rpxHeight}}px;height:{{90*px2rpxHeight}}px;" src="{{photo}}"></image>
+                <image class="br-percent50" lazy-load="true" style="width:{{90*px2rpxHeight}}px;height:{{90*px2rpxHeight}}px;" src="{{photo}}"></image>
                 <view class="f30 c3 ellipsis" style="width:{{300*px2rpxWidth}}px;margin-left:{{45*px2rpxWidth}}px">{{userName}}</view>
             </view>
             <block wx:if="{{showRight}}">
                 <view class="flex-center" style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;" @tap.stop="goToRecord">
-                    <image style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;" src="{{right}}"></image>
+                    <image style="width:{{27*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px;" lazy-load="true" src="{{right}}"></image>
                 </view>
             </block>
         </view>

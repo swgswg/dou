@@ -27,7 +27,7 @@
 
         <!--鹿背景 start-->
         <view class="pa flex-center w-percent100" style="top:{{330*px2rpxHeight}}px;left:0;">
-            <image src="{{beerImg}}" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
+            <image src="{{beerImg}}" lazy-load="true" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
         </view>
         <!--鹿背景 end-->
 

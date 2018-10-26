@@ -1,15 +1,40 @@
 // page-送礼物
+<style lang="less">
+    .send-gift{
+
+        .user-info{
+            width: 40%;
+            background-color: rgba(0,0,0,0.4);
+
+            .profile{
+                border: 1px solid #fff;
+            }
+        }
+        .other-profile{
+            width: 60%;
+
+            .profile-img{
+                border: 1rpx solid #fff;
+            }
+            .num{
+                font-size: 15rpx;
+                background-color: rgba(0,0,0,0.4);
+            }
+        }
+    }
+</style>
+
 <template>
-    <view class="send-gift" style="background: url({{wall_bg}}) no-repeat 0 0;">
-        <view class="info" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
+    <view class="pr flex-column w-percent100 bg-repeat-size send-gift" style="height:{{windowHeight}}px;background: url({{wall_bg}});">
+        <view class="flex-start w-percent100 border-box" style="padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
             <!--当前玩家信息 start-->
-            <view class="user-info" style="height:{{84*px2rpxHeight}}px;border-radius:{{42*px2rpxHeight}}px;">
-                <image class="profile" src="{{fans_info.photo}}" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;"></image>
-                <view class="name-energy" style="width:{{160*px2rpxWidth}}px;margin-left:{{10*px2rpxWidth}}px;">
-                    <view class="name">{{fans_info.name}}</view>
-                    <view class="enenrgy">
+            <view class="flex-start o-hidden user-info" style="height:{{84*px2rpxHeight}}px;border-radius:{{42*px2rpxHeight}}px;">
+                <image class="br-percent50 profile" lazy-load="true" src="{{fans_info.photo}}" style="width:{{80*px2rpxWidth}}px;height:{{80*px2rpxWidth}}px;"></image>
+                <view class="flex-column-center f25 cf o-hidden" style="width:{{160*px2rpxWidth}}px;margin-left:{{10*px2rpxWidth}}px;">
+                    <view class="w-percent100 ellipsis">{{fans_info.name}}</view>
+                    <view class="flex-start w-percent100 cfcf05b ellipsis">
                         <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{5*px2rpxWidth}}px;"></image>
-                        <view class="enenrgy-text">{{fans_info.integral ? fans_info.integral : 0}}</view>
+                        <view>{{fans_info.integral ? fans_info.integral : 0}}</view>
                     </view>
                 </view>
             </view>
@@ -17,36 +42,36 @@
 
             <!--其他送过礼物玩家的头像 start-->
             <block wx:if="{{showOtherProfile}}">
-                <view class="other-profile" style="height:{{80*px2rpxHeight}}px;">
+                <view class="flex-end other-profile" style="height:{{80*px2rpxHeight}}px;">
                     <block wx:for="{{otherUserPhone}}" wx:for-item="img" wx:key="{{index}}">
-                        <image class="profile-img" src="{{img.phone}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-right:{{-20*px2rpxWidth}}px"></image>
+                        <image class="br-percent50 profile-img" lazy-load="true" src="{{img.phone}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-right:{{-20*px2rpxWidth}}px"></image>
                     </block>
-                    <view class="num" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-left:{{20*px2rpxWidth}}px;">{{otherUserNumber}}人</view>
+                    <view class="flex-center cf br-percent50 num" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-left:{{20*px2rpxWidth}}px;">{{otherUserNumber}}人</view>
                 </view>
             </block>
             <!--其他送过礼物玩家的头像 end-->
         </view>
 
         <!--礼物墙 start-->
-        <view class="send-gift-canvas">
-            <!--<giftcanvas-->
-                <!--:canvasWidth.sync="canvasWidth"-->
-                <!--:canvasHeight.sync="canvasHeight"-->
-                <!--:giftList.sync="giftList"-->
-                <!--:ratio.sync="ratio"-->
-            <!--&gt;</giftcanvas>-->
-            <moveview
-                :areaWidth.sync="canvasWidth"
-                :areaHeight.sync="canvasHeight"
+        <view class="flex-center" style="margin-top: {{20*px2rpxHeight}}px;">
+            <giftcanvas
+                :canvasWidth.sync="canvasWidth"
+                :canvasHeight.sync="canvasHeight"
                 :giftList.sync="giftList"
                 :ratio.sync="ratio"
-            >
-            </moveview>
+            ></giftcanvas>
+            <!--<moveview-->
+                <!--:areaWidth.sync="canvasWidth"-->
+                <!--:areaHeight.sync="canvasHeight"-->
+                <!--:giftList.sync="giftList"-->
+                <!--:ratio.sync="ratio"-->
+            <!--&gt;-->
+            <!--</moveview>-->
         </view>
         <!--礼物墙 end-->
 
         <!--待送的礼物 start-->
-        <view class="send-gift-gifts" style="margin-top:{{10*px2rpxHeight}}px;">
+        <view class="pa flex-center w-percent100" style="bottom:0">
             <mygift :fansId.sync="userId" :presentsWallId.sync="giftWallId" :isFullEnergy.sync="isFullEnergy" :vipOrPublic.sync="wallStatus"></mygift>
         </view>
         <!--待送的礼物 end-->
@@ -63,19 +88,24 @@
     import api from '@/utils/api';
     import calculate from '@/utils/calculate';
     import GiftCanvas from '@/components/gift_canvas';
-    import MoveView from '@/components/move_view';
+    // import MoveView from '@/components/move_view';
     import Mygift from '@/components/mygift';
 
+    let logoWidth = api.logoWidth;
+    let logoHeight = api.logoHeight;
+    
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '送礼物'
+            navigationBarTitleText: '送礼物',
+            disableScroll: true,
+            enablePullDownRefresh:false,
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             giftcanvas:GiftCanvas,
-            moveview:MoveView,
+            // moveview:MoveView,
             mygift:Mygift,
         };
 
@@ -86,6 +116,8 @@
             energy:imgApi.energy,
             px2rpxWidth:0,
             px2rpxHeight:0,
+            windowHeight:0,
+            
             fansId:null,
             fans_info:null,
             userId:null,
@@ -95,11 +127,11 @@
             // vip私墙/public公共墙
             wallStatus:null,
             showOtherProfile:false,
-            logoWidth:api.logoWidth,
-            logoHeight:api.logoHeight,
+            // logoWidth:api.logoWidth,
+            // logoHeight:api.logoHeight,
             canvasWidth:api.canvasWidth,
             canvasHeight:api.canvasHeight,
-            ratio:1.05,
+            ratio:2,
             giftList:null,
             giftWallId:null,
             // 私墙满500能量才能送礼
@@ -114,13 +146,14 @@
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.windowHeight = px2rpx.originalHeight;
 
             let userInfo = wepy.getStorageSync(USER_INFO);
             let fans_info = {};
             fans_info.id = userInfo.id;
             fans_info.photo = userInfo.photo;
             fans_info.name = userInfo.name;
-            fans_info.integral = userInfo.integral;
+            fans_info.integral = parseInt(userInfo.integral);
             this.fans_info = fans_info;
             this.fansId = userInfo.id;
 
@@ -254,9 +287,9 @@
                 let dataList = [];
                 // 增加一个人物动漫形象
                 let logo = data.logo;
-                let logoX = (this.canvasWidth - this.logoWidth - 5)*this.ratio;
-                let logoY = (this.canvasHeight - this.logoHeight - 5)*this.ratio;
-                dataList.push({id:-1,giftId:-1,wide:this.logoWidth,high: this.logoHeight,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
+                let logoX = (this.canvasWidth - logoWidth - 5)*this.ratio;
+                let logoY = (this.canvasHeight - logoHeight - 5)*this.ratio;
+                dataList.push({id:-1,giftId:-1,wide:logoWidth,high: logoHeight,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
                 this.giftList = dataList;
                 // console.log(this.giftList);
                 this.$apply();
@@ -282,9 +315,9 @@
                 }
                 // 增加一个人物动漫形象
                 let logo = data.logo;
-                let logoX = (this.canvasWidth - this.logoWidth - 5)*this.ratio;
-                let logoY = (this.canvasHeight - this.logoHeight - 5)*this.ratio;
-                dataList.push({id:-1,giftId:-1,wide:this.logoWidth,high: this.logoHeight,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
+                let logoX = (this.canvasWidth - logoWidth - 5)*this.ratio;
+                let logoY = (this.canvasHeight - logoHeight - 5)*this.ratio;
+                dataList.push({id:-1,giftId:-1,wide:logoWidth,high: logoHeight,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
                 this.logoLocation = {x:logoX,y:logoY};
                 this.giftList = dataList;
                 this.giftWallId = data.id;
@@ -299,91 +332,3 @@
     }
 </script>
 
-<style lang="less">
-    .send-gift{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-
-        .info{
-            display: flex;
-            justify-content:flex-start;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-
-            .user-info{
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                width: 40%;
-                overflow: hidden;
-                /*border: 1px solid red;*/
-                background-color: rgba(0,0,0,0.4);
-
-                .profile{
-                    border-radius: 50%;
-                    border: 1px solid #fff;
-                }
-                .name-energy{
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 25rpx;
-                    color:#fff;
-                    overflow: hidden;
-
-                    .name,.enenrgy{
-                        width: 100%;
-                        white-space: nowrap;
-                        overflow: hidden;
-                        text-overflow:ellipsis ;
-                    }
-
-                    .enenrgy{
-                        display: flex;
-                        justify-content:flex-start;
-                        align-items: center;
-                        color:#fed530;
-                    }
-                }
-            }
-            .other-profile{
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                width: 60%;
-                /*border: 1px solid red;*/
-
-                .profile-img{
-                    border: 1rpx solid #fff;
-                    border-radius: 50%;
-                }
-                .num{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 15rpx;
-                    color: #fff;
-                    border-radius: 50%;
-                    background-color: rgba(0,0,0,0.4);
-                }
-            }
-        }
-
-        .send-gift-canvas{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .send-gift-gifts{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width:100%;
-        }
-    }
-</style>

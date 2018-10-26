@@ -13,10 +13,10 @@
 
             <view class="flex-around" style="margin-top: {{25*px2rpxHeight}}px;">
                 <view>
-                    <image class="world-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{worldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFriedEvent"></image>
+                    <image class="world-img" lazy-load="true" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{worldOrFriend == 'world' ? world_active : world_inactive}}" data-type="world" @tap.stop="worldOrFriedEvent"></image>
                 </view>
                 <view>
-                    <image class="friend-img" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{worldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFriedEvent"></image>
+                    <image class="friend-img" lazy-load="true" style="width:{{290*px2rpxWidth}}px;height:{{75*px2rpxWidth}}px;" src="{{worldOrFriend == 'friend' ? friend_active : friend_inactive }}" data-type="friend" @tap.stop="worldOrFriedEvent"></image>
                 </view>
             </view>
 

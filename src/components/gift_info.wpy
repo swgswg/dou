@@ -5,19 +5,19 @@
                 <view class="flex-around w-percent100 bgcf gift-info-each" style="margin-bottom:{{20*px2rpxHeight}}px">
                     <view class="flex-start left">
                         <view class="flex-center" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
-                            <image style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;" src="{{fileUrl + giftInfo.photo}}"></image>
+                            <image style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;" lazy-load="true" src="{{fileUrl + giftInfo.photo}}"></image>
                         </view>
                         <view class="left-info" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
                             <view class="flex-start w-percent100 f30 ellipsis gift-name">{{giftInfo.name}}</view>
                             <view class="energy">
-                                <image style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxHeight}}px;margin-right:{{10*px2rpxHeight}}px" src="{{energy}}"></image>
+                                <image style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxHeight}}px;margin-right:{{10*px2rpxHeight}}px" lazy-load="true" src="{{energy}}"></image>
                                 <view>{{giftInfo.score}}</view>
                             </view>
                         </view>
                     </view>
                     <view class="flex-between right" style="height:{{150*px2rpxHeight}}px">
                         <view class="gift-code" style="margin-top:{{29*px2rpxHeight}}px">
-                            <image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" src="{{shake_code}}"></image>
+                            <image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
                             <view>{{giftInfo.integral}}</view>
                         </view>
                         <view class="btn">

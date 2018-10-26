@@ -11,6 +11,7 @@
 <template>
     <view class="flex-center go-mall">
         <image src="{{mall}}"
+               lazy-load="true"
                style="width:{{70*px2rpxWidth}}px;height:{{70*px2rpxWidth}}px;"
                @tap.stop="goToMall">
         </image>

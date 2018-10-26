@@ -40,7 +40,7 @@
             <!--<block wx:for="{{2}}" wx:for-item="goods" wx:key="{{index}}">-->
                 <view class="goods-info" style="height:{{200*px2rpxHeight}}px;padding:{{24*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
                     <view class="info-left">
-                        <image src="{{fileUrl + order.photo}}" style="width:{{138*px2rpxWidth}}px;height:{{138*px2rpxWidth}}px;"></image>
+                        <image src="{{fileUrl + order.photo}}" lazy-load="true" style="width:{{138*px2rpxWidth}}px;height:{{138*px2rpxWidth}}px;"></image>
                     </view>
                     <view class="info-right" style="margin-left:{{18*px2rpxWidth}}px;">
                         <view class="goods-name">{{order.goodsName}}</view>
@@ -119,15 +119,15 @@
                     <!--<view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">-->
                         <!--<text class="iconfont icon-close"></text>-->
                     <!--</view>-->
-                    <image src="{{customer_service}}" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
+                    <image src="{{customer_service}}" lazy-load="true" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
                     <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
                         <view class="each">
-                            <image style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
+                            <image lazy-load="true" style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
                         </view>
                         <view class="each weixinhao">微信号:123456789</view>
                         <view class="each direc" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
                         <view class="each fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
-                            <image src="{{customer_service_btn}}" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
+                            <image src="{{customer_service_btn}}" lazy-load="true" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
                         </view>
                     </view>
                 </view>

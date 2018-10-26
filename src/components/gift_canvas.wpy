@@ -1,12 +1,16 @@
-// 礼物墙
+// components--礼物墙
+<style lang="less">
+
+</style>
+
 <template>
     <view class="gift-canvas flex-center">
-        <movable-area style="width:{{canvasWidth*widthRatio}}px;height:{{(canvasHeight*heightRatio)}}px;background-color:#fff;border-radius:10rpx;border:3rpx solid #ec2c98;">
+        <movable-area class="bgcf br10" style="width:{{canvasWidth*widthRatio}}px;height:{{(canvasHeight*heightRatio)}}px;border:3rpx solid #ec2c98;">
             <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.giftId}}">
                 <block wx:if="{{gift.type == 1}}">
                     <movable-view
                             style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
-                            x="{{gift.xaxle*widthRatio}}" y="{{gift.yaxle*widthRatio}}"
+                            x="{{gift.xaxle * widthRatio}}" y="{{gift.yaxle * heightRatio}}"
                             direction="all"
                             disabled
                             bindchange="moveGift"
@@ -17,8 +21,9 @@
                 <block wx:else>
                     <movable-view
                             style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
-                            x="{{gift.xaxle*widthRatio}}" y="{{gift.yaxle*widthRatio}}"
+                            x="{{gift.xaxle * widthRatio}}" y="{{gift.yaxle * heightRatio}}"
                             direction="all"
+                            out-of-bounds="true"
                             bindchange="moveGift"
                             data-index="{{index}}">
                         <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"></image>
@@ -46,24 +51,13 @@
         };
 
         props = {
-            canvasWidth:{
-                type:Number,
-                default:325
-            },
-            canvasHeight:{
-                type:Number,
-                default:430
-            },
+            canvasWidth:{},
+            canvasHeight:{},
 
             giftList:{
-                type:Array,
-                default:null,
                 twoWay:true
             },
-            ratio:{
-                type:Number,
-                default:1
-            }
+            ratio:{}
         };
 
         async onLoad(){
@@ -72,8 +66,8 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             // 比例系数
-            this.widthRatio = this.px2rpxWidth*2*this.ratio;
-            this.heightRatio = this.px2rpxHeight*2*this.ratio;
+            this.widthRatio = this.px2rpxWidth * this.ratio;
+            this.heightRatio = this.px2rpxHeight * this.ratio;
             this.$apply()
         };
 
@@ -95,6 +89,3 @@
     }
 </script>
 
-<style lang="less">
-
-</style>

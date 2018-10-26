@@ -2,12 +2,12 @@
 <template>
     <view class="mall" style="width: {{750*px2rpxWidth}}px;height: {{1200*px2rpxHeight}}px;">
         <view class="mall-img">
-            <image src="{{mall_product}}" style="width:{{windowWidth}}px;height:{{366/4*(750/windowWidth)}}px"></image>
+            <image src="{{mall_product}}" lazy-load="true" style="width:{{windowWidth}}px;height:{{366/4*(750/windowWidth)}}px"></image>
         </view>
         <view class="gift-header">
             <view class="shang" style="height:{{80*px2rpxHeight}}px">
                 <view class="left">
-                    <image style="width:{{46*px2rpxWidth}}px;height:{{44*px2rpxHeight}}px" src="{{shake_code}}"></image>
+                    <image style="width:{{46*px2rpxWidth}}px;height:{{44*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
                     <view>抖腿币</view>
                     <view class="num">{{integral}}</view>
                 </view>
@@ -22,10 +22,10 @@
                 <!--<image style="width:{{352*px2rpxWidth}}px;height:{{55*px2rpxHeight}}px" src="{{mall_recommendation}}"></image>-->
                 <view class="tuijian-liwu">
                     <view class="tuijian {{showStyle == '0' ? 'active' : ''}}" style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px" data-showstyle='0' @tap.stop="showStyleEvent">
-                        <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px" src="{{showStyle == '0' ? mall_tuijian_active:mall_tuijian_inactive}}"></image>
+                        <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px" lazy-load="true" src="{{showStyle == '0' ? mall_tuijian_active:mall_tuijian_inactive}}"></image>
                     </view>
                     <view class="liwu {{showStyle == '1'? 'active' : ''}}" style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px" data-showstyle='1' @tap.stop="showStyleEvent">
-                        <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px" src="{{showStyle == '1' ? mall_gift_active:mall_gift_inactive}}" ></image>
+                        <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px" lazy-load="true" src="{{showStyle == '1' ? mall_gift_active:mall_gift_inactive}}" ></image>
                     </view>
                 </view>
             </view>

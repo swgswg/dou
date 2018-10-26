@@ -23,7 +23,7 @@
 
             <!--手机号 start-->
             <view class="flex-center" style="margin-top:{{30*px2rpxHeight}}px;">
-                <image src="{{mobile_user}}" style="width:{{22*px2rpxWidth}}px;height:{{22*px2rpxWidth}}px;"></image>
+                <image src="{{mobile_user}}" lazy-load="true" style="width:{{22*px2rpxWidth}}px;height:{{22*px2rpxWidth}}px;"></image>
                 <view class="flex-center f30 f-weight-bold c353a68" style="margin-left:{{30*px2rpxWidth}}px;">手机号</view>
             </view>
 
@@ -35,7 +35,7 @@
 
             <!--验证码 start-->
                 <view class="flex-end" style="margin-top:{{30*px2rpxHeight}}px;">
-                    <image src="{{mobile_code}}" style="width:{{23*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;"></image>
+                    <image src="{{mobile_code}}" lazy-load="true" style="width:{{23*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;"></image>
                     <view class="flex-center f30 f-weight-bold c353a68" style="margin:0 {{30*px2rpxWidth}}px;">验证码</view>
                     <view class="flex-center border-box f20 cf br10 bgc353a68 {{getCodeBtn ? '' : 'dis_getcode'}}"
                           style="width:{{160*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;border-radius:{{20*px2rpxHeight}}px;margin-right:{{60*px2rpxWidth}}px;"

@@ -9,15 +9,15 @@
         </view>
         <view class="flex-between w-percent100 f30 c9 img" style="margin-top:{{35*px2rpxHeight}}px;padding:0 {{50*px2rpxWidth}}px">
             <view class="img-each">
-                <image src="{{hand_record}}" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
+                <image src="{{hand_record}}" lazy-load="true" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
                 <view>{{record.sShakeNum}}</view>
             </view>
             <view class="img-each">
-                <image src="{{leg_record}}" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
+                <image src="{{leg_record}}" lazy-load="true" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
                 <view>{{record.jShakeNum}}</view>
             </view>
             <view class="img-each">
-                <image src="{{shake_code}}" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
+                <image src="{{shake_code}}" lazy-load="true" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
                 <view>{{record.integral}}</view>
             </view>
         </view>

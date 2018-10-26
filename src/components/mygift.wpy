@@ -8,7 +8,7 @@
                 <block wx:for="{{myGift}}" wx:for-item="gift" wx:key="{{index}}">
                     <view class="gift-img-each" style="width:{{100*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="takeGift">
                         <view class="gift-num" style="width:{{35*px2rpxWidth}}px;height:{{35*px2rpxWidth}}px">{{gift.num}}</view>
-                        <image style="width:{{60*px2rpxWidth}}px;height:{{56*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;" src="{{fileUrl + gift.photo}}"></image>
+                        <image style="width:{{60*px2rpxWidth}}px;height:{{56*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;" lazy-load="true" src="{{fileUrl + gift.photo}}"></image>
                         <!--<view class="gift-name">赞</view>-->
                         <view class="gift-energy">{{gift.score}}能量</view>
                     </view>

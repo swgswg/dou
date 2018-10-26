@@ -19,12 +19,12 @@
 
         <view class="flex-between w-percent100 border-box bgcf" style="height:{{70*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;">
             <view class="flex-between f30 cfcf05b" style="width:{{160*px2rpxWidth}}px;" data-change="prev" @tap.stop="changePage">
-                <image style="width:{{55*px2rpxWidth}}px;height:{{37*px2rpxWidth}}px;" src="{{prev_page}}"></image>
+                <image style="width:{{55*px2rpxWidth}}px;height:{{37*px2rpxWidth}}px;" lazy-load="true" src="{{prev_page}}"></image>
                 <view>上一页</view>
             </view>
             <view class="flex-between f30 cfcf05b" style="width:{{160*px2rpxWidth}}px;" data-change="next" @tap.stop="changePage">
                 <view>下一页</view>
-                <image style="width:{{55*px2rpxWidth}}px;height:{{37*px2rpxWidth}}px;" src="{{next_page}}"></image>
+                <image style="width:{{55*px2rpxWidth}}px;height:{{37*px2rpxWidth}}px;" lazy-load="true" src="{{next_page}}"></image>
             </view>
         </view>
     </view>

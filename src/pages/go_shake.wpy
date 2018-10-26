@@ -10,9 +10,9 @@
             <shakestyle :shake.sync="shakeData"></shakestyle>
         </view>
         <view class="centent" style="height:{{500*px2rpxHeight}}px;margin-top:{{73*px2rpxHeight}}px;padding-left:{{30*px2rpxWidth}}px;" @tap.stop="getClickNumber">
-            <image class="content-img-left" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-right:{{37*px2rpxWidth}}px;" src="{{leftImg}}" @tap.stop="shakeTransform"/>
+            <image class="content-img-left" lazy-load="true" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-right:{{37*px2rpxWidth}}px;" src="{{leftImg}}" @tap.stop="shakeTransform"/>
             <circle :imgSrc.sync = "imgSrcData" :locationUrl.sync="locationUrl"></circle>
-            <image class="content-img-right" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-left:{{37*px2rpxWidth}}px;" src="{{rightImg}}" @tap.stop="shakeTransform"/>
+            <image class="content-img-right" lazy-load="true" style="width:{{58*px2rpxWidth}}px;height:{{101*px2rpxWidth}}px;margin-left:{{37*px2rpxWidth}}px;" src="{{rightImg}}" @tap.stop="shakeTransform"/>
         </view>
         <block wx:if="{{shakeData == 1}}">
             <view class="shake-number " style="margin-top:{{120*px2rpxHeight}}px">

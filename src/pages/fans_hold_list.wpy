@@ -32,13 +32,13 @@
                                 <view class="flex-start w-percent50">
                                     <view class="flex-start f24 c6">{{index+4}}</view>
                                     <view class="flex-center br-percent50 o-hidden" style="margin-left:{{45*px2rpxWidth}}px;">
-                                        <image src="{{fans.photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
+                                        <image src="{{fans.photo}}" lazy-load="true" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;"></image>
                                     </view>
                                     <view class="flex-start f24 c6" style="margin-left:{{45*px2rpxWidth}}px;">{{fans.name}}</view>
                                 </view>
 
                                 <view class="flex-end w-percent50">
-                                    <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{15*px2rpxWidth}}px;"></image>
+                                    <image src="{{energy}}" lazy-load="true" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-right:{{15*px2rpxWidth}}px;"></image>
                                     <view class="flex-center f24 energy">{{fans.score}}</view>
                                 </view>
                             </view>

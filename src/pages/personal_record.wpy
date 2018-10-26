@@ -2,7 +2,7 @@
     <view class="personal-record">
         <view class="head">
             <view class="head-left">
-                <image class="img" src=""></image>
+                <image class="img" lazy-load="true" src=""></image>
                 <view class="name">抖抖抖</view>
             </view>
             <view class="head-right">

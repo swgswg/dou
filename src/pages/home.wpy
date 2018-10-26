@@ -4,7 +4,7 @@
 
 <template>
     <view class="flex-center">
-        <image src="{{img}}" style="width:{{winWidth}}px;height:{{winHeight}}px;"></image>
+        <image src="{{img}}" lazy-load="true" style="width:{{winWidth}}px;height:{{winHeight}}px;"></image>
     </view>
 </template>
 

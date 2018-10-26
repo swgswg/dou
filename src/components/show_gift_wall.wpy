@@ -4,7 +4,7 @@
         <view class="wall-content" style="width:{{canvasWidth*widthRatio}}px;height:{{canvasHeight*heightRatio}}px;">
             <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{index}}">
                 <view class="gift" style="width:{{gift.wide*widthRatio}}px;height:{{gift.high*widthRatio}}px;top:{{gift.yaxle*heightRatio}}px;left:{{gift.xaxle*widthRatio}}px;">
-                    <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px;height:{{gift.high*widthRatio}}px;"></image>
+                    <image src="{{fileUrl + gift.url}}" lazy-load="true" style="width:{{gift.wide*widthRatio}}px;height:{{gift.high*widthRatio}}px;"></image>
                 </view>
             </block>
         </view>

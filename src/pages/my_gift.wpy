@@ -8,14 +8,14 @@
             <block wx:for="{{mygift}}" wx:for-item="gift" wx:key="{{index}}">
                 <view class="mygift-each" style="height:{{250*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;margin-left:{{20*px2rpxWidth}}px">
                     <view class="flex-center">
-                        <image class="gift-img" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px" src="{{fileUrl + gift.photo}}"></image>
+                        <image class="gift-img" lazy-load="true" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px" src="{{fileUrl + gift.photo}}"></image>
                     </view>
                     <view class="gift-name">
                         {{gift.name}}
                     </view>
                     <view class="gift-energy">
                         <view>
-                            <image style="width:{{26*px2rpxWidth}}px;height:{{21*px2rpxWidth}}px" src="{{energy}}"></image>
+                            <image style="width:{{26*px2rpxWidth}}px;height:{{21*px2rpxWidth}}px" lazy-load="true" src="{{energy}}"></image>
                             <text class="en" style="margin-left:{{10*px2rpxWidth}}">{{gift.score}}</text>
                         </view>
                         <view class="no" style="margin-left:{{20*px2rpxWidth}}px">{{gift.num}}</view>

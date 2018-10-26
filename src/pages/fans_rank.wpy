@@ -35,13 +35,13 @@
                         <!--排名 start-->
                         <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">
                             <block wx:if="{{fans.rownum == 1}}">
-                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="{{fans_no1}}"></image>
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" lazy-load="true" src="{{fans_no1}}"></image>
                             </block>
                             <block wx:elif="{{fans.rownum == 2}}">
-                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="{{fans_no2}}"></image>
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" lazy-load="true" src="{{fans_no2}}"></image>
                             </block>
                             <block wx:elif="{{fans.rownum == 3}}">
-                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" src="{{fans_no3}}"></image>
+                                <image style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxHeight}}px;" lazy-load="true" src="{{fans_no3}}"></image>
                             </block>
                             <block wx:else>
                                 {{fans.rownum}}
@@ -51,7 +51,7 @@
 
                         <!--头像 start-->
                         <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">
-                            <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;" src="{{fans.photo}}"></image>
+                            <image style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxHeight}}px;" lazy-load="true" src="{{fans.photo}}"></image>
                         </view>
                         <!--头像 end-->
 
@@ -67,7 +67,7 @@
 
                         <!--礼物值 start-->
                         <view class="flex-start border-box" style="width:{{200*px2rpxWidth}}px;">
-                            <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" src="{{fans_data}}"></image>
+                            <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" lazy-load="true" src="{{fans_data}}"></image>
                             <view class="flex-center" style="margin-left:{{8*px2rpxWidth}}px;">{{fans.score}}</view>
                         </view>
                         <!--礼物值 end-->

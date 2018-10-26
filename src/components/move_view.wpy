@@ -10,7 +10,7 @@
                   data-viewheight="{{list.high*widthRatio}}"
                   @touchmove.stop="moveView"
                   style="width:{{list.wide*widthRatio}}px;height:{{list.high*widthRatio}}px;top:{{list.yaxle*heightRatio}}px;left:{{list.xaxle*widthRatio}}px;">
-                <image src="{{fileUrl + list.url}}" style="width:{{list.wide*widthRatio}}px;height:{{list.high*widthRatio}}px;"> </image>
+                <image src="{{fileUrl + list.url}}" lazy-load="true" style="width:{{list.wide*widthRatio}}px;height:{{list.high*widthRatio}}px;"> </image>
             </view>
 
         </block>

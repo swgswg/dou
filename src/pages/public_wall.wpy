@@ -7,7 +7,7 @@
             <view></view>
             <view class="time">{{weekStartDate}}--{{weekEndDate}}</view>
             <view class="energy">
-                <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;"></image>
+                <image src="{{energy}}" lazy-load="true" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;"></image>
                 <view style="margin-left:{{10*px2rpxWidth}}px;">{{score}}</view>
             </view>
         </view>
@@ -23,10 +23,10 @@
             <!--人物头像 start-->
             <view class="profile">
                 <block wx:for="{{userPhoto}}" wx:for-item="img" wx:key="{{index}}">
-                    <image src="{{img.photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
+                    <image src="{{img.photo}}" lazy-load="true" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
                 </block>
                 <block wx:if="{{userPhoto.length >= 19}}">
-                    <image src="{{more}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;" @tap.stop="goToPublicWallRecord"></image>
+                    <image src="{{more}}" lazy-load="true" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;" @tap.stop="goToPublicWallRecord"></image>
                 </block>
             </view>
             <!--人物头像 end-->

@@ -7,13 +7,13 @@
                     <block wx:if="{{index == 1}}">
                         <!--头像 start-->
                         <view class="flex-center br-percent50 o-hidden" style="width:{{200*px2rpxWidth}}px;height:{{200*px2rpxWidth}}px;border:4rpx solid #fed530" data-wallid="{{data.id}}" @tap.stop="goToVipWall">
-                            <image src="{{data.photo}}" style="width:{{200*px2rpxWidth}}px;height:{{200*px2rpxWidth}}px;"></image>
+                            <image src="{{data.photo}}" lazy-load="true" style="width:{{200*px2rpxWidth}}px;height:{{200*px2rpxWidth}}px;"></image>
                         </view>
                         <!--头像 end-->
 
                         <!--昵称 start-->
                         <view class="flex-start f30" style="width:{{169*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;margin-top:{{42*px2rpxHeight}}px;">
-                            <image src="{{fans_no1}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                            <image src="{{fans_no1}}" lazy-load="true" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
                             <view class="ellipsis" style="color:#fed530;">{{data.name}}</view>
                         </view>
                         <!--昵称 end-->
@@ -21,12 +21,12 @@
 
                     <block wx:if="{{index == 0}}">
                         <view class="flex-center br-percent50 o-hidden" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;border:4rpx solid #d6e0e9;" data-wallid="{{data.id}}" @tap.stop="goToVipWall">
-                            <image src="{{data.photo}}" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;"></image>
+                            <image src="{{data.photo}}" lazy-load="true" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;"></image>
                         </view>
 
                         <!--昵称 start-->
                         <view class="flex-start f30 first-three-name" style="width:{{169*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;margin-top:{{42*px2rpxHeight}}px;">
-                            <image src="{{fans_no2}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                            <image src="{{fans_no2}}" lazy-load="true" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
                             <view class="ellipsis" style="color:#d6e0e9">{{data.name}}</view>
                         </view>
                         <!--昵称 end-->
@@ -34,12 +34,12 @@
 
                     <block wx:if="{{index == 2}}">
                         <view class="flex-center br-percent50 o-hidden" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;border:4rpx solid #d7a574;" data-wallid="{{data.id}}" @tap.stop="goToVipWall">
-                            <image src="{{data.photo}}" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;"></image>
+                            <image src="{{data.photo}}" lazy-load="true" style="width:{{169*px2rpxWidth}}px;height:{{169*px2rpxWidth}}px;"></image>
                         </view>
 
                         <!--昵称 start-->
                         <view class="flex-start f30" style="width:{{169*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;margin-top:{{42*px2rpxHeight}}px;">
-                            <image src="{{fans_no3}}" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
+                            <image src="{{fans_no3}}" lazy-load="true" style="width:{{42*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;"></image>
                             <view class="ellipsis" style="color:#d7a574">{{data.name}}</view>
                         </view>
                         <!--昵称 end-->
@@ -47,7 +47,7 @@
 
                     <!--能量值 start-->
                     <view class="flex-start f24" style="width:{{169*px2rpxWidth}}px;height:{{31*px2rpxWidth}}px;margin-top:{{10*px2rpxHeight}}px;">
-                        <image src="{{energy}}" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-left:{{10*px2rpxWidth}}px;"></image>
+                        <image src="{{energy}}" lazy-load="true" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;margin-left:{{10*px2rpxWidth}}px;"></image>
                         <view style="color:#fed530">{{data.score ? data.score:0}}</view>
                     </view>
                     <!--能量值 end-->

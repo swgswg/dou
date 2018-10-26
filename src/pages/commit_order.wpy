@@ -19,7 +19,7 @@
             <view class="goods-infomation" style="margin-top:{{20*px2rpxHeight}}px;padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;box-sizing: border-box">
                 <view class="flex-start w-percent100">
                     <view class="flex-center" style="width:{{185*px2rpxWidth}}px;">
-                        <image src="{{fileUrl + goodsInfo.photo}}" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
+                        <image src="{{fileUrl + goodsInfo.photo}}" lazy-load="true" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
                     </view>
                     <view class="flex-column" style="width:{{480*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
                         <view class="flex-between">

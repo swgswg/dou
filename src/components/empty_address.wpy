@@ -10,7 +10,7 @@
             <view class="youjiantou" style="margin-left:{{310*px2rpxWidth}}px;">
                 <text class="iconfont icon-youjiantou"></text>
             </view>
-            <image class="bg" style="width:100%;height:{{154*px2rpxHeight}}px;" src="{{empty_address_bg}}"></image>
+            <image class="bg" lazy-load="true" style="width:100%;height:{{154*px2rpxHeight}}px;" src="{{empty_address_bg}}"></image>
         </view>
     </view>
 </template>

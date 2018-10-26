@@ -5,12 +5,12 @@
                 <view class="flex-between w-percent100 f28 c6" style="height: {{176*px2rpxHeight}}rpx">
                     <view class="flex-start">
                         <view class="flex-center" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;">
-                            <image src="{{item.img}}" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;"></image>
+                            <image src="{{item.img}}" lazy-load="true" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;"></image>
                         </view>
                         <view class="w-percent100" style="margin-left:{{20*px2rpxWidth}}px">{{item.title}}</view>
                     </view>
                     <view class="flex-center" style="width:{{21*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px">
-                        <image src="{{right}}" style="width:{{21*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px"></image>
+                        <image src="{{right}}" lazy-load="true" style="width:{{21*px2rpxWidth}}px;height:{{27*px2rpxHeight}}px"></image>
                     </view>
                 </view>
                 <view class="line"></view>

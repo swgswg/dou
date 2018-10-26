@@ -22,12 +22,14 @@
             <view class="flex-center w-percent100" style="margin-top:{{250*px2rpxHeight}}px;">
                 <block wx:if="{{isStart}}">
                     <image src="{{startBtn}}"
+                           lazy-load="true"
                            style="width:{{307*px2rpxWidth}}px;height:{{132*px2rpxWidth}}px;"
                            @tap.stop="start">
                     </image>
                 </block>
                 <block wx:else>
                     <image src="{{readyBtn}}"
+                           lazy-load="true"
                            style="width:{{307*px2rpxWidth}}px;height:{{132*px2rpxWidth}}px;"
                            @tap.stop="ready">
                     </image>

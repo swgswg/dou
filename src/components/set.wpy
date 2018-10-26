@@ -16,7 +16,7 @@
         <block wx:for="{{set}}" wx:for-item="set" wx:key="{{set.id}}">
             <view class="flex-between w-percent100 border-box bgcf" style="height:{{90*px2rpxHeight}}px;padding: 0 {{30*px2rpxWidth}}px;">
                 <view class="flex-around set-left" style="height:{{90*px2rpxHeight}}px">
-                    <image src="{{set.img}}" style="width:{{69*px2rpxWidth}}px;height:{{68*px2rpxWidth}}px;"></image>
+                    <image src="{{set.img}}" lazy-load="true" style="width:{{69*px2rpxWidth}}px;height:{{68*px2rpxWidth}}px;"></image>
                     <view class="f30">{{set.name}}</view>
                 </view>
                 <view class="flex-center set-right" style="height:{{90*px2rpxHeight}}px">

@@ -42,7 +42,7 @@
 
         <!--鹿背景 start-->
         <view class="flex-center w-percent100" style="top:{{300*px2rpxHeight}}px;left:0;">
-            <image src="{{beerImg}}" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
+            <image src="{{beerImg}}" lazy-load="true" class="animated {{animate}}" style="width: {{663*px2rpxWidth}}px;height: {{734*px2rpxWidth}}px;"></image>
         </view>
         <!--鹿背景 end-->
 
@@ -75,7 +75,7 @@
 
                     <!--奖励礼物 start-->
                     <view class="flex-center w-percent100">
-                        <image src="{{fileUrl + fightData.photo}}" style="width:{{300*px2rpxWidth}}px;height:{{300*px2rpxWidth}}px;"></image>
+                        <image src="{{fileUrl + fightData.photo}}" lazy-load="true" style="width:{{300*px2rpxWidth}}px;height:{{300*px2rpxWidth}}px;"></image>
                     </view>
                     <!--奖励礼物 end-->
 
@@ -131,6 +131,8 @@
     let startFlag = false;
     // true领取奖励/false没有领取奖励
     let isReceiveIncentive = false;
+    // true本次游戏已经添加记录/false本次游戏没有添加记录
+    let isAddGameRecord = true;
 
     export default class FightModel extends wepy.page {
         config = {
@@ -204,6 +206,7 @@
                 this.$apply();
                 isReceiveIncentive = false;
                 startFlag = true;
+                isAddGameRecord = false;
             },
 
             // 领取按钮
@@ -216,19 +219,7 @@
             // 游戏结束弹出奖励
             timeFinish(newValue){
                 if(newValue){
-                    // 添加游戏记录--手动
-                    this.addGameRecord(0);
-                    // 计时时间归位
-                    this.fightTime = this.fightData.time;
-                    // 比较抖动次数有没有超过指定次数
-                    if( parseInt(this.shakeHandNumber) >= parseInt(this.fightData.num)){
-                        // 超过指定次数,显示遮盖层
-                        this.showCoverLayer = true;
-                    } else {
-                        tip.longtoast('您没有达到『'+ this.fightData.num +'』次,无法获取奖励');
-                    }
-                    this.$apply();
-                    startFlag = false;
+                    this.gameEndE();
                 }
             },
 
@@ -285,7 +276,7 @@
             if(this.shakeHandNumber <= 0){
                 return;
             }
-            await api.addRecord({
+            let res = await api.addRecord({
                 query:{
                     userId:userId,
                     time: that.fightData.time,
@@ -297,6 +288,9 @@
                     mode:api.fightModel,
                 }
             });
+            if(res.data.state == 1){
+                isAddGameRecord = true;
+            }
         }
 
         // 领取通关奖励
@@ -324,6 +318,7 @@
             } else {
                 tip.error('网络错误');
             }
+            this.cancelCoverlayer();
         }
 
         // 取消遮盖层
@@ -335,16 +330,27 @@
 
         // 退出事件
         outE(){
+            this.gameEndE();
+        }
+
+        // 游戏结束
+        gameEndE(){
+
+            // 添加游戏记录--手动
             this.addGameRecord(0);
             // 计时时间归位
             this.fightTime = this.fightData.time;
-            // 抖动次数清零
-            this.shakeHandNumber = 0;
-            // 倒计时结束
-            this.timeFinish = true;
-            isReceiveIncentive = false;
-            startFlag = false;
+            // 清除定时器
+            this.$broadcast('clear');
+            // 比较抖动次数有没有超过指定次数
+            if( parseInt(this.shakeHandNumber) >= parseInt(this.fightData.num)){
+                // 超过指定次数,显示遮盖层
+                this.showCoverLayer = true;
+            } else {
+                tip.longtoast('您没有达到『'+ this.fightData.num +'』次,无法获取奖励');
+            }
             this.$apply();
+            startFlag = false;
         }
 
         // 动画
