@@ -1,12 +1,85 @@
+// pages--订单详情
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+    .order-detail{
+        justify-content: center;
+
+        .status{
+            background: linear-gradient(to top right,#ec2c98, #f68668);
+            opacity: 0.7;
+
+            .status-icon{
+                border: 1px solid #fff;
+
+                .icon-check{
+                    font-size: 30rpx;
+                    color: #fff;
+                }
+            }
+        }
+
+        .addr{
+            align-items: flex-start;
+
+            .addr-right-top{
+                align-items: flex-end;
+
+            }
+        }
+
+        .goods-info{
+            align-items: flex-start;
+            border-bottom: 1px solid #aaa;
+
+            .goods-price{
+                color: #f03e3e;
+            }
+        }
+
+
+        .order-time{
+            border-bottom: 1px solid #aaa;
+        }
+
+        .price-top,.price-middle{
+            align-items: flex-start;
+        }
+
+        .status-btn{
+            border: 1rpx solid #ccc;
+        }
+        .status-btn2{
+            border: 1rpx solid #f03e3e;
+            color: #f03e3e;
+        }
+
+        .shouhou{
+            align-items: flex-start;
+
+            .img-bg{
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            .neirong{
+                z-index: 10;
+            }
+        }
+    }
+</style>
+
 <template>
-    <view class="order-detail">
+    <view class="flex-center w-percent100 order-detail">
 
         <!--订单状态 start-->
-        <view class="status" style="height:{{145*px2rpxHeight}}px;padding-left:{{30*px2rpxWidth}}px;">
-            <view class="status-icon" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;">
+        <view class="flex-start w-percent100 border-box status" style="height:{{145*px2rpxHeight}}px;padding-left:{{30*px2rpxWidth}}px;">
+            <view class="flex-center br-percent50 status-icon" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;">
                 <text class="iconfont icon-check"></text>
             </view>
-            <view class="status-text" style="margin-left:{{14*px2rpxWidth}}px;">
+            <view class="f35 cf" style="margin-left:{{14*px2rpxWidth}}px;">
                 <block wx:if="{{order.status == unpaid}}">待付款</block>
                 <block wx:if="{{order.status == notDelivered}}">待发货</block>
                 <block wx:if="{{order.status == notReceived}}">待收货</block>
@@ -19,13 +92,13 @@
         <!--订单状态 end-->
 
         <!--地址 start-->
-        <view class="addr" style="height:{{150*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
-            <view class="addr-left">
+        <view class="flex-start w-percent100 border-box bgcf addr" style="height:{{150*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
+            <view class="f35">
                 <text class="iconfont icon-location"></text>
             </view>
-            <view class="addr-right" style="margin-left:{{10*px2rpxWidth}}px;">
-                <view class="addr-right-top">
-                    <view class="name">{{order.consignee}}</view>
+            <view class="f34 c6" style="margin-left:{{10*px2rpxWidth}}px;">
+                <view class="flex-start addr-right-top">
+                    <view class="f30 c0">{{order.consignee}}</view>
                     <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">{{order.mobile}}</view>
                 </view>
                 <view class="addr-right-bottom" style="margin-top:{{10*px2rpxHeight}}px">
@@ -38,14 +111,14 @@
         <!--商品信息 start-->
         <view class="goods" style="margin-top:{{20*px2rpxHeight}}px;">
             <!--<block wx:for="{{2}}" wx:for-item="goods" wx:key="{{index}}">-->
-                <view class="goods-info" style="height:{{200*px2rpxHeight}}px;padding:{{24*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
+                <view class="flex-start w-percent100 border-box bgcf goods-info" style="height:{{200*px2rpxHeight}}px;padding:{{24*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px;">
                     <view class="info-left">
                         <image src="{{fileUrl + order.photo}}" lazy-load="true" style="width:{{138*px2rpxWidth}}px;height:{{138*px2rpxWidth}}px;"></image>
                     </view>
-                    <view class="info-right" style="margin-left:{{18*px2rpxWidth}}px;">
-                        <view class="goods-name">{{order.goodsName}}</view>
-                        <view class="goods-num" style="margin-top:{{16*px2rpxHeight}}px;">x{{order.num}}</view>
-                        <view class="goods-price" style="margin-top:{{10*px2rpxHeight}}px;"><text style="font-size:20rpx;" wx:if="{{order.integral}}">{{order.integral}}积分+</text>¥{{order.money}}</view>
+                    <view class="flex-column" style="margin-left:{{18*px2rpxWidth}}px;">
+                        <view class="f32 c3">{{order.goodsName}}</view>
+                        <view class="f24 c3" style="margin-top:{{16*px2rpxHeight}}px;">x{{order.num}}</view>
+                        <view class="f30 goods-price" style="margin-top:{{10*px2rpxHeight}}px;"><text style="font-size:20rpx;" wx:if="{{order.integral}}">{{order.integral}}积分+</text>¥{{order.money}}</view>
                     </view>
                 </view>
             <!--</block>-->
@@ -53,60 +126,60 @@
         <!--商品信息 end-->
 
         <!--订单信息 start-->
-        <view class="order-info" style="height:{{301*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
+        <view class="flex-column w-percent100 f28 c6 border-box bgcf" style="height:{{301*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
             <view>订单编号： {{order.order_uuid}}</view>
-            <view class="order-time" style="margin-top:{{25*px2rpxHeight}}px;padding-bottom:{{25*px2rpxHeight}}px;">下单时间： {{order.createTime}}</view>
+            <view class="border-box order-time" style="margin-top:{{25*px2rpxHeight}}px;padding-bottom:{{25*px2rpxHeight}}px;">下单时间： {{order.createTime}}</view>
             <view style="margin-top:{{25*px2rpxHeight}}px">支付方式： 微信支付</view>
             <!--<view style="margin-top:{{25*px2rpxHeight}}px">支付时间： 2018-08-14 12:12:12</view>-->
         </view>
         <!--订单信息 end-->
 
         <!--总价 start-->
-        <view class="total-price" style="height:{{202*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
-            <view class="price-top">
+        <view class="flex-column w-percent100 border-box bgcf" style="height:{{202*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
+            <view class="flex-between f28 c6 price-top">
                 <view>商品总额:</view>
                 <view>¥{{order.moneys}}</view>
             </view>
-            <view class="price-middle" style="margin-top:{{20*px2rpxHeight}}px;">
+            <view class="flex-between f28 c6 price-middle" style="margin-top:{{20*px2rpxHeight}}px;">
                 <view>运费</view>
                 <view>+0.00</view>
             </view>
-            <view class="price-bottom" style="margin-top:{{20*px2rpxHeight}}px;">
+            <view class="flex-end f28 c0" style="margin-top:{{20*px2rpxHeight}}px;">
                 <view>实付款：<text style="color:#f03e3e">¥{{order.moneys}}</text></view>
             </view>
         </view>
         <!--总价 end-->
 
         <!--订单状态操作 start-->
-        <view class="order-status" style="height:{{100*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
+        <view class="flex-end w-percent100 border-box bgcf" style="height:{{100*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
 
             <block wx:if="{{order.status == unpaid}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">取消订单</view>
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="payOneOrder">付款</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">取消订单</view>
+                <view class="flex-center f24 ca status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="payOneOrder">付款</view>
             </block>
             <block wx:if="{{order.status == notDelivered}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">取消订单</view>
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="remindSendGoods">提醒发货</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="cancelOneOrder">取消订单</view>
+                <view class="flex-center f24 ca status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="remindSendGoods">提醒发货</view>
             </block>
             <block wx:if="{{order.status == notReceived}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-order_uuid="{{order.order_uuid}}" @tap.stop="checkOneLogistics">查看物流</view>
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="takeOverGoods">确认收货</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-order_uuid="{{order.order_uuid}}" @tap.stop="checkOneLogistics">查看物流</view>
+                <view class="flex-center f24 ca status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;"  data-orderid="{{orderId}}" @tap.stop="takeOverGoods">确认收货</view>
             </block>
             <block wx:if="{{order.status == accomplish}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
-                <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" @tap.stop="applyAfterOneSale">申请售后</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
+                <view class="flex-center f24 ca status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" @tap.stop="applyAfterOneSale">申请售后</view>
             </block>
             <block wx:if="{{order.status == returnGoods}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/退货</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/退货</view>
             </block>
             <block wx:if="{{order.status == exchangeGoods}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/换货</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/换货</view>
             </block>
             <block wx:if="{{order.status == cancelOrder}}">
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
-                <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">订单取消</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">订单取消</view>
             </block>
         </view>
         <!--订单状态操作 end-->
@@ -114,19 +187,15 @@
         <!--遮盖层 start-->
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
-                <!--<view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">-->
-                <view class="shouhou" slot="content" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
-                    <!--<view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">-->
-                        <!--<text class="iconfont icon-close"></text>-->
-                    <!--</view>-->
-                    <image src="{{customer_service}}" lazy-load="true" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
-                    <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
-                        <view class="each">
+                <view class="pr flex-center shouhou" slot="content" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
+                    <image src="{{customer_service}}" lazy-load="true" class="pa img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
+                    <view class="flex-column neirong" style="margin-top:{{179*px2rpxWidth}}px;padding:0 {{80*px2rpxWidth}}px;">
+                        <view class="flex-center">
                             <image lazy-load="true" style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
                         </view>
-                        <view class="each weixinhao">微信号:123456789</view>
-                        <view class="each direc" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
-                        <view class="each fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
+                        <view class="flex-center f30 c0">微信号:123456789</view>
+                        <view class="flex-center f24 c6" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
+                        <view class="flex-center fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
                             <image src="{{customer_service_btn}}" lazy-load="true" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
                         </view>
                     </view>
@@ -148,7 +217,7 @@
     import CoverLayer from '@/components/common/cover_layer';
     import OrderItem from '@/components/order_item';
 
-    export default class MyPage extends wepy.page {
+    export default class OrderDetail extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '订单详情'
@@ -184,7 +253,6 @@
             // showAfterSale:false,
         };
 
-        // 在Page和Component共用的生命周期函数
         async onLoad(options){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
@@ -199,19 +267,15 @@
             this.$apply();
         }
 
-        // 只在Page中存在的页面生命周期函数
         onShow() {
         };
 
-        // 只在Page中存在的页面生命周期函数
         onReady() {
             this.refresh();
         };
 
-        // 声明数据watcher（详见后文介绍）
         watch = {};
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 删除订单
             deleteOneOrder(e){
@@ -273,7 +337,6 @@
             }
         };
 
-        // 声明组件之间的事件处理函数
         events = {
             // 取消所有遮盖层内容
             cancelShow(){
@@ -282,12 +345,6 @@
             }
         };
 
-        // cancelShow(){
-        //     this.showCoverLayer = false;
-        //     this.showAfterSale = false;
-        // };
-
-        // 刷新数据
         async refresh(){
             let that = this;
             let res = await api.getOrdersDetails({
@@ -306,217 +363,3 @@
     }
 </script>
 
-<style lang="less">
-    page{
-        background-color: #f0f0f0;
-    }
-    .order-detail{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        width: 100%;
-
-        .status{
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-            background: linear-gradient(to top right,#ec2c98, #f68668);
-            opacity: 0.7;
-
-            .status-icon{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 50%;
-                border: 1px solid #fff;
-
-
-                .icon-check{
-                    font-size: 30rpx;
-                    color: #fff;
-                }
-            }
-            .status-text{
-                font-size: 35rpx;
-                color: #fff;
-            }
-        }
-
-        .addr{
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            width: 100%;
-            box-sizing: border-box;
-            background-color: #fff;
-
-            .addr-left{
-                font-size: 35rpx;
-            }
-
-            .addr-right{
-                font-size: 24rpx;
-                color: #666;
-
-                .addr-right-top{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-end;
-
-                    .name{
-                        font-size: 30rpx;
-                        color: #000;
-                    }
-                }
-            }
-        }
-
-        .goods-info{
-            display: flex;
-            justify-content: flex-start;
-            align-items: flex-start;
-            width: 100%;
-            box-sizing: border-box;
-            border-bottom: 1px solid #aaa;
-            background-color: #fff;
-
-
-            .info-right{
-                display: flex;
-                flex-direction: column;
-
-                .goods-name{
-                    font-size: 32rpx;
-                    color: #333;
-                }
-
-                .goods-num{
-                    font-size: 24rpx;
-                    color: #333;
-                }
-
-                .goods-price{
-                    font-size: 30rpx;
-                    color: #f03e3e;
-                }
-            }
-        }
-
-        .order-info{
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            font-size: 28rpx;
-            color: #666;
-            box-sizing: border-box;
-            background-color: #fff;
-            
-            .order-time{
-                border-bottom: 1px solid #aaa;
-                box-sizing: border-box;
-            }
-        }
-
-        .total-price{
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            box-sizing: border-box;
-            background-color: #fff;
-
-            .price-top,.price-middle{
-                display: flex;
-                justify-content: space-between;
-                align-items: flex-start;
-                font-size: 28rpx;
-                color: #666;
-            }
-            .price-bottom{
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                font-size: 28rpx;
-                color: #000;
-            }
-        }
-
-        .order-status{
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            width: 100%;
-            box-sizing: border-box;
-            background-color: #fff;
-
-            .status-btn{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 24rpx;
-                color: #aaa;
-                border: 1rpx solid #ccc;
-            }
-            .status-btn2{
-                border: 1rpx solid #f03e3e;
-                color: #f03e3e;
-            }
-        }
-
-        .shouhou{
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-
-            .cancel{
-                position: absolute;
-                top: 0;
-                right: 0;
-                z-index: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border: 1px solid #aaa;
-                border-radius: 50%;
-
-                .icon-close{
-                    font-size: 35rpx;
-                    color:#aaa;
-                }
-            }
-
-            .img-bg{
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 0;
-            }
-
-            .neirong{
-                z-index: 10;
-                display: flex;
-                flex-direction: column;
-                padding: 0 80rpx;
-                /*border: 1rpx solid red;*/
-
-                .each{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .weixinhao{
-                    font-size: 30rpx;
-                    color: #000;
-                }
-
-                .direc{
-                    font-size: 24rpx;
-                    color:#666;
-                }
-            }
-        }
-    }
-</style>

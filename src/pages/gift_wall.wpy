@@ -1,10 +1,19 @@
-// 礼物墙
+// pages--礼物墙
+<style lang="less">
+    .gift-wall{
+        background-color: #aaa;
+        .gift-info,.wall{
+            padding: 20rpx 20rpx 0 20rpx;
+        }
+    }
+</style>
+
 <template>
-    <view class="gift-wall">
-        <view class="gift-info">
+    <view class="flex-column-center w-percent100 gift-wall">
+        <view class="flex-center w-percent100 border-box gift-info">
             <info :userId.sync="otherUserId" :userName.sync="otherUserName" :photo.sync="otherPhoto" :showRight="showRight"></info>
         </view>
-        <view class="wall">
+        <view class="flex-between w-percent100 border-box wall">
             <view>
                 <giftcanvas
                     :canvasWidth.sync="canvasWidth"
@@ -362,32 +371,3 @@
     }
 </script>
 
-<style lang="less">
-    .gift-wall{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-        background-color: #aaa;
-
-        .gift-info,.wall{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20rpx 20rpx 0 20rpx;
-            box-sizing: border-box;
-            /*border: 1rpx solid blue;*/
-        }
-
-        .wall{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            /*margin-top: 28rpx;*/
-            /*border: 1rpx solid red;*/
-        }
-    }
-</style>

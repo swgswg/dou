@@ -1,6 +1,14 @@
-// 我的好友
+// pages--我的好友
+<style lang="less">
+    .my-friends{
+        .friends-header{
+            background: linear-gradient(to top right,#ec2c98, #f68668);
+        }
+    }
+</style>
+
 <template>
-    <view class="flex flex-column-center w-percent100 my-friends">
+    <view class="flex flex-column-center w-percent100 border-box my-friends" style="padding:{{30*px2rpxHeight}}px {{24*px2rpxWidth}}px 0px {{24*px2rpxWidth}}px">
         <view class="flex flex-around w-percent100 f28 friends-header"
               style="height:{{80*px2rpxHeight}}px;">
 
@@ -39,7 +47,7 @@
     let isLastPage = 20;
     let userId = null;
 
-    export default class MyPage extends wepy.page {
+    export default class MyFriends extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '我的朋友',
@@ -146,13 +154,3 @@
     }
 </script>
 
-<style lang="less">
-    .my-friends{
-        padding: 30rpx 24rpx 0rpx 24rpx;
-        box-sizing: border-box;
-
-        .friends-header{
-            background: linear-gradient(to top right,#ec2c98, #f68668);
-        }
-    }
-</style>

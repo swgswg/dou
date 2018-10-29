@@ -56,7 +56,9 @@
     import imgApi from '@/utils/imgApi';
     import tip from '@/utils/tip';
     import util from '@/utils/util';
+    import { Base64 } from '@/utils/base64';
     import weixin from '@/utils/weixin';
+
 
     let name = null;
     let photo = null;
@@ -145,9 +147,13 @@
 
                 if (e.detail.errMsg == 'getUserInfo:ok'){
                     // 授权成功
+                    // console.log('name=============');
+                    // console.log(e.detail.userInfo.nickName);
+                    // name = Base64.encode(e.detail.userInfo.nickName);
+                    // console.log(name);
+                    // console.log(Base64.decode(e.detail.userInfo.nickName));
                     name = e.detail.userInfo.nickName;
                     photo = e.detail.userInfo.avatarUrl;
-
                     that.updateInfo();
 
                 } else {
@@ -162,8 +168,15 @@
         // 修改信息
         async updateInfo() {
             let that = this;
-            console.log('currentSex');
-            console.log(that.currentSex);
+            console.log('query==');
+            console.log(name);
+            console.log({
+                userId: userInfo.id,
+                sex: that.currentSex,
+                logo: that.logo,
+                name: name,
+                photo: photo,
+            });
             let rlt = await api.updateSex({
                 query: {
                     userId: userInfo.id,
@@ -173,9 +186,11 @@
                     photo: photo,
                 }
             });
-
+            console.log('updateSex');
+            console.log(rlt);
             if (rlt.data.state == 1) {
-
+                console.log('updateSex-ok');
+                console.log(rlt.data.state);
                 let res = await api.getOneUserInfo({
                     query: {
                         userId: userInfo.id,

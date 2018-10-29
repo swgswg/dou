@@ -110,6 +110,10 @@
         font-size: 34rpx;
     }
 
+    .f35{
+        font-size: 35rpx;
+    }
+
     .f36{
         font-size: 36rpx;
     }
@@ -216,8 +220,6 @@
     .bgcf0{
         background-color: #f0f0f0;
     }
-
-
 
     .bgc353a68{
         background-color: #353a68;
@@ -404,7 +406,6 @@
                 'pages/go_shake',
                 'pages/personal_record',
                 'pages/connect_success',
-                'pages/authorize',
                 'pages/index',
             ],
             window: {

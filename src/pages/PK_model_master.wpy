@@ -62,11 +62,11 @@
             // 房主需要时间的确定按钮
             hasTimeConfirmBtn:true,
 
-            // stageDataLeft:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1,shakeHandNum:'邀请好友'},
-            stageDataLeft:{userId:'1' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+            stageDataLeft:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1,shakeHandNum:'邀请好友'},
+            // stageDataLeft:{userId:'1' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
             stageDataCenter:{userId:'',roomId:'', legOrHand:'', logo:'', photo:'', isLight:2,shakeHandNum:'邀请好友'},
-            // stageDataRight:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1,shakeHandNum:'邀请好友'},
-            stageDataRight:{userId:'1' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+            stageDataRight:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1,shakeHandNum:'邀请好友'},
+            // stageDataRight:{userId:'1' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
             selectTimeIndex:[0,0,0],
 
             // 3-2-1倒计时是否显示

@@ -7,7 +7,6 @@
             border: 2px solid #f68668;
         }
     }
-
 </style>
 
 <template>

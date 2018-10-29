@@ -72,7 +72,7 @@
             // 倒计时时间
             selectTimeIndex:[0,0,0],
 
-            // 3-2-1倒计时是否显示
+            // 3-2-1倒计时是否显示(true显示,false不显示)
             isCountDownNum:false,
 
             // 游戏时间倒计时开始
@@ -259,9 +259,8 @@
             this.stageDataCenter.isLight = 0;
             this.stageDataRight.isLight = 0;
             this.readyBtn = ready_btn;
-            // this.$invoke('selecttime','stopCountDown');
-            // this.$broadcast('stopCountDown');
             this.hasTimeConfirmBtn = false;
+            this.$broadcast('stopCountDown');
             this.$apply();
         }
 

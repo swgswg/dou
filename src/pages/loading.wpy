@@ -1,3 +1,41 @@
+<style lang="less">
+    .loading{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+
+        .shang{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 371rpx;
+
+            image{
+                width: 112rpx;
+                height: 140rpx;
+            }
+
+            view{
+                margin-top: 25rpx;
+                font-size: 28rpx;
+                color: #ec2c98;
+            }
+        }
+
+        .xia{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-top: 500rpx;
+        }
+    }
+</style>
+
 <template>
     <view class="loading">
         <view class="shang">
@@ -20,7 +58,7 @@
     export default class MyPage extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '首页'
+            navigationBarTitleText: '加载'
         };
 
         // 声明页面中所引用的组件，或声明组件中所引用的子组件
@@ -82,40 +120,3 @@
     }
 </script>
 
-<style lang="less">
-    .loading{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-
-        .shang{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-top: 371rpx;
-
-            image{
-                width: 112rpx;
-                height: 140rpx;
-            }
-
-            view{
-                margin-top: 25rpx;
-                font-size: 28rpx;
-                color: #ec2c98;
-            }
-        }
-
-        .xia{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            margin-top: 500rpx;
-        }
-    }
-</style>

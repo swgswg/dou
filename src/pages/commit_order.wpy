@@ -1,4 +1,35 @@
 // page--提交订单
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+    .commit-order{
+
+        .goods-infomation{
+            justify-content: center;
+            border-bottom: 1rpx solid #bbb;
+
+            .price{
+                color: #f03e3e;
+            }
+
+            .icon-youjiantou{
+                font-size: 22rpx;
+            }
+        }
+
+        .commit{
+            position: fixed;
+            left: 0;
+            bottom: 0;
+
+            .btn{
+                background-color: #ffd824;
+            }
+        }
+    }
+</style>
+
 <template>
     <view class="commit-order">
         <view>
@@ -16,7 +47,7 @@
             <!--地址 end-->
 
             <!--商品信息 start-->
-            <view class="goods-infomation" style="margin-top:{{20*px2rpxHeight}}px;padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;box-sizing: border-box">
+            <view class="flex-column w-percent100 bgcf goods-infomation" style="margin-top:{{20*px2rpxHeight}}px;padding:{{30*px2rpxHeight}}px {{30*px2rpxWidth}}px;box-sizing: border-box">
                 <view class="flex-start w-percent100">
                     <view class="flex-center" style="width:{{185*px2rpxWidth}}px;">
                         <image src="{{fileUrl + goodsInfo.photo}}" lazy-load="true" style="width:{{185*px2rpxWidth}}px;height:{{185*px2rpxWidth}}px;"></image>
@@ -280,38 +311,3 @@
 
     }
 </script>
-
-<style lang="less">
-    page{
-        background-color: #f0f0f0;
-    }
-    .commit-order{
-
-        .goods-infomation{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            width: 100%;
-            background-color: #fff;
-            border-bottom: 1rpx solid #bbb;
-
-            .price{
-                color: #f03e3e;
-            }
-
-            .icon-youjiantou{
-                font-size: 22rpx;
-            }
-        }
-
-        .commit{
-            position: fixed;
-            left: 0;
-            bottom: 0;
-
-            .btn{
-                background-color: #ffd824;
-            }
-        }
-    }
-</style>

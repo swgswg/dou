@@ -44,7 +44,7 @@ function memberEnterRoom(userInfo, shareId, roomId, legOrHand, that) {
         return false;
     }
 
-    // 建立还有关系
+    // 建立好友关系
     establishFriend(userInfo.id, shareId);
 }
 

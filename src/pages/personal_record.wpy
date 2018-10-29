@@ -1,3 +1,65 @@
+// pages--个人成绩
+<style lang="less">
+    page{
+        background-color: #f7f8ff;
+    }
+    .personal-record{
+        padding: 30rpx;
+        padding-bottom: 0;
+        box-sizing: border-box;
+
+        .head{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            height: 90rpx;
+            padding: 0 20rpx;
+            box-sizing: border-box;
+            border-radius: 10rpx;
+            background-color: #fff;
+
+            .head-left{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+
+                .img{
+                    width: 60rpx;
+                    height: 60rpx;
+                    /*border: 1rpx solid red;*/
+                }
+
+                .name{
+                    width: 100%;
+                    margin-left: 22rpx;
+                    font-size: 30rpx;
+                    font-family: HappyZcool 2016;
+                }
+            }
+
+            .head-right{
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                image{
+                    width: 21rpx;
+                    height: 27rpx;
+                }
+            }
+        }
+
+        .myrecord{
+            width: 100%;
+            height: 620rpx;
+            margin-top: 30rpx;
+            /*border: 1rpx solid red;*/
+        }
+    }
+</style>
+
 <template>
     <view class="personal-record">
         <view class="head">
@@ -92,63 +154,3 @@
     }
 </script>
 
-<style lang="less">
-    page{
-        background-color: #f7f8ff;
-    }
-    .personal-record{
-        padding: 30rpx;
-        padding-bottom: 0;
-        box-sizing: border-box;
-
-        .head{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            height: 90rpx;
-            padding: 0 20rpx;
-            box-sizing: border-box;
-            border-radius: 10rpx;
-            background-color: #fff;
-
-            .head-left{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-
-                .img{
-                    width: 60rpx;
-                    height: 60rpx;
-                    /*border: 1rpx solid red;*/
-                }
-
-                .name{
-                    width: 100%;
-                    margin-left: 22rpx;
-                    font-size: 30rpx;
-                    font-family: HappyZcool 2016;
-                }
-            }
-
-            .head-right{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-
-                image{
-                    width: 21rpx;
-                    height: 27rpx;
-                }
-            }
-        }
-
-        .myrecord{
-            width: 100%;
-            height: 620rpx;
-            margin-top: 30rpx;
-            /*border: 1rpx solid red;*/
-        }
-    }
-</style>

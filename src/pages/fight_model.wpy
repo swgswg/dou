@@ -1,16 +1,9 @@
 // page--挑战模式
 <style lang="less">
     .fight{
-
         .num{
             font-size: 100rpx;
-            font-weight: bolder;
         }
-
-        .time{
-            font-weight: bolder;
-        }
-
     }
 </style>
 
@@ -25,7 +18,7 @@
         <!--退出按钮 end-->
 
         <!--倒计时 start-->
-        <view class="flex-center w-percent100 f36 cfcf05b time" style="margin-top:{{142*px2rpxHeight}}px;">
+        <view class="flex-center w-percent100 f36 cfcf05b f-weight-bolder" style="margin-top:{{142*px2rpxHeight}}px;">
             <view>倒计时: </view>
             <view style="padding:0 {{10*px2rpxWidth}}px;">
                 <countdown :time.sync="fightTime" :timeFinish.sync="timeFinish"></countdown>
@@ -35,7 +28,7 @@
         <!--倒计时 end-->
 
         <!--抖动次数 start-->
-        <view class="flex-center w-percent100 cfcf05b f-family-edo num" style="margin-top:{{20*px2rpxHeight}}px;">
+        <view class="flex-center w-percent100 cfcf05b f-family-edo f-weight-bolder num" style="margin-top:{{20*px2rpxHeight}}px;">
             <view class="animated {{animate}}">{{shakeHandNumber}}</view>
         </view>
         <!--抖动次数 end-->
@@ -276,7 +269,7 @@
             if(this.shakeHandNumber <= 0){
                 return;
             }
-            let res = await api.addRecord({
+            await api.addRecord({
                 query:{
                     userId:userId,
                     time: that.fightData.time,
@@ -288,9 +281,7 @@
                     mode:api.fightModel,
                 }
             });
-            if(res.data.state == 1){
-                isAddGameRecord = true;
-            }
+            isAddGameRecord = true;
         }
 
         // 领取通关奖励
@@ -331,13 +322,18 @@
         // 退出事件
         outE(){
             this.gameEndE();
+            // 不显示遮盖层
+            this.showCoverLayer = false;
+            this.$apply();
         }
 
         // 游戏结束
         gameEndE(){
 
             // 添加游戏记录--手动
-            this.addGameRecord(0);
+            if(!isAddGameRecord){
+                this.addGameRecord(0);
+            }
             // 计时时间归位
             this.fightTime = this.fightData.time;
             // 清除定时器

@@ -41,7 +41,7 @@
 
     let userInfo = null;
 
-    export default class MyPage extends wepy.page {
+    export default class Open extends wepy.page {
         config = {
             navigationBarTitleText: '开启抖动'
         };

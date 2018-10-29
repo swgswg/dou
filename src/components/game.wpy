@@ -146,7 +146,7 @@
 
             // 3/2/1倒计时
             NumBg:imgApi.count_down,
-            // 是否显示3/2/1倒计时
+            // 是否显示3/2/1倒计时(true显示/false不显示)
             isCountDownNum:false,
             countDownNum:3,
 
@@ -220,10 +220,10 @@
                 }
             },
 
-            time(newvalue){
-                console.log('gamewatch===========');
-                console.log(newvalue);
-            }
+            // time(newvalue){
+            //     console.log('gamewatch===========');
+            //     console.log(newvalue);
+            // }
 
         };
 
@@ -241,7 +241,7 @@
                 //     socketServer.wsClose();
                 // },2000);
                 // 退出游戏
-                this.cancelHeartbeatE();
+                // this.cancelHeartbeatE();
             }
         };
 
@@ -335,7 +335,7 @@
         }
 
         // 倒计时完成
-        isOverCountDown(flag = true){
+        isOverCountDown(flag){
             // 添加游戏记录
             clearInterval(clear_set);
             this.$broadcast('stopCountDown');
@@ -383,10 +383,10 @@
         // 添加游戏记录
         async addGameRecord(){
             let that = this;
-            console.log('time======')
-            console.log(that.time);
+            // console.log('time======')
+            // console.log(that.time);
             let time = util.timeToSecond(that.time);
-            console.log(time);
+            // console.log(time);
             time = util.SecondFormat(time,'mm:ss');
             await api.addRecord({
                 query:{
@@ -418,7 +418,7 @@
 
         // 发送点击数
         sendWSNumE(number){
-            if(!gameUser){
+            if(util.isEmpty(gameUser)){
                 gameUser = wepy.getStorageSync(GAME_USER);
             }
             let gameUserIdArr = [];

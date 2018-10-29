@@ -1,12 +1,25 @@
 // page-公共礼物墙
+<style lang="less">
+    .public-wall{
+
+        .time{
+            color: #ec2c98;
+        }
+
+        .profile{
+            flex-wrap: wrap;
+        }
+    }
+</style>
+
 <template>
-    <view class="public-wall" style="height:{{1205*px2rpxHeight}}px;background: url({{wall_bg}}) no-repeat 0 0;">
+    <view class="w-percent100 public-wall" style="height:{{1205*px2rpxHeight}}px;background: url({{wall_bg}}) no-repeat 0 0;">
 
         <!--时间/能量 start-->
-        <view class="time-endrgy" style="padding:{{10*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
+        <view class="flex-between time-endrgy" style="padding:{{10*px2rpxHeight}}px {{30*px2rpxWidth}}px;">
             <view></view>
-            <view class="time">{{weekStartDate}}--{{weekEndDate}}</view>
-            <view class="energy">
+            <view class="f24 time">{{weekStartDate}}--{{weekEndDate}}</view>
+            <view class="flex-center f24 ">
                 <image src="{{energy}}" lazy-load="true" style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxWidth}}px;"></image>
                 <view style="margin-left:{{10*px2rpxWidth}}px;">{{score}}</view>
             </view>
@@ -14,14 +27,14 @@
         <!--时间/能量 end-->
 
         <!--礼物墙 start-->
-        <view class="wall" @tap.stop="goToPublicWallRecord">
+        <view class="flex-center" @tap.stop="goToPublicWallRecord">
             <showgiftwall :giftList.sync="giftList" :ratio.sync="ratio"></showgiftwall>
         </view>
         <!--礼物墙 end-->
 
         <block wx:if="{{!is_empty}}">
             <!--人物头像 start-->
-            <view class="profile">
+            <view class="flex-center profile">
                 <block wx:for="{{userPhoto}}" wx:for-item="img" wx:key="{{index}}">
                     <image src="{{img.photo}}" lazy-load="true" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
                 </block>
@@ -50,19 +63,16 @@
     import ShowGiftWall from '@/components/show_gift_wall';
     import Placeholder from "@/components/common/placeholder";
 
-    export default class MyPage extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+    export default class PublicWall extends wepy.page {
         config = {
             navigationBarTitleText: '公共礼物墙'
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             showgiftwall:ShowGiftWall,
             placeholder: Placeholder,
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
@@ -87,7 +97,6 @@
             publicWallId:null,
         };
 
-        // 在Page和Component共用的生命周期函数
         async onLoad(){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
@@ -99,11 +108,9 @@
             this.$apply();
         }
 
-        // 只在Page中存在的页面生命周期函数
         onShow() {
         };
 
-        // 只在Page中存在的页面生命周期函数
         async onReady() {
             let userId = this.userId;
             // 获取公共礼物墙
@@ -137,7 +144,6 @@
             this.getWeekTime();
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 查看公共墙记录
             goToPublicWallRecord(){
@@ -167,40 +173,3 @@
     }
 </script>
 
-<style lang="less">
-    .public-wall{
-        width: 100%;
-
-        .time-endrgy{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            .time{
-                font-size: 24rpx;
-                color: #ec2c98;
-            }
-            .energy{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 24rpx;
-            }
-        }
-
-        .wall{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .profile{
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-items: center;
-
-        }
-
-    }
-</style>

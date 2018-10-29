@@ -76,7 +76,6 @@
             },
             // 倒计时结束(true结束)
             countdownOver:{
-                default:false,
                 twoWay:true,
             },
             // 选择时间
@@ -118,8 +117,6 @@
                 }
 
                 this.time = this.selectTimeArray[0][this.selectTimeIndex[0]] + ':' + this.selectTimeArray[1][this.selectTimeIndex[1]] +':' + this.selectTimeArray[2][this.selectTimeIndex[2]];
-                console.log('select-time=======');
-                console.log(this.time);
                 let time1 = this.selectTimeArray[0][this.selectTimeIndex[0]]+''+this.selectTimeArray[1][this.selectTimeIndex[1]]+''+this.selectTimeArray[2][this.selectTimeIndex[2]];
                 this.hasTimeConfirmBtn = false;
                 // PK_model_master用
@@ -150,13 +147,7 @@
                 }
                 that.selectTimeIndex = selectTimeIndex;
                 if(selectTimeIndex[0] <= 0 && selectTimeIndex[1] <= 0 && selectTimeIndex[2] <= 0){
-                    selectTimeIndex[0] = 0;
-                    selectTimeIndex[1] = 0;
-                    selectTimeIndex[2] = 0;
-                    clearInterval(clear_set);
-                    that.countdownOver = true;
-                    that.hasTimeConfirmBtn = true;
-                    that.countdownStart = false;
+                    that.stopCountDownE();
                 }
                 that.$apply();
             },1000);
@@ -166,7 +157,7 @@
         events = {
             //停止倒计时
             stopCountDown(){
-                clearInterval(clear_set);
+                this.stopCountDownE();
             },
         };
 
@@ -187,11 +178,19 @@
             },
 
             selectTimeIndex(newValue){
-                console.log('selecttime============');
-                console.log(newValue);
                 this.time = this.selectTimeArray[0][newValue[0]] + ':' + this.selectTimeArray[1][newValue[1]] +':' + this.selectTimeArray[2][newValue[2]];
                 this.$apply();
             }
+        };
+
+        // 倒计时结束
+        stopCountDownE(){
+            clearInterval(clear_set);
+            this.selectTimeIndex = [0,0,0];
+            this.countdownStart = false;
+            this.countdownOver = true;
+            this.hasTimeConfirmBtn = true;
+            this.$apply();
         }
 
     }

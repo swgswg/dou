@@ -1,9 +1,111 @@
-// 商品详情
+// pages--商品详情
+<style lang="less">
+    page {
+        background-color: #f0f0f0;
+    }
+
+    .goods-detail {
+
+        .share {
+
+            button {
+                border: 0px solid #fff;
+
+                .icon-share {
+                    font-size: 40rpx;
+                    color: #f08300;
+                }
+            }
+        }
+
+        .money {
+            align-items: flex-end;
+            color: #f03e3e;
+            border-bottom: 1rpx solid #ccc;
+        }
+
+        /*.take-delivery {*/
+            /*display: flex;*/
+            /*justify-content: center;*/
+            /*align-items: center;*/
+            /*width: 100%;*/
+            /*padding: 0 30rpx;*/
+            /*box-sizing: border-box;*/
+            /*background-color: #fff;*/
+
+            /*.have-addr, .no-addr {*/
+                /*display: flex;*/
+                /*flex-direction: column;*/
+                /*justify-content: center;*/
+                /*align-items: center;*/
+                /*width: 100%;*/
+                /*height: 100%;*/
+                /*font-size: 24rpx;*/
+
+                /*.people {*/
+                    /*display: flex;*/
+                    /*justify-content: space-between;*/
+                    /*align-items: center;*/
+                    /*width: 100%;*/
+                /*}*/
+                /*.addr {*/
+                    /*display: flex;*/
+                    /*justify-content: flex-start;*/
+                    /*align-items: center;*/
+                    /*width: 100%;*/
+                /*}*/
+
+            /*}*/
+
+            /*.no-addr {*/
+                /*.new-build {*/
+                    /*display: flex;*/
+                    /*justify-content: flex-end;*/
+                    /*align-items: center;*/
+                    /*width: 100%;*/
+                    /*height: 100%;*/
+
+                    /*.youjiantou {*/
+                        /*display: flex;*/
+                        /*justify-content: center;*/
+                        /*align-items: center;*/
+                        /*height: 100%;*/
+
+                        /*.icon-youjiantou {*/
+                            /*font-size: 22rpx;*/
+                        /*}*/
+                    /*}*/
+                /*}*/
+            /*}*/
+        /*}*/
+
+        .btn {
+            position: fixed;
+            z-index: 99999;
+            background-color: #ffd824;
+        }
+
+        .info {
+            align-items: flex-start;
+            border-bottom: 1rpx solid #aaa;
+
+            .name-price {
+                justify-content: flex-start;
+
+                .price {
+                    color: #f03e3e;
+                }
+            }
+        }
+
+    }
+</style>
+
 <template>
-    <view class="goods-detail" style="">
+    <view class="pr flex-column goods-detail">
 
         <!--轮播图 start-->
-        <view class="goods-detail-swiper">
+        <view class="flex-center w-percent100 bgcf">
             <swiper indicator-dots="true" autoplay="true" interval="2000" circular="true" style="width:100%;">
                 <block wx:for="{{goodsInfo.photo1}}" wx:for-item="img" wx:key="{{index}}">
                     <swiper-item>
@@ -16,23 +118,23 @@
         <!--轮播图 end-->
 
         <!--商品信息 start-->
-        <view class="goods-info">
-            <view class="goods-name">
+        <view class="flex-column-center w-percent100 border-box bgcf" style="padding:0 {{30*px2rpxWidth}}px">
+            <view class="flex-between w-percent100 f32 c3">
                 <view class="name">{{goodsInfo.name}}</view>
                 <view class="share">
                     <button plain="true" open-type="share"
                             class="flex-center"
                             style="width:{{62*px2rpxWidth}}px;height:{{64*px2rpxHeight}}px;"
                     >
-                        <text class="iconfont icon-share"></text>
+                        <!--<text class="iconfont icon-share"></text>-->
                     </button>
                 </view>
             </view>
-            <view class="money" style="height:{{80*px2rpxHeight}}px;padding-bottom:{{20*px2rpxHeight}}px;">
+            <view class="flex-start w-percent100 border-box f40 money" style="height:{{80*px2rpxHeight}}px;padding-bottom:{{20*px2rpxHeight}}px;">
                 ¥{{goodsInfo.money}}
                 <text style="font-size:20rpx" wx:if="{{goodsInfo.type !=0 }}">({{goodsInfo.integral}}积分)</text>
             </view>
-            <view class="expenses" style="padding:{{20*px2rpxHeight}}px 0;">运费:免运费</view>
+            <view class="flex-start w-percent100 border-box f26 ca" style="padding:{{20*px2rpxHeight}}px 0;">运费:免运费</view>
         </view>
         <!--商品信息 end-->
 
@@ -59,10 +161,10 @@
         <!--收货地址 end-->
 
         <!--商品详情图 start-->
-        <view class="detail" style="margin-top:{{20*px2rpxHeight}}px;margin-bottom:{{100*px2rpxHeight}}px;">
-            <view class="detail-text" style="height:{{88*px2rpxHeight}}px;">商品详情</view>
+        <view class="flex-column-center w-percent100 bgcf" style="margin-top:{{20*px2rpxHeight}}px;margin-bottom:{{100*px2rpxHeight}}px;">
+            <view class="flex-center w-percent100 f30 c3" style="height:{{88*px2rpxHeight}}px;">商品详情</view>
             <block wx:for="{{goodsInfo.photo3}}" wx:for-item="img" wx:key="{{index}}">
-                <view class="detail-img">
+                <view class="flex-column-center w-percent100">
                     <view class="img flex-center">
                         <image src="{{fileUrl + img}}"
                                lazy-load="true"
@@ -74,64 +176,32 @@
         <!--商品详情图 end-->
 
         <!--购买 start-->
-        <view class="btn" style="top:{{1110*px2rpxHeight}}px;left:0;height:{{98*px2rpxHeight}}px;"
+        <view class="flex-center w-percent100 f40 cf btn" style="top:{{1110*px2rpxHeight}}px;left:0;height:{{98*px2rpxHeight}}px;"
               @tap.stop="buyOneGoods">{{btnText}}
         </view>
         <!--购买 end-->
 
         <!--遮盖层 start-->
         <block wx:if="{{isShowCoverLayout}}">
-            <!--<view class="cover-layout" style="width:{{750*px2rpxWidth}}px;height:{{1110*px2rpxHeight}}px;">-->
-            <!--<view class="cover-layout-content" style="height:{{338*px2rpxHeight}}px;margin-top:{{771*px2rpxHeight}}px;">-->
-            <!--<view class="info" style="height:{{179*px2rpxHeight}}px;">-->
-            <!--<view class="info-img" style="width:{{106*px2rpxWidth}}px;padding-top:{{22*px2rpxHeight}}px;">-->
-            <!--<image src="{{fileUrl + goodsInfo.photo}}" style="width:{{106*px2rpxWidth}}px;height:{{106*px2rpxWidth}}px;"></image>-->
-            <!--</view>-->
-            <!--<view class="name-price" style="width:{{500*px2rpxWidth}}px;padding: {{26*px2rpxHeight}}px 0 0 {{26*px2rpxHeight}}px">-->
-            <!--<view class="name">{{goodsInfo.name}}</view>-->
-            <!--<view class="price" style="margin-top:{{15*px2rpxHeight}}px;">¥{{goodsInfo.money}}</view>-->
-            <!--</view>-->
-            <!--<view class="quxiao" style="width:{{40*px2rpxWidth}}px;padding-top:{{24*px2rpxHeight}}px;margin-left:{{48*px2rpxWidth}}px;">-->
-            <!--<view class="yuan" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;" @tap.stop="cancelCoverLayout">-->
-            <!--<text class="iconfont icon-close" style="margin-top:{{5*px2rpxHeight}}px"></text>-->
-            <!--</view>-->
-            <!--</view>-->
-            <!--</view>-->
-            <!--<view class="buy-number" style="padding-top:{{30*px2rpxHeight}}px;">-->
-            <!--<view>购买数量</view>-->
-            <!--<view style="width:{{200*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;">-->
-            <!--<changenumber :num.sync="num"></changenumber>-->
-            <!--</view>-->
-            <!--&lt;!&ndash;<view style="width:{{200*px2rpxWidth}}px;"></view>&ndash;&gt;-->
-            <!--</view>-->
-            <!--</view>-->
-            <!--</view>-->
             <coverlayer>
                 <view slot="content" style="width: 100%;">
-                    <view class="cover-layout-content"
-                          style="height:{{338*px2rpxHeight}}px;margin-top:{{771*px2rpxHeight}}px;">
-                        <view class="info" style="height:{{179*px2rpxHeight}}px;">
-                            <view class="info-img"
+                    <view class="flex-column border-box bgcf cover-layout-content"
+                          style="height:{{338*px2rpxHeight}}px;margin-top:{{771*px2rpxHeight}}px;padding:0 {{30*px2rpxWidth}}px;">
+                        <view class="flex-start w-percent100 info" style="height:{{179*px2rpxHeight}}px;">
+                            <view class="flex-start border-box"
                                   style="width:{{106*px2rpxWidth}}px;padding-top:{{22*px2rpxHeight}}px;">
                                 <image src="{{fileUrl + goodsInfo.photo}}"
                                        lazy-load="true"
                                        style="width:{{106*px2rpxWidth}}px;height:{{106*px2rpxWidth}}px;"></image>
                             </view>
-                            <view class="name-price"
+                            <view class="flex-column border-box name-price"
                                   style="width:{{500*px2rpxWidth}}px;padding: {{26*px2rpxHeight}}px 0 0 {{26*px2rpxHeight}}px">
-                                <view class="name">{{goodsInfo.name}}</view>
-                                <view class="price" style="margin-top:{{15*px2rpxHeight}}px;">¥{{goodsInfo.money}}
+                                <view class="f32 c3">{{goodsInfo.name}}</view>
+                                <view class="f40 price" style="margin-top:{{15*px2rpxHeight}}px;">¥{{goodsInfo.money}}
                                 </view>
                             </view>
-                            <!--<view class="quxiao"-->
-                                  <!--style="width:{{40*px2rpxWidth}}px;padding-top:{{24*px2rpxHeight}}px;margin-left:{{48*px2rpxWidth}}px;">-->
-                                <!--<view class="yuan" style="width:{{40*px2rpxWidth}}px;height:{{40*px2rpxWidth}}px;"-->
-                                      <!--@tap.stop="cancelCoverLayout">-->
-                                    <!--<text class="iconfont icon-close" style="margin-top:{{5*px2rpxHeight}}px"></text>-->
-                                <!--</view>-->
-                            <!--</view>-->
                         </view>
-                        <view class="buy-number" style="padding-top:{{30*px2rpxHeight}}px;">
+                        <view class="flex-between w-percent100 border-box f32 c3" style="padding-top:{{30*px2rpxHeight}}px;">
                             <view>购买数量</view>
                             <view style="width:{{200*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;">
                                 <changenumber :num.sync="num"></changenumber>
@@ -317,251 +387,3 @@
     }
 </script>
 
-<style lang="less">
-    page {
-        background-color: #f0f0f0;
-    }
-
-    .goods-detail {
-        position: relative;
-        display: flex;
-        flex-direction: column;
-
-        .goods-detail-swiper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            background-color: #fff;
-
-        }
-
-        .goods-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 0 30rpx;
-            box-sizing: border-box;
-            background-color: #fff;
-
-            .goods-name {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 100%;
-                font-size: 32rpx;
-                color: #333;
-
-                .share {
-
-                    button {
-                        border: 0px solid #fff;
-
-                        .icon-share {
-                            font-size: 40rpx;
-                            color: #f08300;
-                        }
-                    }
-                }
-            }
-
-            .money {
-                display: flex;
-                justify-content: flex-start;
-                align-items: flex-end;
-                width: 100%;
-                box-sizing: border-box;
-                font-size: 40rpx;
-                color: #f03e3e;
-                border-bottom: 1rpx solid #ccc;
-            }
-
-            .expenses {
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                width: 100%;
-                box-sizing: border-box;
-                font-size: 26rpx;
-                color: #aaa;
-            }
-
-        }
-
-        .take-delivery {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            padding: 0 30rpx;
-            box-sizing: border-box;
-            background-color: #fff;
-
-            .have-addr, .no-addr {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                height: 100%;
-                font-size: 24rpx;
-
-                .people {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                }
-                .addr {
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: center;
-                    width: 100%;
-                }
-
-            }
-
-            .no-addr {
-                .new-build {
-                    display: flex;
-                    justify-content: flex-end;
-                    align-items: center;
-                    width: 100%;
-                    height: 100%;
-
-                    .youjiantou {
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        height: 100%;
-
-                        .icon-youjiantou {
-                            font-size: 22rpx;
-                        }
-                    }
-                }
-            }
-        }
-
-        .detail {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            background-color: #fff;
-
-            .detail-text {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-                font-size: 30rpx;
-                color: #333;
-            }
-            .detail-img {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-            }
-        }
-
-        .btn {
-            position: fixed;
-            z-index: 99999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            font-size: 40rpx;
-            color: #fff;
-            background-color: #ffd824;
-        }
-
-        /*遮盖层*/
-        /*.cover-layout {*/
-            /*position: absolute;*/
-            /*top: 0;*/
-            /*left: 0;*/
-            /*z-index: 9999;*/
-            /*background: rgba(0, 0, 0, 0.5);*/
-            /*width: 100%;*/
-
-            .cover-layout-content {
-                display: flex;
-                flex-direction: column;
-                /*justify-content: center;*/
-                /*align-items: center;*/
-                /*width: 100%;*/
-                padding: 0 30rpx;
-                box-sizing: border-box;
-                background-color: #fff;
-
-                .info {
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    width: 100%;
-                    border-bottom: 1rpx solid #aaa;
-
-                    .info-img {
-                        display: flex;
-                        justify-content: flex-start;
-                        align-items: center;
-                        box-sizing: border-box;
-                    }
-                    .name-price {
-                        display: flex;
-                        flex-direction: column;
-                        justify-content: flex-start;
-                        /*align-items: center;*/
-                        box-sizing: border-box;
-
-                        .name {
-                            font-size: 32rpx;
-                            color: #333;
-                        }
-                        .price {
-                            font-size: 40rpx;
-                            color: #f03e3e;
-                        }
-                    }
-
-                    .quxiao {
-                        display: flex;
-                        justify-content: center;
-                        align-items: flex-start;
-
-                        .yuan {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            border-radius: 50%;
-                            border: 1rpx solid #ccc;
-
-                            .icon-close {
-                                font-size: 40rpx;
-                                color: #aaa;
-                            }
-                        }
-
-                    }
-                }
-
-                .buy-number {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: center;
-                    width: 100%;
-                    box-sizing: border-box;
-                    font-size: 32rpx;
-                    color: #333;
-                }
-            }
-        /*}*/
-    }
-</style>

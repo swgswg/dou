@@ -1,5 +1,13 @@
+// pages--历史排名
+<style lang="less">
+    page{
+        /*background: linear-gradient(to top right,#ec2c98, #f68668);*/
+        background-color: #353a68;
+    }
+</style>
+
 <template>
-    <view class="w-percent100 h-percent100 history-rank">
+    <view class="w-percent100 h-percent100">
 
         <!--<view class="flex-center w-percent100" style="margin-top:{{10*px2rpxHeight}}px">-->
             <!--<rankingstyle :rankingStyle.sync="rankingStyle" :currentTabValue.sync="legOrHand"></rankingstyle>-->
@@ -47,7 +55,7 @@
     import RankingWorld from '@/components/ranking_world';
     import RankingFriend from '@/components/ranking_friend';
 
-    export default class MyPage extends wepy.page {
+    export default class HistoryRank extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '脉抖排行榜',
@@ -141,14 +149,3 @@
 
     }
 </script>
-
-<style lang="less">
-    page{
-        /*background: linear-gradient(to top right,#ec2c98, #f68668);*/
-        background-color: #353a68;
-    }
-
-    .history-rank{
-
-    }
-</style>

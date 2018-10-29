@@ -47,7 +47,7 @@ function wsSend(receiveId, message){
     let sendMessage = jsonMessage + '|' + receiveId;
     // console.log('sendMessage===================')
     // console.log(typeof sendMessage)
-    // console.log(sendMessage)
+    console.log(sendMessage);
     SocketTask.send({
         data: sendMessage,
     });

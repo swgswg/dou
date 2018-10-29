@@ -1,4 +1,32 @@
 // page--查看快递
+<style lang="less">
+    .check-logistics{
+        padding: 30rpx 50rpx;
+
+        .num{
+            margin-bottom: 50rpx;
+            border-bottom: 1rpx solid #999;
+        }
+        .logistics-each{
+            padding: 20rpx 50rpx 50rpx 30rpx;
+            border-left: 4rpx solid red;
+
+            .dot{
+                border: 2rpx solid #aaa;
+
+                .active{
+                    background-color: #FF4351;
+                }
+            }
+            .content{
+                display: flex;
+                flex-direction: column;
+                line-height: 13px;
+            }
+        }
+    }
+</style>
+
 <template>
     <view class="flex-column w-percent100 border-box check-logistics">
         <view class="flex-center w-percent100 num">订单号：{{orderUUID}}</view>
@@ -65,31 +93,3 @@
 
     }
 </script>
-
-<style lang="less">
-    .check-logistics{
-        padding: 30rpx 50rpx;
-
-        .num{
-            margin-bottom: 50rpx;
-            border-bottom: 1rpx solid #999;
-        }
-        .logistics-each{
-            padding: 20rpx 50rpx 50rpx 30rpx;
-            border-left: 4rpx solid red;
-
-            .dot{
-                border: 2rpx solid #aaa;
-
-                .active{
-                    background-color: #FF4351;
-                }
-            }
-            .content{
-                display: flex;
-                flex-direction: column;
-                line-height: 13px;
-            }
-        }
-    }
-</style>

@@ -77,7 +77,7 @@
     let i = 60;
     let clear_set = null;
 
-    export default class MyPage extends wepy.page {
+    export default class MobileVerify extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '绑定手机'

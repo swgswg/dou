@@ -1,12 +1,35 @@
+// pages--订单列表
+<style lang="less">
+    page{
+        background-color: #f0f0f0;
+    }
+    .order{
+
+        .shouhou{
+            align-items: flex-start;
+
+            .img-bg{
+                top: 0;
+                left: 0;
+                z-index: 0;
+            }
+
+            .neirong{
+                z-index: 10;
+            }
+        }
+    }
+</style>
+
 <template>
-    <view class="order">
+    <view class="order bgcf">
         <!--tab模块-->
-        <view class="swiper-tab-pd">
+        <view class="w-percent100 border-box bagcf" style="padding:0 {{30*px2rpxWidth}}px;">
             <tab :tabList.sync="tabList" :currentTabValue.sync="currentTabValue"></tab>
         </view>
 
         <!--订单列表 start-->
-        <view class="order-list" style="height:{{1110*px2rpxHeight}}px">
+        <view class="flex-center w-percent100" style="height:{{1110*px2rpxHeight}}px">
             <scroll-view scroll-y="true" bindscrolltolower="scrollToLower">
                 <orderitem :orderList.sync="orderList"></orderitem>
                 <!--加载更多时动画-->
@@ -21,19 +44,15 @@
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
                 <!-- 申请售后 start-->
-                <!--<view class="shouhou" slot="content" wx:if="{{showAfterSale}}" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">-->
-                <view class="shouhou" slot="content" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
-                    <!--<view class="cancel" style="width:{{38*px2rpxWidth}}px;height:{{38*px2rpxWidth}}px;" @tap.stop="cancelCoverLayer">-->
-                        <!--<text class="iconfont icon-close"></text>-->
-                    <!--</view>-->
-                    <image src="{{customer_service}}" lazy-load="true" class="img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
-                    <view class="neirong" style="margin-top:{{179*px2rpxWidth}}px;">
-                        <view class="each">
+                <view class="pr flex-center shouhou" slot="content" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;">
+                    <image src="{{customer_service}}" lazy-load="true" class="pa img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
+                    <view class="flex-column border-box neirong" style="margin-top:{{179*px2rpxWidth}}px;padding:0 {{80*px2rpxWidth}}px;">
+                        <view class="flex-center">
                             <image lazy-load="true" style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
                         </view>
-                        <view class="each weixinhao">微信号:123456789</view>
-                        <view class="each direc" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
-                        <view class="each fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
+                        <view class="flex-center f30 c0">微信号:123456789</view>
+                        <view class="flex-center f24 c6" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
+                        <view class="flex-center" style="margin-top:{{40*px2rpxHeight}}px;">
                             <image src="{{customer_service_btn}}" lazy-load="true" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
                         </view>
                     </view>
@@ -70,7 +89,7 @@
     let pageSize = 20;
     let isLastPage = false;
     let userId = null;
-    export default class MyPage extends wepy.page {
+    export default class Order extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '我的订单'
@@ -232,77 +251,3 @@
     }
 </script>
 
-<style lang="less">
-    page{
-        background-color: #f0f0f0;
-    }
-    .order{
-        .swiper-tab-pd {
-            padding: 0 30rpx;
-            background: #fff;
-            box-sizing: border-box;
-        }
-
-        .order-list{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-        }
-
-        .shouhou{
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-
-            .cancel{
-                position: absolute;
-                top: 0;
-                right: 0;
-                z-index: 0;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                border: 1px solid #aaa;
-                border-radius: 50%;
-
-                .icon-close{
-                    font-size: 35rpx;
-                    color:#aaa;
-                }
-            }
-
-            .img-bg{
-                position: absolute;
-                top: 0;
-                left: 0;
-                z-index: 0;
-            }
-
-            .neirong{
-                z-index: 10;
-                display: flex;
-                flex-direction: column;
-                padding: 0 80rpx;
-                /*border: 1rpx solid red;*/
-
-                .each{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .weixinhao{
-                    font-size: 30rpx;
-                    color: #000;
-                }
-
-                .direc{
-                    font-size: 24rpx;
-                    color:#666;
-                }
-            }
-        }
-    }
-</style>
