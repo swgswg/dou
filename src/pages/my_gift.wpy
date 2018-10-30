@@ -30,7 +30,9 @@
         </block>
         <block wx:else>
             <block wx:for="{{mygift}}" wx:for-item="gift" wx:key="{{index}}">
-                <view class="flex-column border-box bgcf mygift-each" style="height:{{250*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;margin-left:{{20*px2rpxWidth}}px;padding:{{10*px2rpxWidth}}px {{10*px2rpxHeight}}px;">
+                <view class="flex-column border-box bgcf mygift-each"
+                      style="height:{{250*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;margin-left:{{20*px2rpxWidth}}px;padding:{{10*px2rpxWidth}}px {{10*px2rpxHeight}}px;"
+                      @tap.stop="goToHistoryRank">
                     <view class="flex-center">
                         <image class="gift-img" lazy-load="true" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px" src="{{fileUrl + gift.photo}}"></image>
                     </view>
@@ -122,10 +124,12 @@
             // console.log(res);
         };
 
-        watch = {};
-
-        methods = {};
-
-        events = {};
+        methods = {
+            goToHistoryRank(){
+                wx.switchTab({
+                    url:'/pages/history_rank'
+                });
+            }
+        };
     }
 </script>

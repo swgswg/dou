@@ -10,7 +10,6 @@
 
             .each{
                 width: 65%;
-                font-weight: bold;
                 color:#ffff46;
                 border: 2px solid #ffff46;
             }
@@ -24,7 +23,7 @@
 
         <view class="flex-column-center w-percent100 model-content" style="height:{{800*px2rpxHeight}}px;">
             <block wx:for="{{model}}" wx:for-item="model" wx:key="{{index}}">
-                <view class="flex-center f36 br10 each" style="height:{{90*px2rpxHeight}}px;"
+                <view class="flex-center f36 br10 f-weight-bold each" style="height:{{90*px2rpxHeight}}px;"
                       data-skip="{{model.skip}}"
                       @tap.stop="goToGameModel">
                     {{model.name}}
@@ -85,6 +84,12 @@
             // 选择模式
             goToGameModel(e){
                 let skip = e.currentTarget.dataset.skip;
+                // if(skip == '/pages/PK_model_master'){
+                //     this.addRoomE(0,skip);
+                //     return;
+                // } else if(skip == '/pages/PK_model_slave'){
+                //     this.slaveEnter(skip);
+                // }
                 if(skip == '/pages/PK_model_master'){
                     this.addRoomE(0,skip);
                     return;
@@ -117,10 +122,10 @@
             }
         }
 
-        //模拟组员进入房间
+        // 模拟组员进入房间
         // slaveEnter(skip){
         //     wepy.navigateTo({
-        //         url: skip + '?legOrHand=0&roomId=961&share=55',
+        //         url: skip + '?legOrHand=0&roomId=1325&share=111',
         //     });
         // }
     }

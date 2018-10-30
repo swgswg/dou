@@ -1,10 +1,28 @@
-// 能量槽
+// components--能量槽
+<style lang="less">
+    .energy-tank{
+
+        .tank-out{
+            align-items: flex-end;
+            border-radius: 22rpx;
+            
+            .energy-number{
+                transform:rotate(90deg);
+            }
+
+            .ank-in{
+                border-radius: 22rpx;
+                background: linear-gradient(to top right,#ec2c98, #f68668);
+            }
+        }
+    }
+</style>
+
 <template>
     <view class="energy-tank">
-        <veiw class="tank-out" style="width:{{tankWidth*px2rpxWidth}}px;height:{{tankHeight*px2rpxHeight}}px;">
-            <view class="energy-number" style="width:{{60*px2rpxWidth}}px;height:{{tankWidth*px2rpxHeight}}px;top:{{energyNum}}px;left:{{-14*px2rpxWidth}}px">{{nowEnergyPercent}}</view>
-            <!--<view class="energy-number" style="width:{{60*px2rpxWidth}}px;height:{{tankWidth*px2rpxHeight}}px;top:{{tankHeight*px2rpxHeight - energyHeight*px2rpxHeight-15}}px;left:{{-14*px2rpxWidth}}px">{{nowEnergyPercent}}</view>-->
-            <view class="tank-in" style="width:{{tankWidth * px2rpxWidth}}px;height:{{energyHeight * px2rpxHeight}}px;"></view>
+        <veiw class="pr flex-center bgcf tank-out" style="width:{{tankWidth*px2rpxWidth}}px;height:{{tankHeight*px2rpxHeight}}px;">
+            <view class="pa flex-center f24 energy-number" style="width:{{60*px2rpxWidth}}px;height:{{tankWidth*px2rpxHeight}}px;top:{{energyNum}}px;left:{{-14*px2rpxWidth}}px">{{nowEnergyPercent}}</view>
+            <view class="f24 tf24 ank-in" style="width:{{tankWidth * px2rpxWidth}}px;height:{{energyHeight * px2rpxHeight}}px;"></view>
         </veiw>
     </view>
 </template>
@@ -104,34 +122,3 @@
     }
 </script>
 
-<style lang="less">
-    .energy-tank{
-        /*border: 1rpx solid red;*/
-
-        .tank-out{
-            position: relative;
-            display: flex;
-            justify-content:center;
-            align-items: flex-end;
-            border-radius: 22rpx;
-            background-color: #fff;
-
-            .energy-number{
-                position: absolute;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 24rpx;
-                transform:rotate(90deg);
-                /*border: 1rpx solid red;*/
-            }
-
-            .tank-in{
-                font-size: 24rpx;
-                border-radius: 22rpx;
-                background: linear-gradient(to top right,#ec2c98, #f68668);
-                /*border: 1rpx solid blue;*/
-            }
-        }
-    }
-</style>

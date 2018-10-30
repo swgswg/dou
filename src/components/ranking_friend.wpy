@@ -1,12 +1,10 @@
 // components--历史排名-好友
 <style lang="less">
-    .ranking-firend{
 
-    }
 </style>
 
 <template>
-    <view class="w-percent100 border-box br10 bgecd13b ranking-firend" style="padding:{{10*px2rpxHeight}}px {{10*px2rpxWidth}}px;">
+    <view class="w-percent100 border-box br10 bgecd13b" style="padding:{{10*px2rpxHeight}}px {{10*px2rpxWidth}}px;">
         <view class="w-percent100 border-box bgcf" style="height:{{770*px2rpxHeight}}px;padding:{{60*px2rpxHeight}}px {{10*px2rpxWidth}}px 0;">
             <scroll-view scroll-y bindscrolltolower="scrollToLower">
                 <ranking :ranking.sync="friendRanking"></ranking>

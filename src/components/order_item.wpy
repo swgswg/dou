@@ -1,18 +1,61 @@
+// components--订单
+<style lang="less">
+    .order-item{
+
+        .infomation{
+            border-bottom: 1rpx solid #f0f0f0;
+
+            .name-price{
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+
+                .price{
+                    align-items: flex-end;
+                    color:#f03e3e;
+                }
+            }
+            .specific{
+                /*white-space: nowrap;*/
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .heji{
+            border-bottom: 1rpx solid #ddd;
+        }
+
+        .status-btn{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24rpx;
+            color: #aaa;
+            border: 1rpx solid #ccc;
+        }
+        .status-btn2{
+            border: 1rpx solid #f03e3e;
+            color: #f03e3e;
+        }
+    }
+</style>
+
 <template>
-    <view class="order-item">
+    <view class="flex-column-center w-percent100 order-item">
         <block wx:for="{{orderList}}" wx:for-item="order" wx:key="{{order.id}}">
-            <view class="list" style="padding:0 {{30*px2rpxWidth}}px;margin-top:{{20*px2rpxHeight}}px;">
+            <view class="flex-column w-percent100 border-box bgcf" style="padding:0 {{30*px2rpxWidth}}px;margin-top:{{20*px2rpxHeight}}px;">
 
                 <!--商品信息 start-->
                 <!--<block wx:for="{{goods}}" wx:for-item="goods" wx:key="{{goods.goodsId}}">-->
-                    <view class="infomation" style="padding:{{20*px2rpxHeight}}px 0;" data-orderid="{{order.id}}" @tap.stop="goToDetail">
-                        <view class="info-img" style="width:{{150*px2rpxWidth}}px;">
+                    <view class="flex-start w-percent100 infomation" style="padding:{{20*px2rpxHeight}}px 0;" data-orderid="{{order.id}}" @tap.stop="goToDetail">
+                        <view class="flex-center" style="width:{{150*px2rpxWidth}}px;">
                             <image src="{{fileUrl + order.photo}}" lazy-load="true" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;"></image>
                         </view>
-                        <view class="name-price-specific-num" style="width:{{480*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
-                            <view class="name-price">
-                                <view class="name">{{order.goodsName}}</view>
-                                <view class="price">
+                        <view class="flex-column w-percent100" style="width:{{480*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;margin-left:{{26*px2rpxWidth}}px;">
+                            <view class="w-percent100 name-price">
+                                <view class="f32 c0">{{order.goodsName}}</view>
+                                <view class="flex-column f30 price">
                                     <view><text style="font-size:22rpx" wx:if="{{order.integral}}">{{order.integral}}积分+</text>¥{{order.money}}</view>
                                     <view style="font-size:20rpx">
                                         <block wx:if="{{order.status === unpaid}}">待付款</block>
@@ -22,21 +65,21 @@
                                     </view>
                                 </view>
                             </view>
-                            <!--<view class="specific" style="height:{{35*px2rpxHeight}};margin-top:{{10*px2rpxHeight}}px;">商品规格商品规格商品规格商品规格商品规格商品规格</view>-->
-                            <!--<view class="specific" style="height:{{35*px2rpxHeight}};margin-top:{{10*px2rpxHeight}}px;"></view>-->
-                            <view class="num" style="margin-top:{{20*px2rpxHeight}}px;">x{{order.num}}</view>
+                            <!--<view class="flex-start w-percent100 f24 c6  specific" style="height:{{35*px2rpxHeight}};margin-top:{{10*px2rpxHeight}}px;">商品规格商品规格商品规格商品规格商品规格商品规格</view>-->
+                            <!--<view class="flex-start w-percent100 f24 c6  specific" style="height:{{35*px2rpxHeight}};margin-top:{{10*px2rpxHeight}}px;"></view>-->
+                            <view class="flex-end f24 ca" style="margin-top:{{20*px2rpxHeight}}px;">x{{order.num}}</view>
                         </view>
                     </view>
                 <!--</block>-->
                 <!--商品信息 end-->
 
-                <view class="heji" style="height:{{80*px2rpxHeight}}px;">
+                <view class="flex-end w-percent100 f24 ca heji" style="height:{{80*px2rpxHeight}}px;">
                     <!--<view>共1件商品 合计:¥198.00(含运费¥0.00)</view>-->
                     <view>共1件商品 合计:¥{{order.moneys}}(含运费¥0.00)</view>
                 </view>
 
                 <!--订单状态 start-->
-                <view class="order-status" style="height:{{80*px2rpxHeight}}px;">
+                <view class="flex-end w-percent100" style="height:{{80*px2rpxHeight}}px;">
 
                     <!--0未付款 start-->
                     <block wx:if="{{order.status == unpaid}}">
@@ -260,115 +303,3 @@
     }
 </script>
 
-<style lang="less">
-    .order-item{
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        width: 100%;
-
-        .list{
-            display: flex;
-            flex-direction: column;
-            /*justify-content: center;*/
-            width: 100%;
-            box-sizing: border-box;
-            background-color: #fff;
-            /*border-bottom: 1rpx solid #bbb;*/
-
-            .infomation{
-                display: flex;
-                justify-content: flex-start;
-                align-items: center;
-                width: 100%;
-                border-bottom: 1rpx solid #f0f0f0;
-
-                .info-img{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                }
-
-                .name-price-specific-num{
-                    display: flex;
-                    flex-direction: column;
-                    /*justify-content: center;*/
-                    /*align-items: flex-start;*/
-                    width: 100%;
-
-                    .name-price{
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: flex-start;
-                        width: 100%;
-
-                        .name{
-                            font-size: 32rpx;
-                            color:#000;
-                        }
-                        .price{
-                            display: flex;
-                            flex-direction: column;
-                            align-items: flex-end;
-                            font-size: 30rpx;
-                            color:#f03e3e;
-                        }
-                    }
-                    .specific{
-                        display: flex;
-                        justify-content: flex-start;
-                        align-items: center;
-                        width: 100%;
-                        font-size: 24rpx;
-                        color:#666;
-                        /*white-space: nowrap;*/
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                    }
-                    .num{
-                        display: flex;
-                        justify-content: flex-end;
-                        align-items: center;
-                        font-size: 24rpx;
-                        color:#aaa;
-                    }
-                }
-
-            }
-
-            .heji{
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                width: 100%;
-                font-size: 24rpx;
-                color:#aaa;
-                border-bottom: 1rpx solid #ddd;
-            }
-
-            .order-status{
-                display: flex;
-                justify-content: flex-end;
-                align-items: center;
-                width: 100%;
-
-                .status-btn{
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    font-size: 24rpx;
-                    color: #aaa;
-                    border: 1rpx solid #ccc;
-                }
-                .status-btn2{
-                    border: 1rpx solid #f03e3e;
-                    color: #f03e3e;
-                }
-                
-            }
-
-        }
-
-    }
-</style>

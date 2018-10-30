@@ -1,24 +1,46 @@
+<style lang="less">
+    .empty-address{
+        .add{
+            border: 4rpx solid #1a8fff;
+
+            .icon-add{
+                font-size: 40rpx;
+                font-weight: bolder;
+                color: #1a8fff;
+            }
+        }
+
+        .bg{
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    }
+</style>
+
 <template>
     <view class="flex-center w-percent100 empty-address">
         <view class="pr flex-start w-percent100"
               style="heigth:{{154*px2rpxHeight}}px;padding: 0 {{30*px2rpxWidth}}px;line-height:{{154*px2rpxHeight}}px;"
               @tap.stop="selectAddress">
-            <view class="flex-center br-percent50 add" style="width:{{54*px2rpxWidth}}px;height:{{54*px2rpxWidth}}px;">
+            <view class="flex-center br-percent50 add"
+                  style="width:{{54*px2rpxWidth}}px;height:{{54*px2rpxWidth}}px;">
                 <text class="iconfont icon-add"></text>
             </view>
             <view class="text" style="margin-left:{{38*px2rpxWidth}}px;">{{selectOrAdd}}收货地址</view>
             <view class="youjiantou" style="margin-left:{{310*px2rpxWidth}}px;">
                 <text class="iconfont icon-youjiantou"></text>
             </view>
-            <image class="bg" lazy-load="true" style="width:100%;height:{{154*px2rpxHeight}}px;" src="{{empty_address_bg}}"></image>
+            <image class="pa bg" lazy-load="true" style="width:100%;height:{{154*px2rpxHeight}}px;" src="{{empty_address_bg}}"></image>
         </view>
     </view>
 </template>
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX} from '@/utils/constant';
+    import {PX_TO_RPX,PAGES_PATH} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
+    import util from '@/utils/util';
 
     export default class EmptyAddress extends wepy.component {
 
@@ -45,6 +67,8 @@
         methods = {
             // 选择地址
             selectAddress(){
+                let currentPage = util.getCurrentPageUrl();
+                wepy.setStorageSync(PAGES_PATH, {path: '/' + currentPage});
                 if(this.selectOrAdd == '选择'){
                     wepy.navigateTo({
                         url: '/pages/address_list',
@@ -61,25 +85,3 @@
     }
 </script>
 
-<style lang="less">
-    .empty-address{
-
-        .add{
-            border: 4rpx solid #1a8fff;
-
-            .icon-add{
-                font-size: 40rpx;
-                font-weight: bolder;
-                color: #1a8fff;
-            }
-        }
-
-        .bg{
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: -1;
-        }
-
-    }
-</style>

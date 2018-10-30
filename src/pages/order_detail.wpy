@@ -72,7 +72,7 @@
 </style>
 
 <template>
-    <view class="flex-center w-percent100 order-detail">
+    <view class="flex-column w-percent100 order-detail">
 
         <!--订单状态 start-->
         <view class="flex-start w-percent100 border-box status" style="height:{{145*px2rpxHeight}}px;padding-left:{{30*px2rpxWidth}}px;">
@@ -96,7 +96,7 @@
             <view class="f35">
                 <text class="iconfont icon-location"></text>
             </view>
-            <view class="f34 c6" style="margin-left:{{10*px2rpxWidth}}px;">
+            <view class="f24 c6" style="margin-left:{{10*px2rpxWidth}}px;">
                 <view class="flex-start addr-right-top">
                     <view class="f30 c0">{{order.consignee}}</view>
                     <view class="tel" style="margin-left:{{20*px2rpxWidth}}px;">{{order.mobile}}</view>
@@ -118,7 +118,13 @@
                     <view class="flex-column" style="margin-left:{{18*px2rpxWidth}}px;">
                         <view class="f32 c3">{{order.goodsName}}</view>
                         <view class="f24 c3" style="margin-top:{{16*px2rpxHeight}}px;">x{{order.num}}</view>
-                        <view class="f30 goods-price" style="margin-top:{{10*px2rpxHeight}}px;"><text style="font-size:20rpx;" wx:if="{{order.integral}}">{{order.integral}}积分+</text>¥{{order.money}}</view>
+                        <view class="f30 goods-price" style="margin-top:{{10*px2rpxHeight}}px;">
+                            <text style="font-size:20rpx;"
+                                  wx:if="{{order.integral}}">
+                                {{order.integral}}积分+
+                            </text>
+                            ¥{{order.money}}
+                        </view>
                     </view>
                 </view>
             <!--</block>-->
@@ -126,7 +132,7 @@
         <!--商品信息 end-->
 
         <!--订单信息 start-->
-        <view class="flex-column w-percent100 f28 c6 border-box bgcf" style="height:{{301*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0 {{30*px2rpxWidth}}px">
+        <view class="flex-column w-percent100 f28 c6 border-box bgcf" style="height:{{250*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;padding:{{32*px2rpxHeight}}px {{30*px2rpxWidth}}px 0;">
             <view>订单编号： {{order.order_uuid}}</view>
             <view class="border-box order-time" style="margin-top:{{25*px2rpxHeight}}px;padding-bottom:{{25*px2rpxHeight}}px;">下单时间： {{order.createTime}}</view>
             <view style="margin-top:{{25*px2rpxHeight}}px">支付方式： 微信支付</view>
@@ -237,7 +243,7 @@
             customer_service:imgApi.customer_service,
             customer_service_btn:imgApi.customer_service_btn,
             orderId:null,
-            // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）
+            // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）6(取消订单)
             all:api.all,
             unpaid:api.unpaid,
             notDelivered:api.notDelivered,

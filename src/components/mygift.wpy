@@ -1,23 +1,65 @@
+// components--我的礼物
+<style lang="less">
+    .mygift{
+        padding-left: 10rpx;
+        padding-right: 20rpx;
+        background-color:rgba(0,0,0,0.5);
+
+        .sub-text{
+            text-align: center;
+            color: #ec2c98;
+            text-shadow: 0 0 10rpx #fff;
+        }
+
+        .gift-img{
+            width: 70%;
+
+            .gift-img-each{
+                display: inline-block;
+                text-align: center;
+
+                .gift-num{
+                    top: 0;
+                    right: 0;
+                    background: linear-gradient(to top right,#ec2c98, #f68668);
+                }
+
+                .gift-name{
+                    color: #ffc53b;
+                    opacity: 0.7;
+                }
+            }
+        }
+
+        .btn-confirm{
+            background: linear-gradient(to top right,#ec2c98, #f68668);
+        }
+        .btn-mall{
+            color: #ec2c98;
+        }
+    }
+</style>
+
 <template>
-    <view class="mygift" style="height:{{140*px2rpxHeight}}px;">
-        <view class="text1" style="width:{{100*px2rpxWidth}}px">
-            <view class="sub-text" style="width:{{80*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;">我的礼物</view>
+    <view class="flex-start w-percent100 border-box mygift" style="height:{{140*px2rpxHeight}}px;">
+        <view class="flex-center" style="width:{{100*px2rpxWidth}}px">
+            <view class="flex-center f30 f-weight-bold sub-text" style="width:{{80*px2rpxWidth}}px;height:{{100*px2rpxHeight}}px;">我的礼物</view>
         </view>
-        <view class="gift-img" style="height:{{120*px2rpxHeight}}px;">
+        <view class="flex-center gift-img" style="height:{{120*px2rpxHeight}}px;">
             <scroll-view scroll-x="true" style="white-space:nowrap;">
                 <block wx:for="{{myGift}}" wx:for-item="gift" wx:key="{{index}}">
-                    <view class="gift-img-each" style="width:{{100*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="takeGift">
-                        <view class="gift-num" style="width:{{35*px2rpxWidth}}px;height:{{35*px2rpxWidth}}px">{{gift.num}}</view>
+                    <view class="pr f18 gift-img-each" style="width:{{100*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="takeGift">
+                        <view class="pa flex-center cf br-percent50 gift-num" style="width:{{35*px2rpxWidth}}px;height:{{35*px2rpxWidth}}px">{{gift.num}}</view>
                         <image style="width:{{60*px2rpxWidth}}px;height:{{56*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;" lazy-load="true" src="{{fileUrl + gift.photo}}"></image>
                         <!--<view class="gift-name">赞</view>-->
-                        <view class="gift-energy">{{gift.score}}能量</view>
+                        <view class="cf ">{{gift.score}}能量</view>
                     </view>
                 </block>
             </scroll-view>
         </view>
-        <view class="btn" style="width:{{127*px2rpxWidth}}px;height:{{127*px2rpxWidth}}px;">
-            <view class="btn-each btn-confirm" style="width:{{100*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-bottom:{{20*px2rpxHeight}}px;border-radius:{{40*px2rpxHeight/2}}px;" @tap.stop="confirmGiftSeat">确定</view>
-            <view class="btn-each btn-mall" style="width:{{100*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;border-radius:{{40*px2rpxHeight/2}}px;" @tap.stop="goToMall">商城</view>
+        <view class="flex-column-center" style="width:{{127*px2rpxWidth}}px;height:{{127*px2rpxWidth}}px;">
+            <view class="flex-center f20 cf btn-confirm" style="width:{{100*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-bottom:{{20*px2rpxHeight}}px;border-radius:{{40*px2rpxHeight/2}}px;" @tap.stop="confirmGiftSeat">确定</view>
+            <view class="flex-center f20 bgcf btn-mall" style="width:{{100*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;border-radius:{{40*px2rpxHeight/2}}px;" @tap.stop="goToMall">商城</view>
         </view>
     </view>
 </template>
@@ -33,7 +75,6 @@
     import EnergyTank from '@/components/energy_tank';
 
     export default class Mygift extends wepy.component {
-
         components = {
             giftcanvas:GiftCanvas,
             energytank:EnergyTank,
@@ -127,7 +168,7 @@
                 // console.log(x,y);
                 myGift[index].num = myGift[index].num - 1;
                 // giftList.push({id:0,giftId:myGift[index].giftId,wide:myGift[index].wide,high:myGift[index].high,xaxle:x,yaxle:y,url:myGift[index].photo,type:0});
-                let oneGift = {id:0,giftId:myGift[index].giftId,wide:w,high:h,xaxle:x,yaxle:y,url:myGift[index].url,score:myGift[index].score,type:0};
+                let oneGift = {id:0, giftId:myGift[index].giftId,wide:w,high:h,xaxle:x,yaxle:y,url:myGift[index].url,score:myGift[index].score,type:0};
                 // 添加礼物到礼物墙
                 this.$emit('addGiftToWall',oneGift);
                 // 把添加到礼物墙的礼物添加临时变量
@@ -141,17 +182,18 @@
                 if(!this.isFullEnergy){
                     return;
                 }
+                let giftVal = this.giftVal;
+                let len = giftVal.length;
+                if(len < 1){
+                    tip.alert('您还没有送礼');
+                    return;
+                }
                 let that = this;
                 let status = null;
                 if(this.vipOrPublic == 'vip'){
                     status = 2;
                 } else if(this.vipOrPublic == 'public'){
                     status = 0;
-                }
-                let giftVal = this.giftVal;
-                let len = giftVal.length;
-                if(len < 1){
-                    tip.alert('您还没有送礼');
                 }
                 let giftId = '';
                 let xaxle = '';
@@ -203,92 +245,3 @@
     }
 </script>
 
-<style lang="less">
-    .mygift{
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        padding-left: 10rpx;
-        padding-right: 20rpx;
-        box-sizing: border-box;
-        background-color:rgba(0,0,0,0.5);
-
-        .text1{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .sub-text{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                text-align: center;
-                font-size: 30rpx;
-                font-weight: bold;
-                color: #ec2c98;
-                text-shadow: 0 0 10rpx #fff;
-            }
-        }
-
-        .gift-img{
-            display: flex;
-            justify-content:center;
-            align-items: center;
-            width: 70%;
-
-            .gift-img-each{
-                position: relative;
-                display: inline-block;
-                text-align: center;
-                font-size: 18rpx;
-
-                .gift-num{
-                    position: absolute;
-                    top: 0;
-                    right: 0;
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    color: #fff;
-                    border-radius: 50%;
-                    background: linear-gradient(to top right,#ec2c98, #f68668);
-                }
-
-                .gift-name{
-                    color: #ffc53b;
-                    opacity: 0.7;
-                }
-
-                .gift-energy{
-                    color: #fff;
-                }
-            }
-        }
-
-        .btn{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-
-
-            .btn-each{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 20rpx;
-
-            }
-
-            .btn-confirm{
-                color: #fff;
-                background: linear-gradient(to top right,#ec2c98, #f68668);
-            }
-            .btn-mall{
-                color: #ec2c98;
-                background-color:#fff;
-            }
-        }
-    }
-</style>

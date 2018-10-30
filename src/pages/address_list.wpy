@@ -41,7 +41,7 @@
 
     let userId = null;
 
-    export default class AddressLists extends wepy.page {
+    export default class PagesAddressList extends wepy.page {
         config = {
             navigationBarTitleText: '我的地址'
         };

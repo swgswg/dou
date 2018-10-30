@@ -1,10 +1,24 @@
-// 排行榜类型-设备榜/手动榜
+// components--排行榜类型-设备榜/手动榜
+<style lang="less">
+    .ranking-style{
+
+        .active{
+            background-color: #ffac83;
+        }
+
+        .inactive{
+            background-color: #d15a65;
+        }
+
+    }
+</style>
+
 <template>
-    <view class="ranking-style">
-        <view class="content">
+    <view class="flex-center w-percent100 ranking-style">
+        <view class="flex-center w-percent100">
             <block wx:for="{{rankingStyle}}" wx:for-item="sty" wx:key="{{index}}">
                 <block wx:if="{{index == 0}}">
-                    <view class="ranking-style-each {{currentTabValue == sty.value ? 'active':'inactive'}}"
+                    <view class="flex-center f22 cf {{currentTabValue == sty.value ? 'active':'inactive'}}"
                           style="width:{{123*px2rpxWidth}}px;height:{{52*px2rpxHeight}}px;border-radius:{{52*px2rpxHeight/2}}px 0 0 {{52*px2rpxHeight/2}}px;"
                           data-current="{{sty.value}}"
                           @tap.stop="switchTab"
@@ -12,7 +26,7 @@
                     </view>
                 </block>
                 <block wx:elif="{{index == last_index}}">
-                    <view class="ranking-style-each {{currentTabValue == sty.value ? 'active':'inactive'}}"
+                    <view class="flex-center f22 cf {{currentTabValue == sty.value ? 'active':'inactive'}}"
                           style="width:{{123*px2rpxWidth}}px;height:{{52*px2rpxHeight}}px;-webkit-border-radius: 0;-moz-border-radius: 0;border-radius:0 {{52*px2rpxHeight/2}}px {{52*px2rpxHeight/2}}px 0;"
                           data-current="{{sty.value}}"
                           @tap.stop="switchTab"
@@ -20,7 +34,7 @@
                     </view>
                 </block>
                 <block wx:else>
-                    <view class="ranking-style-each {{currentTabValue == sty.value ? 'active':'inactive'}}"
+                    <view class="flex-center f22 cf {{currentTabValue == sty.value ? 'active':'inactive'}}"
                           style="width:{{123*px2rpxWidth}}px;height:{{52*px2rpxHeight}}px;"
                           data-current="{{sty.value}}"
                           @tap.stop="dotRankingStyle"
@@ -79,35 +93,3 @@
     }
 </script>
 
-<style lang="less">
-    .ranking-style{
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        .content{
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            .ranking-style-each{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 22rpx;
-                color: #fff;
-            }
-
-            .active{
-                background-color: #ffac83;
-            }
-
-            .inactive{
-                background-color: #d15a65;
-            }
-
-        }
-    }
-</style>

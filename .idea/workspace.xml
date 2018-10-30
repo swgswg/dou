@@ -2,44 +2,50 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="163dff39-3b00-4120-a5ee-4f30053abe5a" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/utils/base64.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.wepycache" beforeDir="false" afterPath="$PROJECT_DIR$/.wepycache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/app.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/address_add.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/address_add.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/address_list.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/address_list.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/best_record.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/best_record.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/bluetooth_list.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/bluetooth_list.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/count_down.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/count_down.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/empty_address.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/empty_address.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/energy_tank.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/energy_tank.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/first_three.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/first_three.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/game.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/game.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/game_rank.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/game_rank.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/gift_canvas.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/gift_canvas.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/gift_info.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/gift_info.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/info_item.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/info_item.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/move_view.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/move_view.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/mygift.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mygift.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/order_item.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/order_item.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ranking_button.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_button.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ranking_friend.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_friend.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/ranking_style.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_style.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/recom.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recom.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/components/record.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/record.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/select_time.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/select_time.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/show_gift_wall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/show_gift_wall.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/PK_model_master.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PK_model_master.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/PK_model_slave.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PK_model_slave.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/authorize.wpy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/check_logistics.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/check_logistics.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/VIP_wall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VIP_wall.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/address_add.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/address_add.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/address_edit.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/address_edit.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/address_list.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/address_list.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/commit_order.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/commit_order.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/fight_model.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/fight_model.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/friend_gift_wall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/friend_gift_wall.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/gift_wall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/gift_wall.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/goods_detail.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/goods_detail.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/history_rank.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/history_rank.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/loading.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/loading.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/gift_picture.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/gift_picture.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/mall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/mall.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/mobile_verify.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/mobile_verify.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/my_friends.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/my_friends.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/my_gift.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/my_gift.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/my_info.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/my_info.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/open.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/open.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/order.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/order.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/order_detail.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/order_detail.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/personal_record.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/personal_record.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/public_wall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/public_wall.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/public_wall_record.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/public_wall_record.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/record.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/record.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/select_model.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/select_model.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/select_sex.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/select_sex.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/game_logic/enter_berfor.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/game_logic/enter_berfor.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/game_logic/entering.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/game_logic/entering.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/game_logic/outing.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/game_logic/outing.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/socketServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/socketServer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/send_gift.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/send_gift.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/set.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/set.wpy" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/wsDataDeal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/wsDataDeal.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -59,8 +65,8 @@
       <file leaf-file-name="app.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2380">
-              <caret line="113" column="25" selection-start-line="113" selection-start-column="25" selection-end-line="113" selection-end-column="25" />
+            <state relative-caret-position="14868">
+              <caret line="537" column="44" selection-start-line="537" selection-start-column="44" selection-end-line="537" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -68,8 +74,8 @@
       <file leaf-file-name="api.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-309">
-              <caret line="55" column="83" selection-start-line="55" selection-start-column="75" selection-end-line="55" selection-end-column="83" />
+            <state relative-caret-position="2660">
+              <caret line="96" column="93" selection-start-line="96" selection-start-column="81" selection-end-line="96" selection-end-column="93" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
@@ -78,10 +84,10 @@
         </entry>
       </file>
       <file leaf-file-name="wsDataDeal.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utils/game_logic/wsDataDeal.js">
+        <entry file="file://$PROJECT_DIR$/src/utils/wsDataDeal.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="532">
-              <caret line="100" column="25" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
+              <caret line="19" column="19" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -89,8 +95,8 @@
       <file leaf-file-name="game.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/game.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-112">
-              <caret line="238" column="30" selection-start-line="238" selection-start-column="30" selection-end-line="238" selection-end-column="30" />
+            <state relative-caret-position="8932">
+              <caret line="331" column="26" selection-start-line="331" selection-start-column="26" selection-end-line="331" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -98,8 +104,8 @@
       <file leaf-file-name="PK_model_master.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/PK_model_master.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1792">
-              <caret line="64" column="37" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
+            <state relative-caret-position="1736">
+              <caret line="71" selection-start-line="71" selection-end-line="71" />
               <folding>
                 <element signature="e#633#657#0" expanded="true" />
               </folding>
@@ -110,8 +116,8 @@
       <file leaf-file-name="PK_model_slave.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/pages/PK_model_slave.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7811">
-              <caret line="280" column="46" selection-start-line="280" selection-start-column="46" selection-end-line="280" selection-end-column="46" />
+            <state relative-caret-position="2576">
+              <caret line="101" selection-start-line="101" selection-end-line="101" />
               <folding>
                 <element signature="e#631#655#0" expanded="true" />
               </folding>
@@ -119,13 +125,55 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="public_wall_record.wpy" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/pages/public_wall_record.wpy">
+      <file leaf-file-name="send_gift.wpy" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pages/send_gift.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2015">
-              <caret line="101" selection-start-line="101" selection-end-line="101" />
+            <state relative-caret-position="4353">
+              <caret line="196" column="30" selection-start-line="196" selection-start-column="30" selection-end-line="196" selection-end-column="30" />
               <folding>
-                <element signature="e#1457#1481#0" expanded="true" />
+                <element signature="e#3511#3535#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="gift_canvas.wpy" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/gift_canvas.wpy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="545">
+              <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+              <folding>
+                <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="friend_gift_wall.wpy" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pages/friend_gift_wall.wpy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1693">
+              <caret line="331" column="9" selection-start-line="331" selection-start-column="9" selection-end-line="331" selection-end-column="9" />
+              <folding>
+                <element signature="n#style#0;n#view#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="mygift.wpy" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/components/mygift.wpy">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2044">
+              <caret line="151" column="41" lean-forward="true" selection-start-line="151" selection-start-column="41" selection-end-line="151" selection-end-column="41" />
+              <folding>
+                <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#2809#2833#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -147,36 +195,36 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>order-info</find>
-      <find>order-time</find>
-      <find>total-price</find>
-      <find>price-middle</find>
-      <find>price-top</find>
-      <find>price-bottom</find>
-      <find>order-status</find>
-      <find>status-btn</find>
-      <find>shouhou</find>
-      <find>cancel</find>
-      <find>img-bg</find>
-      <find>neirong</find>
-      <find>weixinhao</find>
-      <find>direc</find>
-      <find>unpaid</find>
-      <find>public-wall</find>
-      <find>time-endrgy</find>
-      <find>energy</find>
-      <find>wall</find>
-      <find>profile</find>
-      <find>public-wall-record</find>
-      <find>title</find>
-      <find>content</find>
-      <find>scroll</find>
-      <find>each</find>
-      <find>left</find>
-      <find>right</find>
-      <find>time</find>
-      <find>energy-text</find>
+      <find>isOverCountDown</find>
+      <find>updateRoomTimeE</find>
+      <find>updateRoomE</find>
+      <find>each-title</find>
+      <find>each-input</find>
+      <find>list</find>
+      <find>infomation</find>
+      <find>info-img</find>
+      <find>name-price-specific-num</find>
+      <find>name-price</find>
+      <find>name</find>
+      <find>price</find>
+      <find>specific</find>
       <find>num</find>
+      <find>heji</find>
+      <find>order-status</find>
+      <find>goToSendGift</find>
+      <find>canSendVipWall</find>
+      <find>wallStatus</find>
+      <find>getPresentsWallEvent</find>
+      <find>getGiveGiftUserPhoto</find>
+      <find>getPresentsWallE</find>
+      <find>getGiveGiftUserPhotoEvent</find>
+      <find>giftWallId</find>
+      <find>getSPresentsWallEvent</find>
+      <find>getOneUserInfoEvent</find>
+      <find>getSPresentsWallE</find>
+      <find>getOneUserInfoE</find>
+      <find>threeGiftWall_x</find>
+      <find>getSPresentsWallOneEvent</find>
     </findStrings>
     <replaceStrings>
       <replace>rpx</replace>
@@ -190,6 +238,21 @@
       <replace>readyBtn</replace>
       <replace>logoWidth</replace>
       <replace>logoHeight</replace>
+      <replace>pa each-title</replace>
+      <replace>f30 c0 each-title</replace>
+      <replace>pa f28 each-input</replace>
+      <replace>border-box set-default</replace>
+      <replace>border-box address-each</replace>
+      <replace>pr border-box best-record</replace>
+      <replace>bgcf best-record</replace>
+      <replace>border-box img</replace>
+      <replace>pr flex-center bgcf tank-out</replace>
+      <replace>pa flex-center f24 energy-number</replace>
+      <replace>f24 tank-in</replace>
+      <replace>f24 ank-in</replace>
+      <replace>flex-column left-info</replace>
+      <replace>left-info</replace>
+      <replace>getPresentsWallE</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -198,57 +261,57 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/best_record.wpy" />
-        <option value="$PROJECT_DIR$/src/components/common/placeholder.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/arder_model.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/authorize.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/fans_hold_list.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/fans_rank.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/gift_picture.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/go_shake.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/PK_model.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/story_model.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/VIP_wall.wpy" />
-        <option value="$PROJECT_DIR$/src/components/count_down.wpy" />
-        <option value="$PROJECT_DIR$/src/components/move_view.wpy" />
-        <option value="$PROJECT_DIR$/src/components/gift_canvas.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/send_gift.wpy" />
-        <option value="$PROJECT_DIR$/src/utils/game_logic/enter_berfor.js" />
-        <option value="$PROJECT_DIR$/src/utils/game_logic/entering.js" />
-        <option value="$PROJECT_DIR$/src/utils/game_logic/outing.js" />
-        <option value="$PROJECT_DIR$/src/pages/PK_model_slave.wpy" />
-        <option value="$PROJECT_DIR$/src/components/select_time.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/check_logistics.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/commit_order.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/friend_gift_wall.wpy" />
-        <option value="$PROJECT_DIR$/src/components/show_gift_wall.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/gift_wall.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/goods_detail.wpy" />
-        <option value="$PROJECT_DIR$/src/utils/api.js" />
-        <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/package-lock.json" />
-        <option value="$PROJECT_DIR$/src/utils/base64.js" />
-        <option value="$PROJECT_DIR$/src/pages/select_sex.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/fight_model.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/home.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/loading.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/mall.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/history_rank.wpy" />
         <option value="$PROJECT_DIR$/src/pages/mobile_verify.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/my_friends.wpy" />
         <option value="$PROJECT_DIR$/src/utils/socketServer.js" />
-        <option value="$PROJECT_DIR$/src/pages/PK_model_master.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/my_gift.wpy" />
-        <option value="$PROJECT_DIR$/src/components/game.wpy" />
         <option value="$PROJECT_DIR$/src/components/game_rank.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/my_info.wpy" />
         <option value="$PROJECT_DIR$/src/pages/open.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/order.wpy" />
-        <option value="$PROJECT_DIR$/src/app.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/order_detail.wpy" />
         <option value="$PROJECT_DIR$/src/pages/personal_record.wpy" />
         <option value="$PROJECT_DIR$/src/pages/public_wall.wpy" />
         <option value="$PROJECT_DIR$/src/pages/public_wall_record.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/VIP_wall.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/set.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/record.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/address_list.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/address_add.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/address_edit.wpy" />
+        <option value="$PROJECT_DIR$/src/components/best_record.wpy" />
+        <option value="$PROJECT_DIR$/src/components/bluetooth_list.wpy" />
+        <option value="$PROJECT_DIR$/src/components/count_down.wpy" />
+        <option value="$PROJECT_DIR$/src/components/energy_tank.wpy" />
+        <option value="$PROJECT_DIR$/src/components/first_three.wpy" />
+        <option value="$PROJECT_DIR$/src/components/info_item.wpy" />
+        <option value="$PROJECT_DIR$/src/components/move_view.wpy" />
+        <option value="$PROJECT_DIR$/src/components/ranking_button.wpy" />
+        <option value="$PROJECT_DIR$/src/components/ranking_friend.wpy" />
+        <option value="$PROJECT_DIR$/src/components/ranking_style.wpy" />
+        <option value="$PROJECT_DIR$/src/components/record.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/my_info.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/my_gift.wpy" />
+        <option value="$PROJECT_DIR$/src/utils/wsDataDeal.js" />
+        <option value="$PROJECT_DIR$/src/pages/select_model.wpy" />
+        <option value="$PROJECT_DIR$/src/components/recom.wpy" />
+        <option value="$PROJECT_DIR$/src/components/address_add.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/gift_picture.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/PK_model_master.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/my_friends.wpy" />
+        <option value="$PROJECT_DIR$/src/components/ranking_world.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/mall.wpy" />
+        <option value="$PROJECT_DIR$/src/components/gift_info.wpy" />
+        <option value="$PROJECT_DIR$/src/components/game.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/select_sex.wpy" />
+        <option value="$PROJECT_DIR$/src/components/select_time.wpy" />
+        <option value="$PROJECT_DIR$/src/app.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/order.wpy" />
+        <option value="$PROJECT_DIR$/src/components/order_item.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/order_detail.wpy" />
+        <option value="$PROJECT_DIR$/src/components/empty_address.wpy" />
+        <option value="$PROJECT_DIR$/src/components/address_list.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/commit_order.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/PK_model_slave.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/friend_gift_wall.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/send_gift.wpy" />
+        <option value="$PROJECT_DIR$/src/components/mygift.wpy" />
+        <option value="$PROJECT_DIR$/src/components/gift_canvas.wpy" />
       </list>
     </option>
   </component>
@@ -280,12 +343,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="doutui" type="b2602c69:ProjectViewProjectNode" />
               <item name="doutui" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="doutui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="doutui" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="doutui" type="b2602c69:ProjectViewProjectNode" />
@@ -314,7 +383,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -322,7 +390,7 @@
     <property name="ToolWindowTypeScript.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.9.4" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../报表/expense-account" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.prettier" value="true" />
     <property name="node.js.path.for.package.prettier" value="project" />
     <property name="node.js.selected.package.prettier" value="" />
@@ -457,6 +525,9 @@
       <workItem from="1540636892028" duration="2628000" />
       <workItem from="1540700587002" duration="663000" />
       <workItem from="1540775786327" duration="28794000" />
+      <workItem from="1540814505087" duration="1130000" />
+      <workItem from="1540861648492" duration="40186000" />
+      <workItem from="1540908813964" duration="6092000" />
     </task>
     <task id="LOCAL-00001" summary="修改绑定手机号页面">
       <created>1540524973004</created>
@@ -469,7 +540,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1830599000" />
+    <option name="totallyTimeSpent" value="1878007000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -484,17 +555,16 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info anchor="bottom" id="TODO" order="7" weight="0.32897604" />
-      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5194942" side_tool="true" weight="0.27262813" />
-      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49947312" weight="0.32824427" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info id="npm" order="2" sideWeight="0.503268" side_tool="true" weight="0.1369863" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4805058" weight="0.27262813" />
       <window_info anchor="bottom" auto_hide="true" content_ui="combo" id="TypeScript" order="13" type="SLIDING" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49618322" visible="true" weight="0.13751318" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49618322" weight="0.13751318" />
+      <window_info anchor="bottom" id="TODO" order="7" weight="0.32897604" />
       <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
+      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5205479" side_tool="true" weight="0.27262813" />
+      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49947312" weight="0.32824427" />
+      <window_info id="npm" order="2" sideWeight="0.503268" side_tool="true" weight="0.1369863" />
+      <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" sideWeight="0.50401604" side_tool="true" weight="0.1369863" />
+      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.47945204" weight="0.27153763" />
       <window_info anchor="bottom" id="Favorites" order="6" sideWeight="0.50108933" side_tool="true" weight="0.13631406" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -504,29 +574,8 @@
       <window_info anchor="bottom" id="Messages" order="9" weight="0.3293348" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
     </layout>
-    <layout-to-restore>
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info id="npm" order="2" sideWeight="0.503268" side_tool="true" weight="0.1369863" />
-      <window_info anchor="bottom" id="Run" order="2" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49618322" visible="true" weight="0.13751318" />
-      <window_info id="Structure" order="1" sideWeight="0.50401604" side_tool="true" weight="0.1369863" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="7" weight="0.32897604" />
-      <window_info anchor="bottom" auto_hide="true" content_ui="combo" id="TypeScript" order="13" type="SLIDING" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.4805058" weight="0.27262813" />
-      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5194942" side_tool="true" weight="0.27262813" />
-      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49947312" weight="0.32824427" />
-      <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Messages" order="9" weight="0.3293348" />
-      <window_info anchor="bottom" id="Favorites" order="6" sideWeight="0.50108933" side_tool="true" weight="0.13631406" />
-    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -578,459 +627,413 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/src/components/mygift.wpy</url>
-          <line>202</line>
-          <option name="timeStamp" value="26" />
-        </line-breakpoint>
-      </breakpoints>
-      <option name="time" value="45" />
+      <option name="time" value="47" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/utils/imgApi.js">
+    <entry file="file://$PROJECT_DIR$/src/pages/friend_gift_wall.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1287">
-          <caret line="178" selection-start-line="178" selection-end-line="178" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/game_logic/enter_berfor.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="34" column="18" selection-start-line="34" selection-start-column="18" selection-end-line="34" selection-end-column="18" />
+        <state relative-caret-position="9016">
+          <caret line="331" column="9" selection-start-line="331" selection-start-column="9" selection-end-line="331" selection-end-column="9" />
           <folding>
-            <element signature="e#8#38#0" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/game_logic/entering.js">
+    <entry file="file://$PROJECT_DIR$/src/components/mygift.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="9" selection-start-line="9" selection-end-line="9" />
+        <state relative-caret-position="2072">
+          <caret line="81" selection-start-line="81" selection-end-line="81" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2809#2833#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/game_logic/outing.js">
+    <entry file="file://$PROJECT_DIR$/src/components/gift_canvas.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="5" selection-start-line="5" selection-end-line="5" />
+        <state relative-caret-position="1988">
+          <caret line="73" column="58" lean-forward="true" selection-start-line="73" selection-start-column="58" selection-end-line="73" selection-end-column="58" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/bluetooth_list.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1596">
+          <caret line="57" column="36" lean-forward="true" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/count_down.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="335">
-          <caret line="74" column="59" lean-forward="true" selection-start-line="74" selection-start-column="59" selection-end-line="74" selection-end-column="59" />
+        <state relative-caret-position="84">
+          <caret line="3" column="25" lean-forward="true" selection-start-line="3" selection-start-column="25" selection-end-line="3" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/authorize.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/energy_tank.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-532">
-          <caret line="2" column="38" selection-start-line="2" selection-start-column="38" selection-end-line="2" selection-end-column="38" />
+        <state relative-caret-position="2324">
+          <caret line="85" column="10" lean-forward="true" selection-start-line="85" selection-start-column="10" selection-end-line="85" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/check_logistics.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/first_three.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2520">
-          <caret line="94" column="9" lean-forward="true" selection-start-line="94" selection-start-column="9" selection-end-line="94" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/select_time.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4900">
-          <caret line="178" selection-start-line="178" selection-end-line="178" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/commit_order.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-727">
-          <caret line="18" column="9" lean-forward="true" selection-start-line="18" selection-start-column="9" selection-end-line="18" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/connect_bluetooth.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="112">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
           <folding>
-            <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#3;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#4014#4038#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/connect_success.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/go_mall.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
-          <caret line="8" column="43" selection-start-line="8" selection-start-column="43" selection-end-line="8" selection-end-column="43" />
+          <caret line="26" column="11" lean-forward="true" selection-start-line="26" selection-start-column="11" selection-end-line="26" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/fans_hold_list.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/info.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="308">
-          <caret line="11" column="30" lean-forward="true" selection-start-line="11" selection-start-column="30" selection-end-line="11" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/fans_rank.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1583">
-          <caret line="69" column="116" selection-start-line="69" selection-start-column="116" selection-end-line="69" selection-end-column="116" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/show_gift_wall.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1204">
-          <caret line="55" column="26" lean-forward="true" selection-start-line="55" selection-start-column="26" selection-end-line="55" selection-end-column="26" />
+        <state relative-caret-position="-756">
+          <caret line="27" column="11" lean-forward="true" selection-start-line="27" selection-start-column="11" selection-end-line="27" selection-end-column="11" />
           <folding>
-            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#698#722#0" expanded="true" />
+            <element signature="e#1111#1135#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/friend_gift_wall.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/info_item.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1064">
-          <caret line="71" column="38" lean-forward="true" selection-start-line="71" selection-start-column="38" selection-end-line="71" selection-end-column="38" />
+        <state relative-caret-position="140">
+          <caret line="5" column="10" lean-forward="true" selection-start-line="5" selection-start-column="10" selection-end-line="5" selection-end-column="10" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/gift_picture.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-10851">
-          <caret line="34" column="76" selection-start-line="34" selection-start-column="76" selection-end-line="34" selection-end-column="76" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/gift_wall.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="280">
-          <caret line="37" column="8" lean-forward="true" selection-start-line="37" selection-start-column="8" selection-end-line="37" selection-end-column="8" />
-          <folding>
-            <element signature="e#1710#1734#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/go_shake.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="28">
-          <caret line="484" selection-start-line="484" selection-end-line="485" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-309">
-          <caret line="55" column="83" selection-start-line="55" selection-start-column="75" selection-end-line="55" selection-end-column="83" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
+    <entry file="file://$PROJECT_DIR$/src/components/move_view.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="672">
-          <caret line="33" column="26" selection-start-line="33" selection-start-column="26" selection-end-line="33" selection-end-column="26" />
+          <caret line="24" selection-start-line="24" selection-end-line="24" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package-lock.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="276">
-          <caret line="764" column="6" selection-start-line="764" selection-start-column="6" selection-end-line="764" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project.config.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/base64.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="588">
-          <caret line="21" column="40" selection-start-line="21" selection-start-column="40" selection-end-line="21" selection-end-column="40" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/select_sex.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3093">
-          <caret line="157" lean-forward="true" selection-start-line="157" selection-end-line="157" />
-          <folding>
-            <element signature="e#2264#2288#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/fight_model.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1987">
-          <caret line="334" column="38" lean-forward="true" selection-start-line="334" selection-start-column="38" selection-end-line="334" selection-end-column="38" />
-          <folding>
-            <element signature="e#4195#4219#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/goods_detail.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="96" column="17" selection-start-line="96" selection-start-column="17" selection-end-line="96" selection-end-column="17" />
-          <folding>
-            <element signature="n#style#0;n#swiper#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#button#0;n#view#1;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#coverlayer#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#coverlayer#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#view#0;n#coverlayer#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#0;n#view#0;n#view#0;n#coverlayer#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/index.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-420" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/loading.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1568">
-          <caret line="60" column="39" selection-start-line="60" selection-start-column="39" selection-end-line="60" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/history_rank.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="392">
-          <caret line="57" column="36" selection-start-line="57" selection-start-column="36" selection-end-line="57" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/home.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/out_model.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="112">
           <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/mall.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/ranking.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1820">
-          <caret line="65" column="8" lean-forward="true" selection-start-line="65" selection-start-column="8" selection-end-line="65" selection-end-column="8" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#0;n#view#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#2437#2461#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="28">
+          <caret line="1" column="19" lean-forward="true" selection-start-line="1" selection-start-column="19" selection-end-line="1" selection-end-column="19" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/mobile_verify.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/ranking_button.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="76" column="15" lean-forward="true" selection-start-line="76" selection-start-column="15" selection-end-line="76" selection-end-column="15" />
+        <state relative-caret-position="-491">
+          <caret line="29" column="11" lean-forward="true" selection-start-line="29" selection-start-column="11" selection-end-line="29" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/my_friends.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/ranking_friend.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="5" column="9" lean-forward="true" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#1292#1316#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="168">
+          <caret line="6" column="54" selection-start-line="6" selection-start-column="54" selection-end-line="6" selection-end-column="54" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/three_stage.wpy">
-      <provider selected="true" editor-type-id="text-editor" />
+    <entry file="file://$PROJECT_DIR$/src/components/ranking_style.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="15" selection-start-column="15" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/record.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="6" column="36" lean-forward="true" selection-start-line="6" selection-start-column="36" selection-end-line="6" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/my_info.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="672">
+          <caret line="47" column="26" lean-forward="true" selection-start-line="47" selection-start-column="26" selection-end-line="47" selection-end-column="26" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/game_rank.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="8" column="5" selection-start-line="8" selection-start-column="5" selection-end-line="8" selection-end-column="5" />
-          <folding>
-            <element signature="e#3725#3749#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="545">
+          <caret line="117" column="29" lean-forward="true" selection-start-line="117" selection-start-column="29" selection-end-line="117" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/socketServer.js">
+    <entry file="file://$PROJECT_DIR$/src/pages/my_gift.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="49" column="29" selection-start-line="49" selection-start-column="29" selection-end-line="49" selection-end-column="29" />
+        <state relative-caret-position="1917">
+          <caret line="133" selection-start-line="133" selection-end-line="133" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#0;n#block#1;n#view#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/game_logic/wsDataDeal.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
+        <state relative-caret-position="2800">
           <caret line="100" column="25" selection-start-line="100" selection-start-column="25" selection-end-line="100" selection-end-column="25" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/my_gift.wpy">
+    <entry file="file://$PROJECT_DIR$/src/pages/select_model.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="17" column="35" lean-forward="true" selection-start-line="17" selection-start-column="35" selection-end-line="17" selection-end-column="35" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#block#0;n#block#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#2002#2026#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="335">
+          <caret line="93" column="42" lean-forward="true" selection-start-line="93" selection-start-column="42" selection-end-line="93" selection-end-column="42" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/my_info.wpy">
+    <entry file="file://$PROJECT_DIR$/src/utils/wsDataDeal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="532">
+          <caret line="19" column="19" selection-start-line="19" selection-start-column="19" selection-end-line="19" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/VIP_wall.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3528">
+          <caret line="134" lean-forward="true" selection-start-line="134" selection-end-line="134" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/gift_picture.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1400">
+          <caret line="50" column="15" selection-start-line="50" selection-start-column="15" selection-end-line="50" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/my_friends.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="128" column="34" lean-forward="true" selection-start-line="128" selection-start-column="34" selection-end-line="128" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/ranking_world.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="85" column="72" lean-forward="true" selection-start-line="85" selection-start-column="72" selection-end-line="85" selection-end-column="72" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/recom.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="308">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/mall.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="504">
+          <caret line="81" column="42" lean-forward="true" selection-start-line="81" selection-start-column="42" selection-end-line="81" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/gift_info.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-145">
+          <caret line="246" column="17" lean-forward="true" selection-start-line="246" selection-start-column="17" selection-end-line="246" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/select_sex.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1204">
+          <caret line="58" column="36" selection-start-line="58" selection-start-column="36" selection-end-line="58" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/select_time.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="13" column="46" selection-start-line="13" selection-start-column="46" selection-end-line="13" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/order_item.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="224">
-          <caret line="8" column="102" lean-forward="true" selection-start-line="8" selection-start-column="102" selection-end-line="8" selection-end-column="102" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#353#377#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/not_connected.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="8" column="45" lean-forward="true" selection-start-line="8" selection-start-column="45" selection-end-line="8" selection-end-column="45" />
-          <folding>
-            <element signature="n#style#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/open.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="237">
-          <caret line="43" column="29" selection-start-line="43" selection-start-column="29" selection-end-line="43" selection-end-column="29" />
-          <folding>
-            <element signature="e#1285#1309#0" expanded="true" />
-          </folding>
+          <caret line="47" lean-forward="true" selection-start-line="47" selection-end-line="47" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/order.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-560">
-          <caret line="58" column="23" lean-forward="true" selection-start-line="58" selection-start-column="23" selection-end-line="58" selection-end-column="23" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#coverlayer#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#coverlayer#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#3;n#view#0;n#view#0;n#coverlayer#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#2530#2554#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/app.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2380">
-          <caret line="113" column="25" selection-start-line="113" selection-start-column="25" selection-end-line="113" selection-end-column="25" />
+        <state relative-caret-position="252">
+          <caret line="30" column="25" lean-forward="true" selection-start-line="30" selection-start-column="25" selection-end-line="30" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/PK_model_master.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1792">
-          <caret line="64" column="37" selection-start-line="64" selection-start-column="37" selection-end-line="64" selection-end-column="37" />
+        <state relative-caret-position="1736">
+          <caret line="71" selection-start-line="71" selection-end-line="71" />
           <folding>
             <element signature="e#633#657#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/game.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-112">
-          <caret line="238" column="30" selection-start-line="238" selection-start-column="30" selection-end-line="238" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/order_detail.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3933">
-          <caret line="340" column="19" lean-forward="true" selection-start-line="340" selection-start-column="19" selection-end-line="340" selection-end-column="19" />
+        <state relative-caret-position="205">
+          <caret line="138" column="56" selection-start-line="138" selection-start-column="56" selection-end-line="138" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/calculate.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-924" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/constant.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="699">
+          <caret line="64" column="23" selection-start-line="64" selection-start-column="13" selection-end-line="64" selection-end-column="23" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/address_add.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-280">
+          <caret line="20" column="39" lean-forward="true" selection-start-line="20" selection-start-column="39" selection-end-line="20" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/empty_address.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="70" column="75" lean-forward="true" selection-start-line="70" selection-start-column="75" selection-end-line="70" selection-end-column="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/util.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="224">
+          <caret line="278" column="31" selection-start-line="278" selection-start-column="26" selection-end-line="278" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/address_list.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2925">
+          <caret line="110" lean-forward="true" selection-start-line="110" selection-end-line="110" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/commit_order.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="713">
+          <caret line="294" selection-start-line="294" selection-end-line="294" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2660">
+          <caret line="96" column="93" selection-start-line="96" selection-start-column="81" selection-end-line="96" selection-end-column="93" />
           <folding>
-            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#coverlayer#0;n#view#6;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#0;n#view#0;n#coverlayer#0;n#view#6;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#10154#10178#0" expanded="true" />
+            <element signature="e#0#42#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/personal_record.wpy">
+    <entry file="file://$PROJECT_DIR$/src/app.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="881">
-          <caret line="97" column="59" lean-forward="true" selection-start-line="97" selection-start-column="59" selection-end-line="97" selection-end-column="59" />
+        <state relative-caret-position="14868">
+          <caret line="537" column="44" selection-start-line="537" selection-start-column="44" selection-end-line="537" selection-end-column="44" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/PK_model.wpy">
+    <entry file="file://$PROJECT_DIR$/src/components/game.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="102" column="11" lean-forward="true" selection-start-line="102" selection-start-column="11" selection-end-line="102" selection-end-column="11" />
-          <folding>
-            <element signature="e#3735#3759#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/public_wall.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2617">
-          <caret line="145" lean-forward="true" selection-start-line="145" selection-end-line="145" />
-          <folding>
-            <element signature="e#1955#1979#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="8932">
+          <caret line="331" column="26" selection-start-line="331" selection-start-column="26" selection-end-line="331" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/PK_model_slave.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7811">
-          <caret line="280" column="46" selection-start-line="280" selection-start-column="46" selection-end-line="280" selection-end-column="46" />
+        <state relative-caret-position="2576">
+          <caret line="101" selection-start-line="101" selection-end-line="101" />
           <folding>
             <element signature="e#631#655#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/public_wall_record.wpy">
+    <entry file="file://$PROJECT_DIR$/src/pages/friend_gift_wall.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2015">
-          <caret line="101" selection-start-line="101" selection-end-line="101" />
+        <state relative-caret-position="1693">
+          <caret line="331" column="9" selection-start-line="331" selection-start-column="9" selection-end-line="331" selection-end-column="9" />
           <folding>
-            <element signature="e#1457#1481#0" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/send_gift.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4353">
+          <caret line="196" column="30" selection-start-line="196" selection-start-column="30" selection-end-line="196" selection-end-column="30" />
+          <folding>
+            <element signature="e#3511#3535#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/mygift.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2044">
+          <caret line="151" column="41" lean-forward="true" selection-start-line="151" selection-start-column="41" selection-end-line="151" selection-end-column="41" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#2809#2833#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/gift_canvas.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
           </folding>
         </state>
       </provider>

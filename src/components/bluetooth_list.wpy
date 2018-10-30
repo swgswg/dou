@@ -1,7 +1,21 @@
+// components--蓝牙列表
+<style lang="less">
+    .bluetooth-list{
+
+        .bluetooth-list-content{
+            border-bottom: 1rpx solid #51bcfd;
+
+            .content-text{
+                opacity: 0.7;
+            }
+        }
+    }
+</style>
+
 <template>
-    <view class="w-percent100 bluetooth-list">
+    <view class="w-percent100 border-box bgcf bluetooth-list" style="padding:{{2*px2rpxHeight}}px {{28*px2rpxWidth}}px 0px {{30*px2rpxHeight}}px">
         <repeat for="{{list}}" key="index" index="index" item="bluetooth">
-            <view class="flex-between bluetooth-list-content" data-index="{{index}}" @tap.stop="connecting">
+            <view class="flex-between border-box bluetooth-list-content" data-index="{{index}}" @tap.stop="connecting" style="padding:{{30*px2rpxHeight}}px 0">
                 <text class="f30 c0 content-text">ceshi111</text>
                 <text class="iconfont icon-youjiantou"></text>
             </view>
@@ -12,8 +26,14 @@
 <script>
     import wepy from 'wepy';
     import tip from '@/utils/tip'
+    import {PX_TO_RPX } from '@/utils/constant';
 
     export default class BluetoothList extends wepy.component {
+
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+        };
 
         props = {
             list:{
@@ -23,11 +43,18 @@
             }
         };
 
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+        }
+
         methods = {
             async connecting(e){
-                console.log(e)
+                // console.log(e)
                 let index = e.currentTarget.dataset.index;
-                console.log(index)
+                // console.log(index)
                 await tip.confirm('是否通过蓝牙连接设备ceshi111');
 
             }
@@ -36,23 +63,3 @@
     }
 </script>
 
-<style lang="less">
-
-    .bluetooth-list{
-        padding: 2rpx  28rpx 0 30rpx;
-        box-sizing: border-box;
-        background-color: #fff;
-
-        .bluetooth-list-content{
-            padding: 31rpx 0;
-            box-sizing: border-box;
-            border-bottom: 1rpx solid #51bcfd;
-
-            .content-text{
-                opacity: 0.7;
-            }
-        }
-
-    }
-
-</style>

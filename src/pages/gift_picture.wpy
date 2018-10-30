@@ -42,10 +42,10 @@
                 <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
                 <!--暂无数据显示-->
                 <block wx:if="{{receive_is_empty && currentTab == 0}}">
-                    <placeholder :show.sync="receive_is_empty" message="您还没有图片哦"></placeholder>
+                    <placeholder :show.sync="receive_is_empty" message="您还没有收到礼物哦"></placeholder>
                 </block>
                 <block wx:if="{{send_is_empty && currentTab == 1}}">
-                    <placeholder :show.sync="send_is_empty" message="您还没有图片哦"></placeholder>
+                    <placeholder :show.sync="send_is_empty" message="您还没有收到礼物哦"></placeholder>
                 </block>
             </scroll-view>
         </view>

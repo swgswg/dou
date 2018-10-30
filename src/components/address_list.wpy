@@ -1,17 +1,34 @@
+// components--地址列表
+<style lang="less">
+    .address-list{
+        .address-each{
+            border-bottom: 2rpx solid #ccc;
+
+            .default-text{
+                color: #ff0101;
+            }
+
+            .icon-write{
+                font-size: 40rpx;
+            }
+        }
+    }
+</style>
+
 <template>
-    <view class="flex flex-center w-percent100 address-list">
-        <view class="flex flex-column w-percent100 address-list-content">
+    <view class="flex-center w-percent100 address-list">
+        <view class="flex-column w-percent100 address-list-content">
             <block wx:for="{{addressList}}" wx:for-item="addr" wx:key="{{index}}">
-                <view class="flex flex-column-center w-percent100 address-each"
+                <view class="flex-column-center w-percent100 border-box address-each"
                       style="height:{{160*px2rpxHeight}}px;padding:{{20*px2rpxHeight}}px {{40*px2rpxWidth}}px;"
                       data-index="{{index}}"
                       @tap.stop="selectAddrToOtherPage">
 
-                    <view class="flex flex-start w-percent100 name-tel">
+                    <view class="flex-start w-percent100 name-tel">
                         <view class="f30 c0 name">{{addr.consignee}}</view>
                         <view class="f24 ca tel" style="margin-left:{{20*px2rpxWidth}}px;">{{addr.mobile}}</view>
                     </view>
-                    <view class="flex flex-between w-percent100 addr" style="height:{{90*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
+                    <view class="flex-between w-percent100 addr" style="height:{{90*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
                         <view class="f24 default-text" style="width:{{130*px2rpxWidth}}px;" wx:if="{{addr.status == 1}}">[默认地址]</view>
                         <view class="f24 c0 default" style="width:{{430*px2rpxWidth}}px;">{{addr.site}}</view>
 
@@ -32,7 +49,7 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX} from '@/utils/constant';
+    import {PX_TO_RPX,PAGES_PATH} from '@/utils/constant';
     import util from '@/utils/util';
     import Placeholder from "@/components/common/placeholder";
 
@@ -74,7 +91,7 @@
             // 选择地址再跳转回去
             selectAddrToOtherPage(e){
                 let currentPage = util.getCurrentPageUrl();
-                if(currentPage === 'pages/commit_order'){
+                if(currentPage != 'pages/address_list'){
                     // 提交订单页跳转到地址列表页
                     wepy.navigateTo({
                         url:'/pages/address_list'
@@ -88,11 +105,8 @@
                         let prevPage = pages[pages.length - 2];
                         prevPage.changeAddr(address);
                         wepy.navigateBack();
-                        // console.log(prevUrl);
-                        // this.$emit('changeAddr',address);
                     }
                 }
-
             },
 
             // 编辑地址
@@ -107,22 +121,3 @@
     }
 </script>
 
-<style lang="less">
-    .address-list{
-
-        .address-each{
-            box-sizing: border-box;
-            border-bottom: 2rpx solid #ccc;
-
-            .default-text{
-                color: #ff0101;
-            }
-
-            .icon-write{
-                font-size: 40rpx;
-            }
-
-        }
-
-    }
-</style>

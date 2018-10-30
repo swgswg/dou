@@ -33,7 +33,7 @@
         <!--3/2/1倒计时 start-->
         <block wx:if="{{isCountDownNum}}">
             <view class="flex-center w-percent100" style="margin-top:{{80*px2rpxHeight}}px;">
-                <view class="flex-center f200 cf bg-repeat-size border"
+                <view class="flex-center f200 cf bg-repeat-size"
                       style="width:{{460*px2rpxWidth}}px;height:{{460*px2rpxWidth}}px;background-image:url({{NumBg}})">
                     <veiw class="flex-center w-percent100 h-percent100">{{countDownNum}}</veiw>
                 </view>
@@ -269,7 +269,7 @@
                 this.isOverCountDown(false);
                 // 退出游戏
                 this.updateRoomUserStatusE();
-                this.cancelHeartbeatE();
+                // this.cancelHeartbeatE();
                 // 关闭websocket
                 // setTimeout(function() {
                 //     socketServer.wsClose();
@@ -290,8 +290,6 @@
             cancelHeartbeatEvents(){
                 this.cancelHeartbeatE();
             }
-
-
         };
 
         // 完善自己的舞台信息
@@ -338,7 +336,6 @@
         isOverCountDown(flag){
             // 添加游戏记录
             clearInterval(clear_set);
-            this.$broadcast('stopCountDown');
             this.countDownNum = 3;
             this.isCountDownNum = false;
             this.countdownStart = false;
@@ -413,7 +410,7 @@
                 }
             });
             // 清除定时器
-            this.$broadcast('stopCountDown');
+            // this.$broadcast('stopCountDown');
         }
 
         // 发送点击数

@@ -35,21 +35,18 @@
     import Record from '@/components/record';
     import BestRecord from '@/components/best_record';
 
-    export default class MyPage extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
+    export default class PagesRecord extends wepy.page {
         config = {
             navigationBarTitleText: '我的记录',
             disableScroll: true,
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             info:Info,
             record:Record,
             bestrecord:BestRecord,
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
@@ -61,7 +58,6 @@
             ranking:10,
         };
 
-        // 在Page和Component共用的生命周期函数
         async onLoad(options){
             let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
@@ -71,12 +67,10 @@
             this.$apply();
         }
 
-        // 只在Page中存在的页面生命周期函数
         onReady() {
             this.getOneUserInfoEvent();
         };
 
-        // 根据userId获取用户信息
         async getOneUserInfoEvent(){
             let userId = this.userId;
             let res = await api.getOneUserInfo({

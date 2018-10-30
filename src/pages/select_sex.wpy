@@ -7,9 +7,10 @@
             flex-direction: column;
             justify-content: space-around;
             align-items: center;
-            width: 50%;
-            box-sizing: border-box;
+        }
 
+        .active-text{
+            color:red;
         }
 
         .content_bgcolor{
@@ -24,20 +25,50 @@
     <view class="pr flex-center w-percent100 select-sex">
 
         <view class="flex-between w-percent100">
-            <view class="left {{currentProfile == 0 ? 'content_bgcolor':''}}" style="height:{{1205*px2rpxHeight}}px;padding:{{100*px2rpxHeight}}px 0;">
-                <view class="flex-center">
-                    <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" lazy-load='true' src="{{currentSex == 1 ? woman_active : woman_inactive}}" data-sex= '1' @tap.stop="selectSex"></image>
+            <view class="left w-percent50 border-box {{currentProfile == 0 ? 'content_bgcolor':''}}" style="height:{{1205*px2rpxHeight}}px;padding:{{100*px2rpxHeight}}px 0;">
+                <view class="flex-column-center">
+                    <image src="{{currentSex == 1 ? woman_active : woman_inactive}}"
+                           lazy-load='true'
+                           data-sex= '1'
+                           @tap.stop="selectSex"
+                           style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;">
+                    </image>
+                    <view class="f30 {{currentSex == 1 ? 'active-text' : ''}}"
+                          style="margin-top:{{20*px2rpxHeight}}px;">
+                        女
+                    </view>
                 </view>
                 <view class="flex-center sex-img-each">
-                    <image src="{{profile[0]}}" lazy-load='true' style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="0" @tap.stop="selectProfile"></image>
+                    <image src="{{profile[0]}}"
+                           lazy-load='true'
+                           data-index="0"
+                           @tap.stop="selectProfile"
+                           style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;">
+                    </image>
                 </view>
             </view>
-            <view class="right {{currentProfile == 1 ? 'content_bgcolor':''}}" style="height:{{1205*px2rpxHeight}}px;padding:{{100*px2rpxHeight}}px 0;">
-                <view class="flex-center">
-                    <image style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;" lazy-load='true' src="{{currentSex == 0 ? man_active : man_inactive}}" data-sex = '0' @tap.stop="selectSex"></image>
+
+            <view class="right w-percent50 border-box {{currentProfile == 1 ? 'content_bgcolor':''}}" style="height:{{1205*px2rpxHeight}}px;padding:{{100*px2rpxHeight}}px 0;">
+                <view class="flex-column-center">
+                    <image src="{{currentSex == 0 ? man_active : man_inactive}}"
+                           lazy-load='true'
+                           data-sex = '0'
+                           @tap.stop="selectSex"
+                           style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxWidth}}px;">
+                    </image>
+                    <view class="f30 {{currentSex == 0 ? 'active-text' : ''}}"
+                          style="margin-top:{{20*px2rpxHeight}}px;">
+                        男
+                    </view>
                 </view>
+
                 <view class="flex-center sex-img-each">
-                    <image src="{{profile[1]}}" lazy-load='true' style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;" data-index="1" @tap.stop="selectProfile"></image>
+                    <image src="{{profile[1]}}"
+                           lazy-load='true'
+                           data-index="1"
+                           @tap.stop="selectProfile"
+                           style="width:{{200*px2rpxWidth}}px;height:{{357*px2rpxWidth}}px;">
+                    </image>
                 </view>
             </view>
         </view>
@@ -57,14 +88,12 @@
     import tip from '@/utils/tip';
     import util from '@/utils/util';
     import { Base64 } from '@/utils/base64';
-    import weixin from '@/utils/weixin';
-
 
     let name = null;
     let photo = null;
     let userInfo = null;
 
-    export default class MyPage extends wepy.page {
+    export default class SelectSex extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '选择性别'

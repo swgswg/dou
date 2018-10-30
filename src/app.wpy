@@ -106,6 +106,10 @@
         font-size: 30rpx;
     }
 
+    .f32{
+        font-size: 32rpx;
+    }
+
     .f34 {
         font-size: 34rpx;
     }

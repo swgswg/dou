@@ -1,16 +1,26 @@
 // 历史记录模块
+<style lang="less">
+    .com-record{
+        .flex-start{
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+    }
+</style>
+
 <template>
-    <view class="com-record">
-        <view class="head" style="height:{{90*px2rpxHeight}}px;">
-            <view class="head-left">
-                <image class="img" lazy-load="true" src="{{record}}" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;"></image>
-                <view class="name">历史记录</view>
+    <view class="flex-column w-percent100 br10 com-record">
+        <view class="flex-between w-percent100 border-box br10 bgcf" style="height:{{90*px2rpxHeight}}px;padding:0 {{20*px2rpxWidth}}px;">
+            <view class="flex-center w-percent100">
+                <image class="img" lazy-load="true" src="{{record}}" style="width:{{50*px2rpxWidth}}px;height:{{50*px2rpxWidth}}px;margin-left:{{22*px2rpxWidth}}px;"></image>
+                <view class="w-percent100 f30 name" s>历史记录</view>
             </view>
-            <!--<view class="head-right">-->
+            <!--<view class="flex-center head-right">-->
                 <!--<image src="{{right}}" style="width:{{21*px2rpxWidth}}px;height:{{27*px2rpxWidth}}px;"></image>-->
             <!--</view>-->
         </view>
-        <view class="record-head" style="height:{{80*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
+        <view class="flex-start w-percent100 f30 c3 bgcf" style="height:{{80*px2rpxHeight}}px;margin-top:{{20*px2rpxHeight}}px;">
             <view class="flex-start" style="width:{{150*px2rpxWidth}}px;">类型</view>
             <view class="flex-start" style="width:{{150*px2rpxWidth}}px;margin-left:{{80*px2rpxWidth}}px;">次数</view>
             <view class="flex-start" style="width:{{150*px2rpxWidth}}px;margin-left:{{80*px2rpxWidth}}px;">时长</view>
@@ -18,7 +28,7 @@
         <view class="line"></view>
         <scroll-view scroll-y bindscrolltolower="scrollToLower" style="width:100%;height:{{420*px2rpxHeight}}px;background-color: #fff">
             <block wx:for="{{ranking}}" wx:for-item="rank" wx:key="{{index}}">
-                <view class="record-content" style="height:{{80*px2rpxHeight}}px;">
+                <view class="flex-start w-percent100 f30 c3 bgcf" style="height:{{80*px2rpxHeight}}px;">
                     <view class="flex-start" style="width:{{150*px2rpxWidth}}px;">{{rank.status == 1 ? '抖腿' : '手动'}}</view>
                     <view class="flex-start" style="width:{{150*px2rpxWidth}}px;margin-left:{{80*px2rpxWidth}}px;">{{rank.shakeNum}}</view>
                     <view class="flex-start" style="width:{{150*px2rpxWidth}}px;margin-left:{{80*px2rpxWidth}}px;">{{rank.time}}</view>
@@ -125,59 +135,3 @@
 
 </script>
 
-<style lang="less">
-    .com-record{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        border-radius: 10rpx;
-
-        .head{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            padding: 0 20rpx;
-            box-sizing: border-box;
-            border-radius: 10rpx;
-            background-color: #fff;
-
-            .head-left{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                width: 100%;
-
-                .name{
-                    width: 100%;
-                    margin-left: 22rpx;
-                    font-size: 30rpx;
-                }
-            }
-
-            .head-right{
-                display: flex;
-                justify-content: center;
-                align-items: center;
-            }
-
-        }
-        .record-head,.record-content{
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            width: 100%;
-            font-size: 30rpx;
-            color: #333;
-            background-color: #fff;
-
-            .flex-start{
-                display: flex;
-                justify-content: flex-end;
-                align-items: flex-start;
-            }
-        }
-
-    }
-
-</style>

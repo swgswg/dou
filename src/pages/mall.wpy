@@ -22,12 +22,12 @@
 </style>
 
 <template>
-    <view class="flex-column mall w-percent100" style="width: {{750*px2rpxWidth}}px;height: {{1200*px2rpxHeight}}px;">
+    <view class="flex-column mall w-percent100" style="width:{{windowWidth}}px;height:{{windowHeight}}px;">
         <view class="flex-center w-percent100">
-            <image src="{{mall_product}}" lazy-load="true" style="width:{{windowWidth}}px;height:{{366/4*(750/windowWidth)}}px"></image>
+            <image src="{{mall_product}}" lazy-load="true" mode="aspectFit" style="width:{{windowWidth}}px;height:{{366*px2rpxHeight}}px"></image>
         </view>
-        <view class="flex-column-center w-percent100 border-box f30" style="padding:{{20*px2rpxWidth}}px {{20*px2rpxHeight}}px;">
-            <view class="flex-between w-percent100" style="height:{{80*px2rpxHeight}}px">
+        <view class="flex-column-center w-percent100 border-box f30" style="padding:{{10*px2rpxWidth}}px {{10*px2rpxHeight}}px;">
+            <view class="flex-between w-percent100" style="height:{{80*px2rpxHeight}}px;">
                 <view class="flex-start w-percent50">
                     <image style="width:{{46*px2rpxWidth}}px;height:{{44*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
                     <view>抖腿币</view>
@@ -36,7 +36,7 @@
                 <view class="flex-end w-percent50">
                     <view class="flex-center" @tap.stop="goToMyGift">
                         <view >我的礼物</view>
-                        <text class="iconfont icon-youjiantou" style="margin-top: 10rpx"></text>
+                        <text class="iconfont icon-youjiantou" style="margin-top:{{10*px2rpxHeight}}px"></text>
                     </view>
                 </view>
             </view>
@@ -46,13 +46,18 @@
                     <view class="flex-center {{showStyle == '0' ? 'active' : ''}}" style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px" data-showstyle='0' @tap.stop="showStyleEvent">
                         <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px" lazy-load="true" src="{{showStyle == '0' ? mall_tuijian_active:mall_tuijian_inactive}}"></image>
                     </view>
-                    <view class="flex-center {{showStyle == '1'? 'active' : ''}}" style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px" data-showstyle='1' @tap.stop="showStyleEvent">
-                        <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px" lazy-load="true" src="{{showStyle == '1' ? mall_gift_active:mall_gift_inactive}}" ></image>
+                    <view class="flex-center {{showStyle == '1'? 'active' : ''}}"
+                          style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px;"
+                          data-showstyle='1' @tap.stop="showStyleEvent">
+                        <image style="width:{{133*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px;"
+                               lazy-load="true"
+                               src="{{showStyle == '1' ? mall_gift_active:mall_gift_inactive}}" >
+                        </image>
                     </view>
                 </view>
             </view>
         </view>
-        <view class="w-percent100" style="height: 60%;">
+        <view class="w-percent100" style="height:{{670*px2rpxHeight}}px;">
             <block wx:if="{{showStyle == '0'}}">
                 <recom></recom>
             </block>
@@ -73,18 +78,15 @@
     import Recom from '@/components/recom';
 
     export default class Mall extends wepy.page {
-        // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
-            navigationBarTitleText: '抖腿商城'
+            navigationBarTitleText: '脉抖商城'
         };
 
-        // 声明页面中所引用的组件，或声明组件中所引用的子组件
         components = {
             giftinfo:GiftInfo,
             recom:Recom,
         };
 
-        // 页面所需数据均需在这里声明，可用于模板数据绑定
         data = {
             px2rpxWidth:0,
             px2rpxHeight:0,
@@ -103,22 +105,18 @@
             showStyle:'0',
         };
 
-        // 在Page和Component共用的生命周期函数
         onLoad() {
-            let systemInfo = wepy.getSystemInfoSync();
-            this.windowWidth =systemInfo.windowWidth;
-            this.windowHeight=systemInfo.windowHeight;
-
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.windowWidth =px2rpx.originalWidth;
+            this.windowHeight=px2rpx.originalHeight;
 
             let userInfo = wepy.getStorageSync(USER_INFO);
             this.userId = userInfo.id;
             this.$apply();
         };
 
-        // 只在Page中存在的页面生命周期函数
         async onShow() {
             let userInfo = wepy.getStorageSync(USER_INFO);
             this.userId = userInfo.id;
@@ -136,11 +134,9 @@
             this.$apply();
         };
 
-        // 只在Page中存在的页面生命周期函数
         onReady() {
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 我的礼物
             goToMyGift(){

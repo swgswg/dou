@@ -11,7 +11,7 @@
 <template>
     <view class="flex-around w-percent100 h-percent100 select-time">
         <picker mode="multiSelector" bindchange="changeTime" value="{{selectTimeIndex}}" range="{{selectTimeArray}}" disabled="{{!hasTimeConfirmBtn}}">
-            <view class="flex-center w-percent100 h-percent100 cec2c98">
+            <view class="flex-center cec2c98">
                 <view class="flex-center num" style="margin-right:{{20*px2rpxWidth}}px;">
                     <!--当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}-->
                     {{selectTimeArray[0][selectTimeIndex[0]]}}:
@@ -40,6 +40,7 @@
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
+    import tip from '@/utils/tip';
     import {PX_TO_RPX} from '@/utils/constant';
 
     let clear_set = null;
@@ -107,15 +108,9 @@
 
             // 确定倒计时时间
             confirmSelectTime(){
-                if(this.selectTimeIndex[0] == 0 && this.selectTimeIndex[1] == 0 && this.selectTimeIndex[2] == 0){
-                    wx.showToast({
-                        title: '请选择时间',
-                        icon: 'none',
-                        duration: 1000
-                    });
+                if(!this.confirmSelectTimeE()){
                     return;
                 }
-
                 this.time = this.selectTimeArray[0][this.selectTimeIndex[0]] + ':' + this.selectTimeArray[1][this.selectTimeIndex[1]] +':' + this.selectTimeArray[2][this.selectTimeIndex[2]];
                 let time1 = this.selectTimeArray[0][this.selectTimeIndex[0]]+''+this.selectTimeArray[1][this.selectTimeIndex[1]]+''+this.selectTimeArray[2][this.selectTimeIndex[2]];
                 this.hasTimeConfirmBtn = false;
@@ -155,6 +150,11 @@
         };
 
         events = {
+            // 确定时间
+            confirmSelectTimeEvents(){
+                return this.confirmSelectTimeE();
+            },
+
             //停止倒计时
             stopCountDown(){
                 this.stopCountDownE();
@@ -182,6 +182,17 @@
                 this.$apply();
             }
         };
+
+        // 确定时间
+        confirmSelectTimeE(){
+            if(this.selectTimeIndex[0] <= 0 && this.selectTimeIndex[1] <= 0 && this.selectTimeIndex[2] <= 0){
+                tip.alert('请选择时间');
+                return false;
+            } else {
+                return true;
+            }
+        }
+
 
         // 倒计时结束
         stopCountDownE(){

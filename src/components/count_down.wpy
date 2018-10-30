@@ -4,6 +4,7 @@
         font-size: 50rpx;
     }
 </style>
+
 <template>
     <view class="flex-center cfcf05b w-percent100 h-percent100 count-down">
         <view>{{time}}</view>

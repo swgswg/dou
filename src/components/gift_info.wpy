@@ -1,5 +1,67 @@
+<style lang="less">
+    .gift-info{
+        display: flex;
+        padding: 20rpx 20rpx 0 20rpx;
+
+        .gift-info-each{
+
+            .left{
+                width: 60%;
+
+                .left-info{
+                    justify-content:flex-start;
+                    align-items: center;
+
+                    .gift-name{
+                        height: 50%;
+                    }
+
+                    .energy{
+                        display: flex;
+                        justify-content: flex-start;
+                        align-items: flex-start;
+                        height: 40%;
+                    }
+                }
+            }
+
+            .right{
+                width: 40%;
+
+                .gift-code{
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: flex-start;
+                    width: 45%;
+
+                    view{
+                        color: #ffc849;
+                    }
+                }
+
+                .btn{
+                    justify-content: flex-start;
+                    align-items: center;
+
+                    .btn1,.btn2{
+                        border: 1rpx solid #ec2c98;
+                    }
+
+                    .btn1{
+                        text-align: center;
+                        margin-bottom: 20rpx;
+                    }
+                    .btn2{
+                        background: linear-gradient(to top right,#ec2c98, #f68668);
+                    }
+                }
+            }
+        }
+    }
+</style>
+
 <template>
-    <view class="w-percent100 h-percent100 gift-info">
+    <view class="w-percent100 h-percent100 border-box gift-info">
         <scroll-view scroll-y bindscrolltolower="scrollToLower">
             <block wx:for="{{giftInfo}}" wx:for-item="giftInfo" wx:key="{{index}}">
                 <view class="flex-around w-percent100 bgcf gift-info-each" style="margin-bottom:{{20*px2rpxHeight}}px">
@@ -7,22 +69,22 @@
                         <view class="flex-center" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
                             <image style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;" lazy-load="true" src="{{fileUrl + giftInfo.photo}}"></image>
                         </view>
-                        <view class="left-info" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
+                        <view class="flex-column left-info" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
                             <view class="flex-start w-percent100 f30 ellipsis gift-name">{{giftInfo.name}}</view>
-                            <view class="energy">
+                            <view class="w-percent100 f25 energy">
                                 <image style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxHeight}}px;margin-right:{{10*px2rpxHeight}}px" lazy-load="true" src="{{energy}}"></image>
                                 <view>{{giftInfo.score}}</view>
                             </view>
                         </view>
                     </view>
                     <view class="flex-between right" style="height:{{150*px2rpxHeight}}px">
-                        <view class="gift-code" style="margin-top:{{29*px2rpxHeight}}px">
+                        <view class="h-percent100 gift-code" style="margin-top:{{29*px2rpxHeight}}px">
                             <image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
-                            <view>{{giftInfo.integral}}</view>
+                            <view class="f30">{{giftInfo.integral}}</view>
                         </view>
-                        <view class="btn">
-                            <input class="btn1" value="{{giftInfo.val}}" type="number" bindinput="buyNumber" data-giftid="{{giftInfo.id}}" data-integral="{{giftInfo.integral}}"  placeholder="购买数量" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" />
-                            <view class="btn2" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" data-giftid="{{giftInfo.id}}" data-index="{{index}}" @tap.stop="buy">兑换</view>
+                        <view class="flex-column w-percent50 btn">
+                            <input class="flex-center f25 br10 c3 bgcf btn1" value="{{giftInfo.val}}" type="number" bindinput="buyNumber" data-giftid="{{giftInfo.id}}" data-integral="{{giftInfo.integral}}"  placeholder="购买数量" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" />
+                            <view  class="flex-center f25 br10 cf btn2" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" data-giftid="{{giftInfo.id}}" data-index="{{index}}" @tap.stop="buy">兑换</view>
                         </view>
                     </view>
                 </view>
@@ -156,7 +218,7 @@
                         tip.toast('兑换成功');
                     }
                 } else {
-                    tip.error('请填写正确信息');
+                    tip.alert('请填写正确数量');
                 }
             },
         };
@@ -181,7 +243,7 @@
                 let gift = res.data.data.PageInfo.list;
                 let len = gift.length;
                 for(let i = 0; i < len; i++){
-                    gift[i].val = '';
+                    gift[i].val = 1;
                 }
                 giftInfo = giftInfo.concat(gift);
                 this.giftInfo = giftInfo;
@@ -220,82 +282,3 @@
     }
 </script>
 
-<style lang="less">
-    .gift-info{
-        display: flex;
-        padding: 20rpx 20rpx 0 20rpx;
-        box-sizing: border-box;
-
-        .gift-info-each{
-
-            .left{
-                width: 60%;
-
-                .left-info{
-                    display: flex;
-                    flex-direction: column;
-                    justify-content:flex-start;
-                    align-items: center;
-
-                    .gift-name{
-                        height: 50%;
-                    }
-
-                    .energy{
-                        display: flex;
-                        justify-content: flex-start;
-                        align-items: flex-start;
-                        width: 100%;
-                        height: 40%;
-                        font-size: 25rpx;
-                    }
-                }
-            }
-
-            .right{
-                width: 40%;
-
-                .gift-code{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    width: 45%;
-                    height: 100%;
-
-                    view{
-                        font-size: 30rpx;
-                        color: #ffc849;
-                    }
-                }
-
-                .btn{
-                    display: flex;
-                    flex-direction: column;
-                    justify-content: flex-start;
-                    align-items: center;
-                    width: 50%;
-
-                    .btn1,.btn2{
-                        display: flex;
-                        justify-content: center;
-                        align-items: center;
-                        font-size: 25rpx;
-                        border: 1rpx solid #ec2c98;
-                        border-radius: 10rpx;
-                    }
-
-                    .btn1{
-                        text-align: center;
-                        margin-bottom: 20rpx;
-                        color: #333;
-                        background-color: #fff;
-                    }
-                    .btn2{
-                        color: #fff;
-                        background: linear-gradient(to top right,#ec2c98, #f68668);
-                    }
-                }
-            }
-        }
-    }
-</style>

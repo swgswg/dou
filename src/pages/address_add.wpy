@@ -12,7 +12,7 @@
     import {USER_INFO,PX_TO_RPX } from '@/utils/constant';
     import AddressAdd from '@/components/address_add';
 
-    export default class AddressAdds extends wepy.page {
+    export default class PagesAddressAdd extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '添加地址'

@@ -1,5 +1,20 @@
+// components--历史最佳战绩
+<style lang="less">
+    .best-record{
+        .text2{
+            font-size: 48rpx;
+        }
+        .record{
+            color: #737373;
+        }
+        .img-each{
+            align-items: center;
+        }
+    }
+</style>
+
 <template>
-    <view class="w-percent100 br10 best-record" style="padding:{{20*px2rpxHeight}}px {{20*px2rpxWidth}}px;">
+    <view class="w-percent100 br10 pr border-box bgcf best-record" style="padding:{{20*px2rpxHeight}}px {{20*px2rpxWidth}}px;">
         <view class="flex-start w-percent100 f30 c3">历史最佳战绩:</view>
         <view class="flex-start w-percent100 f-family-edo cec2c98 text2" style="margin-top:{{20*px2rpxHeight}}px;">TAKE ME HAND</view>
         <view class="flex-start w-percent100 f30 record" style="margin-top:{{20*px2rpxHeight}}px;">
@@ -7,16 +22,16 @@
             <!--<view class="ml10">次数：{{record.shakeNum}}</view>-->
             <view class="ml10">总排名：{{record.rownum}}</view>
         </view>
-        <view class="flex-between w-percent100 f30 c9 img" style="margin-top:{{35*px2rpxHeight}}px;padding:0 {{50*px2rpxWidth}}px">
-            <view class="img-each">
+        <view class="flex-between w-percent100 f30 c9 border-box" style="margin-top:{{35*px2rpxHeight}}px;padding:0 {{50*px2rpxWidth}}px">
+            <view class="flex-column img-each">
                 <image src="{{hand_record}}" lazy-load="true" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
                 <view>{{record.sShakeNum}}</view>
             </view>
-            <view class="img-each">
+            <view class="flex-column img-each">
                 <image src="{{leg_record}}" lazy-load="true" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
                 <view>{{record.jShakeNum}}</view>
             </view>
-            <view class="img-each">
+            <view class="flex-column img-each">
                 <image src="{{shake_code}}" lazy-load="true" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
                 <view>{{record.integral}}</view>
             </view>
@@ -37,9 +52,9 @@
             px2rpxHeight:0,
             uploadFileUrl:api.uploadFileUrl,
             record:null,
-            hand_record:imgApi.hand_record,
-            leg_record:imgApi.leg_record,
-            shake_code:imgApi.shake_code,
+            hand_record: imgApi.hand_record,
+            leg_record: imgApi.leg_record,
+            shake_code: imgApi.shake_code,
         };
 
         props  = {
@@ -70,9 +85,7 @@
                 }
             });
             if(res.data.state == 1){
-                let record = res.data.data;
-                // record.time = record.time.replace(' ','小时');
-                this.record = record;
+                this.record = res.data.data;
                 this.$apply();
             } else {
                 tip.error('网路错误');
@@ -82,29 +95,3 @@
     }
 </script>
 
-<style lang="less">
-    .best-record{
-        position: relative;
-        box-sizing: border-box;
-        background-color: #fff;
-        
-        .text2{
-            font-size: 48rpx;
-        }
-
-        .record{
-            color: #737373;
-        }
-
-        .img{
-            box-sizing: border-box;
-
-            .img-each{
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-
-    }
-</style>

@@ -15,8 +15,8 @@
             <view class="flex flex-center h-percent100" style="width:{{80*px2rpxWidth}}px;">排名</view>
             <view class="flex flex-center h-percent100" style="width:{{80*px2rpxWidth}}px;">头像</view>
             <view class="flex flex-center h-percent100" style="width:{{150*px2rpxWidth}}px;">用户名</view>
-            <view class="flex flex-center h-percent100" style="width:{{180*px2rpxWidth}}px;">抖腿时长</view>
-            <view class="flex flex-center h-percent100" style="width:{{180*px2rpxWidth}}px;">抖腿次数</view>
+            <view class="flex flex-center h-percent100" style="width:{{180*px2rpxWidth}}px;">抖动时长</view>
+            <view class="flex flex-center h-percent100" style="width:{{180*px2rpxWidth}}px;">抖动次数</view>
         </view>
         <view class="flex flex-center w-percent100"
               style="height:{{1100*px2rpxHeight}}px;">
@@ -128,7 +128,7 @@
                 query:{
                     userId:userId,
                     type:0,
-                    status:1,
+                    status:0,
                     page:page,
                     pageSize:pageSize,
                 }

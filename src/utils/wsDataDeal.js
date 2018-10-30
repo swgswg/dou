@@ -15,8 +15,8 @@ const ty6 = 6; // 同步计数
  * @param that
  */
 function wsDeal(data, that, userId, shareId, isMaster) {
-    console.log('wsDataDeal');
-    console.log(data);
+    // console.log('wsDataDeal');
+    // console.log(data);
     let res = data;
     let ty = res.pop().type;
     // console.log(typeof ty);

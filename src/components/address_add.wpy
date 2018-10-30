@@ -1,6 +1,37 @@
+<style lang="less">
+    .address-add{
+        .each{
+            position: relative;
+            /*width: 100%;*/
+            border-bottom: 1rpx solid #bbb;
+
+            .each-title{
+                position: absolute;
+                top: 25rpx;
+                left: 0;
+                font-size: 30rpx;
+                color: #000;
+            }
+
+            .each-input{
+                position: absolute;
+                top: 25rpx;
+                left: 200rpx;
+                font-size: 28rpx;
+                border: 0px solid #fff;
+            }
+        }
+
+        .set-default{
+                padding-right: 10rpx;
+                box-sizing: border-box;
+            }
+    }
+</style>
+
 <template>
     <view class="flex-center w-percent100 address-add">
-        <view class="flex-column w-percent100 address-add-content">
+        <view class="flex-column w-percent100 border-box" style="padding:0 {{30*px2rpxHeight}}px">
             <view class="flex-start w-percent100 each" style="height:{{90*px2rpxHeight}}px;">
                 <view class="each-title">收货人</view>
                 <input class="each-input" value="{{consignee? consignee:''}}" style="width:{{490*px2rpxWidth}}px;" type="text" placeholder="姓名" bindinput="inputConsignee" />
@@ -184,39 +215,3 @@
     }
 </script>
 
-<style lang="less">
-    .address-add{
-
-        .address-add-content{
-            padding: 0 30rpx;
-            box-sizing: border-box;
-
-            .each{
-                position: relative;
-                /*width: 100%;*/
-                border-bottom: 1rpx solid #bbb;
-
-                .each-title{
-                    position: absolute;
-                    top: 25rpx;
-                    left: 0;
-                    font-size: 30rpx;
-                    color: #000;
-                }
-
-                .each-input{
-                    position: absolute;
-                    top: 25rpx;
-                    left: 200rpx;
-                    font-size: 28rpx;
-                    border: 0px solid #fff;
-                }
-            }
-
-            .set-default{
-                padding-right: 10rpx;
-                box-sizing: border-box;
-            }
-        }
-    }
-</style>

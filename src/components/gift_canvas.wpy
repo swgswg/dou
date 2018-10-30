@@ -4,16 +4,15 @@
 </style>
 
 <template>
-    <view class="gift-canvas flex-center">
-        <movable-area class="bgcf br10" style="width:{{canvasWidth*widthRatio}}px;height:{{(canvasHeight*heightRatio)}}px;border:3rpx solid #ec2c98;">
+    <view class="gift-canvas flex-center br10" style="border:3rpx solid #ec2c98;">
+        <movable-area class="bgcf br10" style="width:{{canvasWidth*widthRatio}}px;height:{{(canvasHeight*heightRatio)}}px;">
             <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.giftId}}">
                 <block wx:if="{{gift.type == 1}}">
                     <movable-view
                             style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
-                            x="{{gift.xaxle * widthRatio}}" y="{{gift.yaxle * heightRatio}}"
+                            x="{{gift.xaxle}}" y="{{gift.yaxle}}"
                             direction="all"
                             disabled
-                            bindchange="moveGift"
                             data-index="{{index}}">
                         <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"></image>
                     </movable-view>
@@ -21,9 +20,8 @@
                 <block wx:else>
                     <movable-view
                             style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
-                            x="{{gift.xaxle * widthRatio}}" y="{{gift.yaxle * heightRatio}}"
+                            x="{{gift.xaxle}}" y="{{gift.yaxle}}"
                             direction="all"
-                            out-of-bounds="true"
                             bindchange="moveGift"
                             data-index="{{index}}">
                         <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"></image>
@@ -37,7 +35,6 @@
 <script>
     import wepy from 'wepy';
     import imgApi from '@/utils/imgApi';
-    import util from '@/utils/util';
     import { PX_TO_RPX } from '@/utils/constant';
 
     export default class GiftCanvas extends wepy.component {
@@ -73,14 +70,11 @@
 
         methods = {
             moveGift(e){
-                console.log(e.detail);
+                // console.log(e.detail);
                 let index = e.currentTarget.dataset.index;
-                let giftList = this.giftList;
-                giftList[index].xaxle = e.detail.x;
-                giftList[index].yaxle = e.detail.y;
-                this.giftList = giftList;
+                this.giftList[index].xaxle = e.detail.x;
+                this.giftList[index].yaxle = e.detail.y;
                 this.$apply();
-                // console.log(this.giftList);
             },
 
         };

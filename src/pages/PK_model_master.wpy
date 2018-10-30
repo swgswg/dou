@@ -27,6 +27,7 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
+    import util from '@/utils/util';
     import socketServer from '@/utils/socketServer';
     import wsDataDeal from '@/utils/wsDataDeal';
 
@@ -117,9 +118,10 @@
         };
 
         // 转发
-        onShareAppMessage(res) {
+        onShareAppMessage() {
             let roomId = this.roomId;
             let legOrHand = this.legOrHand;
+            // console.log('/pages/PK_model_slave?share=' + userInfo.id + '&roomId=' + roomId + '&legOrHand=' + legOrHand)
             // 来自页面内转发按钮
             return {
                 title: '一起来战吧',
@@ -148,12 +150,14 @@
         startGameE(){
             // 时间已经选择 false为选择了时间
             if(this.hasTimeConfirmBtn){
+                tip.alert('请选择时间');
                 return;
             }
             //所有组员都准备好
             if( !this.allReady() ){
                 return;
             }
+
             this.updateRoomE();
             // 开始游戏
             this.$broadcast('countDownNum321Events');
@@ -195,6 +199,8 @@
         isOverCountDownE(){
             this.readyBtn = start_btn;
             this.updateGroupUserInit();
+            // 倒计时结束
+            // this.$broadcast('stopCountDown');
         }
 
         // 确定时间

@@ -29,7 +29,7 @@
         </view>
 
         <!--订单列表 start-->
-        <view class="flex-center w-percent100" style="height:{{1110*px2rpxHeight}}px">
+        <view class="flex-center w-percent100 bgcf0" style="height:{{1110*px2rpxHeight}}px">
             <scroll-view scroll-y="true" bindscrolltolower="scrollToLower">
                 <orderitem :orderList.sync="orderList"></orderitem>
                 <!--加载更多时动画-->

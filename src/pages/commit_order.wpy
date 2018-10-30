@@ -89,7 +89,7 @@
 
 <script>
     import wepy from 'wepy';
-    import {USER_INFO,PX_TO_RPX} from '@/utils/constant';
+    import {USER_INFO,PX_TO_RPX, PAGES_PATH} from '@/utils/constant';
     import util from '@/utils/util';
     import tip from '@/utils/tip';
     import api from '@/utils/api';
@@ -104,7 +104,7 @@
     let orderId = null;
     let openid = null;
 
-    export default class MyPage extends wepy.page {
+    export default class CommitOrder extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '提交订单'
@@ -291,16 +291,6 @@
                 tip.error('网络错误');
             }
         };
-
-        // events = {
-        //     // 改变地址,供子组件调用
-        //     changeAddr(addr){
-        //         console.log(addr);
-        //         this.address = [addr];
-        //         this.hasAddress = true;
-        //         this.$apply();
-        //     }
-        // };
 
         // 改变地址,供子组件调用
         changeAddr(addr){

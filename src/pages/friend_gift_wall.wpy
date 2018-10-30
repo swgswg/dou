@@ -172,7 +172,7 @@
 
             let userInfo = wepy.getStorageSync(USER_INFO);
             fansId = userInfo.id;
-            canSendVipWall = userInfo.status ? userInfo.status : 0;
+            canSendVipWall = userInfo.status;
 
             if(util.isEmpty(options.userId)){
                 tip.error('网络错误');
@@ -182,12 +182,6 @@
             this.$apply();
         };
 
-        // 只在Page中存在的页面生命周期函数
-        onShow() {
-
-        };
-
-        // 只在Page中存在的页面生命周期函数
         async onReady() {
             // console.log('friend_gift_wall===',this.userId);
             // 获取私墙前三名
@@ -199,10 +193,6 @@
             this.getSpNumEvent();
         };
 
-        // 声明数据watcher（详见后文介绍）
-        watch = {};
-
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
 
             // 好友信息
@@ -331,7 +321,7 @@
                 let logo = res.data.data.logo;
                 let logoX = this.canvasWidth - this.logoWidth;
                 let logoY = this.canvasHeight - this.logoHeight;
-                dataList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
+                dataList.push({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
                 this[threeGiftWall_x] = dataList;
                 // threeGiftWall.push(dataList);
                 // this.threeGiftWall = threeGiftWall;
@@ -357,7 +347,7 @@
                 let logo = data.logo;
                 let logoX = this.canvasWidth - this.logoWidth;
                 let logoY = this.canvasHeight - this.logoHeight;
-                publicList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
+                publicList.push({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
                 // console.log(publicList);
                 this.publicWall = publicList;
                 this.publicWallId = data.id;

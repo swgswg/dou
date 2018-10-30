@@ -63,11 +63,11 @@
             // 组员不需要时间的确定按钮
             hasTimeConfirmBtn:false,
 
-            // stageDataLeft:{userId:'' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
-            stageDataLeft:{userId:'1' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+            stageDataLeft:{userId:'' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            // stageDataLeft:{userId:'1' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
             stageDataCenter:{userId:'' ,roomId:'',legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
-            // stageDataRight:{userId:'' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
-            stageDataRight:{userId:'1' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+            stageDataRight:{userId:'' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            // stageDataRight:{userId:'1' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
 
             // 倒计时时间
             selectTimeIndex:[0,0,0],
@@ -90,7 +90,6 @@
             // 首次跳转进来的判断用户信息全不全
             if(util.isEmpty(userInfo.logo)){
                 // 把信息存入缓存
-                // wepy.setStorageSync(GAME_INFOE, {share: shareId, roomId: roomId, legOrHand: legOrHand});
                 let path = '/pages/PK_model_slave?share=' + shareId + '&roomId=' + roomId + '&legOrHand=' + legOrHand;
                 wepy.setStorageSync(PAGES_PATH, {path: path});
 
@@ -116,7 +115,6 @@
 
             // 通过分享进来的建立好友关系
             this.buildFriend(options.share);
-
 
         };
 
@@ -260,7 +258,7 @@
             this.stageDataRight.isLight = 0;
             this.readyBtn = ready_btn;
             this.hasTimeConfirmBtn = false;
-            this.$broadcast('stopCountDown');
+            // this.$broadcast('stopCountDown');
             this.$apply();
         }
 

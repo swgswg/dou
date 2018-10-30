@@ -94,7 +94,7 @@
     let logoWidth = api.logoWidth;
     let logoHeight = api.logoHeight;
     
-    export default class MyPage extends wepy.page {
+    export default class SendGift extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
             navigationBarTitleText: '送礼物',
@@ -142,7 +142,10 @@
 
         // 在Page和Component共用的生命周期函数
         async onLoad(options) {
+            this.userId = options.userId;
+            this.wallStatus = options.sendStatus;
             // console.log('send_gift==',options);
+
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
@@ -156,17 +159,6 @@
             fans_info.integral = parseInt(userInfo.integral);
             this.fans_info = fans_info;
             this.fansId = userInfo.id;
-
-            if(util.isEmpty(options.userId)){
-                tip.error('网络错误');
-            } else {
-                this.userId = options.userId;
-            }
-            if(util.isEmpty(options.sendStatus)){
-                tip.error('网络错误');
-            } else {
-                this.wallStatus = options.sendStatus;
-            }
             this.$apply();
         };
 
@@ -180,15 +172,15 @@
                 // 私墙不显示其他玩家头像
                 this.showOtherProfile = false;
                 // 获取私墙id
-                this.getSPresentsWallEvent();
-                this.getOneUserInfoEvent();
+                this.getSPresentsWallE();
+                this.getOneUserInfoE();
+
             } else if(this.wallStatus == 'public'){
                 // 公共的墙显示玩家头像
                 this.showOtherProfile = true;
-                // 公墙获取其他玩家头像
-                this.getGiveGiftUserPhotoEvent();
                 // 获取公墙
-                this.getPresentsWallEvent();
+                this.getPresentsWallE();
+
             }
 
         };
@@ -200,9 +192,8 @@
         events = {
             // 添加礼物到礼物墙
             addGiftToWall(oneGift){
-                let giftList = this.giftList;
-                giftList.push(oneGift);
-                this.giftList = giftList;
+                this.giftList.push(oneGift);
+                // this.giftList = giftList;
                 this.$apply();
             },
 
@@ -239,8 +230,7 @@
         };
 
         // 获取其他送礼物人的头像(公墙才有)
-        async getGiveGiftUserPhotoEvent(){
-            let wallId = this.giftWallId;
+        async getGiveGiftUserPhotoE(wallId){
             let res = await api.getGiveGiftUserPhoto({
                 query:{
                     presentsWallId:wallId
@@ -257,7 +247,7 @@
         };
         
         // 获取私墙id
-        async getSPresentsWallEvent(){
+        async getSPresentsWallE(){
             let userId = this.userId;
             let fansId = this.fansId;
             let res = await api.getSPresentsWall({
@@ -275,7 +265,7 @@
         }
 
         // 获取被送礼物人的信息
-        async getOneUserInfoEvent(){
+        async getOneUserInfoE(){
             let userId = this.userId;
             let res = await api.getOneUserInfo({
                 query:{
@@ -300,7 +290,7 @@
         }
 
         // 获取公共墙的礼物
-        async getPresentsWallEvent(){
+        async getPresentsWallE(){
             let userId = this.userId;
             let res = await api.getPresentsWall({
                 query:{
@@ -321,11 +311,12 @@
                 this.logoLocation = {x:logoX,y:logoY};
                 this.giftList = dataList;
                 this.giftWallId = data.id;
-                // console.log(this.giftList);
+                // 公墙获取其他玩家头像
+                this.getGiveGiftUserPhotoE(data.id);
+                this.$apply();
             } else {
                 tip.error('网络错误');
             }
-            this.$apply();
         }
 
 

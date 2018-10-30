@@ -1,9 +1,18 @@
+// components--移动视图
+<style lang="less">
+    .move-area{
+        border: 1px solid #ec2c98;
+
+        .move-view{
+            z-index: 999;
+        }
+    }
+</style>
+
 <template>
-    <view id="movable" class="move-area" style="width:{{areaWidth*widthRatio}}px;height:{{areaHeight*heightRatio}}px;">
-
+    <view id="movable" class="pr br10 o-hidden bgcf move-area" style="width:{{areaWidth*widthRatio}}px;height:{{areaHeight*heightRatio}}px;">
         <block wx:for="{{giftList}}" wx:for-item="list" wx:key="{{index}}">
-
-            <view class="move-view"
+            <view class="pa flex-center move-view"
                   data-disabled="{{list.type}}"
                   data-index="{{index}}"
                   data-viewwidth="{{list.wide*widthRatio}}"
@@ -12,9 +21,7 @@
                   style="width:{{list.wide*widthRatio}}px;height:{{list.high*widthRatio}}px;top:{{list.yaxle*heightRatio}}px;left:{{list.xaxle*widthRatio}}px;">
                 <image src="{{fileUrl + list.url}}" lazy-load="true" style="width:{{list.wide*widthRatio}}px;height:{{list.high*widthRatio}}px;"> </image>
             </view>
-
         </block>
-
     </view>
 </template>
 
@@ -115,20 +122,3 @@
     }
 </script>
 
-<style lang="less">
-    .move-area{
-        position: relative;
-        background-color: #fff;
-        border-radius: 10px;
-        border: 1px solid #ec2c98;
-        overflow: hidden;
-
-        .move-view{
-            position: absolute;
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    }
-</style>
