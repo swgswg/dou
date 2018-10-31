@@ -149,14 +149,14 @@
                 // 获取点击的礼物的index
                 let index = e.currentTarget.dataset.index;
                 // 获取礼物墙已经拥有的礼物
-                let myGift = this.myGift;
+                // let myGift = this.myGift;
                 // 礼物的数量小于1
-                if(myGift[index].num < 1){
+                if(this.myGift[index].num < 1){
                     return;
                 }
                 // 随机坐标
-                let w = parseFloat(myGift[index].wide);
-                let h = parseFloat(myGift[index].high);
+                let w = parseFloat(this.myGift[index].wide);
+                let h = parseFloat(this.myGift[index].high);
                 let x = util.rand(0,this.canvasWidth - w);
                 let y = util.rand(0,this.canvasHeight - h);
                 if(x > this.canvasWidth){
@@ -166,14 +166,15 @@
                     y = this.canvasHeight / 2
                 }
                 // console.log(x,y);
-                myGift[index].num = myGift[index].num - 1;
+                this.myGift[index].num = this.myGift[index].num - 1;
                 // giftList.push({id:0,giftId:myGift[index].giftId,wide:myGift[index].wide,high:myGift[index].high,xaxle:x,yaxle:y,url:myGift[index].photo,type:0});
-                let oneGift = {id:0, giftId:myGift[index].giftId,wide:w,high:h,xaxle:x,yaxle:y,url:myGift[index].url,score:myGift[index].score,type:0};
+                let oneGift = {id:0, giftId: this.myGift[index].giftId,wide:w,high:h,xaxle:x,yaxle:y,url: this.myGift[index].url,score: this.myGift[index].score,type:0};
+                this.$apply();
                 // 添加礼物到礼物墙
                 this.$emit('addGiftToWall',oneGift);
                 // 把添加到礼物墙的礼物添加临时变量
                 this.addGiftToVal(oneGift);
-                this.myGift = myGift;
+                // this.myGift = myGift;
             },
 
             // 确定送礼物
@@ -182,45 +183,46 @@
                 if(!this.isFullEnergy){
                     return;
                 }
-                let giftVal = this.giftVal;
-                let len = giftVal.length;
+                let len = this.giftVal.length;
                 if(len < 1){
                     tip.alert('您还没有送礼');
                     return;
                 }
-                let that = this;
-                let status = null;
-                if(this.vipOrPublic == 'vip'){
-                    status = 2;
-                } else if(this.vipOrPublic == 'public'){
-                    status = 0;
-                }
-                let giftId = '';
-                let xaxle = '';
-                let yaxle = '';
-                for(let i = 0; i < len; i++){
-                    giftId += giftVal[i].giftId + ',';
-                    xaxle += giftVal[i].xaxle + ',';
-                    yaxle += giftVal[i].yaxle + ',';
-                }
-                let res = await api.addSendGifts({
-                    query:{
-                        userId:that.fansId,
-                        fansId:that.userId,
-                        presentsWallId:that.presentsWallId,
-                        giftId:giftId,
-                        xaxle:xaxle,
-                        yaxle:yaxle,
-                        status:status
-                    }
-                });
-                if(res.data.state == 1){
-                    tip.longtoast('请去下载抖腿APP完成后续操作');
-                    // 将所有的礼物状态改为1
-                    this.$emit('updateTypeTo1');
-                } else {
-                    tip.error('网络错误');
-                }
+                this.$emit('comfirmSendGiftEvents');
+                // let status = null;
+                // if(this.vipOrPublic == 'vip'){
+                //     status = 2;
+                // } else if(this.vipOrPublic == 'public'){
+                //     status = 0;
+                // }
+                // let giftId = '';
+                // let xaxle = '';
+                // let yaxle = '';
+                // for(let i = 0; i < len; i++){
+                //     giftId += giftVal[i].giftId + ',';
+                //     // xaxle += giftVal[i].xaxle + ',';
+                //     xaxle += giftVal[i].xaxleChange + ',';
+                //     // yaxle += giftVal[i].yaxle + ',';
+                //     yaxle += giftVal[i].yaxleChange + ',';
+                // }
+                // let res = await api.addSendGifts({
+                //     query:{
+                //         userId:that.fansId,
+                //         fansId:that.userId,
+                //         presentsWallId:that.presentsWallId,
+                //         giftId:giftId,
+                //         xaxle:xaxle,
+                //         yaxle:yaxle,
+                //         status:status
+                //     }
+                // });
+                // if(res.data.state == 1){
+                //     tip.longtoast('请去下载抖腿APP完成后续操作');
+                //     // 将所有的礼物状态改为1
+                //     this.$emit('updateTypeTo1');
+                // } else {
+                //     tip.error('网络错误');
+                // }
             },
 
             // 商城

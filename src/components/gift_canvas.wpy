@@ -7,26 +7,28 @@
     <view class="gift-canvas flex-center br10" style="border:3rpx solid #ec2c98;">
         <movable-area class="bgcf br10" style="width:{{canvasWidth*widthRatio}}px;height:{{(canvasHeight*heightRatio)}}px;">
             <block wx:for="{{giftList}}" wx:for-item="gift" wx:key="{{gift.giftId}}">
-                <block wx:if="{{gift.type == 1}}">
+                <!--<block wx:if="{{gift.type == 1}}">-->
                     <movable-view
                             style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
                             x="{{gift.xaxle}}" y="{{gift.yaxle}}"
                             direction="all"
-                            disabled
-                            data-index="{{index}}">
-                        <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"></image>
-                    </movable-view>
-                </block>
-                <block wx:else>
-                    <movable-view
-                            style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"
-                            x="{{gift.xaxle}}" y="{{gift.yaxle}}"
-                            direction="all"
+                            disabled="{{gift.type==1 ? t : f}}"
+                            data-index="{{index}}"
                             bindchange="moveGift"
-                            data-index="{{index}}">
+                            bind:touchend="moveEnd">
                         <image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"></image>
                     </movable-view>
-                </block>
+                <!--</block>-->
+                <!--<block wx:else>-->
+                    <!--<movable-view-->
+                            <!--style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"-->
+                            <!--x="{{gift.xaxle}}" y="{{gift.yaxle}}"-->
+                            <!--direction="all"-->
+                            <!--bindchange="moveGift"-->
+                            <!--data-index="{{index}}">-->
+                        <!--<image src="{{fileUrl + gift.url}}" style="width:{{gift.wide*widthRatio}}px; height:{{gift.high*widthRatio}}px;"></image>-->
+                    <!--</movable-view>-->
+                <!--</block>-->
             </block>
         </movable-area>
     </view>
@@ -37,6 +39,10 @@
     import imgApi from '@/utils/imgApi';
     import { PX_TO_RPX } from '@/utils/constant';
 
+    let moveGift = [];
+    let x = 0;
+    let y = 0;
+
     export default class GiftCanvas extends wepy.component {
 
         data = {
@@ -45,6 +51,8 @@
             px2rpxHeight:0,
             widthRatio:0,
             heightRatio:0,
+            t:true,
+            f:false
         };
 
         props = {
@@ -65,17 +73,40 @@
             // 比例系数
             this.widthRatio = this.px2rpxWidth * this.ratio;
             this.heightRatio = this.px2rpxHeight * this.ratio;
+            moveGift = [];
             this.$apply()
         };
 
         methods = {
             moveGift(e){
-                // console.log(e.detail);
+                console.log(e.detail);
                 let index = e.currentTarget.dataset.index;
-                this.giftList[index].xaxle = e.detail.x;
-                this.giftList[index].yaxle = e.detail.y;
-                this.$apply();
+                // console.log(index);
+                // this.giftList[index].xaxleChange = e.detail.x;
+                // this.giftList[index].yaxleChange = e.detail.y;
+                // console.log(this.giftList);
+                // this.$apply();
+
+                // let gift = this.giftList[index];
+                // gift.xaxle = e.detail.x;
+                // gift.yaxle = e.detail.y;
+                // console.log(gift);
+                // this.giftList[index] = gift;
+                // console.log(this.giftList);
+                // this.$apply();
+
+                x = e.detail.x;
+                y = e.detail.y;
             },
+            moveEnd(e){
+                let index = e.currentTarget.dataset.index;
+                console.log('index====',index);
+                console.log('x==',x);
+                console.log('y==',y);
+                this.giftList[index].xaxle = x;
+                this.giftList[index].yaxle = y;
+                this.$apply();
+            }
 
         };
 

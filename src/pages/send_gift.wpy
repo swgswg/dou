@@ -44,7 +44,7 @@
             <block wx:if="{{showOtherProfile}}">
                 <view class="flex-end other-profile" style="height:{{80*px2rpxHeight}}px;">
                     <block wx:for="{{otherUserPhone}}" wx:for-item="img" wx:key="{{index}}">
-                        <image class="br-percent50 profile-img" lazy-load="true" src="{{img.phone}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-right:{{-20*px2rpxWidth}}px"></image>
+                        <image class="br-percent50 profile-img" lazy-load="true" src="{{img.photo}}" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-right:{{-20*px2rpxWidth}}px"></image>
                     </block>
                     <view class="flex-center cf br-percent50 num" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-left:{{20*px2rpxWidth}}px;">{{otherUserNumber}}人</view>
                 </view>
@@ -53,7 +53,7 @@
         </view>
 
         <!--礼物墙 start-->
-        <view class="flex-center" style="margin-top: {{20*px2rpxHeight}}px;">
+        <view class="flex-center">
             <giftcanvas
                 :canvasWidth.sync="canvasWidth"
                 :canvasHeight.sync="canvasHeight"
@@ -124,14 +124,14 @@
             user_info:null,
             otherUserPhone:null,
             otherUserNumber:null,
-            // vip私墙/public公共墙
+            // vip私墙/public公共墙(0(公共墙),1（送出私墙）,2（未送出私墙）)
             wallStatus:null,
             showOtherProfile:false,
             // logoWidth:api.logoWidth,
             // logoHeight:api.logoHeight,
             canvasWidth:api.canvasWidth,
             canvasHeight:api.canvasHeight,
-            ratio:2,
+            ratio:2.1,
             giftList:null,
             giftWallId:null,
             // 私墙满500能量才能送礼
@@ -197,16 +197,16 @@
                 this.$apply();
             },
 
-            // 将所有礼物状态改为1(确定后不能移动)
-            updateTypeTo1(){
-                let gift = this.giftList;
-                let len = gift.length;
-                for(let i = 0; i < len; i++){
-                    gift[i].type = 1;
-                }
-                this.giftList = gift;
-                this.$apply();
-            },
+            // // 将所有礼物状态改为1(确定后不能移动)
+            // updateTypeTo1(){
+            //     let gift = this.giftList;
+            //     let len = gift.length;
+            //     for(let i = 0; i < len; i++){
+            //         gift[i].type = 1;
+            //     }
+            //     this.giftList = gift;
+            //     this.$apply();
+            // },
 
             // 私墙能量必须达到一定值才能提交
             isFullEnergyEvent(){
@@ -226,7 +226,50 @@
                     }
                 }
                 this.$apply();
-            }
+            },
+
+            // 确定送礼
+            async comfirmSendGiftEvents(){
+                let that = this;
+                let status = null;
+                // 0(公共墙),1（送出私墙）,2（未送出私墙）
+                if(this.wallStatus == 'vip'){
+                    status = 2;
+                } else if(this.wallStatus == 'public'){
+                    status = 0;
+                }
+                let giftId = '';
+                let xaxle = '';
+                let yaxle = '';
+                let len = this.giftList.length;
+                for(let i = 0; i < len; i++){
+                    if(this.giftList[i].type != 1){
+                        giftId += this.giftList[i].giftId + ',';
+                        xaxle += this.giftList[i].xaxle + ',';
+                        yaxle += this.giftList[i].yaxle + ',';
+                    }
+                }
+                let res = await api.addSendGifts({
+                    query:{
+                        userId: that.fansId,
+                        fansId: that.userId,
+                        presentsWallId: that.giftWallId,
+                        giftId: giftId,
+                        xaxle: xaxle,
+                        yaxle: yaxle,
+                        status: status
+                    }
+                });
+                if(res.data.state == 1){
+                    if(status == 2){
+                        tip.longtoast('请去下载抖腿APP完成后续操作');
+                    }
+                    // 将所有的礼物状态改为1
+                    this.updateTypeTo1();
+                } else {
+                    tip.error(res.data.message);
+                }
+            },
         };
 
         // 获取其他送礼物人的头像(公墙才有)
@@ -239,7 +282,7 @@
             if(res.data.state == 1){
                 this.otherUserPhone = res.data.data.slice(0,7);
                 // 总的送礼人数
-                this.otherUserNumber = 0;
+                this.otherUserNumber = this.otherUserPhone.length;
             } else {
                 tip.error('网络错误, 请稍后再试');
             }
@@ -317,6 +360,17 @@
             } else {
                 tip.error('网络错误');
             }
+        }
+
+        // 将所有礼物状态改为1(确定后不能移动)
+        updateTypeTo1(){
+            let gift = this.giftList;
+            let len = gift.length;
+            for(let i = 0; i < len; i++){
+                gift[i].type = 1;
+            }
+            this.giftList = gift;
+            this.$apply();
         }
 
 

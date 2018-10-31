@@ -3,49 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="163dff39-3b00-4120-a5ee-4f30053abe5a" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/app.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/address_add.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/address_add.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/address_list.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/address_list.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/best_record.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/best_record.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/bluetooth_list.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/bluetooth_list.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/count_down.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/count_down.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/empty_address.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/empty_address.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/energy_tank.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/energy_tank.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/first_three.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/first_three.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/game.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/game.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/gift_canvas.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/gift_canvas.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/gift_info.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/gift_info.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/info_item.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/info_item.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/move_view.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/move_view.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/mygift.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/mygift.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/order_item.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/order_item.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ranking_button.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_button.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ranking_friend.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_friend.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/ranking_style.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/ranking_style.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recom.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recom.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/record.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/record.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/select_time.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/select_time.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PK_model_master.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PK_model_master.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PK_model_slave.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PK_model_slave.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/VIP_wall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/VIP_wall.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/address_add.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/address_add.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/address_edit.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/address_edit.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/address_list.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/address_list.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/commit_order.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/commit_order.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/friend_gift_wall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/friend_gift_wall.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/gift_picture.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/gift_picture.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/mall.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/mall.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/my_friends.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/my_friends.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/my_gift.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/my_gift.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/my_info.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/my_info.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/order.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/order.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/order_detail.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/order_detail.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/record.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/record.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/select_model.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/select_model.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/select_sex.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/select_sex.wpy" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/send_gift.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/send_gift.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/set.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/set.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/wsDataDeal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/wsDataDeal.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -125,42 +85,32 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="send_gift.wpy" pinned="false" current-in-tab="false">
+      <file leaf-file-name="send_gift.wpy" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/pages/send_gift.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4353">
-              <caret line="196" column="30" selection-start-line="196" selection-start-column="30" selection-end-line="196" selection-end-column="30" />
+            <state relative-caret-position="374">
+              <caret line="245" column="51" lean-forward="true" selection-start-line="245" selection-start-column="51" selection-end-line="245" selection-end-column="51" />
               <folding>
+                <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="e#3511#3535#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gift_canvas.wpy" pinned="false" current-in-tab="true">
+      <file leaf-file-name="gift_canvas.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/gift_canvas.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="545">
-              <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+            <state relative-caret-position="405">
+              <caret line="106" column="42" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
               <folding>
                 <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="n#style#0;n#view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="friend_gift_wall.wpy" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/friend_gift_wall.wpy">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1693">
-              <caret line="331" column="9" selection-start-line="331" selection-start-column="9" selection-end-line="331" selection-end-column="9" />
-              <folding>
-                <element signature="n#style#0;n#view#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
+                <element signature="e#1624#1648#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -169,8 +119,8 @@
       <file leaf-file-name="mygift.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/components/mygift.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2044">
-              <caret line="151" column="41" lean-forward="true" selection-start-line="151" selection-start-column="41" selection-end-line="151" selection-end-column="41" />
+            <state relative-caret-position="307">
+              <caret line="181" column="45" selection-start-line="181" selection-start-column="28" selection-end-line="181" selection-end-column="45" />
               <folding>
                 <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
                 <element signature="e#2809#2833#0" expanded="true" />
@@ -195,14 +145,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>isOverCountDown</find>
-      <find>updateRoomTimeE</find>
-      <find>updateRoomE</find>
-      <find>each-title</find>
-      <find>each-input</find>
-      <find>list</find>
-      <find>infomation</find>
-      <find>info-img</find>
       <find>name-price-specific-num</find>
       <find>name-price</find>
       <find>name</find>
@@ -218,13 +160,21 @@
       <find>getGiveGiftUserPhoto</find>
       <find>getPresentsWallE</find>
       <find>getGiveGiftUserPhotoEvent</find>
-      <find>giftWallId</find>
       <find>getSPresentsWallEvent</find>
       <find>getOneUserInfoEvent</find>
       <find>getSPresentsWallE</find>
       <find>getOneUserInfoE</find>
       <find>threeGiftWall_x</find>
       <find>getSPresentsWallOneEvent</find>
+      <find>isFullEnergy</find>
+      <find>addGiftToWall</find>
+      <find>presentsWallId</find>
+      <find>giftWallId</find>
+      <find>updateTypeTo1</find>
+      <find>otherUserPhone</find>
+      <find>confirmGiftSeat</find>
+      <find>isFullEnergyEvent</find>
+      <find>giftList</find>
     </findStrings>
     <replaceStrings>
       <replace>rpx</replace>
@@ -309,9 +259,9 @@
         <option value="$PROJECT_DIR$/src/pages/commit_order.wpy" />
         <option value="$PROJECT_DIR$/src/pages/PK_model_slave.wpy" />
         <option value="$PROJECT_DIR$/src/pages/friend_gift_wall.wpy" />
-        <option value="$PROJECT_DIR$/src/pages/send_gift.wpy" />
         <option value="$PROJECT_DIR$/src/components/mygift.wpy" />
         <option value="$PROJECT_DIR$/src/components/gift_canvas.wpy" />
+        <option value="$PROJECT_DIR$/src/pages/send_gift.wpy" />
       </list>
     </option>
   </component>
@@ -343,7 +293,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -383,6 +332,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -390,7 +340,7 @@
     <property name="ToolWindowTypeScript.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="javascript.nodejs.core.library.configured.version" value="8.9.4" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test" />
     <property name="node.js.detected.package.prettier" value="true" />
     <property name="node.js.path.for.package.prettier" value="project" />
     <property name="node.js.selected.package.prettier" value="" />
@@ -528,6 +478,7 @@
       <workItem from="1540814505087" duration="1130000" />
       <workItem from="1540861648492" duration="40186000" />
       <workItem from="1540908813964" duration="6092000" />
+      <workItem from="1540948645054" duration="11858000" />
     </task>
     <task id="LOCAL-00001" summary="修改绑定手机号页面">
       <created>1540524973004</created>
@@ -540,7 +491,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1878007000" />
+    <option name="totallyTimeSpent" value="1889865000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -659,10 +610,9 @@
           <folding>
             <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#1624#1648#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -994,7 +944,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/friend_gift_wall.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1693">
+        <state relative-caret-position="2113">
           <caret line="331" column="9" selection-start-line="331" selection-start-column="9" selection-end-line="331" selection-end-column="9" />
           <folding>
             <element signature="n#style#0;n#view#0;n#view#2;n#view#0;n#template#0;n#!!top" expanded="true" />
@@ -1002,20 +952,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/send_gift.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4353">
-          <caret line="196" column="30" selection-start-line="196" selection-start-column="30" selection-end-line="196" selection-end-column="30" />
-          <folding>
-            <element signature="e#3511#3535#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/mygift.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2044">
-          <caret line="151" column="41" lean-forward="true" selection-start-line="151" selection-start-column="41" selection-end-line="151" selection-end-column="41" />
+        <state relative-caret-position="307">
+          <caret line="181" column="45" selection-start-line="181" selection-start-column="28" selection-end-line="181" selection-end-column="45" />
           <folding>
             <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="e#2809#2833#0" expanded="true" />
@@ -1025,15 +965,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/gift_canvas.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="545">
-          <caret line="80" lean-forward="true" selection-start-line="80" selection-end-line="80" />
+        <state relative-caret-position="405">
+          <caret line="106" column="42" selection-start-line="106" selection-start-column="42" selection-end-line="106" selection-end-column="42" />
           <folding>
             <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#0;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#movable-view#0;n#block#1;n#block#0;n#movable-area#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#1624#1648#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/send_gift.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="245" column="51" lean-forward="true" selection-start-line="245" selection-start-column="51" selection-end-line="245" selection-end-column="51" />
+          <folding>
+            <element signature="n#style#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="n#style#0;n#view#0;n#block#0;n#view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
+            <element signature="e#3511#3535#0" expanded="true" />
           </folding>
         </state>
       </provider>
