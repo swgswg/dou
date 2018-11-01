@@ -84,12 +84,12 @@
             // 选择模式
             goToGameModel(e){
                 let skip = e.currentTarget.dataset.skip;
-                // if(skip == '/pages/PK_model_master'){
-                //     this.addRoomE(0,skip);
-                //     return;
-                // } else if(skip == '/pages/PK_model_slave'){
-                //     this.slaveEnter(skip);
+                // if(skip == '/pages/PK_model_slave'){
+                //     wepy.navigateTo({
+                //         url: skip + '?legOrHand=0&roomId=1527&share=125',
+                //     });
                 // }
+
                 if(skip == '/pages/PK_model_master'){
                     this.addRoomE(0,skip);
                     return;
@@ -113,6 +113,7 @@
             });
             if(res.data.state == 1){
                 roomId = res.data.data.roomId;
+                console.log(roomId);
                 legOrHand = res.data.data.status;
                 wx.redirectTo({
                     url: skip + '?legOrHand=' + legOrHand + '&roomId=' + roomId
@@ -121,13 +122,6 @@
                 tip.error('网络错误')
             }
         }
-
-        // 模拟组员进入房间
-        // slaveEnter(skip){
-        //     wepy.navigateTo({
-        //         url: skip + '?legOrHand=0&roomId=1325&share=111',
-        //     });
-        // }
     }
 </script>
 

@@ -175,6 +175,10 @@ const updateRoomTime = (params) => wxRequest(params, host + 'shakeLeg/user/updat
 const updateRoomStatus = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoomStatus');
 // 开始游戏
 const updateRoom = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoom');
+// 查询pk排名
+const getUserPKRanking = (params) => wxRequest(params, host + 'shakeLeg/user/getUserPKRanking');
+// 断开重连
+const getRoomUserData = (params) => wxRequest(params, host + 'shakeLeg/user/getRoomUserData');
 
 export default {
     host,
@@ -262,4 +266,6 @@ export default {
     updateRoomTime,
     updateRoomStatus,
     updateRoom,
+    getUserPKRanking,
+    getRoomUserData,
 };

@@ -9,9 +9,9 @@
               :readyOrStartBtn.sync="readyOrStartBtn"
               :stageDataLeft.sync="stageDataLeft"
               :stageDataCenter.sync="stageDataCenter"
-              :stageDataRight="stageDataRight"
+              :stageDataRight.sync="stageDataRight"
               :hasTimeConfirmBtn.sync="hasTimeConfirmBtn"
-              :selectTimeIndex.sync="selectTimeIndex"
+              :time.sync="time"
               :isCountDownNum.sync="isCountDownNum"
               :countdownStart.sync="countdownStart"
         >
@@ -47,7 +47,7 @@
         };
 
         components = {
-            game:Game,
+            game: Game,
         };
 
         data = {
@@ -63,12 +63,13 @@
             // 房主需要时间的确定按钮
             hasTimeConfirmBtn:true,
 
-            stageDataLeft:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1,shakeHandNum:'邀请好友'},
-            // stageDataLeft:{userId:'1' , roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
-            stageDataCenter:{userId:'',roomId:'', legOrHand:'', logo:'', photo:'', isLight:2,shakeHandNum:'邀请好友'},
-            stageDataRight:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1,shakeHandNum:'邀请好友'},
-            // stageDataRight:{userId:'1' ,roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
-            selectTimeIndex:[0,0,0],
+            stageDataLeft:{userId:'',  roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            // stageDataLeft:{userId:1,  roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+            stageDataCenter:{userId:'',roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+            stageDataRight:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            // stageDataRight:{userId:2, roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+
+            time:'00:00:00',
 
             // 3-2-1倒计时是否显示
             isCountDownNum:false,
@@ -94,6 +95,10 @@
 
         };
 
+        onShow(){
+
+        }
+
         onReady() {
             let that = this;
             // 设置是否保持常亮状态。仅在当前小程序生效，离开小程序后设置失效。
@@ -101,8 +106,11 @@
                 keepScreenOn:true
             });
 
+            // 关闭webSocket
+            socketServer.wsClose();
+
             // 连接webSocket
-            socketServer.wsInit(userInfo.id, ()=>{
+            socketServer.wsInit(userInfo.id, that.roomId,()=>{
                 // 开启心跳
                 // this.$broadcast('heartbeatEvents');
             },(data)=>{
@@ -112,7 +120,7 @@
                 //     this.$broadcast('cancelHeartbeatEvents');
                 // }
                 wsDataDeal.wsDeal(data, that, userInfo.id, '', true);
-            });
+            }, true);
             // 开启心跳
             // this.$broadcast('cancelHeartbeatEvents');
         };
@@ -131,8 +139,8 @@
 
         events = {
             // 确定时间
-            confirmTimeEvents(strTime){
-                this.updateRoomTimeE(strTime);
+            confirmTimeEvents(){
+                this.updateRoomTimeE();
             },
 
             // 房主开始按钮
@@ -157,10 +165,7 @@
             if( !this.allReady() ){
                 return;
             }
-
             this.updateRoomE();
-            // 开始游戏
-            this.$broadcast('countDownNum321Events');
         }
 
         // 所有人都准备好
@@ -199,24 +204,26 @@
         isOverCountDownE(){
             this.readyBtn = start_btn;
             this.updateGroupUserInit();
-            // 倒计时结束
-            // this.$broadcast('stopCountDown');
         }
 
         // 确定时间
-        async updateRoomTimeE(strTime){
+        async updateRoomTimeE(){
             let roomId = this.roomId;
-            let time = this.selectTimeIndex[0]+'#'+this.selectTimeIndex[1]+'#'+this.selectTimeIndex[2];
+            let time = this.time;
             await api.updateRoomTime({
                 query:{
                     roomId: roomId,
                     time: time,
-                    time1: strTime
                 }
             });
         }
 
-        start(){}
+        // 游戏时间开始倒计时
+        start(data){
+            this.$broadcast('countDownNum321Events');
+            // 把游戏人物id存入缓存
+            wepy.setStorageSync(GAME_USER, data);
+        }
 
         // 房主开始游戏
         async updateRoomE(){
@@ -226,11 +233,6 @@
                     roomId: roomId
                 }
             });
-            if(res.data.state == 1){
-                // console.log(res.data);
-                // 把游戏人物id存入缓存
-                wepy.setStorageSync(GAME_USER, res.data.data);
-            }
         }
 
         // 房主退出,房间取消
@@ -239,9 +241,7 @@
         // 游戏结束修改玩家准备状态
         updateGroupUserInit(){
             this.stageDataLeft.isLight = 1;
-            this.stageDataLeft.shakeHandNum = 0;
             this.stageDataRight.isLight = 1;
-            this.stageDataRight.shakeHandNum = 0;
             this.$apply();
         }
 

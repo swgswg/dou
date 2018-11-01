@@ -120,7 +120,7 @@
     import Placeholder from "@/components/common/placeholder";
 
     let page = 1;
-    let pageSize = 6;
+    let pageSize = 20;
     let isFirstPage = false;
     let isLastPage = false;
     let userId = null;

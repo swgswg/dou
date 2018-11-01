@@ -20,7 +20,7 @@
 
             <!--头像/计数 start-->
             <view class="pa flex-center br10" style="bottom:{{-15*px2rpxWidth}}px;left:{{-20*px2rpxWidth}}px;width:80%;">
-                <view open-type="share" class="flex-center w-percent100 br10 f26 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO2.num}}</view>
+                <view open-type="share" class="flex-center w-percent100 br10 f26 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO2.shakeNum}}</view>
                 <image src="{{gameRankData.NO2.photo}}"
                        lazy-load="true"
                        class="pa br-percent50 {{gameRankData.NO2.photo ? 'br' : ''}}"
@@ -40,7 +40,7 @@
 
             <!--头像/计数 start-->
             <view class="pa flex-center br10" style="bottom:{{-15*px2rpxWidth}}px;left:0;width:80%;">
-                <view open-type="share" class="flex-center w-percent100 f26 br10 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO1.num}}</view>
+                <view open-type="share" class="flex-center w-percent100 f26 br10 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO1.shakeNum}}</view>
                 <image src="{{gameRankData.NO1.photo}}"
                        lazy-load="true"
                        class="pa br-percent50 {{gameRankData.NO1.photo ? 'br' : ''}}"
@@ -60,7 +60,7 @@
 
             <!--头像/计数 start-->
             <view class="pa flex-center br10" style="bottom:{{-20*px2rpxWidth}}px;right:{{-20*px2rpxWidth}}px;width:80%;">
-                <view open-type="share" class="flex-center w-percent100 f26 br10 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO3.num}}</view>
+                <view open-type="share" class="flex-center w-percent100 f26 br10 bgecd13b" style="height:{{65*px2rpxHeight}}px;">{{gameRankData.NO3.shakeNum}}</view>
                 <image src="{{gameRankData.NO3.photo}}"
                        lazy-load="true"
                        class="pa br-percent50 {{gameRankData.NO3.photo ? 'br' : ''}}"
@@ -80,7 +80,6 @@
     import {PX_TO_RPX} from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
-    import util from '@/utils/util';
     import tip from '@/utils/tip';
 
     export default class GameRank extends wepy.component {
@@ -122,17 +121,10 @@
 
         // 游戏排名
         gameRank(ranking){
-            // let ranking = [
-            //     {num:this.numLeft, logo:this.stageDataLeft.logo, photo:this.stageDataLeft.photo},
-            //     {num:this.numCenter,logo:this.stageDataCenter.logo, photo:this.stageDataCenter.photo},
-            //     {num:this.numRight,logo:this.stageDataRight.logo, photo:this.stageDataRight.photo},
-            // ];
-            let newRanking = util.sorting(ranking,'desc','num');
-            this.gameRankData.NO1 = newRanking[0];
-            this.gameRankData.NO2 = newRanking[1];
-            this.gameRankData.NO3 = newRanking[2];
+            this.gameRankData.NO1 = ranking[0];
+            this.gameRankData.NO2 = ranking[1];
+            this.gameRankData.NO3 = ranking[2];
             this.$apply();
-
             tip.longtoast('恭喜你获得双倍积分');
         }
 

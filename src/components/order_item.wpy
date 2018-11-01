@@ -62,6 +62,9 @@
                                         <block wx:if="{{order.status === notDelivered}}">待发货</block>
                                         <block wx:if="{{order.status === notReceived}}">已发货</block>
                                         <block wx:if="{{order.status === accomplish}}">交易完成</block>
+                                        <block wx:if="{{order.status === returnGoods}}">已退货</block>
+                                        <block wx:if="{{order.status === exchangeGoods}}">已换货</block>
+                                        <block wx:if="{{order.status === cancelOrder}}">订单已取消</block>
                                     </view>
                                 </view>
                             </view>
@@ -112,29 +115,29 @@
 
                     <!--3完成 start-->
                     <block wx:if="{{order.status == accomplish}}">
-                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="deleteOneOrder">删除</view>
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" data-index="{{index}}" @tap.stop="deleteOneOrder">删除</view>
                         <view class="status-btn status-btn2" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="applyAfterSale">申请售后</view>
                     </block>
                     <!--3完成 end-->
 
                     <!--4退货 start-->
                     <block wx:if="{{order.status == returnGoods}}">
-                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="deleteOneOrder">删除</view>
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" data-index="{{index}}" @tap.stop="deleteOneOrder">删除</view>
                         <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/退货</view>
                     </block>
                     <!--4退货 end-->
 
                     <!--5换货 start-->
                     <block wx:if="{{order.status == exchangeGoods}}">
-                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="deleteOneOrder">删除</view>
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" data-index="{{index}}" @tap.stop="deleteOneOrder">删除</view>
                         <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">售后/换货</view>
                     </block>
                     <!--5换货 end-->
 
                     <!--6订单取消 start-->
                     <block wx:if="{{order.status == cancelOrder}}">
-                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" @tap.stop="deleteOneOrder">删除</view>
-                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">订单取消</view>
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{order.id}}" data-index="{{index}}" @tap.stop="deleteOneOrder">删除</view>
+                        <view class="status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">订单已取消</view>
                     </block>
                     <!--6订单取消 end-->
 
@@ -147,7 +150,7 @@
 
 <script>
     import wepy from 'wepy';
-    import {PX_TO_RPX } from '@/utils/constant';
+    import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
     import imgApi from '@/utils/imgApi';
@@ -249,15 +252,16 @@
             },
 
             // 删除订单
-            deleteOrder(e){
+            deleteOneOrder(e){
                 let that = this;
                 let orderId = e.currentTarget.dataset.orderid;
+                let index = e.currentTarget.dataset.index;
                 wx.showModal({
                     title: '温馨提示',
                     content: '订单删除不可恢复',
                     success: function(res) {
                         if (res.confirm) {
-                            that.delOneOrders(orderId);
+                            that.delOneOrders(orderId,index);
                         }
                     }
                 });
@@ -278,7 +282,7 @@
                 }
             });
             if(res.data.state == 1){
-                tip.toast(msg+'成功');
+                tip.toast(msg);
                 // 刷新数据
                 this.$emit('refreshOrderList');
             } else {
@@ -288,7 +292,7 @@
         };
 
         // 删除订单
-        async delOneOrders(myordersId){
+        async delOneOrders(myordersId,index){
             let res = await api.delOrders({
                 query:{
                     ordersId:myordersId
@@ -296,10 +300,17 @@
             });
             if(res.data.state == 1){
                 tip.toast('删除成功');
+                this.deleteOneData(index);
             } else {
                 tip.error('网络错误');
             }
         };
+
+        // 删除数组中指定下标的数据
+        deleteOneData(index){
+            this.orderList.splice(index,1);
+            this.$apply();
+        }
     }
 </script>
 

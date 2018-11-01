@@ -18,9 +18,9 @@
         <view class="flex-start w-percent100 f30 c3">历史最佳战绩:</view>
         <view class="flex-start w-percent100 f-family-edo cec2c98 text2" style="margin-top:{{20*px2rpxHeight}}px;">TAKE ME HAND</view>
         <view class="flex-start w-percent100 f30 record" style="margin-top:{{20*px2rpxHeight}}px;">
-            <view>时长：{{record.time}}</view>
+            <view >时长:{{record.time}}</view>
             <!--<view class="ml10">次数：{{record.shakeNum}}</view>-->
-            <view class="ml10">总排名：{{record.rownum}}</view>
+            <view style="margin-left:{{20*px2rpxWidth}}px;">好友排名:{{record.rownum}}</view>
         </view>
         <view class="flex-between w-percent100 f30 c9 border-box" style="margin-top:{{35*px2rpxHeight}}px;padding:0 {{50*px2rpxWidth}}px">
             <view class="flex-column img-each">
@@ -33,7 +33,7 @@
             </view>
             <view class="flex-column img-each">
                 <image src="{{shake_code}}" lazy-load="true" style="width:{{100*px2rpxWidth}}px;height:{{99*px2rpxWidth}}px;"></image>
-                <view>{{record.integral}}</view>
+                <view>{{~~record.integral}}</view>
             </view>
         </view>
     </view>

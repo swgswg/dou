@@ -512,7 +512,8 @@ function SecondFormat(time,format='hh:mm:ss') {
         second = '0' + second;
     }
 
-    let newTime = format.replace(/hh/g, hour)
+    let newTime = format.replace(/d/g, day)
+        .replace(/hh/g, hour)
         .replace(/mm/g, minute)
         .replace(/ss/g, second);
 

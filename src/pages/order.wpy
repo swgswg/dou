@@ -89,6 +89,7 @@
     let pageSize = 20;
     let isLastPage = false;
     let userId = null;
+
     export default class Order extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
@@ -204,7 +205,7 @@
             refreshOrderList(){
                 this.orderList = [];
                 this.$apply();
-                this.getOrdersData(1,page*pageSize);
+                this.getOrdersData(1, page*pageSize);
             },
 
             // 取消所有遮盖层内容

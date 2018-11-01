@@ -104,6 +104,8 @@
     import tip from '@/utils/tip';
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
+    import weixin from '@/utils/weixin';
+
     import FirstThree from '@/components/first_three';
     import ShowGiftWall from '@/components/show_gift_wall';
     import Placeholder from "@/components/common/placeholder";
@@ -170,10 +172,6 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            fansId = userInfo.id;
-            canSendVipWall = userInfo.status;
-
             if(util.isEmpty(options.userId)){
                 tip.error('网络错误');
             } else {
@@ -181,6 +179,16 @@
             }
             this.$apply();
         };
+
+        onShow(){
+            weixin.updateUserInfo();
+            setTimeout(()=>{
+                let userInfo = wepy.getStorageSync(USER_INFO);
+                console.log(userInfo);
+                fansId = userInfo.id;
+                canSendVipWall = userInfo.status;
+            },800);
+        }
 
         async onReady() {
             // console.log('friend_gift_wall===',this.userId);
@@ -235,7 +243,7 @@
                         return;
                     }
 
-                    console.log(hasSendVipWall);
+                    // 您有未完成的vip墙
                     if(hasSendVipWall != 0){
                         tip.longtoast('您有未完成的礼物墙');
                         return;

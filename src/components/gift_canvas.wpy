@@ -79,30 +79,14 @@
 
         methods = {
             moveGift(e){
-                console.log(e.detail);
-                let index = e.currentTarget.dataset.index;
-                // console.log(index);
-                // this.giftList[index].xaxleChange = e.detail.x;
-                // this.giftList[index].yaxleChange = e.detail.y;
-                // console.log(this.giftList);
-                // this.$apply();
-
-                // let gift = this.giftList[index];
-                // gift.xaxle = e.detail.x;
-                // gift.yaxle = e.detail.y;
-                // console.log(gift);
-                // this.giftList[index] = gift;
-                // console.log(this.giftList);
-                // this.$apply();
-
                 x = e.detail.x;
                 y = e.detail.y;
             },
             moveEnd(e){
                 let index = e.currentTarget.dataset.index;
-                console.log('index====',index);
-                console.log('x==',x);
-                console.log('y==',y);
+                if(this.giftList[index].type == 1){
+                    return;
+                }
                 this.giftList[index].xaxle = x;
                 this.giftList[index].yaxle = y;
                 this.$apply();

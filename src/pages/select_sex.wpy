@@ -131,7 +131,6 @@
             userInfo = wepy.getStorageSync(USER_INFO);
         };
 
-        // 声明页面wxml中标签的事件处理函数。注意，此处只用于声明页面wxml中标签的bind、catch事件，自定义方法需以自定义方法的方式声明
         methods = {
             // 选择性别
             selectSex(e){
@@ -173,7 +172,7 @@
                     tip.longtoast('请选择动漫人物');
                     return;
                 }
-
+                console.log(e);
                 if (e.detail.errMsg == 'getUserInfo:ok'){
                     // 授权成功
                     // console.log('name=============');
@@ -183,6 +182,8 @@
                     // console.log(Base64.decode(e.detail.userInfo.nickName));
                     name = e.detail.userInfo.nickName;
                     photo = e.detail.userInfo.avatarUrl;
+                    // encryptedData = e.detail.encryptedData;
+                    // iv = e.detail.iv;
                     that.updateInfo();
 
                 } else {
@@ -197,15 +198,6 @@
         // 修改信息
         async updateInfo() {
             let that = this;
-            console.log('query==');
-            console.log(name);
-            console.log({
-                userId: userInfo.id,
-                sex: that.currentSex,
-                logo: that.logo,
-                name: name,
-                photo: photo,
-            });
             let rlt = await api.updateSex({
                 query: {
                     userId: userInfo.id,
@@ -215,11 +207,7 @@
                     photo: photo,
                 }
             });
-            console.log('updateSex');
-            console.log(rlt);
             if (rlt.data.state == 1) {
-                console.log('updateSex-ok');
-                console.log(rlt.data.state);
                 let res = await api.getOneUserInfo({
                     query: {
                         userId: userInfo.id,

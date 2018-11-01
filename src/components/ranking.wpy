@@ -4,7 +4,7 @@
         background-color: #fff;
 
         .ranking-content{
-            border: 1rpx solid #fbbd46;
+            border-top: 1rpx solid #fbbd46;
         }
     }
 </style>

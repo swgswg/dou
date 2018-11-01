@@ -36,7 +36,10 @@
             <!--人物头像 start-->
             <view class="flex-center profile">
                 <block wx:for="{{userPhoto}}" wx:for-item="img" wx:key="{{index}}">
-                    <image src="{{img.photo}}" lazy-load="true" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;"></image>
+                    <image src="{{img.photo}}"
+                           lazy-load="true"
+                           style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;">
+                    </image>
                 </block>
                 <block wx:if="{{userPhoto.length >= 19}}">
                     <image src="{{more}}" lazy-load="true" style="width:{{60*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;margin-top:{{24*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;" @tap.stop="goToPublicWallRecord"></image>
@@ -63,9 +66,17 @@
     import ShowGiftWall from '@/components/show_gift_wall';
     import Placeholder from "@/components/common/placeholder";
 
+    let canvasWidth = api.canvasWidth;
+    let canvasHeight = api.canvasHeight;
+    let userId = null;
+    let logo = null;
+    let logoWidth = api.logoWidth;
+    let logoHeight = api.logoHeight;
+    let publicWallId = null;
+
     export default class PublicWall extends wepy.page {
         config = {
-            navigationBarTitleText: '公共礼物墙'
+            navigationBarTitleText: '我的礼物墙'
         };
 
         components = {
@@ -84,17 +95,17 @@
             //获得本周的结束日期
             weekEndDate:null,
             is_empty:false,
-            canvasWidth:api.canvasWidth,
-            canvasHeight:api.canvasHeight,
-            userId:null,
-            logo:null,
-            logoWidth:api.logoWidth,
-            logoHeight:api.logoHeight,
+            // canvasWidth:api.canvasWidth,
+            // canvasHeight:api.canvasHeight,
+            // userId:null,
+            // logo:null,
+            // logoWidth:api.logoWidth,
+            // logoHeight:api.logoHeight,
             giftList:null,
             ratio:1.1,
             userPhoto:null,
             score:0,
-            publicWallId:null,
+            // publicWallId:null,
         };
 
         async onLoad(){
@@ -103,8 +114,8 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
 
             let userInfo = await wepy.getStorageSync(USER_INFO);
-            this.logo = userInfo.logo;
-            this.userId = userInfo.id;
+            logo = userInfo.logo;
+            userId = userInfo.id;
             this.$apply();
         }
 
@@ -112,7 +123,6 @@
         };
 
         async onReady() {
-            let userId = this.userId;
             // 获取公共礼物墙
             let res = await api.getPresentsWall({
                 query:{
@@ -126,14 +136,13 @@
                 } else {
                     this.is_empty = false;
                 }
-                this.userPhoto = data.userPhoto;
+                this.userPhoto = data.userPhoto.slice(0,20);
                 this.score = data.score;
-                this.publicWallId = data.id;
+                publicWallId = data.id;
                 let giftList = data.axle;
-                let logo = this.logo;
-                let logoX = this.canvasWidth - this.logoWidth;
-                let logoY = this.canvasHeight - this.logoHeight;
-                giftList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo});
+                let logoX = canvasWidth - logoWidth;
+                let logoY = canvasHeight - logoHeight;
+                giftList.unshift({giftId:-1, wide: logoWidth, high: logoHeight, xaxle: logoX, yaxle: logoY, url: logo});
                 this.giftList = giftList;
             } else {
                 tip.error('网络错误');
@@ -147,7 +156,6 @@
         methods = {
             // 查看公共墙记录
             goToPublicWallRecord(){
-                let publicWallId = this.publicWallId;
                 wx.navigateTo({
                     url:'/pages/public_wall_record?publicWallId='+publicWallId
                 })
@@ -163,7 +171,6 @@
             let nowDay = now.getDate(); //当前日
             //获得本周的开始日期
             let weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek+1);
-            console.log(weekStartDate);
             this.weekStartDate =util.formatDate(weekStartDate, 'MM-DD');
             //获得本周的结束日期
             let weekEndDate = new Date(nowYear, nowMonth, nowDay + (7 - nowDayOfWeek));

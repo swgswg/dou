@@ -87,6 +87,7 @@
     import tip from '@/utils/tip';
     import api from '@/utils/api';
     import calculate from '@/utils/calculate';
+
     import GiftCanvas from '@/components/gift_canvas';
     // import MoveView from '@/components/move_view';
     import Mygift from '@/components/mygift';
@@ -142,6 +143,7 @@
 
         // 在Page和Component共用的生命周期函数
         async onLoad(options) {
+            let that = this;
             this.userId = options.userId;
             this.wallStatus = options.sendStatus;
             // console.log('send_gift==',options);
@@ -150,6 +152,7 @@
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.windowHeight = px2rpx.originalHeight;
+            this.$apply();
 
             let userInfo = wepy.getStorageSync(USER_INFO);
             let fans_info = {};
@@ -157,13 +160,15 @@
             fans_info.photo = userInfo.photo;
             fans_info.name = userInfo.name;
             fans_info.integral = parseInt(userInfo.integral);
-            this.fans_info = fans_info;
-            this.fansId = userInfo.id;
-            this.$apply();
+            that.fans_info = fans_info;
+            that.fansId = userInfo.id;
+            that.$apply();
+
         };
 
         // 只在Page中存在的页面生命周期函数
         onShow() {
+
         };
 
         // 只在Page中存在的页面生命周期函数
@@ -251,8 +256,8 @@
                 }
                 let res = await api.addSendGifts({
                     query:{
-                        userId: that.fansId,
-                        fansId: that.userId,
+                        userId: that.userId,
+                        fansId: that.fansId,
                         presentsWallId: that.giftWallId,
                         giftId: giftId,
                         xaxle: xaxle,
@@ -263,6 +268,8 @@
                 if(res.data.state == 1){
                     if(status == 2){
                         tip.longtoast('请去下载抖腿APP完成后续操作');
+                    } else {
+                        tip.toast('礼物已送出');
                     }
                     // 将所有的礼物状态改为1
                     this.updateTypeTo1();
@@ -276,7 +283,7 @@
         async getGiveGiftUserPhotoE(wallId){
             let res = await api.getGiveGiftUserPhoto({
                 query:{
-                    presentsWallId:wallId
+                    id:wallId
                 }
             });
             if(res.data.state == 1){
@@ -350,7 +357,7 @@
                 let logo = data.logo;
                 let logoX = (this.canvasWidth - logoWidth - 5)*this.ratio;
                 let logoY = (this.canvasHeight - logoHeight - 5)*this.ratio;
-                dataList.push({id:-1,giftId:-1,wide:logoWidth,high: logoHeight,xaxle:logoX,yaxle:logoY,score:0,type:1,url:logo});
+                dataList.push({id:-1, giftId: -1, wide: logoWidth, high: logoHeight, xaxle: logoX, yaxle: logoY, score: 0, type: 1, url: logo});
                 this.logoLocation = {x:logoX,y:logoY};
                 this.giftList = dataList;
                 this.giftWallId = data.id;

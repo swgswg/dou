@@ -185,7 +185,7 @@
             </block>
             <block wx:if="{{order.status == cancelOrder}}">
                 <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;" data-orderid="{{orderId}}" @tap.stop="deleteOneOrder">删除</view>
-                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">订单取消</view>
+                <view class="flex-center f24 ca status-btn" style="width:{{140*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-left:{{30*px2rpxWidth}}px;border-radius:{{20*px2rpxHeight}}px;">订单已取消</view>
             </block>
         </view>
         <!--订单状态操作 end-->

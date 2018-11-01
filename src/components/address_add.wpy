@@ -146,7 +146,7 @@
 
         events = {
             // 保存地址
-            saveOrEdit(flag,myaddressId = null){
+            saveOrEdit(flag,myaddressId){
                 // let consignee = this.consignee;
                 if(util.isEmpty(this.consignee)){
                     tip.error('收货人不能为空');
@@ -209,7 +209,7 @@
                     url:'/pages/address_list'
                 });
             } else {
-                tip.error('网络错误');
+                tip.error(res.data.message);
             }
         }
     }

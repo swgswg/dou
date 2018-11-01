@@ -103,7 +103,7 @@
 
             // 保存编辑地址
             editAddr(){
-                this.$broadcast('saveOrEdit','edit',this.addressId);
+                this.$broadcast('saveOrEdit','edit', addressId);
             },
         };
 

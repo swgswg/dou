@@ -1,6 +1,7 @@
 // websocket数据处理
 import util from '@/utils/util';
 
+
 const ty0 = 0; // 刚进去房间
 const ty1 = 1; // 组员退出
 const ty2 = 2; // 房主退出
@@ -8,6 +9,7 @@ const ty3 = 3; // 游戏时间
 const ty4 = 4; // 修改状态(准备/未准备)
 const ty5 = 5; // 开始游戏
 const ty6 = 6; // 同步计数
+const ty7 = 7; // 断开重连
 
 /**
  *  解析 WS 数据
@@ -15,8 +17,8 @@ const ty6 = 6; // 同步计数
  * @param that
  */
 function wsDeal(data, that, userId, shareId, isMaster) {
-    // console.log('wsDataDeal');
-    // console.log(data);
+    console.log('wsDataDeal==========');
+    console.log(data);
     let res = data;
     let ty = res.pop().type;
     // console.log(typeof ty);
@@ -37,6 +39,8 @@ function wsDeal(data, that, userId, shareId, isMaster) {
             break;
         case ty6: getNumber(data,that);
             break;
+        case ty7: slaveEnter(res, that, userId, shareId, isMaster);
+            break;
         default: console.log(ty);
             break;
     }
@@ -53,17 +57,27 @@ function wsDeal(data, that, userId, shareId, isMaster) {
  */
 function slaveEnter(data, that, userId, shareId,isMaster = true) {
     let arrs = dealGroupDataE(data,userId);
+    // console.log('组员加入==============')
+    // console.log(arrs)
+    // console.log('isMaster==========');
+    // console.log(isMaster);
     if(isMaster){
         if(!util.isEmpty(arrs[0])){
            updateStageLeftDateE(arrs[0],that);
         }
+        // console.log('a1',util.isEmpty(arrs[1]));
+        // console.log(arrs[1]);
         if(!util.isEmpty(arrs[1])){
             updateStageRightDateE(arrs[1],that);
         }
     } else {
         arrs.forEach(function(item) {
-            if(item.userId != shareId){
-                updateStageRightDateE(item,that);
+            // console.log('shareId============');
+            // console.log(shareId);
+            if(item.userId == shareId){
+                updateStageLeftDateE(item, that);
+            } else {
+                updateStageRightDateE(item, that);
             }
         });
     }
@@ -76,17 +90,27 @@ function slaveEnter(data, that, userId, shareId,isMaster = true) {
  * @param that
  */
 function slaveOut(arr,that) {
+    console.log('组员退出============');
+    console.log(arr);
     let groupId = [];
     arr.forEach(function(item) {
         groupId.push(item.userId);
     });
+    // console.log('stageDataLeft');
+    // console.log(that.stageDataLeft.userId);
+    // console.log(groupId.includes(that.stageDataLeft.userId));
     if(!groupId.includes(that.stageDataLeft.userId)){
         that.stageDataLeft = {userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'};
         that.$apply();
+        // console.log(that.stageDataLeft);
     }
+    // console.log('stageDataRight');
+    // console.log(that.stageDataRight.userId);
+    console.log(groupId.includes(that.stageDataRight.userId));
     if(!groupId.includes(that.stageDataRight.userId)){
         that.stageDataRight = {userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'};
         that.$apply();
+        // console.log(that.stageDataRight);
     }
 }
 
@@ -96,7 +120,7 @@ function slaveOut(arr,that) {
  * @param that
  */
 function masterOut(data,that){
-    // console.log('out===================')
+    // console.log('房主退出===================')
     // console.log(data)
     let out = data[0].out;
     if(out == 2){
@@ -111,14 +135,10 @@ function masterOut(data,that){
  * @param that
  */
 function gameTimeE(data,that){
-    console.log('time======================');
-    console.log(data);
-    let time = data[0].time.split('#');
-    console.log(time);
-    let hour = parseInt(time[0]);
-    let minute = parseInt(time[1]);
-    let second = parseInt(time[2]);
-    that.selectTimeIndex = [hour, minute, second];
+    // console.log('游戏时间======================');
+    // console.log(data);
+    let time = data[0].time;
+    that.time = time;
     that.$apply();
 }
 
@@ -152,7 +172,7 @@ function slaveReady(data,that){
 function slaveStart(data,that){
     // console.log('start=======================')
     // console.log(data);
-    let isUse = data.shift().is_use;
+    let isUse = data[0].is_use;
     if(isUse == 2){
         that.start(data);
     }
@@ -195,28 +215,34 @@ function dealGroupDataE(arrayData,userId){
     return data;
 }
 
+
 // 把房间人物信息绑定到左边舞台
 function updateStageLeftDateE(groupInfo,that){
-    for(let k in groupInfo){
-        that.stageDataLeft[k] = groupInfo[k];
-    }
+    that.stageDataLeft.userId = groupInfo.userId;
+    that.stageDataLeft.roomId = groupInfo.id;
+    that.stageDataLeft.logo = groupInfo.logo;
+    that.stageDataLeft.name = groupInfo.name;
+    that.stageDataLeft.photo = groupInfo.photo;
     that.stageDataLeft.shakeHandNum = groupInfo.name;
     that.stageDataLeft.isLight = groupInfo.status;
-    console.log(groupInfo.time);
     if(!util.isEmpty(groupInfo.time)){
         gameTimeE([{time:groupInfo.time}],that);
     }
     that.$apply();
+    // console.log('stageDataLeft==========')
+    // console.log(that.stageDataLeft);
 }
 
 // 把房间人物信息绑定到右边舞台
 function updateStageRightDateE(groupInfo,that){
-    for(let k in groupInfo){
-        that.stageDataRight[k] = groupInfo[k];
-    }
+    console.log(groupInfo);
+    that.stageDataRight.userId = groupInfo.userId;
+    that.stageDataRight.roomId = groupInfo.id;
+    that.stageDataRight.logo = groupInfo.logo;
+    that.stageDataRight.name = groupInfo.name;
+    that.stageDataRight.photo = groupInfo.photo;
     that.stageDataRight.shakeHandNum = groupInfo.name;
     that.stageDataRight.isLight = groupInfo.status;
-    // console.log(groupInfo.time)
     if(!util.isEmpty(groupInfo.time)){
         gameTimeE([{time:groupInfo.time}],that);
     }

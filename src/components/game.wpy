@@ -65,7 +65,6 @@
               style="bottom:{{40*px2rpxHeight}}px;left:0;height:{{120*px2rpxWidth}}px;">
             <selecttime :countdownStart.sync="countdownStart"
                         :hasTimeConfirmBtn.sync="hasTimeConfirmBtn"
-                        :selectTimeIndex.sync="selectTimeIndex"
                         :countdownOver.sync="countdownOver"
                         :time.sync="time">
             </selecttime>
@@ -95,6 +94,7 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import util from '@/utils/util';
+    import tip from '@/utils/tip';
     import socketServer from '@/utils/socketServer';
 
     import OutModel from '@/components/out_model';
@@ -109,6 +109,7 @@
     let clear_set = null;
     let clear_set2 = null;
     let gameUser = null;
+    let gameTime = null;
 
     export default class Game extends wepy.component {
         components = {
@@ -137,10 +138,6 @@
             // 倒计时开始(true开始)
             countdownStart:false,
 
-            // hasTimeConfirmBtn: false,
-            // 倒计时时间
-            // selectTimeIndex:[0,0,0],
-            time:null,
             // 倒计时结束(true结束/false没有结束)
             countdownOver:false,
 
@@ -163,39 +160,33 @@
 
             // 房主开始按钮/组员准备按钮
             readyOrStartBtn:{
-                type:String,
                 twoWay:true,
             },
 
             stageDataLeft:{
-                type:Object,
                 twoWay:true,
             },
             stageDataCenter:{
-                type:Object,
                 twoWay:true,
             },
 
             stageDataRight:{
-                type:Object,
                 twoWay:true,
             },
 
             // 选择时间确定按钮(房主有确定按钮/组员没有)
             hasTimeConfirmBtn:{
-                type:Boolean,
                 twoWay:true,
             },
 
             // 倒计时时间
-            selectTimeIndex:{
-                type:Array,
+            time:{
+                default:'00:00:00',
                 twoWay:true,
             },
 
             // 开始倒计时
             countdownStart:{
-                type:Boolean,
                 twoWay:true,
             }
         };
@@ -215,15 +206,12 @@
         watch = {
             // 倒计时结束
             countdownOver(newValue){
+                console.log('countdownOver========');
+                console.log(newValue);
                 if(newValue){
                     this.isOverCountDown(true);
                 }
             },
-
-            // time(newvalue){
-            //     console.log('gamewatch===========');
-            //     console.log(newvalue);
-            // }
 
         };
 
@@ -260,20 +248,17 @@
                     this.$apply();
                     // 发送websocket
                     this.sendWSNumE(shakeHandNumber);
-                    // socketServer.wsSend(,shakeHandNumber);
                 }
             },
 
             // 退出事件
             outEvents(){
+                this.countdownOver = false;
+                this.$apply();
                 this.isOverCountDown(false);
                 // 退出游戏
                 this.updateRoomUserStatusE();
                 // this.cancelHeartbeatE();
-                // 关闭websocket
-                // setTimeout(function() {
-                //     socketServer.wsClose();
-                // },2000);
             },
 
             // 取消遮盖层
@@ -302,6 +287,13 @@
             this.stageDataCenter.shakeHandNum = userInfo.name;
             this.stageDataCenter.roomId = this.roomId;
             this.stageDataCenter.legOrHand = this.legOrHand;
+
+            this.stageDataLeft.roomId = this.roomId;
+            this.stageDataLeft.legOrHand = this.legOrHand;
+
+            this.stageDataRight.roomId = this.roomId;
+            this.stageDataRight.legOrHand = this.legOrHand;
+
             this.$apply();
         }
 
@@ -322,6 +314,7 @@
 
         // 开始
         startE(){
+            gameTime = this.time;
             this.isCountDownNum = false;
             this.countdownStart = true;
             this.countdownOver = false;
@@ -343,24 +336,41 @@
             this.isDot = false;
             this.$emit('isOverCountDownEvents');
             this.$apply();
+            // flag=true正常倒计时结束游戏/false中途退出
             if(flag){
                 this.addGameRecord();
                 this.gameRankE();
+            } else {
+                shakeHandNumber = 0;
+                this.$broadcast('forcedStopCountdown');
             }
-
         }
 
         // 统计游戏排名
         gameRankE(){
-            let ranking = [
-                {num:this.stageDataLeft.shakeHandNum, logo:this.stageDataLeft.logo, photo:this.stageDataLeft.photo},
-                {num:this.stageDataCenter.shakeHandNum, logo:this.stageDataCenter.logo, photo:this.stageDataCenter.photo},
-                {num:this.stageDataRight.shakeHandNum, logo:this.stageDataRight.logo, photo:this.stageDataRight.photo},
-            ];
-            this.gameRankData = ranking;
-            this.$apply();
-            this.$invoke('gamerank','display',ranking);
-            this.showGameRankE();
+            let roomId = this.roomId;
+            let that = this;
+            wx.showToast({
+                title: '统计排名中',
+                icon: 'loading',
+                mask: true,
+                duration: 0
+            });
+            setTimeout(function() {
+                wx.hideToast();
+            },2000);
+            setTimeout(async function() {
+                let res = await api.getUserPKRanking({
+                    query:{
+                        roomId: roomId
+                    }
+                });
+                // console.log('统计游戏排名=========');
+                // console.log(res.data.data);
+                that.$invoke('gamerank','display',res.data.data);
+                that.showGameRankE();
+                shakeHandNumber = 0;
+            },2000);
         }
 
         // 显示游戏排名
@@ -380,15 +390,10 @@
         // 添加游戏记录
         async addGameRecord(){
             let that = this;
-            // console.log('time======')
-            // console.log(that.time);
-            let time = util.timeToSecond(that.time);
-            // console.log(time);
-            time = util.SecondFormat(time,'mm:ss');
             await api.addRecord({
                 query:{
                     userId: userInfo.id,
-                    time: time,
+                    time: gameTime,
                     shakeNum: shakeHandNumber,
                     // 0（自己）1（好友对战）
                     type: 1,
@@ -398,6 +403,7 @@
                     mode:api.PKModel,
                 }
             });
+            shakeHandNumber = 0;
         }
 
         // 退出游戏
@@ -409,8 +415,7 @@
                     roomId: roomId,
                 }
             });
-            // 清除定时器
-            // this.$broadcast('stopCountDown');
+            shakeHandNumber = 0;
         }
 
         // 发送点击数

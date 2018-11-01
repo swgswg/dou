@@ -30,7 +30,7 @@
                 <block wx:for="{{fansList}}" wx:for-item="fans" wx:key="{{index}}">
                     <view class="flex-around w-percent100 f28 c3 fans-data-each"
                           style="height:{{80*px2rpxHeight}}px;margin-bottom:{{10*px2rpxHeight}}px;"
-                          data-userid="{{fans.userId}}" @tap.stop="goToFriendGiftWall">
+                          data-fansid="{{fans.fansId}}" @tap.stop="goToFriendGiftWall">
 
                         <!--排名 start-->
                         <view class="flex-center" style="width:{{80*px2rpxWidth}}px;">
@@ -66,7 +66,7 @@
                         <!--vip墙 end-->
 
                         <!--礼物值 start-->
-                        <view class="flex-start border-box" style="width:{{200*px2rpxWidth}}px;">
+                        <view class="flex-center border-box" style="width:{{200*px2rpxWidth}}px;">
                             <image style="width:{{40*px2rpxWidth}}px;height:{{28*px2rpxHeight}}px;" lazy-load="true" src="{{fans_data}}"></image>
                             <view class="flex-center" style="margin-left:{{8*px2rpxWidth}}px;">{{fans.score}}</view>
                         </view>
@@ -89,7 +89,6 @@
     import api from '@/utils/api';
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
-    import tip from '@/utils/tip';
     import {USER_INFO, PX_TO_RPX } from '@/utils/constant';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
@@ -153,9 +152,9 @@
 
             // 前去朋友礼物墙
             goToFriendGiftWall(e){
-                let userId = e.currentTarget.dataset.userid;
+                let fansid = e.currentTarget.dataset.fansid;
                 wx.navigateTo({
-                    url:'/pages/friend_gift_wall?userId='+userId
+                    url:'/pages/friend_gift_wall?userId='+fansid
                 });
             },
         };

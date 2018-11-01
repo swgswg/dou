@@ -16,8 +16,6 @@
 <script>
     import wepy from 'wepy';
     import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
-    import imgApi from '@/utils/imgApi';
-    import api from '@/utils/api';
     import StageTwo from '@/components/stage_two';
 
     export default class ThreeStage extends wepy.component {
@@ -39,15 +37,12 @@
 
         props = {
             stageDataLeft:{
-                type:Object,
                 twoWay:true,
             },
             stageDataCenter:{
-                type:Object,
                 twoWay:true,
             },
             stageDataRight:{
-                type:Object,
                 twoWay:true,
             },
         };

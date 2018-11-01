@@ -51,14 +51,12 @@ export default class Tips {
     }
 
     static toast(title, icon = "success") {
-        // setTimeout(() => {
-            wx.showToast({
-                title: title,
-                icon: icon,
-                mask: true,
-                duration: 1000
-            });
-        // }, 300);
+        wx.showToast({
+            title: title,
+            icon: icon,
+            mask: true,
+            duration: 1000
+        });
 
         // 隐藏结束回调
         setTimeout(() => {
