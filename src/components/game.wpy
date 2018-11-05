@@ -18,6 +18,12 @@
         </view>
         <!--退出按钮 end-->
 
+        <!--说明按钮 start-->
+        <view class="pa" style="top:{{120*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;z-index:100;">
+            <explain :model.sync="PKModel"></explain>
+        </view>
+        <!--说明按钮 end-->
+
         <!--准备/开始按钮 start-->
         <block wx:if="{{(!isCountDownNum) && (!isDot)}}">
             <view class="flex-center w-percent100" style="margin-top:{{250*px2rpxHeight}}px;">
@@ -94,10 +100,10 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import util from '@/utils/util';
-    import tip from '@/utils/tip';
     import socketServer from '@/utils/socketServer';
 
     import OutModel from '@/components/out_model';
+    import Explain from '@/components/explain';
     import Touch from '@/components/touch';
     import ThreeStage from '@/components/three_stage';
     import SelectTime from '@/components/select_time';
@@ -115,6 +121,7 @@
     export default class Game extends wepy.component {
         components = {
             outmodel: OutModel,
+            explain: Explain,
             touch:Touch,
             selecttime:SelectTime,
             threestage:ThreeStage,
@@ -128,7 +135,7 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             bgImg: imgApi.pk_model_bg,
-
+            PKModel:api.PKModel,
             // 点击按钮是否显示
             isDot:false,
 

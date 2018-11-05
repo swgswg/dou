@@ -7,7 +7,7 @@
         </image>
 
         <!--说明内容 start-->
-        <view class="pa animated {{animate ? 'zoomInRight' : 'zoomOutRight'}}" style="top:{{70*px2rpxWidth}}px;right:{{70*px2rpxHeight}}px;z-index:999;">
+        <view class="pa animated {{am ? 'zoomInRight' : 'zoomOutRight'}}" style="top:{{70*px2rpxWidth}}px;right:{{70*px2rpxHeight}}px;z-index:999;">
             <image src="{{modelExplain}}" style="width:{{547*px2rpxWidth}}px;height:{{565*px2rpxWidth}}px;"></image>
         </view>
         <!--说明内容 end-->
@@ -38,7 +38,7 @@
             px2rpxHeight:0,
             explain: imgApi.explain,
             modelExplain:null,
-            animate:false
+            am:false
         };
 
         props = {
@@ -65,11 +65,12 @@
                     break;
             }
             this.modelExplain = modelExplain;
+            this.$apply();
         }
 
         methods = {
             explainTap(){
-                this.animate = !this.animate;
+                this.am = !this.am;
                 this.$apply();
             }
         };

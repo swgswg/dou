@@ -18,12 +18,14 @@
         </view>
         <!--退出按钮 end-->
 
+        <!--说明按钮 start-->
+        <view class="pa" style="top:{{120*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;z-index: 10;">
+            <explain :model.sync="storyModel"></explain>
+        </view>
+        <!--说明按钮 end-->
+
         <!--点击按钮 start-->
         <view class="pa flex-center w-percent100" style="top:{{100*px2rpxHeight}}px;left:0;z-index: 5" >
-            <!--<image src="{{btnImg}}"-->
-            <!--style="width:{{398*px2rpxWidth}}px;height:{{350*px2rpxWidth}}px;"-->
-            <!--@tap.stop="clickEvent">-->
-            <!--</image>-->
             <touch :ratio.sync="ratio" :imgType.sync="imgType"></touch>
         </view>
         <!--点击按钮 end-->
@@ -63,6 +65,7 @@
 
     import StageTwo from '@/components/stage_two';
     import OutModel from '@/components/out_model';
+    import Explain from '@/components/explain';
     import GoMall from '@/components/go_mall';
     import CountDown from '@/components/count_down';
     import Touch from '@/components/touch';
@@ -88,6 +91,7 @@
         components = {
             stagetwo:StageTwo,
             outmodel: OutModel,
+            explain: Explain,
             gomall: GoMall,
             countdown: CountDown,
             touch:Touch,
@@ -105,6 +109,8 @@
             fire_flag_left:imgApi.fire_flag_left,
             fire_flag_right:imgApi.fire_flag_right,
             btnImg:imgApi.story_btn,
+            storyModel:api.storyModel,
+
             animate:'',
 
             stageData:{logo:'', photo:'', isLight:1,shakeHandNum:0},

@@ -19,6 +19,12 @@
         </view>
         <!--退出按钮 end-->
 
+        <!--说明按钮 start-->
+        <view class="pa" style="top:{{120*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;z-index:100;">
+            <explain :model.sync="arderModel"></explain>
+        </view>
+        <!--说明按钮 end-->
+
         <!--抖动次数 start-->
         <view class="pa flex-center w-percent100 cfcf05b f-family-edo num" style="top:{{80*px2rpxHeight}}px;left:0;height:{{120*px2rpxHeight}}px;">
             <view class="animated {{animate}}">{{shakeHandNumber}}</view>
@@ -54,6 +60,7 @@
     import api from '@/utils/api';
 
     import OutModel from '@/components/out_model';
+    import Explain from '@/components/explain';
     import GoMall from '@/components/go_mall';
     import Touch from '@/components/touch';
 
@@ -71,6 +78,7 @@
 
         components = {
             outmodel: OutModel,
+            explain: Explain,
             gomall: GoMall,
             touch:Touch
         };
@@ -82,6 +90,7 @@
             px2rpxHeight:0,
             bgImg: imgApi.fight_model_bg,
             beerImg:imgApi.fight_model_deer,
+            arderModel: api.arderModel,
             animate:'',
             shakeHandNumber:0,
 
