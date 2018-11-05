@@ -287,8 +287,8 @@
             });
             // num排序
             challengeNumData = util.sorting(challengeNumData,'asc');
-            console.log(challengeMode);
-            console.log(challengeNumData);
+            // console.log(challengeMode);
+            // console.log(challengeNumData);
         }
 
         // 添加游戏记录

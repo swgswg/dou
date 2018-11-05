@@ -1,59 +1,61 @@
 <style lang="less">
     .gift-info{
         display: flex;
-        padding: 20rpx 20rpx 0 20rpx;
+        padding: 20rpx 20rpx 0;
 
-        .gift-info-each{
+        .left{
+            width: 50%;
 
-            .left{
-                width: 60%;
+            .left-info{
+                justify-content:flex-start;
+                align-items: center;
 
-                .left-info{
-                    justify-content:flex-start;
-                    align-items: center;
-
-                    .gift-name{
-                        height: 50%;
-                    }
-
-                    .energy{
-                        display: flex;
-                        justify-content: flex-start;
-                        align-items: flex-start;
-                        height: 40%;
-                    }
+                .gift-name{
+                    height: 50%;
                 }
-            }
 
-            .right{
-                width: 40%;
-
-                .gift-code{
+                .energy{
                     display: flex;
                     justify-content: flex-start;
                     align-items: flex-start;
-                    width: 45%;
+                    height: 40%;
+                }
+            }
+        }
 
-                    view{
-                        color: #ffc849;
-                    }
+        .right{
+            width: 50%;
+
+            .gift-code{
+                display: flex;
+                justify-content: flex-start;
+                align-items: flex-start;
+                width: 45%;
+
+                view{
+                    color: #ffc849;
+                }
+            }
+
+            .btn{
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                align-items: center;
+
+                .jia,.jian{
+                    color: #57A6E2;
+                    border: 1px solid #57A6E2;
                 }
 
-                .btn{
-                    justify-content: flex-start;
-                    align-items: center;
-
-                    .btn1,.btn2{
-                        border: 1rpx solid #ec2c98;
-                    }
-
-                    .btn1{
-                        text-align: center;
-                        margin-bottom: 20rpx;
-                    }
-                    .btn2{
-                        background: linear-gradient(to top right,#ec2c98, #f68668);
-                    }
+                .btn1{
+                    text-align: center;
+                    /*margin-bottom: 20rpx;*/
+                    border: 1rpx solid #ec2c98;
+                }
+                .btn2{
+                    /*background: linear-gradient(to top right,#ec2c98, #f68668);*/
+                    background: linear-gradient(to top right,#ECD13B, #57A6E2);
                 }
             }
         }
@@ -64,35 +66,103 @@
     <view class="w-percent100 h-percent100 border-box gift-info">
         <scroll-view scroll-y bindscrolltolower="scrollToLower">
             <block wx:for="{{giftInfo}}" wx:for-item="giftInfo" wx:key="{{index}}">
-                <view class="flex-around w-percent100 bgcf gift-info-each" style="margin-bottom:{{20*px2rpxHeight}}px">
+                <view class="flex-around w-percent100 bgcf" style="margin-bottom:{{20*px2rpxHeight}}px">
+
+                    <!--礼物信息 start-->
                     <view class="flex-start left">
+                        <!--礼物图片 start-->
                         <view class="flex-center" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
-                            <image style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;" lazy-load="true" src="{{fileUrl + giftInfo.photo}}"></image>
+                            <image src="{{fileUrl + giftInfo.photo}}"
+                                   lazy-load="true"
+                                   style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;">
+                            </image>
                         </view>
-                        <view class="flex-column left-info" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
+                        <!--礼物图片 end-->
+
+                        <!--礼物名称+积分 start-->
+                        <view class="flex-column left-info"
+                              style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
+
                             <view class="flex-start w-percent100 f30 ellipsis gift-name">{{giftInfo.name}}</view>
                             <view class="w-percent100 f25 energy">
                                 <image style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxHeight}}px;margin-right:{{10*px2rpxHeight}}px" lazy-load="true" src="{{energy}}"></image>
                                 <view>{{giftInfo.score}}</view>
                             </view>
                         </view>
+                        <!--礼物名称+积分 end-->
                     </view>
-                    <view class="flex-between right" style="height:{{150*px2rpxHeight}}px">
-                        <view class="h-percent100 gift-code" style="margin-top:{{29*px2rpxHeight}}px">
+                    <!--礼物信息 end-->
+
+                    <!--积分+兑换 start-->
+                    <view class="flex-between border-box right" style="height:{{150*px2rpxHeight}}px;padding-right:{{20*px2rpxWidth}}px;">
+                        <!--积分 start-->
+                        <view class="h-percent100 w-percent50 gift-code" style="margin-top:{{29*px2rpxHeight}}px">
                             <image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
                             <view class="f30">{{giftInfo.integral}}</view>
                         </view>
-                        <view class="flex-column w-percent50 btn">
-                            <input class="flex-center f25 br10 c3 bgcf btn1" value="{{giftInfo.val}}" type="number" bindinput="buyNumber" data-giftid="{{giftInfo.id}}" data-integral="{{giftInfo.integral}}"  placeholder="购买数量" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" />
-                            <view  class="flex-center f25 br10 cf btn2" style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;" data-giftid="{{giftInfo.id}}" data-index="{{index}}" @tap.stop="buy">兑换</view>
+                        <!--积分 end-->
+
+                        <!--兑换 start-->
+                        <view class="w-percent50 h-percent100 border-box btn" style="padding:{{10*px2rpxHeight}}px 0;">
+                            <!--输入框 start-->
+                            <view class="flex-around w-percent100" >
+
+                                <!--加按钮 start-->
+                                <view class="flex-center f40 br5 jia"
+                                      data-index="{{index}}"
+                                      data-status="jia"
+                                      @tap.stop="jiaOrjian"
+                                      style="width:{{50*px2rpxHeight}}px;height:{{50*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;">
+                                    +
+                                </view>
+                                <!--加按钮 ene-->
+
+                                <input class="flex-center f25 br10 c3 bgcf btn1"
+                                       value="{{giftInfo.val}}"
+                                       type="number"
+                                       bindinput="buyNumber"
+                                       data-giftid="{{giftInfo.id}}"
+                                       data-integral="{{giftInfo.integral}}"
+                                       placeholder="购买数量"
+                                       style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;"
+                                />
+                            </view>
+                            <!--输入框 end-->
+
+                            <!--兑换按钮 start-->
+                            <view class="flex-around w-percent100">
+                                <!--减按钮 start-->
+                                <view class="flex-center f40 br5 jian"
+                                      data-index="{{index}}"
+                                      data-status="jian"
+                                      @tap.stop="jiaOrjian"
+                                      style="width:{{50*px2rpxHeight}}px;height:{{50*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;">
+                                    -
+                                </view>
+                                <!--减按钮 end-->
+
+                                <view  class="flex-center f25 br10 cf btn2"
+                                       data-giftid="{{giftInfo.id}}"
+                                       data-index="{{index}}"
+                                       @tap.stop="buy"
+                                       style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;">
+                                    兑换
+                                </view>
+                            </view>
+                            <!--兑换按钮 end-->
                         </view>
+                        <!--兑换 end-->
                     </view>
+                    <!--积分+兑换 end-->
+
                 </view>
             </block>
             <!--加载更多时动画-->
             <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
             <!--暂无数据显示-->
             <placeholder :show.sync="is_empty" message="暂无数据"></placeholder>
+            <!--数据全部加载完-->
+            <bottomend :show.sync="isEnd"></bottomend>
         </scroll-view>
     </view>
 </template>
@@ -108,6 +178,7 @@
     import weixin from '@/utils/weixin';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
+    import BottomEnd from "@/components/common/bottom_end";
 
     let userId = null;
     let page = 1;
@@ -118,7 +189,8 @@
 
         components = {
             bottomLoadMore: BottomLoadMore,
-            placeholder: Placeholder
+            placeholder: Placeholder,
+            bottomend:BottomEnd
         };
 
         data = {
@@ -135,6 +207,8 @@
             showLoading: false,
             // 数据是否为空
             is_empty: true,
+            // 是否全部加载完
+            isEnd:false,
         };
 
         props = {
@@ -161,11 +235,33 @@
             //滚动到底部/右边，会触发 scrolltolower 事件
             scrollToLower(){
                 if(isLastPage){
-                    tip.toast('这是最后一页了','none');
+                    // tip.toast('这是最后一页了','none');
+                    this.isEnd = true;
                     return;
                 }
                 this.getGift();
                 page++;
+            },
+
+            // 加减改变数量
+            jiaOrjian(e){
+                let status = e.currentTarget.dataset.status;
+                let index = e.currentTarget.dataset.index;
+                let num = parseInt(this.giftInfo[index].val);
+                if(status == 'jian' && num <= 1){
+                    return;
+                }
+                num = this.isNum(num);
+                if(status == 'jia'){
+                    ++num;
+                } else if(status == 'jian'){
+                    --num;
+                }
+                if(num < 1){
+                    num = 1;
+                }
+                this.giftInfo[index].val = num;
+                this.$apply();
             },
 
             // 购买的数量
@@ -194,9 +290,11 @@
                 // 当前要购买的礼物
                 let gift = this.giftInfo[index];
                 let val = parseInt(gift.val);
+                val = this.isNum(val);
+                this.giftInfo[index].val = val;
                 let integral = parseInt(gift.integral);
                 // 大于0的数字
-                if(/\d/.test(val) && val > 0){
+                // if(/\d/.test(val) && val > 0){
                     sumIntegral = calculate.calcMul(val, integral);
                     // 判断用户的积分是否足够
                     if(sumIntegral >= that.integral){
@@ -217,11 +315,20 @@
                         that.getIntegral();
                         tip.toast('兑换成功');
                     }
-                } else {
-                    tip.alert('请填写正确数量');
-                }
+                // } else {
+                //     tip.alert('请填写正确数量');
+                // }
             },
         };
+
+        // 判断数量是否为正确的数字 >0
+        isNum(num){
+            let newNum = num;
+            if(isNaN(newNum)){
+                newNum = 1;
+            }
+            return newNum;
+        }
 
         // 获取礼物
         async getGift(){
