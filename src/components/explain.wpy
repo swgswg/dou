@@ -1,0 +1,83 @@
+<template>
+    <view class="pr flex-center" >
+        <image src="{{explain}}"
+               lazy-load="true"
+               style="width:{{70*px2rpxWidth}}px;height:{{70*px2rpxWidth}}px;"
+               @tap.stop="explainTap">
+        </image>
+
+        <!--说明内容 start-->
+        <view class="pa animated {{animate ? 'zoomInRight' : 'zoomOutRight'}}" style="top:{{70*px2rpxWidth}}px;right:{{70*px2rpxHeight}}px;z-index:999;">
+            <image src="{{modelExplain}}" style="width:{{547*px2rpxWidth}}px;height:{{565*px2rpxWidth}}px;"></image>
+        </view>
+        <!--说明内容 end-->
+
+    </view>
+</template>
+
+<script>
+    import wepy from 'wepy';
+    import {PX_TO_RPX } from '@/utils/constant';
+    import imgApi from '@/utils/imgApi';
+    import api from '@/utils/api';
+
+    const fight_explain = imgApi.fight_explain;
+    const story_explain = imgApi.story_explain;
+    const PK_explain = imgApi.PK_explain;
+    const arder_explain = imgApi.arder_explain;
+
+    const fightModel = api.fightModel;
+    const storyModel = api.storyModel;
+    const PKModel = api.PKModel;
+    const arderModel = api.arderModel;
+
+    export default class Explain extends wepy.component {
+
+        data = {
+            px2rpxWidth:0,
+            px2rpxHeight:0,
+            explain: imgApi.explain,
+            modelExplain:null,
+            animate:false
+        };
+
+        props = {
+            model:{}
+        };
+
+        onLoad(){
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
+            this.px2rpxWidth = px2rpx.px2rpxWidth;
+            this.px2rpxHeight = px2rpx.px2rpxHeight;
+            this.$apply();
+
+            let modelExplain = null;
+            switch (this.model){
+                case fightModel: modelExplain = fight_explain;
+                    break;
+                case storyModel: modelExplain = story_explain;
+                    break;
+                case arderModel: modelExplain = arder_explain;
+                    break;
+                case PKModel: modelExplain = PK_explain;
+                    break;
+                default: modelExplain = '';
+                    break;
+            }
+            this.modelExplain = modelExplain;
+        }
+
+        methods = {
+            explainTap(){
+                this.animate = !this.animate;
+                this.$apply();
+            }
+        };
+
+
+    }
+</script>
+
+<style lang="less">
+
+</style>

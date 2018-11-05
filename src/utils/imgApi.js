@@ -22,8 +22,6 @@ module.exports = {
     open_btn:uploadFileUrl + 'open_btn.png',
     select_model_bg:uploadFileUrl + 'select_model_bg.png',
 
-
-
     // 男女性别
     man_active: uploadFileUrl + 'man_active.png',
     man_inactive: uploadFileUrl + 'man_inactive.png',
@@ -42,6 +40,11 @@ module.exports = {
     mall:uploadFileUrl + 'mall.png',
     flight_jiangli: uploadFileUrl + 'flight_jiangli.png',
     flight_liqu: uploadFileUrl + 'flight_liqu.png',
+    // 模式说明
+    fight_explain: uploadFileUrl + 'fight_explain.png',
+    story_explain: uploadFileUrl + 'story_explain.png',
+    PK_explain:uploadFileUrl + 'PK_explain.png',
+    arder_explain: uploadFileUrl + 'arder_explain.png',
 
     // 故事模式
     story_model_bg:uploadFileUrl + 'story_model_bg.png',
@@ -140,6 +143,8 @@ module.exports = {
     no_start_btn: uploadFileUrl + 'no_start_btn.png',
     logout: uploadFileUrl + 'logout.png',
     confirm_btn: uploadFileUrl + 'confirm_btn.png',
+    explain: uploadFileUrl + 'explain.png',
+
     // 倒计时
     count_down:uploadFileUrl + 'count_down.png',
     countdown1: uploadFileUrl + 'countdown1.png',

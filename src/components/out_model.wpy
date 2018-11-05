@@ -7,7 +7,7 @@
     <view class="flex-center">
         <image src="{{logout}}"
                lazy-load="true"
-               style="width:{{84*px2rpxWidth}}px;height:{{84*px2rpxWidth}}px;"
+               style="width:{{70*px2rpxWidth}}px;height:{{70*px2rpxWidth}}px;"
                @tap.stop="goToSelectModel">
         </image>
     </view>

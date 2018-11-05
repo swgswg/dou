@@ -17,6 +17,12 @@
         </view>
         <!--退出按钮 end-->
 
+        <!--说明按钮 start-->
+        <view class="pa" style="top:{{120*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;">
+            <explain :model.sync="fightModel"></explain>
+        </view>
+        <!--说明按钮 end-->
+
         <!--倒计时 start-->
         <view class="flex-center w-percent100 f36 cfcf05b f-weight-bolder" style="margin-top:{{142*px2rpxHeight}}px;">
             <view>倒计时: </view>
@@ -109,11 +115,13 @@
 <script>
     import wepy from 'wepy';
     import {PX_TO_RPX,USER_INFO } from '@/utils/constant';
+    import util from '@/utils/util';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
 
     import OutModel from '@/components/out_model';
+    import Explain from '@/components/explain';
     import GoMall from '@/components/go_mall';
     import CountDown from '@/components/count_down';
     import Touch from '@/components/touch';
@@ -127,6 +135,10 @@
     // true本次游戏已经添加记录/false本次游戏没有添加记录
     let isAddGameRecord = true;
 
+    let challengeMode = {};
+    let challengeNumData = [];
+    let challengeTime  = '';
+
     export default class FightModel extends wepy.page {
         config = {
             navigationBarTitleText: '挑战模式',
@@ -136,6 +148,7 @@
 
         components = {
             outmodel: OutModel,
+            explain: Explain,
             gomall: GoMall,
             countdown: CountDown,
             touch: Touch,
@@ -143,26 +156,27 @@
         };
 
         data = {
-            widWidth:0,
-            widHeight:0,
-            px2rpxWidth:0,
-            px2rpxHeight:0,
-            fileUrl:imgApi.fileUrl,
+            widWidth: 0,
+            widHeight: 0,
+            px2rpxWidth: 0,
+            px2rpxHeight: 0,
+            fileUrl: imgApi.fileUrl,
             bgImg: imgApi.fight_model_bg,
-            beerImg:imgApi.fight_model_deer,
-            jiangli:imgApi.flight_jiangli,
-            lingqu:imgApi.flight_liqu,
-            animate:'',
+            beerImg: imgApi.fight_model_deer,
+            jiangli: imgApi.flight_jiangli,
+            lingqu: imgApi.flight_liqu,
+            fightModel: api.fightModel,
+            animate: '',
             // 挑战模式基础数据
-            fightData:null,
+            fightData: null,
             // 挑战模式的倒计时时间
-            fightTime:'01:00',
+            fightTime: '01:00',
             // true倒计时结束/false倒计时没有结束
-            timeFinish:true,
-            shakeHandNumber:0,
+            timeFinish: true,
+            shakeHandNumber: 0,
             // 按钮参数
-            ratio:0.6,
-            imgType:0,
+            ratio: 0.6,
+            imgType: 0,
 
             // true显示遮盖层/false不显示遮盖层
             showCoverLayer:false,
@@ -254,13 +268,27 @@
         async getFightData(){
             let res = await api.getChallengeMode();
             if(res.data.state == 1){
-                let data = res.data.data[0];
-                this.fightData = data;
+                let data = res.data.data;
+                // this.fightData = data.challengeMode;
                 this.fightTime = data.time;
+                challengeTime = data.time;
+                this.changeDataE(data.challengeMode);
                 this.$apply();
             } else {
                 tip.error('网络错误');
             }
+        }
+
+        // 变换达到响应次数的数据
+        changeDataE(giftData){
+            giftData.forEach(function(item) {
+                challengeMode[item.num] = item;
+                challengeNumData.push(item.num);
+            });
+            // num排序
+            challengeNumData = util.sorting(challengeNumData,'asc');
+            console.log(challengeMode);
+            console.log(challengeNumData);
         }
 
         // 添加游戏记录
@@ -272,7 +300,7 @@
             await api.addRecord({
                 query:{
                     userId:userId,
-                    time: that.fightData.time,
+                    time: challengeTime,
                     shakeNum: that.shakeHandNumber,
                     // 0（自己）1（好友）
                     type: 0,
@@ -329,23 +357,31 @@
 
         // 游戏结束
         gameEndE(outFlag){
-
             // 添加游戏记录--手动
             if(!isAddGameRecord){
                 this.addGameRecord(0);
             }
             // 计时时间归位
-            this.fightTime = this.fightData.time;
+            this.fightTime = challengeTime;
             // 清除定时器
             this.$broadcast('clear');
             // outFlag=ture退出不比较/false正常游戏结束
             if(outFlag){
                 // 比较抖动次数有没有超过指定次数
-                if( parseInt(this.shakeHandNumber) >= parseInt(this.fightData.num)){
+                let shakeHandNumber = ~~this.shakeHandNumber;
+                let num = 0;
+                challengeNumData.forEach(function(item) {
+                    if(shakeHandNumber >= item){
+                        num = item;
+                    }
+                });
+                console.log(num);
+                if(num > 0){
                     // 超过指定次数,显示遮盖层
+                    this.fightData = challengeMode[num];
                     this.showCoverLayer = true;
                 } else {
-                    tip.longtoast('您没有达到『'+ this.fightData.num +'』次,无法获取奖励');
+                    tip.longtoast('您至少需要达到『' + challengeNumData[0] + '』次才能领取礼物');
                 }
             }
             this.$apply();
