@@ -3,7 +3,7 @@
  */
 
 import config from '@/utils/config_local';
-import api from '@/utils/util';
+import api from '@/utils/api';
 const wsHost = config.webSocketHost;
 var SocketTask = null;
 var isOpen = false;
@@ -14,9 +14,9 @@ var room_id = null;
  *  连接webSocket
  * @param userId
  */
-function wsConnect (userId, roomId) {
+function wsConnect (userId,roomId) {
     user_id = userId;
-    room_id  = roomId;
+    room_id = roomId;
     if(!isOpen){
         SocketTask = wx.connectSocket({
             url: wsHost + userId,
@@ -35,6 +35,7 @@ function wsOnOpen(heartbeat){
     SocketTask.onOpen( (res) => {
         isOpen = true;
         console.log('监听 WebSocket 连接打开事件onOpen。', res);
+        // disconnectAndReconnect();
         // 添加心跳
         heartbeat()
     });
@@ -48,7 +49,7 @@ function wsOnOpen(heartbeat){
 function wsSend(receiveId, message){
     let jsonMessage = JSON.stringify(message);
     let sendMessage = jsonMessage + '|' + receiveId;
-    // console.log('sendMessage===================')
+    console.log('sendMessage===================');
     // console.log(typeof sendMessage)
     console.log(sendMessage);
     SocketTask.send({
@@ -131,12 +132,11 @@ function wsClose(){
  */
 async function disconnectAndReconnect(){
     console.log('断开重连==================');
-    let res = await api.getRoomUserData({
+    await api.getRoomUserData({
         query:{
             roomId:room_id
         }
     });
-    console.log(res)
 }
 
 function wsInit(userId,roomId,heartbeat,mFun,closeFlag){

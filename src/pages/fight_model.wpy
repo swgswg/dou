@@ -212,7 +212,7 @@
             // 游戏结束弹出奖励
             timeFinish(newValue){
                 if(newValue){
-                    this.gameEndE();
+                    this.gameEndE(true);
                 }
             },
 
@@ -321,14 +321,14 @@
 
         // 退出事件
         outE(){
-            this.gameEndE();
+            this.gameEndE(false);
             // 不显示遮盖层
             this.showCoverLayer = false;
             this.$apply();
         }
 
         // 游戏结束
-        gameEndE(){
+        gameEndE(outFlag){
 
             // 添加游戏记录--手动
             if(!isAddGameRecord){
@@ -338,12 +338,15 @@
             this.fightTime = this.fightData.time;
             // 清除定时器
             this.$broadcast('clear');
-            // 比较抖动次数有没有超过指定次数
-            if( parseInt(this.shakeHandNumber) >= parseInt(this.fightData.num)){
-                // 超过指定次数,显示遮盖层
-                this.showCoverLayer = true;
-            } else {
-                tip.longtoast('您没有达到『'+ this.fightData.num +'』次,无法获取奖励');
+            // outFlag=ture退出不比较/false正常游戏结束
+            if(outFlag){
+                // 比较抖动次数有没有超过指定次数
+                if( parseInt(this.shakeHandNumber) >= parseInt(this.fightData.num)){
+                    // 超过指定次数,显示遮盖层
+                    this.showCoverLayer = true;
+                } else {
+                    tip.longtoast('您没有达到『'+ this.fightData.num +'』次,无法获取奖励');
+                }
             }
             this.$apply();
             startFlag = false;

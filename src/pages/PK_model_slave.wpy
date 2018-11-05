@@ -130,6 +130,8 @@
                 socketServer.wsInit( userInfo.id, that.roomId,()=>{
                     // 开启心跳
                     // this.$broadcast('heartbeatEvents');
+                    // 断开重连
+                    // that.$broadcast('disconnectAndReconnectEvents');
                 }, (data)=>{
                     // 组员信息
                     // if(data){
@@ -190,17 +192,17 @@
             console.log(res);
             if(res.data.state != 0){
                 // 把已有的房间人绑定到舞台上
-                let userInfoArr = this.dealGroupDataE(res.data.data);
-                if( !util.isEmpty(userInfoArr[0])){
-                    this.updateStageLeftDateE(userInfoArr[0]);
-                    if( !util.isEmpty(userInfoArr[0].time)){
-                        this.time = userInfoArr[0].time;
-                        this.$apply();
-                    }
-                }
-                if(!util.isEmpty(userInfoArr[1])){
-                    this.updateStageRightDateE(userInfoArr[1]);
-                }
+                // let userInfoArr = this.dealGroupDataE(res.data.data);
+                // if( !util.isEmpty(userInfoArr[0])){
+                //     this.updateStageLeftDateE(userInfoArr[0]);
+                //     if( !util.isEmpty(userInfoArr[0].time)){
+                //         this.time = userInfoArr[0].time;
+                //         this.$apply();
+                //     }
+                // }
+                // if(!util.isEmpty(userInfoArr[1])){
+                //     this.updateStageRightDateE(userInfoArr[1]);
+                // }
 
             } else {
                 // 不能进入房间

@@ -117,10 +117,15 @@
 
         // 判断用户信息是否完全
         isLogo(){
-            if(util.isEmpty(userInfo.logo)){
+            if(util.isEmpty(userInfo.mobile)){
                 // 用户信息不全
                 wx.redirectTo({
                     url:'/pages/mobile_verify'
+                });
+            } else if(util.isEmpty(userInfo.logo)){
+                // 用户信息不全
+                wx.redirectTo({
+                    url:'/pages/select_sex'
                 });
             } else {
                 // 用户信息完整

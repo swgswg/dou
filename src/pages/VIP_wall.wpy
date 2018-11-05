@@ -13,7 +13,7 @@
         <!--人物信息 start-->
         <view class="flex-column-center border-box" style="padding-top:{{16*px2rpxHeight}}px;">
             <view class="flex-center br-percent50 user-profile" style="width:{{96*px2rpxWidth}}px;height:{{96*px2rpxWidth}}px;">
-                <image src="{{info.photo}}" style="width:{{96*px2rpxWidth}}px;height:{{96*px2rpxWidth}}px;"></image>
+                <image class="br-percent50" src="{{info.photo}}" style="width:{{96*px2rpxWidth}}px;height:{{96*px2rpxWidth}}px;"></image>
             </view>
             <view class="f24 cf" style="margin-top:{{17*px2rpxHeight}}px;">{{info.name}}</view>
             <view class="flex-center f24" style="margin-top:{{10*px2rpxHeight}}px;">
@@ -49,6 +49,12 @@
     import BottomLoadMore from "@/components/common/bottomLoadMore"
     import Placeholder from "@/components/common/placeholder";
 
+    let canvasWidth = api.canvasWidth;
+    let canvasHeight = api.canvasHeight;
+    let logoWidth = api.logoWidth;
+    let logoHeight = api.logoHeight;
+    let wallId = null;
+
     export default class VIPWall extends wepy.page {
         // 只在Page实例中存在的配置数据，对应于原生的page.json文件
         config = {
@@ -70,10 +76,11 @@
             fileUrl:imgApi.fileUrl,
             wall_bg:imgApi.wall_bg,
             energy:imgApi.energy,
-            logoWidth:api.logoWidth,
-            logoHeight:api.logoHeight,
+
+            // logoWidth:api.logoWidth,
+            // logoHeight:api.logoHeight,
             // 礼物墙还是照片
-            wallId:null,
+            // wallId:null,
             info:null,
             // true墙,false照片
             isWallOrPicture:true,
@@ -91,7 +98,7 @@
             if(util.isEmpty(options.wallId)){
                 tip.error('网络错误');
             } else {
-                this.wallId = options.wallId;
+                wallId = options.wallId;
             }
             this.$apply();
         };
@@ -102,7 +109,6 @@
 
         // 只在Page中存在的页面生命周期函数
         async onReady() {
-            let wallId = this.wallId;
             let res = await api.getSPresentsWallOne({
                 query:{
                     presentswallId:wallId
@@ -119,13 +125,14 @@
                     this.isWallOrPicture = true;
                     let giftList = data.list;
                     let logo = data.logo;
-                    let logoX = this.canvasWidth - this.logoWidth;
-                    let logoY = this.canvasHeight - this.logoHeight;
-                    giftList.unshift({giftId:-1,wide:this.logoWidth,high:this.logoHeight,xaxle:logoX,yaxle:logoY,url:logo})
+                    let logoX = canvasWidth - logoWidth;
+                    let logoY = canvasHeight - logoHeight;
+                    giftList.unshift({giftId:-1, wide: logoWidth, high: logoHeight, xaxle: logoX, yaxle: logoY, url: logo})
                     this.giftList = giftList;
                 } else {
                     this.url = data.url;
                 }
+                this.$apply();
             } else {
                 tip.error('网络错误');
             }

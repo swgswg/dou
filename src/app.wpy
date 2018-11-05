@@ -356,10 +356,9 @@
 <script>
     import wepy from 'wepy';
     import 'wepy-async-function';
-    import { USER_INFO, SHAKE_HAND_TIME,SHAKE_HAND_NUMBER,PX_TO_RPX,SHAKE_LEG_TIME,SHAKE_LEG_NUMBER,BLUETOOTH,PAGES_PATH } from '@/utils/constant';
+    import {USER_INFO, PX_TO_RPX, BLUETOOTH, PAGES_PATH} from '@/utils/constant';
     import api from '@/utils/api';
     import util from '@/utils/util';
-    import weixin from '@/utils/weixin';
     import music from '@/utils/music';
 
     let user_info = null;
@@ -475,66 +474,18 @@
             // 获取屏幕尺寸适配比例
             this.px2rpx();
 
-            // 把上次的手动记录存入数据库
-            // this.addHandRecord();
-
-            // 重新记录时间
-            // var shakeTime = 0;
-            // setInterval(function() {
-            //     shakeTime++;
-            //     wepy.setStorageSync(SHAKE_HAND_TIME, shakeTime);
-            //     wepy.setStorageSync(SHAKE_LEG_TIME, shakeTime);
-            //     // console.log(shakeTime);
-            // },1000);
-
             // 清空蓝牙缓存数据
             wepy.setStorageSync(BLUETOOTH, {});
-            // 清空路径魂村
+            // 清空路径缓存
             wepy.setStorageSync(PAGES_PATH, {path: ''});
             // 播放背景音乐
             this.backgroundMusicEvent();
-
-            // 关闭webSocket
-            // weixin.weixinCloseWebSocket();
         }
-
-        // 把上次的手动记录存入数据库(个人记录不需要房间号)
-        // async addHandRecord(){
-        //     let prevShakeHandTime = wepy.getStorageSync(SHAKE_HAND_TIME);
-        //     console.log('prevShakeHandTime' + '===' +prevShakeHandTime);
-        //
-        //     let prevShakeHandNumber = wepy.getStorageSync(SHAKE_HAND_NUMBER);
-        //     console.log('prevShakeHandNumber' + '===' +prevShakeHandNumber);
-        //
-        //     if(!util.isEmpty(prevShakeHandTime)){
-        //         prevShakeHandTime = util.secondToDHMS(prevShakeHandTime);
-        //
-        //         if(util.isEmpty(prevShakeHandNumber)){
-        //             prevShakeHandNumber = 0;
-        //         }
-        //
-        //         let res = await api.addRecord({
-        //             query:{
-        //                 userId: user_info.id,
-        //                 time: prevShakeHandTime,
-        //                 shakeNum: prevShakeHandNumber,
-        //                 type:0,  // 0自己,1好友
-        //                 status: 0,// 0手动,1脚动
-        //                 model:api.arderModel, // 休闲模式
-        //             }
-        //         });
-        //         if(res.data.state == 1){
-        //             wepy.setStorageSync(SHAKE_HAND_TIME, 0);
-        //             wepy.setStorageSync(SHAKE_HAND_NUMBER, 0);
-        //         }
-        //     }
-        // }
 
         // px2rpx(尺寸适配比例) rpx = px * (目标设备宽 px 值 / 750)
         px2rpx(){
             let systemInfo = wepy.getSystemInfoSync();
             // console.log(systemInfo);
-            // console.log(systemInfo.windowHeight / 1110);
             wepy.setStorageSync(PX_TO_RPX, {
                 px2rpxWidth:systemInfo.windowWidth / 750,
                 px2rpxHeight:systemInfo.screenHeight / 1334,
@@ -546,7 +497,7 @@
 
         // 背景音乐
         backgroundMusicEvent(){
-            if(user_info.voice == 1){
+            if(!util.isEmpty(user_info.voice) && user_info.voice == 1){
                 music.backgroundMusic();
             } else {
                 music.stopMusic();

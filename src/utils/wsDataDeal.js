@@ -18,12 +18,13 @@ const ty7 = 7; // 断开重连
  */
 function wsDeal(data, that, userId, shareId, isMaster) {
     console.log('wsDataDeal==========');
-    console.log(data);
+    // console.log(data);
     let res = data;
     let ty = res.pop().type;
+    console.log(data);
     // console.log(typeof ty);
     // console.log('ty===========');
-    // console.log(ty);
+    console.log(ty);
     switch (ty){
         case ty0: slaveEnter(res, that, userId, shareId, isMaster);
             break;
@@ -56,6 +57,7 @@ function wsDeal(data, that, userId, shareId, isMaster) {
  * @param isMaster (房主true, 组员false)
  */
 function slaveEnter(data, that, userId, shareId,isMaster = true) {
+    // 清除自己的信息
     let arrs = dealGroupDataE(data,userId);
     // console.log('组员加入==============')
     // console.log(arrs)

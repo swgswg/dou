@@ -110,6 +110,7 @@
     let clear_set2 = null;
     let gameUser = null;
     let gameTime = null;
+    let degree = 0;
 
     export default class Game extends wepy.component {
         components = {
@@ -266,6 +267,11 @@
                 this.cancelCoverlayer();
             },
 
+            // 断开重连获取信息
+            disconnectAndReconnectEvents(){
+                this.disconnectAndReconnect();
+            },
+
             // 增加心跳,保持长连接50秒发一次
             heartbeatEvents(){
                 this.heartbeatE();
@@ -314,6 +320,7 @@
 
         // 开始
         startE(){
+            ++degree;
             gameTime = this.time;
             this.isCountDownNum = false;
             this.countdownStart = true;
@@ -354,19 +361,27 @@
                 title: '统计排名中',
                 icon: 'loading',
                 mask: true,
-                duration: 0
             });
-            setTimeout(function() {
-                wx.hideToast();
-            },2000);
             setTimeout(async function() {
                 let res = await api.getUserPKRanking({
                     query:{
-                        roomId: roomId
+                        roomId: roomId,
+                        degree: degree,
                     }
                 });
                 // console.log('统计游戏排名=========');
                 // console.log(res.data.data);
+                let ranking = res.data.data;
+                ranking.forEach(function(item) {
+                    if(item.userId == that.stageDataLeft.userId){
+                        that.stageDataLeft.shakeHandNum = item.shakeNum;
+                    } else if(item.userId == that.stageDataCenter.userId){
+                        that.stageDataCenter.shakeHandNum = item.shakeNum;
+                    } else if(item.userId == that.stageDataRight.userId){
+                        that.stageDataRight.shakeHandNum = item.shakeNum;
+                    }
+                });
+                that.stageDataCenter.shakeHandNum = res.data.data;
                 that.$invoke('gamerank','display',res.data.data);
                 that.showGameRankE();
                 shakeHandNumber = 0;
@@ -399,6 +414,8 @@
                     type: 1,
                     // 0（手动）1（脚动）
                     roomId: that.roomId,
+                    // 游戏对战次数
+                    degree: degree,
                     status: that.legOrHand,
                     mode:api.PKModel,
                 }
@@ -435,6 +452,21 @@
                 socketServer.wsSend(item, [{userId: userInfo.id, num: number}, {type:6}]);
             });
         }
+
+        /**
+         *  断开重连
+         * @param roomId
+         */
+        async disconnectAndReconnect(){
+            let roomId = this.roomId;
+            console.log('断开重连==================');
+            await api.getRoomUserData({
+                query:{
+                    roomId:roomId
+                }
+            });
+        }
+
 
         // 增加心跳,保持长连接50秒发一次
         heartbeatE(){

@@ -179,6 +179,10 @@ const updateRoom = (params) => wxRequest(params, host + 'shakeLeg/user/updateRoo
 const getUserPKRanking = (params) => wxRequest(params, host + 'shakeLeg/user/getUserPKRanking');
 // 断开重连
 const getRoomUserData = (params) => wxRequest(params, host + 'shakeLeg/user/getRoomUserData');
+// 添加分享记录
+const addShare = (params) => wxRequest(params, host + 'shakeLeg/user/addShare');
+// 注册
+const register = (params) => wxRequest(params, host + 'shakeLeg/user/register');
 
 export default {
     host,
@@ -268,4 +272,6 @@ export default {
     updateRoom,
     getUserPKRanking,
     getRoomUserData,
+    addShare,
+    register,
 };

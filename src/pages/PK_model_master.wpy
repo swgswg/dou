@@ -63,11 +63,11 @@
             // 房主需要时间的确定按钮
             hasTimeConfirmBtn:true,
 
-            stageDataLeft:{userId:'',  roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
-            // stageDataLeft:{userId:1,  roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+            // stageDataLeft:{userId:'',  roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            stageDataLeft:{userId:1,  roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
             stageDataCenter:{userId:'',roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
-            stageDataRight:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
-            // stageDataRight:{userId:2, roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
+            // stageDataRight:{userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'},
+            stageDataRight:{userId:2, roomId:'', legOrHand:'', logo:'', photo:'', isLight:2, shakeHandNum:'邀请好友'},
 
             time:'00:00:00',
 
@@ -113,6 +113,8 @@
             socketServer.wsInit(userInfo.id, that.roomId,()=>{
                 // 开启心跳
                 // this.$broadcast('heartbeatEvents');
+                // 断开重连
+                // that.$broadcast('disconnectAndReconnectEvents');
             },(data)=>{
 
                 // if(data){
@@ -129,6 +131,9 @@
         onShareAppMessage() {
             let roomId = this.roomId;
             let legOrHand = this.legOrHand;
+
+            // 添加分享记录
+            this.addShareE();
             // console.log('/pages/PK_model_slave?share=' + userInfo.id + '&roomId=' + roomId + '&legOrHand=' + legOrHand)
             // 来自页面内转发按钮
             return {
@@ -245,5 +250,13 @@
             this.$apply();
         }
 
+        // 添加分享记录
+        async addShareE(){
+            await api.addShare({
+                query:{
+                    userId: userInfo.id
+                }
+            });
+        }
     }
 </script>

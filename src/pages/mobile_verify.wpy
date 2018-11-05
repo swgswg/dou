@@ -107,8 +107,9 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.windowWidth = px2rpx.originalWidth;
             this.windowHeight = px2rpx.originalHeight;
-            let userInfo = wepy.getStorageSync(USER_INFO);
-            weChat = userInfo.weChat;
+
+            weChat = wepy.getStorageSync(USER_INFO).weChat;
+
             this.$apply();
             this.clear();
         }
@@ -121,7 +122,6 @@
 
             inputCode(e){
                 code = e.detail.value;
-
             },
 
             // 获取验证码
@@ -167,16 +167,20 @@
                     tip.alert('验证码不正确');
                     return;
                 }
-                let res = await api.updateMobile({
+                let res = await api.register({
                     query:{
                         mobile:mobile,
                         smsCode:code,
                         weChat:weChat,
+                        type:1,
                     }
                 });
                 if(res.data.state == 1){
-                    this.$redirect({
-                        url: '/pages/select_sex'
+                    wepy.setStorageSync(USER_INFO, res.data.data);
+                    wx.nextTick(()=>{
+                        this.$redirect({
+                            url: '/pages/select_sex'
+                        });
                     });
                 } else {
                     tip.error(res.data.message);
