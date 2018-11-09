@@ -1,4 +1,26 @@
 // 遮盖层
+<style lang="less">
+    .cover-layer{
+        position: absolute;
+        top:0;
+        left: 0;
+        z-index: 9999;
+        background: rgba(0,0,0,0.6);
+
+        .cover-layer-close{
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 999;
+            border: 1px solid #aaa;
+
+            .icon-close{
+                font-size: 30rpx;
+                color:#aaa;
+            }
+        }
+    }
+</style>
 <template>
     <view class="flex flex-center cover-layer" catchtouchmove="move" style="width:{{originalWidth}}px;height:{{originalHeight}}px;">
 
@@ -49,26 +71,3 @@
     }
 </script>
 
-<style lang="less">
-    .cover-layer{
-        position: absolute;
-        top:0;
-        left: 0;
-        z-index: 9999;
-        background: rgba(0,0,0,0.6);
-
-        .cover-layer-close{
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 0;
-            border: 1px solid #aaa;
-            /*border-radius: 50%;*/
-
-            .icon-close{
-                font-size: 30rpx;
-                color:#aaa;
-            }
-        }
-    }
-</style>

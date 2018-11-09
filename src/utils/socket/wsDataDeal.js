@@ -19,7 +19,8 @@ const ty3 = 'time';     // 时间
 const ty4 = 'start';    // 开始
 const ty5 = 'num';      // 次数
 const ty6 = 'out';      // 退出
-
+const ty7 = 'stop';     // 结束
+const ty8 = 'masterOut'; // 房主退出
 /**
  *  解析 WS 数据
  * @param data
@@ -27,57 +28,172 @@ const ty6 = 'out';      // 退出
  */
 function wsDeal(data, that, userId) {
     console.log('wsDataDeal==========');
-    // console.log(data);
+    console.log(data);
     let ty = data.type;
     console.log(ty);
     switch (ty){
         case ty0: addSelf(data, that, userId);
             break;
-        case ty1:
+        case ty1: add(data, that);
             break;
-        case ty2:
+        case ty2: ready(data, that);
             break;
-        case ty3:
+        case ty3: time(data, that);
             break;
-        case ty4:
+        case ty4: start(data, that);
             break;
-        case ty5:
+        case ty5: num(data, that);
             break;
-        case ty6:
+        case ty6: out(data, that, userId);
             break;
+        case ty7 : stop(data, that);
+            break;
+        case ty8: masterOutGame(that);
     }
 }
 
 
 /**
- *  组员加入
+ *  自己加入房间
  * @param data
  * @param that
  */
 function addSelf(data, that, userId){
-    data.user.forEach(function (item,index) {
-        if(index === 0){
-            updateStageLeftDateE(item, that);
-        } else if(index === 1){
-            updateStageCenterDateE(item, that);
-        } else if(index === 2){
-            updateStageRightDateE(item, that);
+    let user  = data.user;
+    let i = 0;
+    for(let k in user){
+        ++i;
+        if(k == userId){
+            updateStageCenterDateE(user[k], that);
+        } else {
+            if(i=== 2){
+                updateStageLeftDateE(user[k], that);
+            } else {
+                updateStageRightDateE(user[k], that);
+            }
         }
-        if(item.userId == userId){
-            updateStageCenterDateE(item, that);
-        }
-
-    });
-
+    }
+    
     if(!util.isEmpty(data.time)){
         that.time = data.time;
     }
+    that.$apply();
 
 }
 
+
+/**
+ *  组员加入房间
+ * @param data
+ * @param that
+ */
 function add(data, that) {
-
+    let user = data.user;
+    if(that.stageDataLeft.userId == ''){
+        updateStageLeftDateE(user, that);
+    } else if(that.stageDataRight.userId == ''){
+        updateStageRightDateE(user, that);
+    }
+    that.$apply();
 }
+
+
+/**
+ *  准备
+ * @param data
+ * @param that
+ */
+function ready(data, that) {
+    let ready = data.ready;
+    let userId = data.userId;
+    if(that.stageDataLeft.userId == userId){
+        that.stageDataLeft.isLight = ready;
+    } else if(that.stageDataRight.userId == userId){
+        that.stageDataRight.isLight = ready;
+    }
+    that.$apply();
+}
+
+
+/**
+ *  时间
+ * @param data
+ * @param that
+ */
+function time(data, that) {
+    that.time = data.time;
+    that.$apply();
+}
+
+
+/**
+ *  开始
+ * @param data
+ * @param that
+ */
+function start(data, that) {
+    if(data.start == 1){
+        that.start();
+    }
+    console.log('start=============');
+    console.log(start);
+    that.$apply();
+}
+
+
+/**
+ *  点击次数
+ * @param data
+ * @param that
+ */
+function num(data, that) {
+    if(data.userId == that.stageDataLeft.userId){
+        that.stageDataLeft.shakeHandNum = data.num;
+    } else if(data.userId == that.stageDataRight.userId) {
+        that.stageDataRight.shakeHandNum = data.num;
+    }
+    that.$apply();
+}
+
+
+/**
+ *  游戏结束
+ * @param data
+ * @param that
+ */
+function stop(data, that) {
+    that.ranking = data.ranking;
+    that.$apply();
+}
+
+
+/**
+ *  组员退出
+ * @param data
+ * @param that
+ * @param userId
+ */
+function out(data, that, userId) {
+    
+    if(data.userId == that.stageDataLeft.userId){
+        that.stageDataLeft = {userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'};
+        that.$apply();
+    } else if(data.userId == that.stageDataRight.userId){
+        that.stageDataRight = {userId:'', roomId:'', legOrHand:'', logo:'', photo:'', isLight:1, shakeHandNum:'邀请好友'};
+        that.$apply();
+    }
+    that.$apply();
+}
+
+
+/**
+ *  房主退出
+ * @param that
+ */
+function masterOutGame(that) {
+    that.masterOut();
+}
+
 
 
 /**
@@ -229,9 +345,8 @@ function dealGroupDataE(arrayData,userId){
 function updateStageCenterDateE(groupInfo,that){
     that.stageDataCenter.userId = groupInfo.userId;
     that.stageDataCenter.logo = groupInfo.logo;
-    that.stageDataCenter.name = groupInfo.name;
     that.stageDataCenter.photo = groupInfo.photo;
-    that.stageDataCenter.shakeHandNum = groupInfo.name;
+    that.stageDataCenter.shakeHandNum = groupInfo.num;
     that.stageDataCenter.isLight = groupInfo.ready;
     that.$apply();
 }
@@ -240,9 +355,8 @@ function updateStageCenterDateE(groupInfo,that){
 function updateStageLeftDateE(groupInfo,that){
     that.stageDataLeft.userId = groupInfo.userId;
     that.stageDataLeft.logo = groupInfo.logo;
-    that.stageDataLeft.name = groupInfo.name;
     that.stageDataLeft.photo = groupInfo.photo;
-    that.stageDataLeft.shakeHandNum = groupInfo.name;
+    that.stageDataLeft.shakeHandNum = groupInfo.num;
     that.stageDataLeft.isLight = groupInfo.ready;
     that.$apply();
 }
@@ -251,10 +365,10 @@ function updateStageLeftDateE(groupInfo,that){
 function updateStageRightDateE(groupInfo,that){
     that.stageDataRight.userId = groupInfo.userId;
     that.stageDataRight.logo = groupInfo.logo;
-    that.stageDataRight.name = groupInfo.name;
     that.stageDataRight.photo = groupInfo.photo;
-    that.stageDataRight.shakeHandNum = groupInfo.name;
+    that.stageDataRight.shakeHandNum = groupInfo.num;
     that.stageDataRight.isLight = groupInfo.ready;
+    that.$apply();
 }
 
 module.exports = {

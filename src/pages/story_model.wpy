@@ -46,7 +46,7 @@
         <view wx:if="{{showCoverLayer}}">
             <coverlayer>
                 <veiw class="flex-center w-percent100 h-percent100" slot="content">
-                    <image model="aspectFill" lazy-load="true" src="{{fileUrl + storys[i].img}}" style="width:{{storys[i].width}}px;height:{{storys[i].height}}px;"></image>
+                    <image model="aspectFill" lazy-load="true" src="{{fileUrl + storys[i].img}}" style="width:{{750*px2rpxWidth}}px;height:{{1200*px2rpxWidth}}px;"></image>
                 </veiw>
             </coverlayer>
         </view>

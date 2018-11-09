@@ -9,20 +9,15 @@ var SocketTask = null;
 var isOpen = false;
 var user_id = null;
 var room_id = null;
-var master_id = null;
-var photo_id = null;
-var name_id = null;
+
 /**
  *  连接webSocket
  * @param userId
  * @param roomId
  */
-function wsConnect (userId, roomId, photo, name,master) {
+function wsConnect (userId, roomId) {
     user_id = userId;
     room_id = roomId;
-    master_id = master;
-    photo_id = photo;
-    name_id = name;
     if(!isOpen){
         SocketTask = wx.connectSocket({
             url: wsHost,
@@ -42,7 +37,6 @@ function wsOnOpen(openFun){
         isOpen = true;
         console.log('监听 WebSocket 连接打开事件onOpen。', res);
         openFun();
-        wsSend('type=add&roomId=' + room_id + '&userId=' + user_id + '&master=' + master_id + '&photo=' + photo_id + '&name=' + name_id);
     });
 }
 
@@ -57,7 +51,7 @@ function wsSend(message){
     // console.log(typeof sendMessage)
     console.log(message);
     SocketTask.send({
-        data: message,
+        data: JSON.stringify(message),
     });
 }
 
@@ -115,8 +109,8 @@ function wsClose(){
 }
 
 
-function wsInit(userId,roomId, photo,name ,master, openFun,mFun,closeFlag){
-    wsConnect(userId, roomId, photo, name,master);
+function wsInit(userId,roomId, openFun,mFun,closeFlag){
+    wsConnect(userId, roomId);
     wsOnOpen(openFun);
     wsOnMessage(mFun);
     wsOnClose(closeFlag);
