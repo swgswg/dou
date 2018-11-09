@@ -279,6 +279,11 @@
                 this.disconnectAndReconnect();
             },
 
+            // 接收到信息后给服务器返回接收成功信息
+            receiveSuccessEvents(){
+                this.receiveSuccess();
+            },
+
             // 增加心跳,保持长连接50秒发一次
             heartbeatEvents(){
                 this.heartbeatE();
@@ -318,7 +323,7 @@
             clear_set = setInterval(function() {
                 that.countDownNum--;
                 that.$apply();
-                if(that.countDownNum === 0){
+                if(that.countDownNum <= 0){
                     clearInterval(clear_set);
                     that.startE();
                 }
@@ -364,12 +369,18 @@
         gameRankE(){
             let roomId = this.roomId;
             let that = this;
-            wx.showToast({
-                title: '统计排名中',
-                icon: 'loading',
-                mask: true,
+            // wx.showToast({
+            //     title: '统计排名中',
+            //     icon: 'loading',
+            //     duration:500,
+            //     mask: true,
+            // });
+            wx.showLoading({
+                title: '统计排名中...',
+                mask:true,
             });
             setTimeout(async function() {
+
                 let res = await api.getUserPKRanking({
                     query:{
                         roomId: roomId,
@@ -380,6 +391,8 @@
                 // console.log(res.data.data);
                 let ranking = res.data.data;
                 ranking.forEach(function(item) {
+                    console.log('ranking==========')
+                    console.log(ranking);
                     if(item.userId == that.stageDataLeft.userId){
                         that.stageDataLeft.shakeHandNum = item.shakeNum;
                     } else if(item.userId == that.stageDataCenter.userId){
@@ -388,8 +401,8 @@
                         that.stageDataRight.shakeHandNum = item.shakeNum;
                     }
                 });
-                that.stageDataCenter.shakeHandNum = res.data.data;
-                that.$invoke('gamerank','display',res.data.data);
+                wx.hideLoading();
+                that.$invoke('gamerank','display',ranking);
                 that.showGameRankE();
                 shakeHandNumber = 0;
             },2000);
@@ -412,6 +425,9 @@
         // 添加游戏记录
         async addGameRecord(){
             let that = this;
+            if(shakeHandNumber <= 0){
+                return;
+            }
             await api.addRecord({
                 query:{
                     userId: userInfo.id,
@@ -474,6 +490,10 @@
             });
         }
 
+        // 接收到信息后给服务器返回接收成功信息
+        // receiveSuccess(){
+        //     socketServer.wsSend('', [{receive:1}, {type:8}]);
+        // }
 
         // 增加心跳,保持长连接50秒发一次
         heartbeatE(){

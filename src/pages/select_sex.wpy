@@ -183,6 +183,7 @@
                     name = e.detail.userInfo.nickName;
                     photo = e.detail.userInfo.avatarUrl;
                     // encryptedData = e.detail.encryptedData;
+                    // tip.longtoast(encryptedData++);
                     // iv = e.detail.iv;
                     that.updateInfo();
 
@@ -216,7 +217,7 @@
                 if (res.data.state == 1) {
                     // 更新缓存
                     wepy.setStorageSync(USER_INFO, res.data.data);
-                    console.log('更新成功');
+                    // console.log('更新成功');
 
                     // 获取信息成功
                     let pagesPath = wepy.getStorageSync(PAGES_PATH);
@@ -228,9 +229,6 @@
                     } else {
                         wx.redirectTo({
                             url: pagesPath.path,
-                            success: function() {
-                                wepy.setStorageSync(PAGES_PATH, { path: '' });
-                            }
                         });
                     }
                 } else {

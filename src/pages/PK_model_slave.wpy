@@ -94,6 +94,8 @@
                     url:'/pages/mobile_verify'
                 });
                 return;
+            } else {
+                wepy.setStorageSync(PAGES_PATH, { path: '' });
             }
 
             // 组员判断能不能进入这个房间
@@ -286,5 +288,10 @@
                 url:'/pages/select_model'
             });
         }
+
+        // 接收到信息后给服务器返回接收成功信息
+        // receiveSuccess(){
+        //     this.$broadcast('receiveSuccessEvents');
+        // }
     }
 </script>

@@ -31,7 +31,7 @@
                 <view class="flex-start w-percent50">
                     <image style="width:{{46*px2rpxWidth}}px;height:{{44*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
                     <view>抖腿币</view>
-                    <view class="num" style="margin-left:{{12*px2rpxWidth}}px;">{{integral}}</view>
+                    <view class="num" style="margin-left:{{12*px2rpxWidth}}px;">{{~~integral}}</view>
                 </view>
                 <view class="flex-end w-percent50">
                     <view class="flex-center" @tap.stop="goToMyGift">

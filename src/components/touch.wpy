@@ -9,7 +9,7 @@
             <image src="{{click_img}}"
                    lazy-load="true"
                    mode="widthFix"
-                   style="width:{{499*px2rpxWidth}}px;height:{{426*px2rpxWidth}}px;"
+                   style="width:{{477*px2rpxWidth}}px;height:{{408*px2rpxWidth}}px;"
                    @touchstart="clickStart" @tap.stop="clicking" @touchend="clickEnd">
             </image>
         </view>

@@ -233,7 +233,7 @@
         // 房主开始游戏
         async updateRoomE(){
             let roomId = this.roomId;
-            let res = await api.updateRoom({
+            await api.updateRoom({
                 query:{
                     roomId: roomId
                 }
@@ -258,5 +258,12 @@
                 }
             });
         }
+
+        // 接收到信息后给服务器返回接收成功信息
+        // receiveSuccess(){
+        //     this.$broadcast('receiveSuccessEvents');
+        // }
+
+
     }
 </script>

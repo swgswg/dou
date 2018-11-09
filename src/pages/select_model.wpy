@@ -86,7 +86,7 @@
                 let skip = e.currentTarget.dataset.skip;
                 // if(skip == '/pages/PK_model_slave'){
                 //     wepy.navigateTo({
-                //         url: skip + '?legOrHand=0&roomId=1527&share=125',
+                //         url: skip + '?legOrHand=0&roomId=1729&share=174',
                 //     });
                 // }
 

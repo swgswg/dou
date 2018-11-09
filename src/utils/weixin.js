@@ -151,6 +151,7 @@ module.exports = {
                 orderUUID:orderUUID,
                 openid:openid,
                 body:body,
+                tradetype:'JSAPI',
             }
         });
         if(res.data.state == 1){
