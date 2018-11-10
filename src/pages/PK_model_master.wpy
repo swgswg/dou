@@ -95,9 +95,6 @@
 
         };
 
-        onShow(){
-
-        }
 
         onReady() {
             let that = this;
@@ -107,24 +104,17 @@
             });
 
             // 关闭webSocket
-            socketServer.wsClose();
+            // socketServer.wsClose();
 
             // 连接webSocket
             socketServer.wsInit(userInfo.id, that.roomId,()=>{
-                // 开启心跳
-                // this.$broadcast('heartbeatEvents');
-                // 断开重连
-                // that.$broadcast('disconnectAndReconnectEvents');
+                // 进入房间,发送自己的信息
+                socketServer.wsSend({type:1, userId:userInfo.id, roomId: that.roomId, master:1});
             },(data)=>{
 
-                // if(data){
-                //     // 这次有数据,取消这次心跳
-                //     this.$broadcast('cancelHeartbeatEvents');
-                // }
-                wsDataDeal.wsDeal(data, that, userInfo.id, '', true);
-            }, true);
-            // 开启心跳
-            // this.$broadcast('cancelHeartbeatEvents');
+                wsDataDeal.wsDeal(data, that, userInfo.id);
+            });
+
         };
 
         // 转发
@@ -156,6 +146,15 @@
             // 倒计时结束
             isOverCountDownEvents(){
                 this.isOverCountDownE();
+            },
+
+            // 正常游戏结束
+            gameStopEvents(){
+                socketServer.wsSend({type:6, roomId: this.roomId, userId:userInfo.id});
+            },
+
+            socketCloseBeforeEvents(){
+                this.socketCloseBefore();
             }
         };
 
@@ -170,7 +169,9 @@
             if( !this.allReady() ){
                 return;
             }
-            this.updateRoomE();
+
+            // 开始游戏
+            socketServer.wsSend({type:4, roomId: this.roomId, userId:userInfo.id});
         }
 
         // 所有人都准备好
@@ -207,6 +208,7 @@
 
         // 倒计时结束
         isOverCountDownE(){
+
             this.readyBtn = start_btn;
             this.updateGroupUserInit();
         }
@@ -215,12 +217,8 @@
         async updateRoomTimeE(){
             let roomId = this.roomId;
             let time = this.time;
-            await api.updateRoomTime({
-                query:{
-                    roomId: roomId,
-                    time: time,
-                }
-            });
+            // 发送时间
+            socketServer.wsSend({type:3, roomId:roomId, userId:userInfo.id ,time:time});
         }
 
         // 游戏时间开始倒计时
@@ -240,8 +238,18 @@
             });
         }
 
-        // 房主退出,房间取消
         masterOut(){}
+
+        // 房主退出,房间取消
+        socketCloseBefore(){
+            if(this.time=='00:00:00'){
+                // 房主不在游戏中退出
+                socketServer.wsSend({type:10 ,userId: userInfo.id,  roomId: this.roomId});
+            } else {
+                // 房主在游戏中退出
+                socketServer.wsSend({type:11 ,userId: userInfo.id,  roomId: this.roomId});
+            }
+        }
 
         // 游戏结束修改玩家准备状态
         updateGroupUserInit(){
@@ -258,12 +266,6 @@
                 }
             });
         }
-
-        // 接收到信息后给服务器返回接收成功信息
-        // receiveSuccess(){
-        //     this.$broadcast('receiveSuccessEvents');
-        // }
-
 
     }
 </script>

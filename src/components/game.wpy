@@ -205,17 +205,13 @@
             this.px2rpxHeight = px2rpx.px2rpxHeight;
             this.widWidth = px2rpx.originalWidth;
             this.widHeight = px2rpx.originalHeight;
+            userInfo = wepy.getStorageSync(USER_INFO);
             this.$apply();
-
-            // 把自己的信息绑定到中间舞台
-            this.updateStageDataCenter();
         };
 
         watch = {
             // 倒计时结束
             countdownOver(newValue){
-                console.log('countdownOver========');
-                console.log(newValue);
                 if(newValue){
                     this.isOverCountDown(true);
                 }
@@ -233,11 +229,7 @@
             masterOutM(){
                 this.isOverCountDown(false);
                 // 关闭websocket
-                // setTimeout(function() {
-                //     socketServer.wsClose();
-                // },2000);
-                // 退出游戏
-                // this.cancelHeartbeatE();
+                socketServer.wsClose();
             }
         };
 
@@ -255,7 +247,7 @@
                     this.stageDataCenter.shakeHandNum = shakeHandNumber;
                     this.$apply();
                     // 发送websocket
-                    this.sendWSNumE(shakeHandNumber);
+                    socketServer.wsSend({type:5, roomId: this.roomId, userId: userInfo.id, num: shakeHandNumber});
                 }
             },
 
@@ -265,8 +257,9 @@
                 this.$apply();
                 this.isOverCountDown(false);
                 // 退出游戏
-                this.updateRoomUserStatusE();
-                // this.cancelHeartbeatE();
+                // this.updateRoomUserStatusE();
+                this.$emit('socketCloseBeforeEvents');
+                socketServer.wsClose();
             },
 
             // 取消遮盖层
@@ -274,46 +267,7 @@
                 this.cancelCoverlayer();
             },
 
-            // 断开重连获取信息
-            disconnectAndReconnectEvents(){
-                this.disconnectAndReconnect();
-            },
-
-            // 接收到信息后给服务器返回接收成功信息
-            receiveSuccessEvents(){
-                this.receiveSuccess();
-            },
-
-            // 增加心跳,保持长连接50秒发一次
-            heartbeatEvents(){
-                this.heartbeatE();
-            },
-
-            // 连接意外关闭取消心跳
-            cancelHeartbeatEvents(){
-                this.cancelHeartbeatE();
-            }
         };
-
-        // 完善自己的舞台信息
-        updateStageDataCenter(){
-            // 把自己的信息绑定到中间舞台
-            userInfo = wepy.getStorageSync(USER_INFO);
-            this.stageDataCenter.userId = userInfo.id;
-            this.stageDataCenter.logo = userInfo.logo;
-            this.stageDataCenter.photo = userInfo.photo;
-            this.stageDataCenter.shakeHandNum = userInfo.name;
-            this.stageDataCenter.roomId = this.roomId;
-            this.stageDataCenter.legOrHand = this.legOrHand;
-
-            this.stageDataLeft.roomId = this.roomId;
-            this.stageDataLeft.legOrHand = this.legOrHand;
-
-            this.stageDataRight.roomId = this.roomId;
-            this.stageDataRight.legOrHand = this.legOrHand;
-
-            this.$apply();
-        }
 
         // 3/2/1倒计时
         countDownNum321(){
@@ -357,30 +311,28 @@
             this.$apply();
             // flag=true正常倒计时结束游戏/false中途退出
             if(flag){
+                this.showCoverLayer = true;
+                wx.showToast({
+                    title: '统计排名中.',
+                    icon: 'loading',
+                    mask:true,
+                    duration: 500
+                });
+                this.$emit('gameStopEvents');
                 this.addGameRecord();
                 this.gameRankE();
             } else {
                 shakeHandNumber = 0;
                 this.$broadcast('forcedStopCountdown');
             }
+            this.$apply();
         }
 
         // 统计游戏排名
         gameRankE(){
             let roomId = this.roomId;
             let that = this;
-            // wx.showToast({
-            //     title: '统计排名中',
-            //     icon: 'loading',
-            //     duration:500,
-            //     mask: true,
-            // });
-            wx.showLoading({
-                title: '统计排名中...',
-                mask:true,
-            });
             setTimeout(async function() {
-
                 let res = await api.getUserPKRanking({
                     query:{
                         roomId: roomId,
@@ -401,7 +353,7 @@
                         that.stageDataRight.shakeHandNum = item.shakeNum;
                     }
                 });
-                wx.hideLoading();
+                wx.hideToast();
                 that.$invoke('gamerank','display',ranking);
                 that.showGameRankE();
                 shakeHandNumber = 0;
@@ -410,9 +362,13 @@
 
         // 显示游戏排名
         showGameRankE(){
+            let that = this;
             this.showCoverLayer = true;
             this.showGameRank = true;
             this.$apply();
+            setTimeout(function() {
+                that.$emit('masterGamingOut');
+            },1500);
         }
 
         // 取消遮盖层
@@ -458,55 +414,6 @@
             shakeHandNumber = 0;
         }
 
-        // 发送点击数
-        sendWSNumE(number){
-            if(util.isEmpty(gameUser)){
-                gameUser = wepy.getStorageSync(GAME_USER);
-            }
-            let gameUserIdArr = [];
-            // console.log(gameUser);
-            gameUser.forEach(function(item) {
-                if(item.userId != userInfo.id){
-                    gameUserIdArr.push(item.userId);
-                }
-            });
-            // console.log(gameUserIdArr);
-            gameUserIdArr.forEach(function(item) {
-                socketServer.wsSend(item, [{userId: userInfo.id, num: number}, {type:6}]);
-            });
-        }
-
-        /**
-         *  断开重连
-         * @param roomId
-         */
-        async disconnectAndReconnect(){
-            let roomId = this.roomId;
-            console.log('断开重连==================');
-            await api.getRoomUserData({
-                query:{
-                    roomId:roomId
-                }
-            });
-        }
-
-        // 接收到信息后给服务器返回接收成功信息
-        // receiveSuccess(){
-        //     socketServer.wsSend('', [{receive:1}, {type:8}]);
-        // }
-
-        // 增加心跳,保持长连接50秒发一次
-        heartbeatE(){
-            let roomId = this.roomId;
-            clear_set2 = setInterval(function() {
-                socketServer.wsSend(roomId, '心跳测试');
-            },50000);
-        }
-
-        // 连接意外关闭取消心跳
-        cancelHeartbeatE(){
-            clearInterval(clear_set2);
-        }
     }
 </script>
 

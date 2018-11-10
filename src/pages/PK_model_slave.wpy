@@ -75,6 +75,9 @@
 
             // 游戏时间倒计时开始
             countdownStart:false,
+
+            // 房主是不是在游戏中退出(0否/1是在游戏中退出)
+            masterOutGaming: 0,
         };
 
         onLoad(options) {
@@ -99,7 +102,7 @@
             }
 
             // 组员判断能不能进入这个房间
-            this.intoRoomJudgeE(options.roomId);
+            // this.intoRoomJudgeE(options.roomId);
 
             let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
@@ -127,26 +130,16 @@
                     keepScreenOn:true
                 });
                 // // 关闭webSocket
-                socketServer.wsClose();
+                // socketServer.wsClose();
                 // 连接webSocket
                 socketServer.wsInit( userInfo.id, that.roomId,()=>{
-                    // 开启心跳
-                    // this.$broadcast('heartbeatEvents');
-                    // 断开重连
-                    // that.$broadcast('disconnectAndReconnectEvents');
+                    // 进入房间
+                    socketServer.wsSend({type:1, userId:userInfo.id, roomId:that.roomId, master:0});
                 }, (data)=>{
-                    // 组员信息
-                    // if(data){
-                    //     // 这次有数据,取消这次心跳
-                    //     this.$broadcast('cancelHeartbeatEvents');
-                    // }
-                    wsDataDeal.wsDeal(data, that, userInfo.id, shareId, false);
-                }, true);
+                    // 接收websocket信息
+                    wsDataDeal.wsDeal(data, that, userInfo.id);
+                });
 
-                // 进入房间传送空数据
-                // socketServer.wsSend(shareId,'我进入了');
-                // 开启心跳
-                // this.$broadcast('cancelHeartbeatEvents');
             },500);
         };
 
@@ -161,12 +154,19 @@
                     this.stageDataCenter.isLight = 1;
                 }
                 this.$apply();
-                this.updateRoomStatusE();
+                socketServer.wsSend({type:2, roomId:this.roomId, userId: userInfo.id, status: this.stageDataCenter.isLight});
+                // this.updateRoomStatusE();
             },
 
             // 倒计时结束
             isOverCountDownEvents(){
+                socketServer.wsSend({type:2, roomId: this.roomId, userId:userInfo.id, status:1});
                 this.isOverCountDownE();
+            },
+
+            // socket关闭之前
+            socketCloseBeforeEvents(){
+                socketServer.wsSend({type:8 ,userId:userInfo.id,  roomId:this.roomId});
             }
 
         };
@@ -192,21 +192,7 @@
             });
             console.log('判断组员能不能进入这个房间=========');
             console.log(res);
-            if(res.data.state != 0){
-                // 把已有的房间人绑定到舞台上
-                // let userInfoArr = this.dealGroupDataE(res.data.data);
-                // if( !util.isEmpty(userInfoArr[0])){
-                //     this.updateStageLeftDateE(userInfoArr[0]);
-                //     if( !util.isEmpty(userInfoArr[0].time)){
-                //         this.time = userInfoArr[0].time;
-                //         this.$apply();
-                //     }
-                // }
-                // if(!util.isEmpty(userInfoArr[1])){
-                //     this.updateStageRightDateE(userInfoArr[1]);
-                // }
-
-            } else {
+            if(res.data.state == 0){
                 // 不能进入房间
                 wx.switchTab({
                     url:'/pages/select_model'
@@ -214,41 +200,6 @@
                 tip.alert('房间已满');
                 return;
             }
-        }
-
-        // 去掉用户组里自己的信息
-        dealGroupDataE(arrayData){
-            let data = [];
-            let len = arrayData.length;
-            for(let i = 0; i < len; i++){
-                if(arrayData[i].userId != userInfo.id){
-                    data.push(arrayData[i]);
-                }
-            }
-            return data;
-        }
-
-        // 把房间人物信息绑定到左边舞台
-        updateStageLeftDateE(groupInfo){
-            this.stageDataLeft.userId = groupInfo.userId;
-            this.stageDataLeft.roomId = groupInfo.id;
-            this.stageDataLeft.logo = groupInfo.logo;
-            this.stageDataLeft.name = groupInfo.name;
-            this.stageDataLeft.photo = groupInfo.photo;
-            this.stageDataLeft.shakeHandNum = groupInfo.name;
-            this.stageDataLeft.isLight = groupInfo.status;
-            this.$apply();
-        }
-        // 把房间人物信息绑定到右边舞台
-        updateStageRightDateE(groupInfo){
-            this.stageDataRight.userId = groupInfo.userId;
-            this.stageDataRight.roomId = groupInfo.id;
-            this.stageDataRight.logo = groupInfo.logo;
-            this.stageDataRight.name = groupInfo.name;
-            this.stageDataRight.photo = groupInfo.photo;
-            this.stageDataRight.shakeHandNum = groupInfo.name;
-            this.stageDataRight.isLight = groupInfo.status;
-            this.$apply();
         }
 
         // 游戏时间开始倒计时
@@ -283,15 +234,24 @@
 
         // 房主退出,房间取消
         masterOut(){
+            if(this.masterOutGaming == 1){
+                return;
+            }
             this.$invoke('game','masterOutM');
             wx.switchTab({
                 url:'/pages/select_model'
             });
         }
 
-        // 接收到信息后给服务器返回接收成功信息
-        // receiveSuccess(){
-        //     this.$broadcast('receiveSuccessEvents');
-        // }
+        // 房主游戏中退出, 游戏结束组员强制退出
+        masterGamingOut(){
+            if(this.masterOutGaming == 1){
+                this.$invoke('game','masterOutM');
+                wx.switchTab({
+                    url:'/pages/select_model'
+                });
+            }
+        }
+
     }
 </script>

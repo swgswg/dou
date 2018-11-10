@@ -184,7 +184,6 @@
             weixin.updateUserInfo();
             setTimeout(()=>{
                 let userInfo = wepy.getStorageSync(USER_INFO);
-                console.log(userInfo);
                 fansId = userInfo.id;
                 canSendVipWall = userInfo.status;
             },800);

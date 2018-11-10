@@ -1,8 +1,8 @@
 const apiHost = 'https://www.dt.pub/';
 // const apiHost = 'http://192.168.3.56:8082/';
 
-// const webSocketHost = 'ws://192.168.3.56:8082/shakeLeg/websocket/';
-const webSocketHost = 'wss://www.dt.pub/shakeLeg/websocket/';
+// const webSocketHost = 'ws://192.168.1.153:8082/shakeLeg/socket/';
+const webSocketHost = 'wss://www.dt.pub/shakeLeg/socket/';
 
 const uploadFileUrl = 'https://doutui.oss-cn-beijing.aliyuncs.com/';
 
