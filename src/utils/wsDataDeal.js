@@ -180,7 +180,7 @@ function num(data, that) {
  */
 function stop(data, that) {
     // that.ranking = data.ranking;
-    that.$apply();
+    // that.$apply();
 }
 
 

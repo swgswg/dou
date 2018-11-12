@@ -347,7 +347,6 @@
                             if (res.confirm) {
                                 // 停止计时,
                                 that.$broadcast('stopCountDown');
-                                that.selectTimeIndex = [0,0,0];
                                 that.$apply();
                                 wepy.switchTab({
                                     url: '/pages/go_shake'

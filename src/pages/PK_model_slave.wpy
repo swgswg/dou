@@ -149,23 +149,27 @@
                 if(isReady){
                     this.readyOrStartBtn = no_ready_btn;
                     this.stageDataCenter.isLight = 2;
+                    socketServer.wsSend({type:2, roomId:this.roomId, userId: userInfo.id, status: 2});
                 } else {
                     this.readyOrStartBtn = ready_btn;
                     this.stageDataCenter.isLight = 1;
+                    socketServer.wsSend({type:2, roomId:this.roomId, userId: userInfo.id, status: 1});
                 }
+                isReady = !isReady;
                 this.$apply();
-                socketServer.wsSend({type:2, roomId:this.roomId, userId: userInfo.id, status: this.stageDataCenter.isLight});
-                // this.updateRoomStatusE();
+                // 组员准备
             },
 
             // 倒计时结束
             isOverCountDownEvents(){
+                // 倒计时结束
                 socketServer.wsSend({type:2, roomId: this.roomId, userId:userInfo.id, status:1});
                 this.isOverCountDownE();
             },
 
             // socket关闭之前
             socketCloseBeforeEvents(){
+                // socket关闭之前
                 socketServer.wsSend({type:8 ,userId:userInfo.id,  roomId:this.roomId});
             }
 
@@ -217,19 +221,6 @@
             this.hasTimeConfirmBtn = false;
             isReady = true;
             this.$apply();
-        }
-
-        // 组员准备
-        async updateRoomStatusE(){
-            let that =this;
-            await api.updateRoomStatus({
-                query:{
-                    userId: userInfo.id,
-                    roomId: that.roomId,
-                    status: that.stageDataCenter.isLight,
-                }
-            });
-            isReady = !isReady;
         }
 
         // 房主退出,房间取消

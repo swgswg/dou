@@ -246,7 +246,7 @@
                     ++shakeHandNumber;
                     this.stageDataCenter.shakeHandNum = shakeHandNumber;
                     this.$apply();
-                    // 发送websocket
+                    // 点击次数
                     socketServer.wsSend({type:5, roomId: this.roomId, userId: userInfo.id, num: shakeHandNumber});
                 }
             },
@@ -312,17 +312,16 @@
             // flag=true正常倒计时结束游戏/false中途退出
             if(flag){
                 this.showCoverLayer = true;
-                wx.showToast({
-                    title: '统计排名中.',
-                    icon: 'loading',
+                wx.showLoading({
+                    title: '统计排名中...',
                     mask:true,
-                    duration: 500
                 });
                 this.$emit('gameStopEvents');
                 this.addGameRecord();
                 this.gameRankE();
             } else {
                 shakeHandNumber = 0;
+                // 强制停止倒计时
                 this.$broadcast('forcedStopCountdown');
             }
             this.$apply();
@@ -332,7 +331,7 @@
         gameRankE(){
             let roomId = this.roomId;
             let that = this;
-            setTimeout(async function() {
+            let setTimeOutNumber  = setTimeout(async function() {
                 let res = await api.getUserPKRanking({
                     query:{
                         roomId: roomId,
@@ -353,11 +352,12 @@
                         that.stageDataRight.shakeHandNum = item.shakeNum;
                     }
                 });
-                wx.hideToast();
+                wx.hideLoading();
                 that.$invoke('gamerank','display',ranking);
                 that.showGameRankE();
                 shakeHandNumber = 0;
-            },2000);
+                clearTimeout(setTimeOutNumber);
+            },3000);
         }
 
         // 显示游戏排名
@@ -366,8 +366,9 @@
             this.showCoverLayer = true;
             this.showGameRank = true;
             this.$apply();
-            setTimeout(function() {
+            let setTimeOutNumber = setTimeout(function() {
                 that.$emit('masterGamingOut');
+                clearTimeout(setTimeOutNumber);
             },1500);
         }
 
@@ -381,9 +382,6 @@
         // 添加游戏记录
         async addGameRecord(){
             let that = this;
-            if(shakeHandNumber <= 0){
-                return;
-            }
             await api.addRecord({
                 query:{
                     userId: userInfo.id,

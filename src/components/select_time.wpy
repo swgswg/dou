@@ -12,16 +12,6 @@
     <view class="flex-around w-percent100 h-percent100 select-time">
         <picker mode="multiSelector" bindchange="changeTime" value="{{selectTimeIndex}}" range="{{selectTimeArray}}" disabled="{{!hasTimeConfirmBtn}}">
             <view class="flex-center num cec2c98">
-                <!--<view class="flex-center num" style="margin-right:{{20*px2rpxWidth}}px;">-->
-                    <!--&lt;!&ndash;当前选择：{{multiArray[0][multiIndex[0]]}}，{{multiArray[1][multiIndex[1]]}}，{{multiArray[2][multiIndex[2]]}}&ndash;&gt;-->
-                    <!--{{selectTimeArray[0][selectTimeIndex[0]]}}:-->
-                <!--</view>-->
-                <!--<view class="flex-center num" style="margin-right:{{20*px2rpxWidth}}px;">-->
-                    <!--{{selectTimeArray[1][selectTimeIndex[1]]}}:-->
-                <!--</view>-->
-                <!--<view class="flex-center num" >-->
-                    <!--{{selectTimeArray[2][selectTimeIndex[2]]}}-->
-                <!--</view>-->
                 {{time}}
             </view>
         </picker>
@@ -42,7 +32,7 @@
     import imgApi from '@/utils/imgApi';
     import util from '@/utils/util';
     import tip from '@/utils/tip';
-    import {PX_TO_RPX} from '@/utils/constant';
+    import {PX_TO_RPX} from '@/utils/constant'
 
     let clear_set = null;
 
@@ -95,8 +85,8 @@
             // 选择倒计时时间
             changeTime(e){
                 this.selectTimeIndex = e.detail.value;
-                this.time = this.selectTimeArray[0][this.selectTimeIndex[0]] + ':' + this.selectTimeArray[1][this.selectTimeIndex[1]] +':' + this.selectTimeArray[2][this.selectTimeIndex[2]];
-                console.log(this.time);
+                // this.time = this.selectTimeArray[0][this.selectTimeIndex[0]] + ':' + this.selectTimeArray[1][this.selectTimeIndex[1]] +':' + this.selectTimeArray[2][this.selectTimeIndex[2]];
+                // console.log(this.time);
                 this.$apply();
             },
 
@@ -131,11 +121,6 @@
         };
 
         events = {
-            // 确定时间
-            confirmSelectTimeEvents(){
-                return this.confirmSelectTimeE();
-            },
-
             //停止倒计时
             stopCountDown(){
                 this.stopCountDownE(true);

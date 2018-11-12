@@ -266,7 +266,7 @@
             weixin.weixinPay(money,myorderId,openid,'抖腿商城',(res)=>{
                 tip.toast('支付成功');
                 wepy.switchTab({
-                    url:'/pages/my_info'
+                    url:'/pages/order'
                 });
                 // that.updateOrdersStatusFun(myorderId);
             },()=>{
