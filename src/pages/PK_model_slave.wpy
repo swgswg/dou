@@ -14,6 +14,7 @@
               :time.sync="time"
               :isCountDownNum.sync="isCountDownNum"
               :countdownStart.sync="countdownStart"
+              :masterId.sync="masterId"
         >
         </game>
     </view>
@@ -58,6 +59,7 @@
 
             roomId:null,
             legOrHand:null,
+            masterId:null,
             // 组员是准备按钮
             readyOrStartBtn:ready_btn,
             // 组员不需要时间的确定按钮
@@ -129,8 +131,7 @@
                 wx.setKeepScreenOn({
                     keepScreenOn:true
                 });
-                // // 关闭webSocket
-                // socketServer.wsClose();
+
                 // 连接webSocket
                 socketServer.wsInit( userInfo.id, that.roomId,()=>{
                     // 进入房间

@@ -19,7 +19,7 @@
         <!--退出按钮 end-->
 
         <!--说明按钮 start-->
-        <view class="pa" style="top:{{120*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;z-index:100;">
+        <view class="pa" style="top:{{130*px2rpxHeight}}px;right:{{32*px2rpxWidth}}px;z-index:100;">
             <explain :model.sync="PKModel"></explain>
         </view>
         <!--说明按钮 end-->
@@ -82,8 +82,14 @@
             <coverlayer>
 
                 <!--游戏结束排名 start-->
-                <view class="flex-center w-percent100" slot="content" wx:if="{{showGameRank}}">
-                    <gamerank :ratio.sync="gameRankRatio"></gamerank>
+                <view class="flex-center w-percent100" slot="content" >
+
+                    <block wx:if="{{showGameRank}}">
+                        <gamerank :ratio.sync="gameRankRatio"></gamerank>
+                    </block>
+                    <block wx:else>
+                        <view class="f30 cf">统计排名中...</view>
+                    </block>
                 </view>
                 <!--游戏结束排名 end-->
 
@@ -100,6 +106,7 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import util from '@/utils/util';
+    import config from '@/utils/config_local';
     import socketServer from '@/utils/socketServer';
 
     import OutModel from '@/components/out_model';
@@ -110,6 +117,7 @@
     import GameRank from '@/components/game_rank';
     import CoverLayer from '@/components/common/cover_layer';
 
+    const wsHost1 = config.webSocketHost1;
     let userInfo = null;
     let shakeHandNumber = 0;
     let clear_set = null;
@@ -117,7 +125,9 @@
     let gameUser = null;
     let gameTime = null;
     let degree = 0;
+    let start_btn = imgApi.start_btn;
 
+    let socketTask2 = null;
     export default class Game extends wepy.component {
         components = {
             outmodel: OutModel,
@@ -165,6 +175,7 @@
         props = {
             roomId:{},
             legOrHand:{},
+            masterId:{},
 
             // 房主开始按钮/组员准备按钮
             readyOrStartBtn:{
@@ -216,7 +227,6 @@
                     this.isOverCountDown(true);
                 }
             },
-
         };
 
         methods = {
@@ -247,8 +257,13 @@
                     this.stageDataCenter.shakeHandNum = shakeHandNumber;
                     this.$apply();
                     // 点击次数
-                    socketServer.wsSend({type:5, roomId: this.roomId, userId: userInfo.id, num: shakeHandNumber});
+                    // socketServer.wsSend({type:5, roomId: this.roomId, userId: userInfo.id, num: shakeHandNumber});
                 }
+            },
+
+            // 发送次数接收次数
+            sendNumber(){
+                socketServer.wsSend({type:5, roomId: this.roomId, userId: userInfo.id, num: shakeHandNumber});
             },
 
             // 退出事件
@@ -257,7 +272,6 @@
                 this.$apply();
                 this.isOverCountDown(false);
                 // 退出游戏
-                // this.updateRoomUserStatusE();
                 this.$emit('socketCloseBeforeEvents');
                 socketServer.wsClose();
             },
@@ -267,9 +281,14 @@
                 this.cancelCoverlayer();
             },
 
+            // 倒计时结束
+            countdownOverEvents(){
+                this.isOverCountDown(true);
+            }
+
         };
 
-        // 3/2/1倒计时
+        // 3-2-1倒计时
         countDownNum321(){
             let that =this;
             // 发送websocket
@@ -286,6 +305,9 @@
 
         // 开始
         startE(){
+            // 发送开始
+            // let userId = this.stageDataLeft.userId + ',' + this.stageDataCenter.userId + ',' + this.stageDataRight.userId;
+            // this.countDownSocket({type:12, time:this.time,userId:userId});
             ++degree;
             gameTime = this.time;
             this.isCountDownNum = false;
@@ -307,20 +329,19 @@
             this.countdownStart = false;
             this.countdownOver = false;
             this.isDot = false;
+            // 倒计时结束 select_time
+            // this.$broadcast ('stopCountDown');
             this.$emit('isOverCountDownEvents');
             this.$apply();
             // flag=true正常倒计时结束游戏/false中途退出
             if(flag){
                 this.showCoverLayer = true;
-                wx.showLoading({
-                    title: '统计排名中...',
-                    mask:true,
-                });
                 this.$emit('gameStopEvents');
                 this.addGameRecord();
                 this.gameRankE();
             } else {
                 shakeHandNumber = 0;
+                degree = 0;
                 // 强制停止倒计时
                 this.$broadcast('forcedStopCountdown');
             }
@@ -338,12 +359,12 @@
                         degree: degree,
                     }
                 });
-                // console.log('统计游戏排名=========');
-                // console.log(res.data.data);
+                console.log('统计游戏排名=========');
+                console.log(res.data.data);
                 let ranking = res.data.data;
                 ranking.forEach(function(item) {
-                    console.log('ranking==========')
-                    console.log(ranking);
+                    // console.log('ranking==========');
+                    // console.log(ranking);
                     if(item.userId == that.stageDataLeft.userId){
                         that.stageDataLeft.shakeHandNum = item.shakeNum;
                     } else if(item.userId == that.stageDataCenter.userId){
@@ -352,7 +373,6 @@
                         that.stageDataRight.shakeHandNum = item.shakeNum;
                     }
                 });
-                wx.hideLoading();
                 that.$invoke('gamerank','display',ranking);
                 that.showGameRankE();
                 shakeHandNumber = 0;
@@ -395,18 +415,6 @@
                     degree: degree,
                     status: that.legOrHand,
                     mode:api.PKModel,
-                }
-            });
-            shakeHandNumber = 0;
-        }
-
-        // 退出游戏
-        async updateRoomUserStatusE(){
-            let roomId = this.roomId;
-            api.updateRoomUserStatus({
-                query:{
-                    userId: userInfo.id,
-                    roomId: roomId,
                 }
             });
             shakeHandNumber = 0;

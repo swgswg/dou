@@ -14,6 +14,7 @@ const ty8 = '8'; // 组员退出
 const ty9 = '9'; //
 const ty10 = '10'; // 房主退出
 const ty11 = '11'; // 房主游戏中退出
+const ty12 = '12'; // 房主游戏中退出
 
 /**
  *  解析 WS 数据
@@ -34,7 +35,7 @@ function wsDeal(data, that, userId) {
             break;
         case ty2: ready(data, that);
             break;
-        case ty3: time(data, that);
+        case ty3: time(data.time, that);
             break;
         case ty4: start(data, that);
             break;
@@ -47,6 +48,9 @@ function wsDeal(data, that, userId) {
         case ty10: masterOutGame(that);
             break;
         case ty11: masterOutGameing(that);
+            break;
+        // case ty12: countDown(data.time, that);
+        //     break;
     }
 }
 
@@ -64,7 +68,6 @@ function ban(message) {
 }
 
 
-
 /**
  *  自己加入房间
  * @param data
@@ -77,6 +80,9 @@ function addSelf(data, that, userId){
         updateStageCenterDateE(user1, that);
         user.forEach(function(item,index) {
             if(index == 0){
+                if(!util.isEmpty(item.time)){
+                    that.time = item.time;
+                }
                 updateStageLeftDateE(item, that);
             } else {
                 updateStageRightDateE(item, that);
@@ -92,9 +98,7 @@ function addSelf(data, that, userId){
             }
         });
     }
-    if(!util.isEmpty(data.time)){
-        that.time = data.time;
-    }
+
     that.$apply();
 
 }
@@ -142,7 +146,7 @@ function ready(data, that) {
  * @param that
  */
 function time(data, that) {
-    that.time = data.time;
+    that.time = data;
     that.$apply();
 }
 
@@ -168,6 +172,20 @@ function num(data, that) {
         that.stageDataLeft.shakeHandNum = data.num;
     } else if(data.userId == that.stageDataRight.userId) {
         that.stageDataRight.shakeHandNum = data.num;
+    }
+    that.$apply();
+}
+
+
+/**
+ *  倒计时
+ * @param data
+ * @param that
+ */
+function countDown(data, that) {
+    that.time = data;
+    if(data== '00:00:00'){
+        that.$broadcast('countdownOverEvents');
     }
     that.$apply();
 }
@@ -218,8 +236,6 @@ function masterOutGameing(that){
     that.masterOutGaming = 1;
     that.$apply();
 }
-
-
 
 
 // 把房间人物信息绑定到中间

@@ -200,6 +200,8 @@ module.exports = {
     mall_gift_inactive: uploadFileUrl + 'mall_gift_inactive.png',
     mall_tuijian_active: uploadFileUrl + 'mall_tuijian_active.png',
     mall_tuijian_inactive: uploadFileUrl + 'mall_tuijian_inactive.png',
+    mall_gift:uploadFileUrl + 'mall_gift.png',
+    mall_recom:uploadFileUrl + 'mall_recom.png',
 
     // 能量
     energy: uploadFileUrl + 'energy.png',

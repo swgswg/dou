@@ -205,6 +205,10 @@
         color:#46a1f5;
     }
 
+    .c7ecef4{
+        color: #7ecef4;
+    }
+
     .br5{
         border-radius: 5rpx;
     }
@@ -233,6 +237,10 @@
         background-color: #ecd13b;
     }
 
+    .bg7ecef4{
+        background-color: #7ecef4;
+    }
+
     .bg-repeat-size{
         background-repeat: no-repeat;
         background-size: 100% 100%;
@@ -241,97 +249,6 @@
     .border{
         border: 1px solid red;
     }
-
-    /*.mt5 {*/
-        /*margin-top: 5px;*/
-    /*}*/
-
-    /*.mt10 {*/
-        /*margin-top: 20rpx;*/
-    /*}*/
-
-    /*.mt15 {*/
-        /*margin-top: 30rpx;*/
-    /*}*/
-
-    /*.mt20 {*/
-        /*margin-top: 40rpx;*/
-    /*}*/
-
-    /*.mr5 {*/
-        /*margin-right: 10rpx;*/
-    /*}*/
-
-    /*.mr10 {*/
-        /*margin-right: 20rpx;*/
-    /*}*/
-
-    /*.mr15 {*/
-        /*margin-right: 30rpx;*/
-    /*}*/
-
-    /*.mr20 {*/
-        /*margin-right: 40rpx;*/
-    /*}*/
-
-    /*.ml5 {*/
-        /*margin-left: 10rpx;*/
-    /*}*/
-
-    /*.ml10 {*/
-        /*margin-left: 20rpx;*/
-    /*}*/
-
-    /*.ml15 {*/
-        /*margin-left: 30rpx;*/
-    /*}*/
-
-    /*.ml30 {*/
-        /*margin-left: 60rpx;*/
-    /*}*/
-
-    /*.mb5 {*/
-        /*margin-bottom: 10rpx;*/
-    /*}*/
-
-    /*.mb10 {*/
-        /*margin-bottom: 20rpx;*/
-    /*}*/
-
-    /*.mb15 {*/
-        /*margin-bottom: 30rpx;*/
-    /*}*/
-
-    /*.mb20 {*/
-        /*margin-bottom: 40rpx;*/
-    /*}*/
-
-    /*.m10 {*/
-        /*margin: 20rpx;*/
-    /*}*/
-
-    /*.m15 {*/
-        /*margin: 30rpx;*/
-    /*}*/
-
-    /*.m20 {*/
-        /*margin: 40rpx;*/
-    /*}*/
-
-    /*.p10 {*/
-        /*padding: 20rpx;*/
-        /*box-sizing: border-box;*/
-    /*}*/
-
-    /*.pb10 {*/
-        /*padding-bottom: 20rpx;*/
-        /*box-sizing: border-box;*/
-    /*}*/
-
-    /*.pt15 {*/
-        /*padding-top: 15rpx;*/
-        /*box-sizing: border-box;*/
-    /*}*/
 
     /* 渐变线 */
     .line{
@@ -445,6 +362,7 @@
                     }
                 ]
             },
+            "workers": "workers"
             // 'requiredBackgroundModes': true
         };
 

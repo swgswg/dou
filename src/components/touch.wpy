@@ -22,12 +22,17 @@
     import imgApi from '@/utils/imgApi';
 
     // 图片类型为1
-    let btn_active1 = imgApi.btn_active1;
-    let btn_inactive1 = imgApi.btn_inactive1;
+    // let btn_active1 = imgApi.btn_active1;
+    // let btn_inactive1 = imgApi.btn_inactive1;
+    let btn_active1 = '../static/images/btn_active1.png';
+    let btn_inactive1 = '../static/images/btn_inactive1.png';
 
     // 图片类型为2
-    let btn_active2 = imgApi.btn_active2;
-    let btn_inactive2 = imgApi.btn_inactive2;
+    // let btn_active2 = imgApi.btn_active2;
+    // let btn_inactive2 = imgApi.btn_inactive2;
+
+    let btn_active2 = '../static/images/btn_active2.png';
+    let btn_inactive2 = '../static/images/btn_inactive2.png';
 
     let imgT = [
         {ing:btn_active1, ed: btn_inactive1},

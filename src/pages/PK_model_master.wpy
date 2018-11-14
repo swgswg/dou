@@ -14,6 +14,7 @@
               :time.sync="time"
               :isCountDownNum.sync="isCountDownNum"
               :countdownStart.sync="countdownStart"
+              :masterId.sync="masterId"
         >
         </game>
 
@@ -58,6 +59,7 @@
 
             roomId:null,
             legOrHand:null,
+            masterId:null,
             // 房主是开始按钮
             readyOrStartBtn:start_btn,
             // 房主需要时间的确定按钮
@@ -88,7 +90,7 @@
 
             this.roomId = options.roomId;
             this.legOrHand = options.legOrHand;
-
+            this.masterId = userInfo.id;
             // 房主从创建房间进来的 有确定时间按钮
             this.hasTimeConfirmBtn = true;
             this.$apply();
@@ -208,7 +210,7 @@
 
         // 倒计时结束
         isOverCountDownE(){
-
+            socketServer.wsSend({type:6, roomId: this.roomId, userId:userInfo.id});
             this.readyBtn = start_btn;
             this.updateGroupUserInit();
         }
@@ -255,6 +257,7 @@
         updateGroupUserInit(){
             this.stageDataLeft.isLight = 1;
             this.stageDataRight.isLight = 1;
+            // this.hasTimeConfirmBtn = true;
             this.$apply();
         }
 

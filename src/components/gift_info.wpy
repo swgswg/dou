@@ -3,61 +3,45 @@
         display: flex;
         padding: 20rpx 20rpx 0;
 
-        .left{
-            width: 50%;
+        .left-info{
+            justify-content:space-around;
+            align-items: flex-start;
 
-            .left-info{
-                justify-content:flex-start;
+            .gift-name{
+                height: 50%;
+            }
+
+            .energy{
+                display: flex;
+                justify-content: flex-start;
                 align-items: center;
-
-                .gift-name{
-                    height: 50%;
-                }
-
-                .energy{
-                    display: flex;
-                    justify-content: flex-start;
-                    align-items: flex-start;
-                    height: 40%;
-                }
+                height: 40%;
             }
         }
 
+        .input{
+            width: 30%;
+
+            .jia,.jian{
+                color: #7ecef4;
+                border: 1px solid #7ecef4;
+            }
+
+            .icon-add,.icon-move{
+                font-size: 30rpx;
+                font-weight: bold;
+            }
+
+            input{
+                text-align: center;
+                border: 1rpx solid #7ecef4;
+            }
+
+
+        }
+
         .right{
-            width: 50%;
-
-            .gift-code{
-                display: flex;
-                justify-content: flex-start;
-                align-items: flex-start;
-                width: 45%;
-
-                view{
-                    color: #ffc849;
-                }
-            }
-
-            .btn{
-                display: flex;
-                flex-direction: column;
-                justify-content: space-around;
-                align-items: center;
-
-                .jia,.jian{
-                    color: #57A6E2;
-                    border: 1px solid #57A6E2;
-                }
-
-                .btn1{
-                    text-align: center;
-                    /*margin-bottom: 20rpx;*/
-                    border: 1rpx solid #ec2c98;
-                }
-                .btn2{
-                    /*background: linear-gradient(to top right,#ec2c98, #f68668);*/
-                    background: linear-gradient(to top right,#ECD13B, #57A6E2);
-                }
-            }
+            width: 20%;
         }
     }
 </style>
@@ -66,10 +50,10 @@
     <view class="w-percent100 h-percent100 border-box gift-info">
         <scroll-view scroll-y bindscrolltolower="scrollToLower">
             <block wx:for="{{giftInfo}}" wx:for-item="giftInfo" wx:key="{{index}}">
-                <view class="flex-around w-percent100 bgcf" style="margin-bottom:{{20*px2rpxHeight}}px">
+                <view class="flex-around w-percent100 br10 bgcf" style="margin-bottom:{{20*px2rpxHeight}}px">
 
                     <!--礼物信息 start-->
-                    <view class="flex-start left">
+                    <view class="flex-start w-percent50">
                         <!--礼物图片 start-->
                         <view class="flex-center" style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
                             <image src="{{fileUrl + giftInfo.photo}}"
@@ -79,81 +63,78 @@
                         </view>
                         <!--礼物图片 end-->
 
-                        <!--礼物名称+积分 start-->
+                        <!--礼物名称+积分+能量 start-->
                         <view class="flex-column left-info"
-                              style="width:{{150*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
+                              style="width:{{150*px2rpxWidth}}px;height:{{120*px2rpxHeight}}px;margin-left:{{20*px2rpxHeight}}px">
 
+                            <!--礼物名称 start-->
                             <view class="flex-start w-percent100 f30 ellipsis gift-name">{{giftInfo.name}}</view>
+                            <!--礼物名称 end-->
+
+                            <!--能量 start-->
                             <view class="w-percent100 f25 energy">
                                 <image style="width:{{21*px2rpxWidth}}px;height:{{26*px2rpxHeight}}px;margin-right:{{10*px2rpxHeight}}px" lazy-load="true" src="{{energy}}"></image>
                                 <view>{{giftInfo.score}}</view>
                             </view>
+                            <!--能量 end-->
+
+                            <!--积分 start-->
+                            <view class="w-percent100 f25 energy">
+                                <image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
+                                <view style="color:#ffc849;">{{giftInfo.integral}}</view>
+                            </view>
+                            <!--积分 end-->
                         </view>
-                        <!--礼物名称+积分 end-->
+                        <!--礼物名称+积分+能量 end-->
                     </view>
                     <!--礼物信息 end-->
 
-                    <!--积分+兑换 start-->
-                    <view class="flex-between border-box right" style="height:{{150*px2rpxHeight}}px;padding-right:{{20*px2rpxWidth}}px;">
-                        <!--积分 start-->
-                        <view class="h-percent100 w-percent50 gift-code" style="margin-top:{{29*px2rpxHeight}}px">
-                            <image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
-                            <view class="f30">{{giftInfo.integral}}</view>
+                    <!--输入框 start-->
+                    <view class="flex-between input" style="height:{{150*px2rpxHeight}}px;">
+                        <!--加号 start-->
+                        <view class="flex-center br-percent50 jia"
+                              data-index="{{index}}"
+                              data-status="jia"
+                              @tap.stop="jiaOrjian"
+                              style="width:{{42*px2rpxWidth}}px;height:{{42*px2rpxWidth}}px;">
+                            <text class="iconfont icon-add" style="margin-top:{{5*px2rpxHeight}}px"></text>
                         </view>
-                        <!--积分 end-->
+                        <!--加号 end-->
 
-                        <!--兑换 start-->
-                        <view class="w-percent50 h-percent100 border-box btn" style="padding:{{10*px2rpxHeight}}px 0;">
-                            <!--输入框 start-->
-                            <view class="flex-around w-percent100" >
+                        <!--输入框 start-->
+                        <input class="flex-center f25 br10 c3 bgcf "
+                               value="{{giftInfo.val}}"
+                               type="number"
+                               bindinput="buyNumber"
+                               data-giftid="{{giftInfo.id}}"
+                               data-integral="{{giftInfo.integral}}"
+                               placeholder="购买数量"
+                               style="width:{{100*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;"/>
+                        <!--输入框 end-->
 
-                                <!--加按钮 start-->
-                                <view class="flex-center f40 br5 jia"
-                                      data-index="{{index}}"
-                                      data-status="jia"
-                                      @tap.stop="jiaOrjian"
-                                      style="width:{{50*px2rpxHeight}}px;height:{{50*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;">
-                                    +
-                                </view>
-                                <!--加按钮 ene-->
-
-                                <input class="flex-center f25 br10 c3 bgcf btn1"
-                                       value="{{giftInfo.val}}"
-                                       type="number"
-                                       bindinput="buyNumber"
-                                       data-giftid="{{giftInfo.id}}"
-                                       data-integral="{{giftInfo.integral}}"
-                                       placeholder="购买数量"
-                                       style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;"
-                                />
-                            </view>
-                            <!--输入框 end-->
-
-                            <!--兑换按钮 start-->
-                            <view class="flex-around w-percent100">
-                                <!--减按钮 start-->
-                                <view class="flex-center f40 br5 jian"
-                                      data-index="{{index}}"
-                                      data-status="jian"
-                                      @tap.stop="jiaOrjian"
-                                      style="width:{{50*px2rpxHeight}}px;height:{{50*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;">
-                                    -
-                                </view>
-                                <!--减按钮 end-->
-
-                                <view  class="flex-center f25 br10 cf btn2"
-                                       data-giftid="{{giftInfo.id}}"
-                                       data-index="{{index}}"
-                                       @tap.stop="buy"
-                                       style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;">
-                                    兑换
-                                </view>
-                            </view>
-                            <!--兑换按钮 end-->
+                        <!--减号 start-->
+                        <view class="flex-center br-percent50 jian"
+                              data-index="{{index}}"
+                              data-status="jian"
+                              @tap.stop="jiaOrjian"
+                              style="width:{{42*px2rpxWidth}}px;height:{{42*px2rpxWidth}}px;">
+                            <text class="iconfont icon-move" style="margin-top:{{5*px2rpxHeight}}px;"></text>
                         </view>
-                        <!--兑换 end-->
+                        <!--减号 end-->
                     </view>
-                    <!--积分+兑换 end-->
+                    <!--输入框 end-->
+
+                    <!--兑换 start-->
+                    <view class="flex-center border-box right" style="height:{{150*px2rpxHeight}}px;">
+                        <view  class="flex-center f25 br10 cf bg7ecef4"
+                               data-giftid="{{giftInfo.id}}"
+                               data-index="{{index}}"
+                               @tap.stop="buy"
+                               style="width:{{100*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;">
+                            兑换
+                        </view>
+                    </view>
+                    <!--兑换 end-->
 
                 </view>
             </block>
