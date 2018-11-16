@@ -3,14 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="163dff39-3b00-4120-a5ee-4f30053abe5a" name="Default" comment="修改绑定手机号页面">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/recom.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/recom.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/PK_model_master.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/PK_model_master.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/order.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/order.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/order_detail.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/order_detail.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/set.wpy" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/set.wpy" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/imgApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/imgApi.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/socketServer.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/socketServer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/wsDataDeal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/wsDataDeal.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.wepycache" beforeDir="false" afterPath="$PROJECT_DIR$/.wepycache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/api.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/api.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/config_local.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/config_local.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/wxRequest.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/wxRequest.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -30,17 +26,17 @@
       <file leaf-file-name="app.wpy" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/app.wpy">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="6888">
+            <state relative-caret-position="28">
               <caret line="246" column="5" selection-start-line="246" selection-start-column="5" selection-end-line="246" selection-end-column="5" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="api.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="api.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/utils/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1316">
-              <caret line="48" selection-start-line="48" selection-end-line="49" selection-end-column="80" />
+            <state relative-caret-position="644">
+              <caret line="50" selection-start-line="50" selection-end-line="50" />
               <folding>
                 <element signature="e#0#42#0" expanded="true" />
               </folding>
@@ -51,39 +47,29 @@
       <file leaf-file-name="imgApi.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utils/imgApi.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4816">
+            <state relative-caret-position="364">
               <caret line="172" column="40" selection-start-line="172" selection-start-column="40" selection-end-line="172" selection-end-column="40" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="recom.wpy" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/components/recom.wpy">
+      <file leaf-file-name="wxRequest.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/utils/wxRequest.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="489">
-              <caret line="207" column="19" lean-forward="true" selection-start-line="207" selection-start-column="19" selection-end-line="207" selection-end-column="19" />
+            <state relative-caret-position="364">
+              <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
               <folding>
-                <element signature="n#style#0;n#view#1;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-                <element signature="e#3525#3549#0" expanded="true" />
+                <element signature="e#0#24#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="commit_order.wpy" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/pages/commit_order.wpy">
+      <file leaf-file-name="config_local.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/utils/config_local.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="146" column="37" lean-forward="true" selection-start-line="146" selection-start-column="37" selection-end-line="146" selection-end-column="37" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="weixin.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utils/weixin.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="411">
-              <caret line="146" column="19" selection-start-line="146" selection-start-column="10" selection-end-line="146" selection-end-column="19" />
+            <state relative-caret-position="28">
+              <caret line="1" column="41" selection-start-line="1" selection-start-column="41" selection-end-line="1" selection-end-column="41" />
             </state>
           </provider>
         </entry>
@@ -170,7 +156,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/components/best_record.wpy" />
         <option value="$PROJECT_DIR$/src/components/three_stage.wpy" />
         <option value="$PROJECT_DIR$/src/components/ranking_world.wpy" />
         <option value="$PROJECT_DIR$/src/components/ranking.wpy" />
@@ -184,7 +169,6 @@
         <option value="$PROJECT_DIR$/src/components/mygift.wpy" />
         <option value="$PROJECT_DIR$/src/pages/open.wpy" />
         <option value="$PROJECT_DIR$/src/utils/constant.js" />
-        <option value="$PROJECT_DIR$/src/utils/api.js" />
         <option value="$PROJECT_DIR$/src/pages/mobile_verify.wpy" />
         <option value="$PROJECT_DIR$/src/components/explain.wpy.vue" />
         <option value="$PROJECT_DIR$/src/components/out_model.wpy" />
@@ -206,7 +190,6 @@
         <option value="$PROJECT_DIR$/src/workers/worker.js" />
         <option value="$PROJECT_DIR$/src/components/touch.wpy" />
         <option value="$PROJECT_DIR$/src/pages/select_model.wpy" />
-        <option value="$PROJECT_DIR$/src/utils/config_local.js" />
         <option value="$PROJECT_DIR$/src/components/select_time.wpy" />
         <option value="$PROJECT_DIR$/src/pages/PK_model_slave.wpy" />
         <option value="$PROJECT_DIR$/src/components/game.wpy" />
@@ -221,6 +204,9 @@
         <option value="$PROJECT_DIR$/src/utils/imgApi.js" />
         <option value="$PROJECT_DIR$/src/pages/set.wpy" />
         <option value="$PROJECT_DIR$/src/components/recom.wpy" />
+        <option value="$PROJECT_DIR$/src/utils/config_local.js" />
+        <option value="$PROJECT_DIR$/src/utils/wxRequest.js" />
+        <option value="$PROJECT_DIR$/src/utils/api.js" />
       </list>
     </option>
   </component>
@@ -257,6 +243,11 @@
             <path>
               <item name="doutui" type="b2602c69:ProjectViewProjectNode" />
               <item name="doutui" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="doutui" type="b2602c69:ProjectViewProjectNode" />
+              <item name="doutui" type="462c0819:PsiDirectoryNode" />
+              <item name="dist" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="doutui" type="b2602c69:ProjectViewProjectNode" />
@@ -457,7 +448,8 @@
       <workItem from="1542279383555" duration="2028000" />
       <workItem from="1542338008881" duration="2095000" />
       <workItem from="1542346341150" duration="2849000" />
-      <workItem from="1542349211964" duration="1893000" />
+      <workItem from="1542349211964" duration="2203000" />
+      <workItem from="1542354588427" duration="1503000" />
     </task>
     <task id="LOCAL-00001" summary="修改绑定手机号页面">
       <created>1540524973004</created>
@@ -470,7 +462,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2098615000" />
+    <option name="totallyTimeSpent" value="2100428000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -483,28 +475,27 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
+      <window_info anchor="bottom" auto_hide="true" content_ui="combo" id="TypeScript" order="12" type="SLIDING" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950927" visible="true" weight="0.15964173" />
       <window_info anchor="bottom" id="TODO" order="7" weight="0.32824427" />
-      <window_info anchor="bottom" id="Event Log" order="12" sideWeight="0.5216017" side_tool="true" weight="0.45038167" />
-      <window_info anchor="bottom" id="Version Control" order="11" sideWeight="0.49947312" weight="0.32824427" />
+      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="11" sideWeight="0.5216017" side_tool="true" weight="0.45038167" />
+      <window_info anchor="bottom" id="Version Control" order="10" sideWeight="0.49947312" weight="0.32824427" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="npm" order="2" sideWeight="0.5049073" side_tool="true" weight="0.15964173" />
-      <window_info anchor="bottom" id="Terminal" order="10" sideWeight="0.47839832" weight="0.22464558" />
-      <window_info anchor="bottom" auto_hide="true" content_ui="combo" id="TypeScript" order="13" type="SLIDING" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4950927" visible="true" weight="0.15964173" />
-      <window_info anchor="bottom" id="Docker" order="8" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
       <window_info id="Structure" order="1" sideWeight="0.5049073" side_tool="true" weight="0.15964173" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="13" sideWeight="0.47839832" visible="true" weight="0.22355507" />
       <window_info anchor="bottom" id="Favorites" order="6" sideWeight="0.50108933" side_tool="true" weight="0.13631406" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="bottom" id="Messages" order="9" weight="0.3293348" />
       <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3293348" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -808,30 +799,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/app.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="6888">
-          <caret line="246" column="5" selection-start-line="246" selection-start-column="5" selection-end-line="246" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/config_local.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="15" selection-end-column="2" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/api.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1316">
-          <caret line="48" selection-start-line="48" selection-end-line="49" selection-end-column="80" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/order_detail.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -853,30 +820,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/wxRequest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="167">
-          <caret line="6" column="17" selection-start-line="6" selection-start-column="17" selection-end-line="6" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/set.wpy">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
           <caret line="15" column="158" selection-start-line="15" selection-start-column="158" selection-end-line="15" selection-end-column="158" />
-          <folding>
-            <element signature="n#style#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#image#0;n#view#0;n#view#0;n#block#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="n#style#0;n#view#1;n#view#0;n#block#0;n#view#1;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#345#369#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/imgApi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4816">
-          <caret line="172" column="40" selection-start-line="172" selection-start-column="40" selection-end-line="172" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -896,25 +843,65 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/utils/weixin.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="411">
+        <state relative-caret-position="4032">
           <caret line="146" column="19" selection-start-line="146" selection-start-column="10" selection-end-line="146" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/commit_order.wpy">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="146" column="37" lean-forward="true" selection-start-line="146" selection-start-column="37" selection-end-line="146" selection-end-column="37" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/recom.wpy">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="489">
-          <caret line="207" column="19" lean-forward="true" selection-start-line="207" selection-start-column="19" selection-end-line="207" selection-end-column="19" />
+        <state relative-caret-position="1525">
+          <caret line="216" lean-forward="true" selection-start-line="216" selection-end-line="216" />
           <folding>
             <element signature="n#style#0;n#view#1;n#view#2;n#view#0;n#block#0;n#scroll-view#0;n#view#0;n#template#0;n#!!top" expanded="true" />
-            <element signature="e#3525#3549#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/app.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="246" column="5" selection-start-line="246" selection-start-column="5" selection-end-line="246" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/commit_order.wpy">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="146" column="37" selection-start-line="146" selection-start-column="37" selection-end-line="146" selection-end-column="37" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/config_local.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="28">
+          <caret line="1" column="41" selection-start-line="1" selection-start-column="41" selection-end-line="1" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/imgApi.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="172" column="40" selection-start-line="172" selection-start-column="40" selection-end-line="172" selection-end-column="40" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/wxRequest.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="364">
+          <caret line="22" column="24" selection-start-line="22" selection-start-column="24" selection-end-line="22" selection-end-column="24" />
+          <folding>
+            <element signature="e#0#24#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/utils/api.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="644">
+          <caret line="50" selection-start-line="50" selection-end-line="50" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
           </folding>
         </state>
       </provider>

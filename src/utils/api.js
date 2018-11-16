@@ -1,5 +1,5 @@
 import config from '@/utils/config_local';
-import { wxRequest } from '@/utils/wxRequest';
+import { wxRequest, wxRequest1 } from '@/utils/wxRequest';
 
 // 域名
 // const host = 'http://www.dt.pub/';
@@ -46,8 +46,9 @@ const arderModel = 4;
  * @return {[type]}        [description]
  */
 
-// 登录
-const myLogin = (params) => wxRequest(params, host + 'shakeLeg/user/userLogin');
+// 登录(增加获取token)
+const myLogin = (params) => wxRequest1(params, host + 'shakeLeg/user/userLogin');
+
 // 选择性别
 const updateSex = (params) => wxRequest(params, host + 'shakeLeg/user/updateSex');
 // 添加游戏记录
