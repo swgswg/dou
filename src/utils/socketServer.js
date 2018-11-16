@@ -3,7 +3,6 @@
  */
 
 import config from '@/utils/config_local';
-import api from '@/utils/api';
 const wsHost = config.webSocketHost;
 var SocketTask = null;
 var isOpen = false;

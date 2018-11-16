@@ -28,7 +28,6 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
-    import util from '@/utils/util';
     import socketServer from '@/utils/socketServer';
     import wsDataDeal from '@/utils/wsDataDeal';
 

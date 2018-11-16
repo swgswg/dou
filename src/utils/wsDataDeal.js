@@ -14,7 +14,6 @@ const ty8 = '8'; // 组员退出
 const ty9 = '9'; //
 const ty10 = '10'; // 房主退出
 const ty11 = '11'; // 房主游戏中退出
-const ty12 = '12'; // 房主游戏中退出
 
 /**
  *  解析 WS 数据
@@ -49,8 +48,6 @@ function wsDeal(data, that, userId) {
             break;
         case ty11: masterOutGameing(that);
             break;
-        // case ty12: countDown(data.time, that);
-        //     break;
     }
 }
 
@@ -172,20 +169,6 @@ function num(data, that) {
         that.stageDataLeft.shakeHandNum = data.num;
     } else if(data.userId == that.stageDataRight.userId) {
         that.stageDataRight.shakeHandNum = data.num;
-    }
-    that.$apply();
-}
-
-
-/**
- *  倒计时
- * @param data
- * @param that
- */
-function countDown(data, that) {
-    that.time = data;
-    if(data== '00:00:00'){
-        that.$broadcast('countdownOverEvents');
     }
     that.$apply();
 }

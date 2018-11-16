@@ -168,6 +168,9 @@ module.exports = {
     //声音/振动设置
     set_sound: uploadFileUrl + 'set_sound.png',
     set_vibrance: uploadFileUrl + 'set_vibrance.png',
+    qq:uploadFileUrl + 'qq.png',
+    shequ: uploadFileUrl + 'shequ.png',
+    weixin: uploadFileUrl + 'wexin.png',
 
     // 商城/娱乐模式/粉丝大排名/我的礼物墙/我的订单/我的地址/设置/vip礼物墙
     shop: uploadFileUrl + 'shop.png',
@@ -218,9 +221,10 @@ module.exports = {
     sign_in_dui: uploadFileUrl + 'sign_in_dui.png',
     sign_in_7day: uploadFileUrl + 'sign_in_7day.png',
 
-    // 售后背景/按钮
+    // 售后背景/按钮/二维码
     customer_service: uploadFileUrl + 'customer_service.png',
     customer_service_btn: uploadFileUrl + 'customer_service_btn.png',
+    erweima: uploadFileUrl + 'erweima.jpg',
 
     // 礼物墙背景
     wall_bg: uploadFileUrl + 'wall_bg.png',

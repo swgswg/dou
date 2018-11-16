@@ -118,9 +118,8 @@
                     <view class="flex-column" style="margin-left:{{18*px2rpxWidth}}px;">
                         <view class="f32 c3">{{order.goodsName}}</view>
                         <view class="f24 c3" style="margin-top:{{16*px2rpxHeight}}px;">x{{order.num}}</view>
-                        <view class="f30 goods-price" style="margin-top:{{10*px2rpxHeight}}px;">
-                            <text style="font-size:20rpx;"
-                                  wx:if="{{order.integral}}">
+                        <view class="flex-center f30 goods-price" style="align-items: flex-end">
+                            <text class="flex-center f20" wx:if="{{order.integral}}">
                                 {{order.integral}}积分+
                             </text>
                             ¥{{order.money}}
@@ -197,9 +196,9 @@
                     <image src="{{customer_service}}" lazy-load="true" class="pa img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
                     <view class="flex-column neirong" style="margin-top:{{179*px2rpxWidth}}px;padding:0 {{80*px2rpxWidth}}px;">
                         <view class="flex-center">
-                            <image lazy-load="true" style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
+                            <image lazy-load="true" src="{{erweima}}" style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
                         </view>
-                        <view class="flex-center f30 c0">微信号:123456789</view>
+                        <view class="flex-center f30 c0">微信公众号ID: FQshakers</view>
                         <view class="flex-center f24 c6" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
                         <view class="flex-center fuzhi" style="margin-top:{{40*px2rpxHeight}}px;">
                             <image src="{{customer_service_btn}}" lazy-load="true" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
@@ -242,6 +241,7 @@
             fileUrl:imgApi.fileUrl,
             customer_service:imgApi.customer_service,
             customer_service_btn:imgApi.customer_service_btn,
+            erweima:imgApi.erweima,
             orderId:null,
             // ''(全部) 0（未支付）1（待发货）2（待接收）3（完成）4（退）5（换）6(取消订单)
             all:api.all,
@@ -331,7 +331,7 @@
             copyWeixinhao(){
                 // 设置系统剪贴板的内容
                 wx.setClipboardData({
-                    data: 'data',
+                    data: 'FQshakers',
                     success: function(res) {
                         wx.showToast({
                             title:'复制成功',

@@ -48,9 +48,9 @@
                     <image src="{{customer_service}}" lazy-load="true" class="pa img-bg" style="width:{{553*px2rpxWidth}}px;height:{{628*px2rpxWidth}}px;"></image>
                     <view class="flex-column border-box neirong" style="margin-top:{{179*px2rpxWidth}}px;padding:0 {{80*px2rpxWidth}}px;">
                         <view class="flex-center">
-                            <image lazy-load="true" style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
+                            <image lazy-load="true" src="{{erweima}}" style="width:{{164*px2rpxWidth}}px;height:{{164*px2rpxWidth}}px;"></image>
                         </view>
-                        <view class="flex-center f30 c0">微信号:123456789</view>
+                        <view class="flex-center f30 c0">微信公众号ID: FQshakers</view>
                         <view class="flex-center f24 c6" style="margin-top:{{40*px2rpxHeight}}px;">扫描二维码或复制微信号联系客服获取售后服务</view>
                         <view class="flex-center" style="margin-top:{{40*px2rpxHeight}}px;">
                             <image src="{{customer_service_btn}}" lazy-load="true" style="width:{{207*px2rpxWidth}}px;height:{{60*px2rpxWidth}}px;" @tap.stop="copyWeixinhao"></image>
@@ -128,7 +128,7 @@
             showAfterSale:false,
             customer_service:imgApi.customer_service,
             customer_service_btn:imgApi.customer_service_btn,
-
+            erweima:imgApi.erweima,
         };
 
         // 在Page和Component共用的生命周期函数
@@ -174,7 +174,7 @@
             copyWeixinhao(){
                 // 设置系统剪贴板的内容
                 wx.setClipboardData({
-                    data: 'data',
+                    data: 'FQshakers',
                     success: function(res) {
                         tip.toast('复制成功');
                     }

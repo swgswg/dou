@@ -40,6 +40,8 @@
                         </view>
                         <view class="flex-center f28 cf br10 bg7ecef4"
                               style="width:{{120*px2rpxWidth}}px;height:{{50*px2rpxHeight}}px;"
+                              data-index="{{index}}"
+                              data-goodsname="{{goods.name}}"
                               data-goodsid="{{goods.id}}"
                               @tap.stop="buyGoods"
                         >购买</view>
@@ -61,14 +63,20 @@
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
     import tip from '@/utils/tip';
-    import {PX_TO_RPX} from '@/utils/constant';
+    import weixin from '@/utils/weixin';
+    import util from '@/utils/util';
+    import {PX_TO_RPX,USER_INFO} from '@/utils/constant';
     import BottomLoadMore from "@/components/common/bottomLoadMore";
     import Placeholder from "@/components/common/placeholder";
     import BottomEnd from "@/components/common/bottom_end";
 
+    let userId = null;
     let page = 1;
     let pageSize = 20;
     let isLastPage = false;
+    let orderId = null;
+    let openid = null;
+    let money = null;
 
     export default class Recom extends wepy.component {
 
@@ -92,11 +100,14 @@
             goods:null,
         };
 
-        async onLoad(){
+        onLoad(){
             // 获取屏幕尺寸适配
-            let px2rpx = await wepy.getStorageSync(PX_TO_RPX);
+            let px2rpx = wepy.getStorageSync(PX_TO_RPX);
             this.px2rpxWidth = px2rpx.px2rpxWidth;
             this.px2rpxHeight = px2rpx.px2rpxHeight;
+            let userInfo = wepy.getStorageSync(USER_INFO);
+            userId = userInfo.id;
+            openid = userInfo.weChat;
             page = 1;
             pageSize = 20;
             isLastPage = false;
@@ -111,6 +122,16 @@
             // 购买
             buyGoods(e){
                 let id = e.currentTarget.dataset.goodsid;
+                let name = e.currentTarget.dataset.goodsname;
+                if(name == '6元首充'){
+                    let index = e.currentTarget.dataset.index;
+                    if(util.isEmpty(orderId)){
+                        this.commitOrder(index);
+                    } else {
+                        this. pay(orderId);
+                    }
+                    return;
+                }
                 wepy.navigateTo({
                     url:'/pages/goods_detail?goodsId='+id,
                 });
@@ -150,6 +171,46 @@
             this.showLoading = false;
             this.$apply();
         };
+
+        // 提交订单
+        async commitOrder(index){
+            let goods = this.goods[index];
+            money = goods.money;
+            let data = {
+                goodsId:goods.id,
+                userId:userId,
+                num:1,
+                status:0,
+                moneys:goods.money,
+            };
+            // if(this.goodsInfo.type == 0){
+            //     data.integral = 0;
+            // }
+            let res = await api.addOrders({
+                query:data
+            });
+            if(res.data.state == 1){
+                orderId = res.data.data;
+                this.pay(orderId);
+            } else {
+                tip.error('网络错误');
+            }
+            this.$apply();
+        }
+
+        // 付钱
+        pay(myorderId){
+            let that = this;
+            weixin.weixinPay(money,myorderId,openid,'抖腿商城',(res)=>{
+                tip.toast('支付成功');
+                wepy.switchTab({
+                    url:'/pages/order'
+                });
+            },()=>{
+                that.btnText = '继续支付';
+            });
+            this.$apply();
+        }
     }
 </script>
 
