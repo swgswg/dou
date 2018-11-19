@@ -1,8 +1,6 @@
 import wepy from 'wepy';
-import tip from './tip'
-
-// const API_SECRET_KEY = 'www.mall.cycle.com';
-// const TIMESTAMP = util.getCurrentTime()
+import tip from './tip';
+import weixin from './weixin';
 let token = null;
 
 const wxRequest = async(params = {}, url) => {
@@ -17,6 +15,20 @@ const wxRequest = async(params = {}, url) => {
         header: {'content-type': 'application/x-www-form-urlencoded', token: token},
     });
     tip.loaded();
+
+    // 重要操作验证token
+    if(res.data.message == '请重新登录'){
+        wx.showModal({
+            title: '登录通知',
+            content: '您的账号在其他端被占用, 请确认是否是本人操作, 如果不是本人请重新登录',
+            confirmText:'重新登录',
+            success: async (res)=> {
+                if (res.confirm) {
+                    weixin.weixinLogin();
+                }
+            }
+        });
+    }
     return res;
 };
 

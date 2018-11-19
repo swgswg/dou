@@ -119,20 +119,6 @@
                 that.time = util.SecondFormat(newTime - 1, 'hh:mm:ss');
                 that.$apply();
             },1000);
-            // console.log('time===', that.time);
-            // const worker = wx.createWorker('workers/worker.js');
-            // worker.postMessage({time: that.time});
-            // worker.onMessage(function (res) {
-            //     console.log('newTime===',res.time);
-            //     that.time =  res.time;
-            //     that.$apply();
-            //     if(res.time === '00:00:00'){
-            //         worker.terminate();
-            //         // clearInterval(clear_set);
-            //         that.stopCountDownE(true);
-            //         return;
-            //     }
-            // })
         };
 
         events = {

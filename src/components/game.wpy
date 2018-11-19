@@ -105,7 +105,6 @@
     import {PX_TO_RPX,USER_INFO,GAME_USER } from '@/utils/constant';
     import imgApi from '@/utils/imgApi';
     import api from '@/utils/api';
-    import util from '@/utils/util';
     import config from '@/utils/config_local';
     import socketServer from '@/utils/socketServer';
 
@@ -117,7 +116,6 @@
     import GameRank from '@/components/game_rank';
     import CoverLayer from '@/components/common/cover_layer';
 
-    const wsHost1 = config.webSocketHost1;
     let userInfo = null;
     let shakeHandNumber = 0;
     let clear_set = null;
@@ -127,7 +125,6 @@
     let degree = 0;
     let start_btn = imgApi.start_btn;
 
-    let socketTask2 = null;
     export default class Game extends wepy.component {
         components = {
             outmodel: OutModel,

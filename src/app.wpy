@@ -362,7 +362,6 @@
                     }
                 ]
             },
-            "workers": "workers"
             // 'requiredBackgroundModes': true
         };
 

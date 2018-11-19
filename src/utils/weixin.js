@@ -177,6 +177,18 @@ module.exports = {
         }
     },
 
+    async weixinLogin(){
+        let res = await wepy.login();
+        if(res.code){
+            let rlt = await api.myLogin({
+                query: {
+                    code: res.code,
+                }
+            });
+            wepy.setStorageSync(USER_INFO, rlt.data.data);
+        }
+    },
+
     /***
      * 按照显示图片的宽等比例缩放得到显示图片的高
      * @params originalWidth  原始图片的宽
