@@ -49,7 +49,7 @@
             <scroll-view scroll-x="true" style="white-space:nowrap;">
                 <block wx:for="{{myGift}}" wx:for-item="gift" wx:key="{{index}}">
                     <view class="pr f18 gift-img-each" style="width:{{100*px2rpxWidth}}px" data-index="{{index}}" @tap.stop="takeGift">
-                        <view class="pa flex-center cf br-percent50 gift-num" style="width:{{35*px2rpxWidth}}px;height:{{35*px2rpxWidth}}px">{{gift.num}}</view>
+                        <view class="pa flex-center cf br-percent50 gift-num ellipsis" style="width:{{35*px2rpxWidth}}px;height:{{35*px2rpxWidth}}px">{{gift.num}}</view>
                         <image style="width:{{60*px2rpxWidth}}px;height:{{56*px2rpxHeight}}px;margin-top:{{30*px2rpxHeight}}px;" lazy-load="true" src="{{fileUrl + gift.photo}}"></image>
                         <!--<view class="gift-name">赞</view>-->
                         <view class="cf ">{{gift.score}}能量</view>
@@ -59,7 +59,7 @@
         </view>
         <view class="flex-column-center" style="width:{{127*px2rpxWidth}}px;height:{{127*px2rpxWidth}}px;">
             <view class="flex-center f20 cf btn-confirm" style="width:{{100*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;margin-bottom:{{20*px2rpxHeight}}px;border-radius:{{40*px2rpxHeight/2}}px;" @tap.stop="confirmGiftSeat">确定</view>
-            <view class="flex-center f20 bgcf btn-mall" style="width:{{100*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;border-radius:{{40*px2rpxHeight/2}}px;" @tap.stop="goToMall">商城</view>
+            <view class="flex-center f20 bgcf btn-mall" style="width:{{100*px2rpxWidth}}px;height:{{40*px2rpxHeight}}px;border-radius:{{40*px2rpxHeight/2}}px;" @tap.stop="goToMall">能量兑换</view>
         </view>
     </view>
 </template>

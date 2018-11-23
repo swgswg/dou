@@ -58,7 +58,7 @@
                                 <view class="flex-column f30 price">
                                     <view><text style="font-size:22rpx" wx:if="{{order.integral}}">{{order.integral}}积分+</text>¥{{order.money}}</view>
                                     <view style="font-size:20rpx">
-                                        <block wx:if="{{order.status === unpaid}}">待付款</block>
+                                        <block wx:if="{{order.status === unpaid}}">待兑换</block>
                                         <block wx:if="{{order.status === notDelivered}}">待发货</block>
                                         <block wx:if="{{order.status === notReceived}}">已发货</block>
                                         <block wx:if="{{order.status === accomplish}}">交易完成</block>

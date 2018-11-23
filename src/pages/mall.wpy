@@ -29,11 +29,11 @@
         <view class="flex-center w-percent100">
             <image src="{{mall_product}}" lazy-load="true" mode="aspectFit" style="width:{{windowWidth}}px;height:{{366*px2rpxHeight}}px"></image>
         </view>
-        <view class="flex-column-center w-percent100 border-box f30" style="padding:{{10*px2rpxWidth}}px {{10*px2rpxHeight}}px;">
+        <view class="flex-column-center w-percent100 border-box f30" style="padding:0 {{10*px2rpxHeight}}px;">
             <view class="flex-between w-percent100" style="height:{{80*px2rpxHeight}}px;">
                 <view class="flex-start w-percent50">
                     <image style="width:{{46*px2rpxWidth}}px;height:{{44*px2rpxHeight}}px;margin-right:{{10*px2rpxWidth}}px;" lazy-load="true" src="{{shake_code}}"></image>
-                    <view>抖腿币</view>
+                    <view>抖腿能量</view>
                     <view class="num" style="margin-left:{{12*px2rpxWidth}}px;">{{~~integral}}</view>
                 </view>
                 <view class="flex-end w-percent50">
@@ -45,15 +45,15 @@
             </view>
             <view class="flex-center w-percent100">
                 <view class="flex-center w-percent100">
-                    <view class="flex-center border {{showStyle == '0' ? 'active' : ''}}"
-                          style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px"
-                          data-showstyle='0'
-                          @tap.stop="showStyleEvent">
-                        <image style="width:{{83*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px"
-                               lazy-load="true"
-                               src="{{mall_recom}}">
-                        </image>
-                    </view>
+                    <!--<view class="flex-center border {{showStyle == '0' ? 'active' : ''}}"-->
+                          <!--style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px"-->
+                          <!--data-showstyle='0'-->
+                          <!--@tap.stop="showStyleEvent">-->
+                        <!--<image style="width:{{83*px2rpxWidth}}px;height:{{25*px2rpxHeight}}px"-->
+                               <!--lazy-load="true"-->
+                               <!--src="{{mall_recom}}">-->
+                        <!--</image>-->
+                    <!--</view>-->
                     <view class="flex-center border {{showStyle == '1'? 'active' : ''}}"
                           style="width:{{185*px2rpxWidth}}px;height:{{45*px2rpxHeight}}px;"
                           data-showstyle='1' @tap.stop="showStyleEvent">
@@ -66,9 +66,9 @@
             </view>
         </view>
         <view class="w-percent100" style="height:{{670*px2rpxHeight}}px;">
-            <block wx:if="{{showStyle == '0'}}">
-                <recom></recom>
-            </block>
+            <!--<block wx:if="{{showStyle == '0'}}">-->
+                <!--<recom></recom>-->
+            <!--</block>-->
             <block wx:if="{{showStyle == '1'}}">
                 <giftinfo :integral.sync="integral"></giftinfo>
             </block>
@@ -101,7 +101,8 @@
             windowWidth:0,
             windowHeight:0,
             mall_product:imgApi.mall_product,
-            shake_code:imgApi.shake_code,
+            // shake_code:imgApi.shake_code,
+            shake_code:imgApi.energy,
             // mall_recommendation:imgApi.mall_recommendation,
             // mall_gift_active:imgApi.mall_gift_active,
             // mall_gift_inactive:imgApi.mall_gift_inactive,
@@ -113,7 +114,7 @@
             userId:null,
             integral:0,
             // 推荐/礼物
-            showStyle:'0',
+            showStyle:'1',
         };
 
         onLoad() {

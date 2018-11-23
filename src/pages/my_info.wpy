@@ -46,14 +46,14 @@
             showRight:true,
             logo:'',
             showInfoList:[
-                {img:imgApi.shop, title:'商城', skip:'/pages/mall'},
+                {img:imgApi.shop, title:'能量兑换', skip:'/pages/mall'},
                 {img:imgApi.fans, title:'粉丝大排名',skip:'/pages/fans_rank'},
                 {img:imgApi.friend, title:'我的好友',skip:'/pages/my_friends'},
                 {img:imgApi.gift, title:'我的礼物',skip:'/pages/my_gift'},
                 {img:imgApi.gift_wall, title:'我的礼物墙',skip:'/pages/public_wall'},
                 {img:imgApi.vip_active, title:'VIP礼物墙',skip:'/pages/gift_picture'},
-                {img:imgApi.order, title:'我的订单',skip:'/pages/order'},
-                {img:imgApi.addr, title:'我的地址',skip:'/pages/address_list'},
+                // {img:imgApi.order, title:'我的订单',skip:'/pages/order'},
+                // {img:imgApi.addr, title:'我的地址',skip:'/pages/address_list'},
                 {img:imgApi.set, title:'设置',skip:'/pages/set'},
             ],
 

@@ -260,11 +260,6 @@
                 })
             },
 
-            // 首充礼包
-            shouChong(){
-
-            },
-
             // 关闭遮盖层
             closeCoverLayer(){
                 this.showCoverLayer = false;

@@ -79,10 +79,10 @@
                             <!--能量 end-->
 
                             <!--积分 start-->
-                            <view class="w-percent100 f25 energy">
-                                <image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>
-                                <view style="color:#ffc849;">{{giftInfo.integral}}</view>
-                            </view>
+                            <!--<view class="w-percent100 f25 energy">-->
+                                <!--<image style="width:{{30*px2rpxWidth}}px;height:{{29*px2rpxHeight}}px;margin-right:{{8*px2rpxHeight}}px" lazy-load="true" src="{{shake_code}}"></image>-->
+                                <!--<view style="color:#ffc849;">{{giftInfo.integral}}</view>-->
+                            <!--</view>-->
                             <!--积分 end-->
                         </view>
                         <!--礼物名称+积分+能量 end-->

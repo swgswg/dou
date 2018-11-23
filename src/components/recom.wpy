@@ -17,7 +17,8 @@
     <view class="flex-center w-percent100 h-percent100 border-box recom" style="padding:{{20*px2rpxHeight}}px {{20*px2rpxWidth}}px 0px;">
         <scroll-view scroll-y bindscrolltolower="scrollToLower">
             <block wx:for="{{goods}}" wx:for-item="goods" wx:key="{{index}}">
-                <view class="flex-start bgcf recom-each" style="width:{{702*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-bottom:{{20*px2rpxHeight}}px">
+                <block wx:if="{{goods.name != '6元首充'}}">
+                    <view class="flex-start bgcf recom-each" style="width:{{702*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;margin-bottom:{{20*px2rpxHeight}}px">
                     <view class="flex-center" style="width:{{140*px2rpxWidth}}px;height:{{150*px2rpxHeight}}px;">
                         <image class="br10" src="{{fileUrl + goods.photo}}" lazy-load="true" style="width:{{120*px2rpxWidth}}px;height:{{120*px2rpxWidth}}px;"></image>
                     </view>
@@ -47,7 +48,8 @@
                         >购买</view>
                     </view>
                 </view>
-            </block>
+                </block>
+                </block>
             <!--加载更多时动画-->
             <bottomLoadMore :show.sync="showLoading" message="正在加载"></bottomLoadMore>
             <!--暂无数据显示-->
@@ -92,7 +94,8 @@
             px2rpxWidth:0,
             px2rpxHeight:0,
             fileUrl:imgApi.fileUrl,
-            shake_code:imgApi.shake_code,
+            // shake_code:imgApi.shake_code,
+            shake_code:imgApi.energy,
             showLoading:false,
             is_empty:true,
             // 是否全部加载完
@@ -123,15 +126,15 @@
             buyGoods(e){
                 let id = e.currentTarget.dataset.goodsid;
                 let name = e.currentTarget.dataset.goodsname;
-                if(name == '6元首充'){
-                    let index = e.currentTarget.dataset.index;
-                    if(util.isEmpty(orderId)){
-                        this.commitOrder(index);
-                    } else {
-                        this. pay(orderId);
-                    }
-                    return;
-                }
+                // if(name == '6元首充'){
+                //     let index = e.currentTarget.dataset.index;
+                //     if(util.isEmpty(orderId)){
+                //         this.commitOrder(index);
+                //     } else {
+                //         this. pay(orderId);
+                //     }
+                //     return;
+                // }
                 wepy.navigateTo({
                     url:'/pages/goods_detail?goodsId='+id,
                 });

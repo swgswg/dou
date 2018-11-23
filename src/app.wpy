@@ -356,7 +356,7 @@
                     },
                     {
                         "pagePath": "pages/my_info",
-                        "text": "我的抖动",
+                        "text": "我的脉抖",
                         "iconPath": "static/images/tabbar/myinfo.png",
                         "selectedIconPath": "static/images/tabbar/myinfo_active.png"
                     }
@@ -385,7 +385,7 @@
                 });
                 wepy.setStorageSync(USER_INFO, rlt.data.data);
                 user_info = rlt.data.data;
-                console.log(user_info);
+                // console.log(user_info);
             }
 
             // 获取屏幕尺寸适配比例

@@ -87,7 +87,6 @@
     import imgApi from '@/utils/imgApi';
     import tip from '@/utils/tip';
     import util from '@/utils/util';
-    import { Base64 } from '@/utils/base64';
 
     let name = null;
     let photo = null;
@@ -177,9 +176,7 @@
                     // 授权成功
                     // console.log('name=============');
                     // console.log(e.detail.userInfo.nickName);
-                    // name = Base64.encode(e.detail.userInfo.nickName);
                     // console.log(name);
-                    // console.log(Base64.decode(e.detail.userInfo.nickName));
                     name = e.detail.userInfo.nickName;
                     photo = e.detail.userInfo.avatarUrl;
                     // encryptedData = e.detail.encryptedData;
